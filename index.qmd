@@ -4,37 +4,51 @@ about:
   id: about-block
   image: "img/my_image.jpg"
   links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/MarvinSchmittML
-    - icon: github
-      text: Github
-      href: https://github.com/marvinschmitt
     - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/marvin-schmitt-a85b321a2/
+      href: https://www.linkedin.com/in/theafricanquant/
+    - text: "{{< fa brands linkedin-in >}}"
+    - icon: twitter
+      href: https://twitter.com/theAfricanQuant
+    - text: "{{< fa brands Twitter >}}"
+    - icon: github
+      href: https://github.com/theAfricanQuant
+    - text: "{{< fa brands GitHub >}}"
     - icon: envelope
-      text: Email
-      href: "mailto:mail.marvinschmitt@gmail.com"  
+      href: mailto:Ricky.Macharm@SisengAI.com
+    - text: "{{< Email >}}"
+    - icon: file-text
 ---
 
 ::: {#about-block}
 :::
 
-# Welcome to my website!
+### Hello, World!    
 
-I am Gandalf the White, a renowned wizard and scholar of Middle-earth. Over the centuries, I have dedicated my life to studying the history, languages, and cultures of the peoples of Middle-earth. On this website, I offer a glimpse into my vast body of knowledge, ongoing research, and publications.
+<p class="topbr"> Thanks for dropping by. My name is Ricky, and SisengAI is a pet project that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP. I'm currently a data science instructor at [WorldQuant University](https://www.wqu.edu/programs/applied-ds-lab){target="_blank"} located in New Orleans, LA. We also offer a free Master in Financial Engineering at the same [university](https://www.wqu.edu/programs/mscfe/){target="_blank"}. Follow the links I have shared to enroll in any of them if you are interested.</p>
 
-My research interests span the entirety of Middle-earth, from the distant past to the present day. I am particularly passionate about the languages and mythologies of the Elves, Dwarves, and Men, and I have made significant contributions to the understanding of these subjects. My studies of the natural world have also been extensive, and I am an expert in the flora and fauna of Middle-earth. Additionally, I have been involved in many important historical events and offer valuable first-hand accounts and insights on the past.
+### education
 
-Not only am I a scholar, but I am also a mentor and teacher. Over the centuries, I have had the honor of working with many young wizards, passing on my knowledge and experience to the next generation. I have a particular interest in the education of hobbits, whom I see as having great potential despite their small size and simple lifestyle. My teaching style is engaging and accessible, and I encourage my students to think critically and creatively.
+<div class="topbr">
+<p class="custom-subtitle">`r fontawesome::fa("graduation-cap", fill = "#98A08D", a11y = "sem")` **MSc in Financial Engineering, 2021**</p>  
+<p class="custom-subtitle2">WorldQuant University, New Orleans, LA, USA.</p>
 
-On this website, you will find a selection of my published works, including scholarly articles, monographs, and translations. You will also find news and updates on my current research projects, as well as information on upcoming events and conferences where I will be speaking. I invite you to explore my website and learn more about my life's work as one of Middle-earth's greatest scholars and thinkers.
-Please feel free to [contact me](mailto:mail.marvinschmitt@gmail.com) if you have any questions or would like to discuss potential projects.
-
-```{=html}
-<div  style="margin: 30px; text-align: center;">
-<a class="btn btn-primary" href="https://www.marvinschmitt.com/blog/website-tutorial-quarto/" role="button" target="_blank" style="padding: 15px 30px;">View the tutorial for this template (+ download link)</a>
+<p class="custom-subtitle">`r fontawesome::fa("graduation-cap", fill = "#98A08D", a11y = "sem")` **BS in Electrical & Electronics Engineering, 2000**</p>  
+<p class="custom-subtitle2">Abubakar Tafawa Balewa University, Bauchi, Nigeria.</p>
 </div>
-```
+
+
+
+### experience
+
+<div class="topbr">
+<p class="custom-subtitle">`r fontawesome::fa("chalkboard-teacher", fill = "#98A08D", a11y = "sem")` **Data Science Instructor, 2022-present**</p>   
+<p class="custom-subtitle2">WorldQuant University</p>  
+
+<p class="custom-subtitle">`r fontawesome::fa("chart-bar", fill = "#98A08D", a11y = "sem")` **Co-author and member of Masakhane, since 2020**</p>    
+<p class="custom-subtitle2">[Participatory Research for Low-resourced Machine Translation: A Case Study in African Languages](https://www.researchgate.net/publication/344505986_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages){target="_blank"}</p>
+</div>
+
+
+On this website, you will find a selection of my published works, blog posts. You will also find news and updates on my current research projects, as well as information on upcoming events and conferences where I will be speaking. I invite you to explore my website and learn more about my works.
+Please feel free to [contact me](mailto:Ricky.Macharm@SisengAI.com) if you have any questions or would like to discuss potential projects.
 

@@ -6,9 +6,9 @@ execute:
   freeze: true  # never re-render during project render
 engine: knitr 
 resources:
-  - "cv.pdf"
-cv:
-  pdf: "cv.pdf"
+  - "Ricky_Data Scientist_2023.pdf"
+resume:
+  pdf: "Ricky_Data Scientist_2023.pdf"
 ---
 
 ```{css echo=FALSE}
@@ -43,8 +43,3 @@ cv:
 
 
 
-```{=html}
-<div  style="margin: 30px; text-align: center;">
-<a class="btn btn-primary" href="https://www.marvinschmitt.com/blog/website-tutorial-quarto/" role="button" target="_blank" style="padding: 15px 30px;">View the tutorial for this template (+ download link)</a>
-</div>
-```
