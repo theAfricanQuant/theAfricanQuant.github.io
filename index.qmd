@@ -1,38 +1,47 @@
 ---
-about:
+title: ""
+image: img/Ricky_Macharm_LP.png
+toc: false
+about: 
   template: jolla
+  image-shape: round
+  image-width: 17em
   id: about-block
-  image: "img/my_image.jpg"
   links:
     - icon: linkedin
+      text: LinkedIn
       href: https://www.linkedin.com/in/theafricanquant/
-    - text: "{{< fa brands linkedin-in >}}"
+      target: _blank
     - icon: twitter
+      text: Twitter
       href: https://twitter.com/theAfricanQuant
-    - text: "{{< fa brands Twitter >}}"
+      target: _blank
     - icon: github
+      text: GitHub
       href: https://github.com/theAfricanQuant
-    - text: "{{< fa brands GitHub >}}"
+      target: _blank
     - icon: envelope
+      text: e-mail
       href: mailto:Ricky.Macharm@SisengAI.com
-    - text: "{{< Email >}}"
-    - icon: file-text
 ---
+
+
 
 ::: {#about-block}
 :::
 
-### Hello, World!    
+### Hello, World!  
+
 
 <p class="topbr"> Thanks for dropping by. My name is Ricky, and SisengAI is a pet project that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP. I'm currently a data science instructor at [WorldQuant University](https://www.wqu.edu/programs/applied-ds-lab){target="_blank"} located in New Orleans, LA. We also offer a free Master in Financial Engineering at the same [university](https://www.wqu.edu/programs/mscfe/){target="_blank"}. Follow the links I have shared to enroll in any of them if you are interested.</p>
 
 ### education
 
 <div class="topbr">
-<p class="custom-subtitle">`r fontawesome::fa("graduation-cap", fill = "#98A08D", a11y = "sem")` **MSc in Financial Engineering, 2021**</p>  
+<p class="custom-subtitle"> **MSc in Financial Engineering, 2021**</p>  
 <p class="custom-subtitle2">WorldQuant University, New Orleans, LA, USA.</p>
 
-<p class="custom-subtitle">`r fontawesome::fa("graduation-cap", fill = "#98A08D", a11y = "sem")` **BS in Electrical & Electronics Engineering, 2000**</p>  
+<p class="custom-subtitle"> **BS in Electrical & Electronics Engineering, 2000**</p>  
 <p class="custom-subtitle2">Abubakar Tafawa Balewa University, Bauchi, Nigeria.</p>
 </div>
 
@@ -41,14 +50,22 @@ about:
 ### experience
 
 <div class="topbr">
-<p class="custom-subtitle">`r fontawesome::fa("chalkboard-teacher", fill = "#98A08D", a11y = "sem")` **Data Science Instructor, 2022-present**</p>   
+<p class="custom-subtitle"> **Data Science Instructor, 2022-present**</p>   
 <p class="custom-subtitle2">WorldQuant University</p>  
 
-<p class="custom-subtitle">`r fontawesome::fa("chart-bar", fill = "#98A08D", a11y = "sem")` **Co-author and member of Masakhane, since 2020**</p>    
-<p class="custom-subtitle2">[Participatory Research for Low-resourced Machine Translation: A Case Study in African Languages](https://www.researchgate.net/publication/344505986_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages){target="_blank"}</p>
+<p class="custom-subtitle"> **Co-author and member of Masakhane, since 2020**</p>    
+<p class="custom-subtitle2">1. [Participatory Research for Low-resourced Machine Translation: A Case Study in African Languages](https://www.researchgate.net/publication/344505986_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages){target="_blank"}</p>
+
+<p class="custom-subtitle2">2. [AfriMTE and AfriCOMET: Empowering COMET to Embrace Under-resourced African Languages](https://arxiv.org/abs/2311.09828){target="_blank"}</p>
 </div>
 
 
 On this website, you will find a selection of my published works, blog posts. You will also find news and updates on my current research projects, as well as information on upcoming events and conferences where I will be speaking. I invite you to explore my website and learn more about my works.
 Please feel free to [contact me](mailto:Ricky.Macharm@SisengAI.com) if you have any questions or would like to discuss potential projects.
+
+```{=html}
+<div  style="margin: 30px; text-align: center;">
+<a class="btn btn-primary" href="https://github.com/theAfricanQuant/theAfricanQuant.github.io" role="button" target="_blank" style="padding: 15px 30px;">View the template for this on my github repo</a>
+</div>
+```
 

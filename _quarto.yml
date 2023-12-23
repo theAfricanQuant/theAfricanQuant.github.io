@@ -1,42 +1,43 @@
-# This file controls the settings for your Quarto template from www.marvinschmitt.com
+# This file controls the settings for your Quarto template 
 
 # website settings
 website:
   title: "SisengAI"                                # Your name
-  description: "SisengAI is a website that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP."   # A brief slogan (optional)
-  image: img/Ricky_Macharm.png
+ # description: "SisengAI is a website that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP."   # A brief slogan (optional)
+  image: img/Ricky_Macharm_LP.png
   
-  favicon: img/favicon_32x32.png
+  favicon: img/favicon.png
   
   # start of the navigation bar at the top of the website
   navbar:
     pinned: true
-    logo: /img/logo.png
+    logo: /img/SisengAI_logo.png
     
     # your sub-pages
     left:
       - text: "Projects"
         href: projects/index.qmd
-      - text: "Blog Posts"
+      - text: "Blog"
         href: blog/index.qmd
-      - text: "resume"
+      - text: "Résumé"
         href: resume/index.qmd
     
     # your social media handles
     right:
-      - icon: folder-symlink
+      
       - icon: linkedin
         href: https://www.linkedin.com/in/theafricanquant/
-      - text: "{{< fa brands linkedin-in >}}"
+      
       - icon: twitter
         href: https://twitter.com/theAfricanQuant
-      - text: "{{< fa brands Twitter >}}"
+     
       - icon: github
         href: https://github.com/theAfricanQuant
-      - text: "{{< fa brands GitHub >}}"
+
       - icon: envelope
-        href: mailto:Ricky.Macharm@SisengAI.com
-      - text: "{{< Email >}}"
+        aria-label: email
+        href: "mailto:Ricky.Macharm@SisengAI.com"
+      
   
   
 

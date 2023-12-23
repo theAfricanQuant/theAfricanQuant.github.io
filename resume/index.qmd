@@ -1,14 +1,14 @@
 ---
 layout: page
-title: Curriculum vitae
-excerpt: My current CV
+title: RÉSUMÉ
+excerpt: My current Résumé
 execute:
   freeze: true  # never re-render during project render
 engine: knitr 
 resources:
-  - "Ricky_Data Scientist_2023.pdf"
+  - "Ricky_Data_Scientist_2023.pdf"
 resume:
-  pdf: "Ricky_Data Scientist_2023.pdf"
+  pdf: "Ricky_Data_Scientist_2023.pdf"
 ---
 
 ```{css echo=FALSE}
@@ -32,12 +32,12 @@ resume:
 
 ```{=html}
 <p class="text-center">
-  <a class="btn btn-primary btn-lg cv-download" href="`r rmarkdown::metadata$cv$pdf`" target="_blank">
-    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download current CV
+  <a class="btn btn-primary btn-lg cv-download" href="`r rmarkdown::metadata$resume$pdf`" target="_blank">
+    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download my current Résumé
   </a>
 </p>
 <div class="embed-container">
-  <iframe src="`r rmarkdown::metadata$cv$pdf`#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
+  <iframe src="`r rmarkdown::metadata$resume$pdf`#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
 </div>
 ```
 
