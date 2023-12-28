@@ -1,11 +1,17 @@
 ---
-title: "Blog"
+title: "Blog Posts"
+subtitle: "still working on writing more often"
+listing:
+  # contents: blog
+  sort: "date desc"
+  type: grid
+  image-align: right
+  max-description-length: 175
+  date-format: medium
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
 ---
 
-_____________________________________________________________________________________________________________________________
-
-
-```{=html}
-<div  style="margin: 30px; text-align: center;">
-<a class="btn btn-primary" href="https://github.com/theAfricanQuant/theAfricanQuant.github.io" role="button" target="_blank" style="padding: 15px 30px;">View the template for this on my github repo</a>
-</div>
