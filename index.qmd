@@ -33,7 +33,16 @@ about:
 ### Hello, World!  
 
 
-<p class="topbr"> Thanks for dropping by. My name is Ricky, and SisengAI is a pet project that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP. I'm currently a data science instructor at [WorldQuant University](https://www.wqu.edu/programs/applied-ds-lab){target="_blank"} located in New Orleans, LA. We also offer a free Master in Financial Engineering at the same [university](https://www.wqu.edu/programs/mscfe/){target="_blank"}. Follow the links I have shared to enroll in any of them if you are interested.</p>
+<p class="topbr">
+    Hey there! I'm Ricky, the brain behind SisengAI. It's more than just a project – it's my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python & pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia. 
+
+    When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out <a href="https://www.youtube.com/@theafricanquant501/featured" target="_blank">here</a>!). These days, you'll find me at WorldQuant University in New Orleans, LA, where I teach data science. It's a cool place, and you can learn more about it <a href="https://www.wqu.edu/programs/applied-ds-lab/" target="_blank">here</a>.
+
+    Not just a man behind the screen, I've also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you'll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects. Plus, you'll get the scoop on all the events and conferences where I'll be making an appearance. Dive into my world and explore to your heart's content!
+
+    Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don't hesitate to <a href="mailto:Ricky.Macharm@SisengAI.com">contact me</a>. I'm all ears and ready to chat!
+</p>
+
 
 ### education
 
@@ -60,8 +69,6 @@ about:
 </div>
 
 
-On this website, you will find a selection of my published works, blog posts. You will also find news and updates on my current research projects, as well as information on upcoming events and conferences where I will be speaking. I invite you to explore my website and learn more about my works.
-Please feel free to [contact me](mailto:Ricky.Macharm@SisengAI.com) if you have any questions or would like to discuss potential projects.
 
 ```{=html}
 <div  style="margin: 30px; text-align: center;">
