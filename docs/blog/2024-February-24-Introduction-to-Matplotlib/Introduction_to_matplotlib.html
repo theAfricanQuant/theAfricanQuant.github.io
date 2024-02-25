@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Random Scatter Plot"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-4-output-1.png" class="" width="571" height="431"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p><strong>Matplotlib’s Object-Oriented Approach</strong></p>
@@ -286,7 +286,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Random Scatter Plot"</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-5-output-1.png" class="" width="571" height="431"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Let us take a look at what we just did above.</p>
@@ -319,7 +319,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Consistency with Python’s Style</strong>: Using objects and methods is more aligned with general Python programming practices.</li>
 </ul>
 <p>Overall, this code snippet is an example of creating a scatter plot using Matplotlib’s OO interface, which is recommended for its clarity, flexibility, and alignment with Python’s object-oriented programming style.</p>
-<p><strong>Matplotlib Mastery: A Concise Guide for Beginners</strong></p>
+</section>
+<section id="matplotlib-mastery-a-concise-guide-for-beginners" class="level3">
+<h3 class="anchored" data-anchor-id="matplotlib-mastery-a-concise-guide-for-beginners"><strong>Matplotlib Mastery: A Concise Guide for Beginners</strong></h3>
 <p><strong>Understanding the Essentials</strong></p>
 <ol type="1">
 <li><p><strong>Key Concepts</strong>: Grasp the basic Matplotlib terminology, especially ‘Figure’ and ‘Axes’.</p>
@@ -333,11 +335,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Customize with Matplotlib</strong>: Use Matplotlib to further tailor your Pandas or Seaborn visualizations.</p></li>
 </ol>
 <p><strong>Why This Matters</strong>: Understanding these fundamentals is crucial, as Matplotlib forms the foundation for many advanced Python packages like Seaborn and ggplot. A solid grasp of Matplotlib makes learning these packages easier.</p>
-<p>We are going to get some datasets from a github repo, concatenate them and store them as a FEATHER file.</p>
+<section id="using-feather-over-csv" class="level4">
+<h4 class="anchored" data-anchor-id="using-feather-over-csv"><strong>Using FEATHER over CSV</strong></h4>
+<p>We are going to get some datasets from a github repo, concatenate them and store them as a FEATHER file. Choosing Feather format over the more widely used CSV format can be beneficial for several reasons, particularly in the context of data analysis and scientific computing:</p>
+<ol type="1">
+<li><p><strong>Performance</strong>: Feather is designed for efficiency. It reads and writes data much faster than CSV. This is especially noticeable with large datasets.</p></li>
+<li><p><strong>Storage Efficiency</strong>: Feather often uses less disk space than CSV because it uses binary storage format. This can be significant when dealing with large datasets.</p></li>
+<li><p><strong>Data Integrity</strong>: Unlike CSV, which can sometimes lead to loss of information about data types (e.g., integers, floats, dates) when saving and loading, Feather preserves data types. This means that when you load a dataset, it will have the same types as when it was saved.</p></li>
+<li><p><strong>Compatibility with Data Analysis Tools</strong>: Feather is designed to be used with data analysis tools like Pandas in Python and data.table or dplyr in R. This makes it a good choice for workflows that involve both Python and R.</p></li>
+<li><p><strong>Handling of Large Data</strong>: Feather is more suitable for large datasets that can be problematic to handle in CSV due to size and performance issues.</p></li>
+<li><p><strong>No Need for Parsing</strong>: With CSV files, there’s often a need to parse the file and possibly convert strings to numerical values or dates. Feather files, however, are ready to be used as-is, which simplifies tof your project.</p></li>
+</ol>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="6">
+<p>A helper function has been created called <code>download_and_combine_csv</code> and stored in a <code>download_and_combine_csv.py</code> module to help with the download of the files from a github repo linked in the cell below. We won’t be bothered with the details of the helper function however.</p>
+<div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> download_and_combine_csv <span class="im">import</span> download_and_combine_csv</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Base URL for the CSV files</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>base_url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/KeithGalli/Pandas-Data-Science-Tasks/master/SalesAnalysis/Sales_Data/"</span></span>
@@ -365,14 +378,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>All data saved in Feather file.</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>feather_file <span class="op">=</span> <span class="st">'combined_sales_data.feather'</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data from the Feather file</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>sales_data <span class="op">=</span> pd.read_feather(feather_file)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sales_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -495,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sales_data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
@@ -537,8 +550,8 @@ memory usage: 10.0+ MB</code></pre>
 <li><code>.sort_index()</code>: Sorts the DataFrame by the ‘Order_Date’ index in ascending order.</li>
 </ul></li>
 </ol>
-<p>By calling <code>tweaked_sales_data = tweak_data(sales_data)</code>, the function is applied to a DataFrame <code>sales_data</code>, performing all these cleaning and formatting steps, and the result is stored in <code>tweaked_sales_data</code>. This processed DataFrame is now more suitable for analysis, with cleaner column names, proper data types, and a sorted datetime index. and manipulation.</p>
-<div class="cell" data-execution_count="9">
+<p>By calling <code>tweaked_sales_data = tweak_data(sales_data)</code>, the function is applied to a DataFrame <code>sales_data</code>, performing all these cleaning and formatting steps, and the result is stored in <code>tweaked_sales_data</code>. This processed DataFrame is now more suitable for analysis, with cleaner column names, proper data types, and a sorted datetime index.</p>
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data(data):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>            .rename(columns<span class="op">=</span><span class="kw">lambda</span> x: x.strip()</span>
@@ -553,7 +566,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>tweaked_sales_data <span class="op">=</span> tweak_data(sales_data)</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>tweaked_sales_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
@@ -673,7 +686,7 @@ memory usage: 10.0+ MB</code></pre>
 </div>
 </div>
 <p>Eyeballing the output, we can discern that the data pertains to sales transactions for the year 2019. This quick visual inspection helps us grasp the overarching theme of the dataset, setting the stage for a more detailed analysis and summarization, particularly focusing on the highest-performing products.</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep4plot(data):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>     .groupby(<span class="st">'Product'</span>)</span>
@@ -686,7 +699,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>data4plot <span class="op">=</span> prep4plot(tweaked_sales_data)</span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>data4plot.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -739,10 +752,10 @@ memory usage: 10.0+ MB</code></pre>
 <p>This code snippet performs several data manipulation and aggregation tasks on the <code>tweaked_sales_data</code> DataFrame:</p>
 <ol type="1">
 <li><p><strong>Grouping by ‘Product’</strong>: <code>.groupby('Product')</code> groups the DataFrame by unique values in the ‘Product’ column. Each group corresponds to a different product.</p></li>
-<li><p><strong>Selecting Columns for Aggregation</strong>: <code>[['Price_Each', 'Quantity_Ordered']]</code> selects two columns for subsequent operations - ‘Price_Each’ and ‘Quantity_Ordered’.</p></li>
+<li><p><strong>Selecting Columns for Aggregation</strong>: <code>[['Price_Each', 'Quantity_Ordered']]</code> selects two columns for subsequent operations - <code>Price_Each</code> and <code>Quantity_Ordered</code>.</p></li>
 <li><p><strong>Aggregating Data</strong>:</p>
 <ul>
-<li><code>.agg({'Price_Each' : 'sum', 'Quantity_Ordered':'count'})</code>: This aggregates the data within each product group. It calculates the sum of ‘Price_Each’ and the count of ‘Quantity_Ordered’ for each product. Essentially, it sums up total sales and counts the number of orders per product.</li>
+<li><code>.agg({'Price_Each' : 'sum', 'Quantity_Ordered':'count'})</code>: This aggregates the data within each product group. It calculates the sum of <code>Price_Each</code> and the count of <code>Quantity_Ordered</code> for each product. Essentially, it sums up total sales and counts the number of orders per product.</li>
 </ul></li>
 <li><p><strong>Sorting Results</strong>:</p>
 <ul>
@@ -759,19 +772,19 @@ memory usage: 10.0+ MB</code></pre>
 </ol>
 <p>The final result of this snippet is a neatly organized DataFrame that provides a summarized view of sales data, showing the total sales revenue and the number of purchases for each product, sorted by the total sales revenue in descending order.</p>
 <p>The first step is to plot the data using the standard pandas plotting function. We will choos a nice and simple plot style too.</p>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(plt.style.available)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['Solarize_Light2', '_classic_test_patch', '_mpl-gallery', '_mpl-gallery-nogrid', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn-v0_8', 'seaborn-v0_8-bright', 'seaborn-v0_8-colorblind', 'seaborn-v0_8-dark', 'seaborn-v0_8-dark-palette', 'seaborn-v0_8-darkgrid', 'seaborn-v0_8-deep', 'seaborn-v0_8-muted', 'seaborn-v0_8-notebook', 'seaborn-v0_8-paper', 'seaborn-v0_8-pastel', 'seaborn-v0_8-poster', 'seaborn-v0_8-talk', 'seaborn-v0_8-ticks', 'seaborn-v0_8-white', 'seaborn-v0_8-whitegrid', 'tableau-colorblind10']</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="13">
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>_<span class="op">=</span>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-14-output-1.png" class="" width="773" height="428"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>The code snippet <code>_=data4plot.plot(kind='barh', y="Sales", x="Product")</code> is a Pandas plotting command with several components:</p>
@@ -781,23 +794,23 @@ memory usage: 10.0+ MB</code></pre>
 <li><p><strong><code>kind='barh'</code></strong>: This parameter specifies the kind of plot to generate. In this case, <code>'barh'</code> stands for horizontal bar plot. This plot type is useful for comparing quantities across different categories, which are displayed as bars running horizontally.</p></li>
 <li><p><strong><code>y="Sales"</code></strong>: This parameter sets the column in the DataFrame that will be used for the plot’s vertical axis. In this plot, it means that the lengths of the horizontal bars will represent the values in the ‘Sales’ column.</p></li>
 <li><p><strong><code>x="Product"</code></strong>: This sets the column to be used for the horizontal axis labels. Here, the labels on the y-axis (since it’s a horizontal bar plot) will be taken from the ‘Product’ column. Each product will have a corresponding bar.</p></li>
-<li><p><strong><code>_=</code></strong>: This is a common Python idiom for assigning the output of a function to a dummy variable (<code>_</code>) when the output is not needed. In this case, the plot function returns a matplotlib object. If you’re just displaying the plot and don’t need to further manipulate or access this object, it’s common to assign it to <code>_</code> to indicate that it can be ignored.</p></li>
+<li><p><strong><code>_=</code></strong>: This is a common Python idiom for assigning the output of a function to a dummy variable (<code>_</code>) when the output is not needed. In this case, the plot function returns a matplotlib object. If you’re just displaying the plot and don’t need to further manipulate or access this object, it’s common to assign it to <code>_</code> to indicate that it can be ignored. We use this basically to suppress some outputs that tend to come with matplotlib plots. The semi-colon <code>;</code> also achieves the same as we can see later in our code.</p></li>
 </ol>
 <p>Pandas’ built-in plotting capabilities are used here mainly due to their simplicity and efficiency in creating preliminary visualizations. Given that Pandas is commonly used for preliminary data handling and analysis, it’s practical to leverage its straightforward plotting tools for initial graphical representations. This approach allows for a swift and effortless transition from data manipulation to visualization, making it an ideal starting point for most users.</p>
 <p><strong>Enhancing our Visualization</strong></p>
 <p>Once we have grasped the basics of creating a plot using Pandas, the next logical step is to enhance and personalize it. Simple enhancements, such as adding titles and labels, are straightforward with Pandas’ plotting features. However, as our visualization needs evolve, we may find ourselves seeking more advanced customization options. This is why we have to familiarize ourselves with more extensive customization techniques early on. Doing so will equip us with the skills to fully tailor our visualizations beyond the basic offerings of Pandas’ plotting functions.</p>
-<div class="cell" data-execution_count="14">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>_<span class="op">=</span>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-15-output-1.png" class="" width="773" height="428"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Upon creating the initial plot with Pandas, we enhance it by integrating <code>plt.subplots()</code>, a Matplotlib function, to gain more customization control. This approach might produce a plot visually identical to the original Pandas plot, but the significant difference lies in the newfound access to Matplotlib’s <code>ax</code> and <code>fig</code> objects. This access is crucial for detailed customization and control over the plot’s aspects.</p>
 <p>The integration of <code>plt.subplots()</code> allows us to tap into Matplotlib’s extensive capabilities while retaining the simplicity and speed of Pandas’ plotting. This hybrid method is not only efficient but also versatile, making it easier to apply and adapt various customization techniques to suit specific requirements.</p>
 <p>For instance, consider modifying the x-axis limits or altering axis labels. With the <code>ax</code> variable now encapsulating the plot’s axes, we unlock a greater degree of control over these elements. This method of combining Pandas’ ease of use with Matplotlib’s detailed customization offers the best of both worlds in data visualization.</p>
-<div class="cell" data-execution_count="15">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
@@ -805,36 +818,36 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Product'</span>)</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'2019 Sales'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-16-output-1.png" class="" width="773" height="455"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>Or we do it another way:</p>
-<div class="cell" data-execution_count="16">
+<div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">'2019 Sales'</span>, xlabel<span class="op">=</span><span class="st">'Total Sales'</span>, ylabel<span class="op">=</span><span class="st">'Product'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-17-output-1.png" class="" width="773" height="455"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>This method showcases the flexibility of the <code>plt.subplots()</code> function from Matplotlib in fine-tuning our visualization. Specifically, it allows for the customization of the plot’s size by setting the <code>figsize</code> parameter, which is defined in inches. This level of control over the dimensions of our plot ensures that it fits the intended context or presentation space perfectly. Additionally, the functionality to modify the plot extends to aspects like the legend. With the command <code>ax.legend().set_visible(False)</code>, we can effortlessly hide the legend if it’s unnecessary or distracting, thus maintaining a focus on the most crucial elements of our visualization. This approach underscores the advantage of blending simplicity with the powerful customization capabilities of Matplotlib.</p>
-<div class="cell" data-execution_count="17">
+<div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">6</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">'2019 Sales'</span>, xlabel<span class="op">=</span><span class="st">'Total Sales'</span>)</span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-18-output-1.png" class="" width="624" height="529"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>To enhance the visual appeal of our plot, one key area to focus on is the presentation of the “Total Sales” figures. Matplotlib offers a powerful tool in the form of <code>FuncFormatter</code>, which allows for the application of custom functions to axis values, effectively enabling tailored formatting. This feature is particularly useful for rendering numerical data in a more readable and context-appropriate format.</p>
 <p>Consider, for example, a function designed to format currency, especially useful for figures in the higher ranges, such as several hundred thousand dollars. By applying such a function through <code>FuncFormatter</code>, “Total Sales” values can be displayed in a format that is both aesthetically pleasing and easily comprehensible, ensuring that your plot communicates its data as effectively as possible. This approach illustrates the advantage of using Matplotlib’s advanced features to refine and customize the details of your data visualization.</p>
-<div class="cell" data-execution_count="18">
+<div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.ticker <span class="im">import</span> FuncFormatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="19">
+<div class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_currency(value, position):</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Format the currency based on its magnitude.</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -843,13 +856,15 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">    position (int): The tick position (not used in this function).</span></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">    str: Formatted currency string.</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">    str: Formatted currency string as millions if value is &gt;= 1,000,000.</span></span>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> value <span class="op">&gt;=</span> <span class="dv">1000000</span>:</span>
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f'$</span><span class="sc">{</span>value<span class="op">*</span><span class="fl">1e-6</span><span class="sc">:1.1f}</span><span class="ss">M'</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f'$</span><span class="sc">{</span>value<span class="op">*</span><span class="fl">1e-3</span><span class="sc">:1.0f}</span><span class="ss">K'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># No formatting provided for values under 1,000,000</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="20">
+<div class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
@@ -858,13 +873,13 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(formatter)</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-21-output-1.png" class="" width="773" height="455"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <p>This refined approach really illustrates the versatility and customizability at our disposal. The next feature to explore in customizing our plot is adding annotations, which can significantly enhance the information communicated by our visualization.</p>
 <p>To illustrate this, consider using <code>ax.axvline()</code> to draw a vertical line on the plot. This can be particularly effective for highlighting average values or specific thresholds. Additionally, incorporating custom text annotations on the plot can be achieved with <code>ax.text()</code>. This allows for labeling specific points of interest, such as highlighting the introduction of new customers in our example.</p>
 <p>The full code, complete with annotations and comments, demonstrates how these elements come together to create a more informative and visually appealing plot. This use of annotations and vertical lines not only enhances the visual clarity of the plot but also adds layers of context and meaning, making the data more accessible and understandable.</p>
-<div class="cell" data-execution_count="21">
+<div class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the figure and the axes</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -890,10 +905,10 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide the legend</span></span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-22-output-1.png" class="" width="773" height="455"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="22">
+<div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the figure and the axes</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -921,7 +936,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide the legend</span></span>
 <span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-23-output-1.png" class="" width="773" height="455"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <ol type="1">
@@ -956,11 +971,11 @@ memory usage: 10.0+ MB</code></pre>
 </ul>
 <p>Up to this point, our modifications have been focused on individual plots. However, our capabilities extend to incorporating multiple plots within a single figure, as well as various options to save the entire figure. Let’s explore how we can achieve this.</p>
 <p>To place two plots on a single figure, we’ll start by creating the figure and its axes using <code>plt.subplots()</code>:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, (ax0, ax1) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this instance, we’re specifying the layout of our figure with <code>nrows</code> and <code>ncols</code>, which determine the number of rows and columns of subplots, respectively. We’ve chosen to create one row and two columns, thus positioning our two plots side by side. For clarity, especially for those new to Matplotlib, explicitly using these named parameters can make the code more intuitive and easier to understand when revisited.</p>
-<p>By setting <code>sharey=True</code>, we ensure that both plots (ax0 and ax1) share the same y-axis labels, which is particularly useful for comparing plots with the same scale or data range.</p>
-<p>Once we’ve established our figure structure and shared axes, we can proceed to add our plots. Plotting on <code>ax0</code> and <code>ax1</code> allows us to place different visualizations side by side within the same figure, enhancing our ability to compare and contrast the data presented. This approach not only broadens our visualization toolkit but also encourages a more comprehensive analysis through side-by-side comparisons.</p>
-<div class="cell" data-execution_count="23">
+<p>By setting <code>sharey=True</code>, we ensure that both plots (ax1 and ax2) share the same y-axis labels, which is particularly useful for comparing plots with the same scale or data range.</p>
+<p>Once we’ve established our figure structure and shared axes, we can proceed to add our plots. Plotting on <code>ax1</code> and <code>ax2</code> allows us to place different visualizations side by side within the same figure, enhancing our ability to compare and contrast the data presented. This approach not only broadens our visualization toolkit but also encourages a more comprehensive analysis through side-by-side comparisons.</p>
+<div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the figure and the axes</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>,ncols<span class="op">=</span><span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -972,13 +987,13 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the average as a vertical line</span></span>
 <span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> data4plot[<span class="st">'Sales'</span>].mean()</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>ax1.axvline(x<span class="op">=</span>avg, color<span class="op">=</span><span class="st">'burlywood'</span>, label<span class="op">=</span><span class="st">'Average'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>ax1.axvline(x<span class="op">=</span>avg, color<span class="op">=</span><span class="st">'purple'</span>, label<span class="op">=</span><span class="st">'Average'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat for the unit plot</span></span>
 <span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Purchases"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax2)</span>
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> data4plot[<span class="st">'Purchases'</span>].mean()</span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>ax2.<span class="bu">set</span>(title<span class="op">=</span><span class="st">'Units'</span>, xlabel<span class="op">=</span><span class="st">'Total Units'</span>, ylabel<span class="op">=</span><span class="st">''</span>)</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>ax2.axvline(x<span class="op">=</span>avg, color<span class="op">=</span><span class="st">'burlywood'</span>, label<span class="op">=</span><span class="st">'Average'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>ax2.axvline(x<span class="op">=</span>avg, color<span class="op">=</span><span class="st">'purple'</span>, label<span class="op">=</span><span class="st">'Average'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Title the figure</span></span>
 <span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'2019 Sales Analysis'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)<span class="op">;</span></span>
@@ -987,9 +1002,10 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>ax1.legend().set_visible(<span class="va">False</span>)</span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>ax2.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-24-output-1.png" class="" width="773" height="396"></p>
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="conclusion" class="level2">
