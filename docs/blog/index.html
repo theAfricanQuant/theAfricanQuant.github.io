@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,12 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,6 +61,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -94,15 +100,42 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../img/SisengAI_logo.png" alt="" class="navbar-logo">
     </a>
@@ -117,43 +150,43 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../projects/index.html" rel="" target="">
- <span class="menu-text">Projects</span></a>
+    <a class="nav-link" href="../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blog/index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link active" href="../blog/index.html" aria-current="page"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../resume/index.html" rel="" target="">
- <span class="menu-text">Résumé</span></a>
+    <a class="nav-link" href="../resume/index.html"> 
+<span class="menu-text">Résumé</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/" rel="" target=""><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/theAfricanQuant" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/theAfricanQuant" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com" rel="" target=""><i class="bi bi-envelope" role="img" aria-label="email">
+    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com"> <i class="bi bi-envelope" role="img" aria-label="email">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -167,7 +200,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -179,7 +212,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Data Wrangling">Data Wrangling <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Karachi Property Prices">Karachi Property Prices <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Matlab">Matlab <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Matplotlib">Matplotlib <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Method Chaining">Method Chaining <span class="quarto-category-count">(2)</span></div><div class="category" data-category="OOP">OOP <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UCI Machine Learning Repository">UCI Machine Learning Repository <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bike rentals">bike rentals <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pandas">pandas <span class="quarto-category-count">(3)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Data Wrangling">Data Wrangling <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Database">Database <span class="quarto-category-count">(1)</span></div><div class="category" data-category="DuckDB">DuckDB <span class="quarto-category-count">(1)</span></div><div class="category" data-category="In-Process">In-Process <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Karachi Property Prices">Karachi Property Prices <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Matlab">Matlab <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Matplotlib">Matplotlib <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Method Chaining">Method Chaining <span class="quarto-category-count">(2)</span></div><div class="category" data-category="OOP">OOP <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Queries">Queries <span class="quarto-category-count">(1)</span></div><div class="category" data-category="SQL">SQL <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UCI Machine Learning Repository">UCI Machine Learning Repository <span class="quarto-category-count">(1)</span></div><div class="category" data-category="User-Defined Functions">User-Defined Functions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bike rentals">bike rentals <span class="quarto-category-count">(1)</span></div><div class="category" data-category="pandas">pandas <span class="quarto-category-count">(3)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -190,9 +223,58 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Matplotlib,Matlab,pandas,OOP" data-listing-date-sort="1708729200000" data-listing-file-modified-sort="1708902036335" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
+<div class="g-col-1" data-index="0" data-categories="DuckDB,Database,SQL,User-Defined Functions,Queries,In-Process,Python" data-listing-date-sort="1712095200000" data-listing-file-modified-sort="1712174689347" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1640">
+<a href="../blog/2024-April-03-User-Defined-Functions-In-DuckDB/Generate dummy data with user defined functions (UDFs).html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="../blog/2024-April-03-User-Defined-Functions-In-DuckDB/duckdb.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Introduction to DuckDB: Working with User Defined Funtions (UDF)
+</h5>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('DuckDB'); return false;">
+DuckDB
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Database'); return false;">
+Database
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('SQL'); return false;">
+SQL
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('User-Defined Functions'); return false;">
+User-Defined Functions
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Queries'); return false;">
+Queries
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('In-Process'); return false;">
+In-Process
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Python'); return false;">
+Python
+</div>
+</div>
+<div class="card-text listing-description">
+DuckDB, a relatively new entrant in the world of databases, is akin to finding a swiss army knife when you’re used to dealing with specialized tools. It’s an in-process SQL…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Ricky Macharm
+</div>
+<div class="listing-date">
+Apr 3, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Matplotlib,Matlab,pandas,OOP" data-listing-date-sort="1708729200000" data-listing-file-modified-sort="1708902036335" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3511">
 <a href="../blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -217,7 +299,7 @@ OOP
 </div>
 </div>
 <div class="card-text listing-description">
-Matplotlib, often a first encounter for Python enthusiasts diving into data visualization, has evolved into an indispensable tool in the Python data science…
+Matplotlib, often a first encounter for Python enthusiasts diving into data visualization, has evolved into an indispensable tool in the Python data science stack.…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -231,7 +313,7 @@ Feb 24, 2024
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="Method Chaining,Data Wrangling,pandas,Karachi Property Prices" data-listing-date-sort="1704322800000" data-listing-file-modified-sort="1708897926475" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="g-col-1" data-index="2" data-categories="Method Chaining,Data Wrangling,pandas,Karachi Property Prices" data-listing-date-sort="1704322800000" data-listing-file-modified-sort="1708897926475" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="732">
 <a href="../blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -256,7 +338,7 @@ Karachi Property Prices
 </div>
 </div>
 <div class="card-text listing-description">
-This dataset encompasses a collection of 8,414 housing advertisements sourced from Zameen.com, specifically pertaining to…
+This dataset encompasses a collection of 8,414 housing advertisements sourced from Zameen.com, specifically pertaining to properties located in Karachi. The dataset is…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -270,7 +352,7 @@ Jan 4, 2024
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="Method Chaining,Data Wrangling,pandas,UCI Machine Learning Repository,bike rentals" data-listing-date-sort="1703631600000" data-listing-file-modified-sort="1708897926364" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
+<div class="g-col-1" data-index="3" data-categories="Method Chaining,Data Wrangling,pandas,UCI Machine Learning Repository,bike rentals" data-listing-date-sort="1703631600000" data-listing-file-modified-sort="1708897926364" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1797">
 <a href="../blog/2023-December-27-Data-Wrangling/Data_Wrangling.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -396,10 +478,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -409,8 +490,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -423,6 +513,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -466,6 +675,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -491,6 +701,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -553,7 +789,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><span class="faux-block">© Copyright © 2023, SisengAI</span></div>   
+    <div class="nav-footer-left">
+<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
@@ -562,6 +800,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

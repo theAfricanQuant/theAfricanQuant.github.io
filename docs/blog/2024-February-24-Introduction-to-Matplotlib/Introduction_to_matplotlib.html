@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
@@ -81,7 +81,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,13 +95,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
@@ -105,10 +111,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../../img/SisengAI_logo.png" alt="" class="navbar-logo">
     </a>
@@ -123,43 +129,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../projects/index.html" rel="" target="">
- <span class="menu-text">Projects</span></a>
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog/index.html" rel="" target="">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resume/index.html" rel="" target="">
- <span class="menu-text">Résumé</span></a>
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Résumé</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/" rel="" target=""><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/theAfricanQuant" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/theAfricanQuant" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com" rel="" target=""><i class="bi bi-envelope" role="img" aria-label="email">
+    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com"> <i class="bi bi-envelope" role="img" aria-label="email">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -204,6 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -259,34 +266,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>plt.show()</code>: Displays the plot. In a Jupyter notebook, this line is often optional as plots are displayed automatically.</li>
 </ul></li>
 </ol>
-<div class="cell" data-execution_count="1">
+<div id="2fb4574d-6094-48df-8355-be64ab8d43dc" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="2">
+<div id="f1597595-7b72-49bf-b6d3-19d3f99b6ecd" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng()  <span class="co"># Using numpy's random number generator</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> rng.random(<span class="dv">100</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> rng.random(<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>MATLAB-style Plotting in Matplotlib</strong></p>
 <p>Using the MATLAB-style interface, you might create a simple plot like this:</p>
-<div class="cell" data-execution_count="3">
+<div id="45598eef-98f0-4ff9-b1c4-9b9ed9e04444" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y)  <span class="co"># Adding a scatter plot</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Random Scatter Plot"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Matplotlib’s Object-Oriented Approach</strong></p>
 <p>Using the OO approach, the same plot would be:</p>
-<div class="cell" data-execution_count="4">
+<div id="de6b5dd4-86ed-4f7c-936c-f3b0bb16aee7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()  <span class="co"># Creating figure and axes objects</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(x, y)  <span class="co"># Adding scatter plot to the axes</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Random Scatter Plot"</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Let us take a look at what we just did above.</p>
@@ -346,11 +361,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Handling of Large Data</strong>: Feather is more suitable for large datasets that can be problematic to handle in CSV due to size and performance issues.</p></li>
 <li><p><strong>No Need for Parsing</strong>: With CSV files, there’s often a need to parse the file and possibly convert strings to numerical values or dates. Feather files, however, are ready to be used as-is, which simplifies tof your project.</p></li>
 </ol>
-<div class="cell" data-execution_count="5">
+<div id="9f3f58d7-63a2-4e59-a902-30f45036787b" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A helper function has been created called <code>download_and_combine_csv</code> and stored in a <code>download_and_combine_csv.py</code> module to help with the download of the files from a github repo linked in the cell below. We won’t be bothered with the details of the helper function however.</p>
-<div class="cell" data-execution_count="20">
+<div id="ebf3e71a-6ab6-4f44-989e-6743cc55924c" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> download_and_combine_csv <span class="im">import</span> download_and_combine_csv</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Base URL for the CSV files</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>base_url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/KeithGalli/Pandas-Data-Science-Tasks/master/SalesAnalysis/Sales_Data/"</span></span>
@@ -378,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>All data saved in Feather file.</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="6">
+<div id="5c1bcfc5-9912-45b5-898a-30ab481dabb2" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>feather_file <span class="op">=</span> <span class="st">'combined_sales_data.feather'</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data from the Feather file</span></span>
@@ -386,6 +401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sales_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
+<div>
 <div>
 
 
@@ -508,7 +524,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
+</div>
+<div id="72c484f9-7694-4c17-baab-51036ac8f93f" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sales_data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
@@ -551,7 +568,7 @@ memory usage: 10.0+ MB</code></pre>
 </ul></li>
 </ol>
 <p>By calling <code>tweaked_sales_data = tweak_data(sales_data)</code>, the function is applied to a DataFrame <code>sales_data</code>, performing all these cleaning and formatting steps, and the result is stored in <code>tweaked_sales_data</code>. This processed DataFrame is now more suitable for analysis, with cleaner column names, proper data types, and a sorted datetime index.</p>
-<div class="cell" data-execution_count="7">
+<div id="694dd351-84b1-4f01-8cd4-f8fcf26be9d1" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data(data):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>            .rename(columns<span class="op">=</span><span class="kw">lambda</span> x: x.strip()</span>
@@ -567,6 +584,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>tweaked_sales_data <span class="op">=</span> tweak_data(sales_data)</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>tweaked_sales_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
+<div>
 <div>
 
 
@@ -685,8 +703,9 @@ memory usage: 10.0+ MB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>Eyeballing the output, we can discern that the data pertains to sales transactions for the year 2019. This quick visual inspection helps us grasp the overarching theme of the dataset, setting the stage for a more detailed analysis and summarization, particularly focusing on the highest-performing products.</p>
-<div class="cell" data-execution_count="8">
+<div id="af8bd498-0e07-4c80-9425-b9f11cdd052d" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep4plot(data):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>     .groupby(<span class="st">'Product'</span>)</span>
@@ -700,6 +719,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>data4plot <span class="op">=</span> prep4plot(tweaked_sales_data)</span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>data4plot.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
+<div>
 <div>
 
 
@@ -749,6 +769,7 @@ memory usage: 10.0+ MB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>This code snippet performs several data manipulation and aggregation tasks on the <code>tweaked_sales_data</code> DataFrame:</p>
 <ol type="1">
 <li><p><strong>Grouping by ‘Product’</strong>: <code>.groupby('Product')</code> groups the DataFrame by unique values in the ‘Product’ column. Each group corresponds to a different product.</p></li>
@@ -772,19 +793,23 @@ memory usage: 10.0+ MB</code></pre>
 </ol>
 <p>The final result of this snippet is a neatly organized DataFrame that provides a summarized view of sales data, showing the total sales revenue and the number of purchases for each product, sorted by the total sales revenue in descending order.</p>
 <p>The first step is to plot the data using the standard pandas plotting function. We will choose a nice and simple plot style too.</p>
-<div class="cell" data-execution_count="9">
+<div id="98e7efe7-344a-43c6-b4ea-3ebb47ff7a93" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(plt.style.available)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>['Solarize_Light2', '_classic_test_patch', '_mpl-gallery', '_mpl-gallery-nogrid', 'bmh', 'classic', 'dark_background', 'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn-v0_8', 'seaborn-v0_8-bright', 'seaborn-v0_8-colorblind', 'seaborn-v0_8-dark', 'seaborn-v0_8-dark-palette', 'seaborn-v0_8-darkgrid', 'seaborn-v0_8-deep', 'seaborn-v0_8-muted', 'seaborn-v0_8-notebook', 'seaborn-v0_8-paper', 'seaborn-v0_8-pastel', 'seaborn-v0_8-poster', 'seaborn-v0_8-talk', 'seaborn-v0_8-ticks', 'seaborn-v0_8-white', 'seaborn-v0_8-whitegrid', 'tableau-colorblind10']</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="10">
+<div id="b2716f06-f4ee-40d1-a2e8-833dc8bfd393" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="11">
+<div id="362649b3-0d6c-4375-aaa5-0b5389d88a0a" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>_<span class="op">=</span>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The code snippet <code>_=data4plot.plot(kind='barh', y="Sales", x="Product")</code> is a Pandas plotting command with several components:</p>
@@ -799,18 +824,22 @@ memory usage: 10.0+ MB</code></pre>
 <p>Pandas’ built-in plotting capabilities are used here mainly due to their simplicity and efficiency in creating preliminary visualizations. Given that Pandas is commonly used for preliminary data handling and analysis, it’s practical to leverage its straightforward plotting tools for initial graphical representations. This approach allows for a swift and effortless transition from data manipulation to visualization, making it an ideal starting point for most users.</p>
 <p><strong>Enhancing our Visualization</strong></p>
 <p>Once we have grasped the basics of creating a plot using Pandas, the next logical step is to enhance and personalize it. Simple enhancements, such as adding titles and labels, are straightforward with Pandas’ plotting features. However, as our visualization needs evolve, we may find ourselves seeking more advanced customization options. This is why we have to familiarize ourselves with more extensive customization techniques early on. Doing so will equip us with the skills to fully tailor our visualizations beyond the basic offerings of Pandas’ plotting functions.</p>
-<div class="cell" data-execution_count="12">
+<div id="5775d226-4454-4e08-9338-ea951fd7b876" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>_<span class="op">=</span>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Upon creating the initial plot with Pandas, we enhance it by integrating <code>plt.subplots()</code>, a Matplotlib function, to gain more customization control. This approach might produce a plot visually identical to the original Pandas plot, but the significant difference lies in the newfound access to Matplotlib’s <code>ax</code> and <code>fig</code> objects. This access is crucial for detailed customization and control over the plot’s aspects.</p>
 <p>The integration of <code>plt.subplots()</code> allows us to tap into Matplotlib’s extensive capabilities while retaining the simplicity and speed of Pandas’ plotting. This hybrid method is not only efficient but also versatile, making it easier to apply and adapt various customization techniques to suit specific requirements.</p>
 <p>For instance, consider modifying the x-axis limits or altering axis labels. With the <code>ax</code> variable now encapsulating the plot’s axes, we unlock a greater degree of control over these elements. This method of combining Pandas’ ease of use with Matplotlib’s detailed customization offers the best of both worlds in data visualization.</p>
-<div class="cell" data-execution_count="13">
+<div id="44bb1e65-64ce-4557-b164-d5d4423128dd" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
@@ -818,36 +847,48 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Product'</span>)</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'2019 Sales'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Or we do it another way:</p>
-<div class="cell" data-execution_count="14">
+<div id="bcdd7ba7-7bcc-4b1f-b19a-ef0ff75ee103" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">'2019 Sales'</span>, xlabel<span class="op">=</span><span class="st">'Total Sales'</span>, ylabel<span class="op">=</span><span class="st">'Product'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This method showcases the flexibility of the <code>plt.subplots()</code> function from Matplotlib in fine-tuning our visualization. Specifically, it allows for the customization of the plot’s size by setting the <code>figsize</code> parameter, which is defined in inches. This level of control over the dimensions of our plot ensures that it fits the intended context or presentation space perfectly. Additionally, the functionality to modify the plot extends to aspects like the legend. With the command <code>ax.legend().set_visible(False)</code>, we can effortlessly hide the legend if it’s unnecessary or distracting, thus maintaining a focus on the most crucial elements of our visualization. This approach underscores the advantage of blending simplicity with the powerful customization capabilities of Matplotlib.</p>
-<div class="cell" data-execution_count="15">
+<div id="477a6aca-da76-4407-8d40-e008e16471fd" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">6</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">'2019 Sales'</span>, xlabel<span class="op">=</span><span class="st">'Total Sales'</span>)</span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>To enhance the visual appeal of our plot, one key area to focus on is the presentation of the “Total Sales” figures. Matplotlib offers a powerful tool in the form of <code>FuncFormatter</code>, which allows for the application of custom functions to axis values, effectively enabling tailored formatting. This feature is particularly useful for rendering numerical data in a more readable and context-appropriate format.</p>
 <p>Consider, for example, a function designed to format currency, especially useful for figures in the higher ranges, such as several hundred thousand dollars. By applying such a function through <code>FuncFormatter</code>, “Total Sales” values can be displayed in a format that is both aesthetically pleasing and easily comprehensible, ensuring that your plot communicates its data as effectively as possible. This approach illustrates the advantage of using Matplotlib’s advanced features to refine and customize the details of your data visualization.</p>
-<div class="cell" data-execution_count="16">
+<div id="2aaf7ff3-4ac8-46fd-a85f-1789cc9cacd1" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.ticker <span class="im">import</span> FuncFormatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="23">
+<div id="426cf578-b6fe-45d9-82f2-cd1299813159" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_currency(value, position):</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Format the currency based on its magnitude.</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -864,7 +905,7 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># No formatting provided for values under 1,000,000</span></span>
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="24">
+<div id="8578d456-a292-458a-a3da-e1e5cadc9cb7" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data4plot.plot(kind<span class="op">=</span><span class="st">'barh'</span>, y<span class="op">=</span><span class="st">"Sales"</span>, x<span class="op">=</span><span class="st">"Product"</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim([<span class="op">-</span><span class="dv">10000</span>, <span class="dv">9000000</span>])</span>
@@ -873,13 +914,17 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(formatter)</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This refined approach really illustrates the versatility and customizability at our disposal. The next feature to explore in customizing our plot is adding annotations, which can significantly enhance the information communicated by our visualization.</p>
 <p>To illustrate this, consider using <code>ax.axvline()</code> to draw a vertical line on the plot. This can be particularly effective for highlighting average values or specific thresholds. Additionally, incorporating custom text annotations on the plot can be achieved with <code>ax.text()</code>. This allows for labeling specific points of interest, such as highlighting the introduction of new customers in our example.</p>
 <p>The full code, complete with annotations and comments, demonstrates how these elements come together to create a more informative and visually appealing plot. This use of annotations and vertical lines not only enhances the visual clarity of the plot but also adds layers of context and meaning, making the data more accessible and understandable.</p>
-<div class="cell" data-execution_count="25">
+<div id="907ca0e4-3210-4a1b-9af4-be4bad0cab75" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the figure and the axes</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -905,10 +950,14 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide the legend</span></span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-<div class="cell" data-execution_count="26">
+</div>
+<div id="5af8a54a-a1ba-4ec2-8021-60b5c0ab7498" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the figure and the axes</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -936,7 +985,11 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide the legend</span></span>
 <span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>ax.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <ol type="1">
@@ -975,7 +1028,7 @@ memory usage: 10.0+ MB</code></pre>
 <p>In this instance, we’re specifying the layout of our figure with <code>nrows</code> and <code>ncols</code>, which determine the number of rows and columns of subplots, respectively. We’ve chosen to create one row and two columns, thus positioning our two plots side by side. For clarity, especially for those new to Matplotlib, explicitly using these named parameters can make the code more intuitive and easier to understand when revisited.</p>
 <p>By setting <code>sharey=True</code>, we ensure that both plots (ax1 and ax2) share the same y-axis labels, which is particularly useful for comparing plots with the same scale or data range.</p>
 <p>Once we’ve established our figure structure and shared axes, we can proceed to add our plots. Plotting on <code>ax1</code> and <code>ax2</code> allows us to place different visualizations side by side within the same figure, enhancing our ability to compare and contrast the data presented. This approach not only broadens our visualization toolkit but also encourages a more comprehensive analysis through side-by-side comparisons.</p>
-<div class="cell" data-execution_count="27">
+<div id="8bb4701c-f78a-42dd-a953-ba5fd985dda8" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the figure and the axes</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>,ncols<span class="op">=</span><span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1002,7 +1055,11 @@ memory usage: 10.0+ MB</code></pre>
 <span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>ax1.legend().set_visible(<span class="va">False</span>)</span>
 <span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>ax2.legend().set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="Introduction_to_matplotlib_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="Introduction_to_matplotlib_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1095,10 +1152,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1108,8 +1164,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1122,6 +1187,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1165,6 +1349,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1190,6 +1375,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1252,7 +1463,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><span class="faux-block">© Copyright © 2023, SisengAI</span></div>   
+    <div class="nav-footer-left">
+<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
@@ -1261,6 +1474,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

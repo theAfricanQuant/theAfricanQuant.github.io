@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2024-April-03-User-Defined-Functions-In-DuckDB/Generate dummy data with user defined functions (UDFs).html",
       "/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html",
       "/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html",
       "/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html"
