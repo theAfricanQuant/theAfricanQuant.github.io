@@ -16,5 +16,6 @@ comments:
     reactions-enabled: true
     input-position: "top"
     theme: "noborder_light"
+    loading: lazy
     
 
