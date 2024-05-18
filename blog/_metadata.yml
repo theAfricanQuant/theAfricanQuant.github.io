@@ -5,3 +5,16 @@ freeze: auto
 
 # enable banner style title blocks (see https://quarto.org/docs/authoring/title-blocks.html)
 title-block-banner: true
+
+comments:
+  giscus:
+    repo: "theAfricanQuant/theAfricanQuant.github.io"
+    repo-id: "R_kgDOK8Zc8Q"
+    category: "Announcements"
+    category-id: "DIC_kwDOK8Zc8c4Cfc4R"
+    mapping: "pathname"
+    reactions-enabled: true
+    input-position: "top"
+    theme: "noborder_light"
+    
+

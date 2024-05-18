@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
@@ -81,7 +81,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,13 +95,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
@@ -105,10 +111,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../../img/SisengAI_logo.png" alt="" class="navbar-logo">
     </a>
@@ -123,43 +129,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../projects/index.html" rel="" target="">
- <span class="menu-text">Projects</span></a>
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog/index.html" rel="" target="">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resume/index.html" rel="" target="">
- <span class="menu-text">Résumé</span></a>
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Résumé</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/" rel="" target=""><i class="bi bi-linkedin" role="img">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/theAfricanQuant" rel="" target=""><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/theAfricanQuant" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com" rel="" target=""><i class="bi bi-envelope" role="img" aria-label="email">
+    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com"> <i class="bi bi-envelope" role="img" aria-label="email">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -205,6 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -320,15 +327,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>When to Use:</strong> - <strong>Short, Simple Operations</strong>: For short, one-off transformations that don’t need to be reused. - <strong>Inline Transformations</strong>: When working with Pandas chaining and the operation can be concisely expressed in a single line.</p>
 <p><strong>When Not to Use:</strong> - <strong>Complex Operations</strong>: If the logic is too complex for a single line, a normal function is more suitable. - <strong>Readability Concerns</strong>: If using a lambda function makes the code hard to understand, a named function is preferable. - <strong>Reuse Across the Codebase</strong>: If the same functionality is needed in multiple places, define it once with a normal function.</p>
 <p>Let us clean with some real world data next. We are opting out for the bike rentals dataset from the UCI <a href="https://archive.ics.uci.edu/ml/index.php">Machine Learning Repository</a>, a world-famous data warehouse that is free to the public.</p>
-<div class="cell" data-execution_count="1">
+<div id="809875f0-561e-44fb-98ac-7076894f0ab5" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="2">
+<div id="907cfb42-4ccd-41af-9728-afdf7b774cae" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://media.githubusercontent.com/media/theAfricanQuant/XGBoost4machinelearning/main/data/bike_rentals.csv'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>What we will do is to create a function that receives the url and prints out the dataframe.</p>
-<div class="cell" data-execution_count="3">
+<div id="08757102-4a77-4fb9-ade4-a8b88fdbb152" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(url):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        pd.read_csv(url)</span>
@@ -337,6 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>df_bikes <span class="op">=</span> get_data(url)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>df_bikes.sample(n<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
+<div>
 <div>
 
 
@@ -464,7 +472,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="4">
+</div>
+<div id="e349fdb5-98e5-40df-8fed-02f04504b016" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_bikes.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
@@ -493,7 +502,7 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 <p>From the output above, we can see that even though we should have about 731 entries for all, some columns do not have up to that. We will use data wrangling to handle that using our pandas method chaining.</p>
-<div class="cell" data-execution_count="5">
+<div id="7cec70e6-cf7b-4993-a706-9a3e205befeb" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(df_bikes</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> .isna()</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> .<span class="bu">sum</span>()</span>
@@ -505,7 +514,7 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 <p>The output above tells us we have exactly 12 null values in the entire dataframe before us.</p>
 <p>We will create a function called <code>show_nulls</code> that will only show us the rows with the missing values as we begin to wrangle through our data.</p>
-<div class="cell" data-execution_count="6">
+<div id="b1e60774-d6af-4cb9-a6ad-2eb30837bd77" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_nulls(df):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (df[df</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>            .isna()</span>
@@ -514,6 +523,7 @@ memory usage: 91.5+ KB</code></pre>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>show_nulls(df_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
+<div>
 <div>
 
 
@@ -736,9 +746,10 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>We will replace the null values in the windspeed column with the median. We choose to use the median over the mean because the median tends to guarantee that half the data is greater than the given value while the other half of the data is lower. The mean, by contrast, is vulnerable to outliers.</p>
 <p>This is the begining of building our wrangle function and we will call it <code>prep_data</code>. We will continue to build it step by step until the end. We will now use the <code>.assign</code> method to start our chain.</p>
-<div class="cell" data-execution_count="7">
+<div id="628213d4-d488-40c7-9f2a-76f589e5f3be" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -749,6 +760,7 @@ memory usage: 91.5+ KB</code></pre>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
+<div>
 <div>
 
 
@@ -876,12 +888,14 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>We can now see that our output has shrunk a bit cos we have successfully eliminated the null values in the <code>windspeed</code> column.</p>
 <p>It is possible to get more nuanced when correcting null values by using a <code>groupby</code>. A <code>groupby</code> organizes rows by shared values. Since there are four shared seasons spread out among the rows, a groupby of seasons results in a total of four rows, one for each season. But each season comes from many different rows with different values. We need a way to combine, or aggregate, the values. Choices for the aggregate include <code>.sum()</code>, <code>.count()</code>, <code>.mean()</code>, and <code>.median()</code>.</p>
 <p>Grouping our dataframe by the <code>season</code> column with the <code>.median(numeric_only=True)</code> aggregate is shown below. <code>numeric_only=True</code> is a parameter that tells the method to ignore non-numeric columns and calculate the median only for numeric columns. If our DataFrame contains non-numeric columns (like strings or dates), they will not be included in the median calculation.</p>
-<div class="cell" data-execution_count="8">
+<div id="6d8e0d73-39c5-4de6-9407-a5a7621480d6" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bikes.groupby([<span class="st">'season'</span>]).median(numeric_only<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
+<div>
 <div>
 
 
@@ -997,6 +1011,7 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>To correct the null values in the ‘hum’ column (humidity), we can take the median humidity by season.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bikes[<span class="st">'hum'</span>] <span class="op">=</span> bikes[<span class="st">'hum'</span>].fillna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The code that goes inside fillna is the desired values. The values obtained from <code>groupby</code> require the transform method as follows:</p>
@@ -1007,7 +1022,7 @@ memory usage: 91.5+ KB</code></pre>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>However, to implement it we are going to use the method of chaining and the <code>.assign</code> method in our code.</p>
-<div class="cell" data-execution_count="9">
+<div id="ef010461-bf72-43e0-9649-757ff22382c4" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1023,6 +1038,7 @@ memory usage: 91.5+ KB</code></pre>
 <span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
+<div>
 <div>
 
 
@@ -1093,12 +1109,14 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>In some cases, it may be advantageous to replace null values with data from specific rows.</p>
 <p>When correcting temperature, aside from consulting historical records, taking the mean temperature of the day before and the day after should give a good estimate.</p>
 <p>To find null values of the ‘temp’ column, enter the following code:</p>
-<div class="cell" data-execution_count="10">
+<div id="afcb615f-e771-4e4c-bde8-e4be7e17cc01" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>bikes[bikes[<span class="st">'temp'</span>].isna()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
+<div>
 <div>
 
 
@@ -1150,10 +1168,11 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>From the output above, index 701 contains null values.</p>
 <p>We will now find the <code>mean</code> temperature of the day before and the day after the 701 index.</p>
 <p>Let us sum the temperatures in rows 700 and 702 and divide by 2 for both the ‘temp’ and ‘atemp’ columns. We will create a function to do that so we can pass that to the chain.</p>
-<div class="cell" data-execution_count="11">
+<div id="5a76e913-9c4a-4767-9efe-d1676eb6c90e" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_vals(df, idx1, idx2, col):</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        (df.iloc[idx1][col] <span class="op">+</span> </span>
@@ -1165,7 +1184,7 @@ memory usage: 91.5+ KB</code></pre>
 <pre><code>0.38634999999999997</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
+<div id="ff6a7f6b-db0b-431e-8d9a-36ca197fa34a" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1184,6 +1203,7 @@ memory usage: 91.5+ KB</code></pre>
 <span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
+<div>
 <div>
 
 
@@ -1235,8 +1255,9 @@ memory usage: 91.5+ KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>The <code>dteday</code> is meant to be a date column but the <code>.info</code> we ran earlier revealed to us that it was an object or a string. Date objects such as years and months must be extrapolated from datetime types. Lets convert the column to a datetime.</p>
-<div class="cell" data-execution_count="13">
+<div id="35f5f1a4-7198-4956-b231-43a809603846" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1283,7 +1304,7 @@ memory usage: 91.5 KB</code></pre>
 </div>
 <p>The output shows us that we have successfully converted the <code>dteday</code> column to a DateTime object.</p>
 <p>We will convert the <code>mnth</code> column to the correct months extrpolated from the <code>dteday</code> column. We now introduce the use of the lambda function here or else we get an error. Without a lambda function, there’s a risk that the operation may refer to an outdated state of the DataFrame, especially if the referenced columns are being modified in the same <code>.assign()</code> method, which is actualyy our case here.</p>
-<div class="cell" data-execution_count="14">
+<div id="e9a7a6a6-7f68-468f-94d3-1b13cee80217" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1304,6 +1325,7 @@ memory usage: 91.5 KB</code></pre>
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
+<div>
 <div>
 
 
@@ -1355,10 +1377,12 @@ memory usage: 91.5 KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>Let us check the last 5 values of the dataset we have worked on so far.</p>
-<div class="cell" data-execution_count="15">
+<div id="d5d5c7dd-c29d-491f-ab34-c8341ee067f0" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>bikes.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
+<div>
 <div>
 
 
@@ -1486,10 +1510,11 @@ memory usage: 91.5 KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>We can see that even though the year value on the <code>dteday</code> column has 2012 all through, the value on the <code>yr</code> column is 1.0. It probably means that the values have been normalized, probably between 0 &amp; 1. I think this was done because normalized data is often more efficient due to the fact that machine learning weights do not have to adjust for different ranges.</p>
 <p>We will just use the forward fill for the null values here since the row with the null value is in the same month with the preceding row:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'yr'</span>].ffill()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell" data-execution_count="16">
+<div id="d249654a-619a-48bb-91b0-6a51430804fa" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1511,6 +1536,7 @@ memory usage: 91.5 KB</code></pre>
 <span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
+<div>
 <div>
 
 
@@ -1543,9 +1569,10 @@ memory usage: 91.5 KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>Looks like we have no null values left in our cleaned dataframe. This is what we want.</p>
 <p>For machine learning, all data columns should be numerical. According to <code>.info()</code>, the only column that is not numerical is <code>dteday</code>. Furthermore, it’s redundant since all date information exists in other columns.</p>
-<div class="cell" data-execution_count="17">
+<div id="3d090131-2505-4dc1-b78b-7b2edc26c2c0" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
@@ -1568,6 +1595,7 @@ memory usage: 91.5 KB</code></pre>
 <span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
 <span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>bikes.sample(n<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
+<div>
 <div>
 
 
@@ -1689,6 +1717,7 @@ memory usage: 91.5 KB</code></pre>
 </div>
 </div>
 </div>
+</div>
 <p>This is the beauty of method chaining. Now we have a function neatly done that will handle this dataset next time we come across it.</p>
 <p>Thank you for reading this.</p>
 
@@ -1777,10 +1806,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1790,8 +1818,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1804,6 +1841,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1847,6 +2003,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1872,6 +2029,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1931,10 +2114,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<script src="https://giscus.app/client.js" data-repo="theAfricanQuant/theAfricanQuant.github.io" data-repo-id="R_kgDOK8Zc8Q" data-category="Announcements" data-category-id="DIC_kwDOK8Zc8c4Cfc4R" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="noborder_light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><span class="faux-block">© Copyright © 2023, SisengAI</span></div>   
+    <div class="nav-footer-left">
+<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
@@ -1943,6 +2132,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 
