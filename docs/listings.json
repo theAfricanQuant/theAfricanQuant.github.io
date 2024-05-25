@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2024-May-25-Lambda-Functions/lambda_functions.html",
       "/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html",
       "/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html",
       "/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html",
