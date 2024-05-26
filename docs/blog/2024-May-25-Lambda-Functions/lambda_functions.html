@@ -335,7 +335,7 @@ memory usage: 5.5 KB</code></pre>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Day'</span>] <span class="op">=</span> df[<span class="st">'Date'</span>].dt.day</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s add a new column to the DataFrame that contains the month names. To ensure reproducibility when using the <code>sample()</code> method in pandas, we’ll set a seed by passing the <code>random_state</code> parameter.</p>
 <p>By setting a seed value, we guarantee that the <code>sample()</code> method will always select the same set of random rows each time the code is executed. This is particularly useful when you want others to be able to reproduce the same results as you, especially in a learning or collaborative environment.</p>
-<p>If having consistent random selections is not important for your specific use case, feel free to modify the <code>random_state</code> value or remove it entirely from the <code>sample()</code> metborative setting.</p>
+<p>If having consistent random selections is not important for your specific use case, feel free to modify the <code>random_state</code> value or remove it entirely.</p>
 <div id="cell-8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'Month'</span>] <span class="op">=</span> data[<span class="st">'Date'</span>].dt.month_name()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data.sample(<span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -391,7 +391,7 @@ memory usage: 5.5 KB</code></pre>
 </div>
 </div>
 </div>
-<p>In this code, we create a new column called ‘Month’ using <code>data['Date'].dt.month_name()</code>, which extracts the month name from each date in the <code>Date</code> column.</p>
+<p>In this code, we create a new column called <code>Month</code> using <code>data['Date'].dt.month_name()</code>, which extracts the month name from each date in the <code>Date</code> column.</p>
 <p>Then, we use <code>data.sample(5, random_state=43)</code> to randomly select 5 rows from the <code>data</code> DataFrame. The <code>random_state=43</code> parameter sets the seed value to 43, ensuring that the same set of random rows will be displayed each time the code is run.</p>
 <p>By setting the seed, anyone following along with this code will see the same randomly selected rows as you do, facilitating consistency and reproducibility in a learning or collaborative setting.</p>
 <p>We all know the drill up to this point. We will round up here by creating a function that we can call anytime that will do all we have done above in one go.</p>
@@ -478,7 +478,7 @@ memory usage: 5.5 KB</code></pre>
 </section>
 <section id="chaining" class="level2">
 <h2 class="anchored" data-anchor-id="chaining"><strong>Chaining</strong></h2>
-<p>Let us now use the Method chaining we have been alluding to right from the begining and see how lambda functions help. We will start form the beginning and buiild slowly.</p>
+<p>Let us now use the Method chaining we have been alluding to right from the begining and see how lambda functions help. We will start from the beginning and build slowly.</p>
 <div id="cell-13" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'synthetic_stock_data.csv'</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(url)</span>
@@ -495,7 +495,7 @@ dtypes: float64(1), object(1)
 memory usage: 5.5+ KB</code></pre>
 </div>
 </div>
-<p>This is the same step as before. The next sets of steps are what will make the process wonderful. We want to change the <code>Date</code> column to <code>Datetime</code> usong the <code>assign</code> method in pandas.</p>
+<p>This is the same step as before. The next steps are what will make the process wonderful. We want to change the <code>Date</code> column to <code>Datetime</code> using the <code>assign</code> method in pandas.</p>
 <div id="cell-15" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(data</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> .assign(Date <span class="op">=</span> pd.to_datetime(data[<span class="st">'Date'</span>]))</span>
@@ -525,7 +525,7 @@ memory usage: 5.5 KB</code></pre>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This code will give us an error however. This error (<code>AttributeError</code> in this case) occurs because we need the Date column to be in Datetime format which is not the case since the last operation we performed in the chain did not modify the <code>data</code> DataFrame in place, and therefore the output of that operation is not available for this new line to use. Instead, the second assignment still sees the original <code>Date</code>, which is not yet in datetime format.</p>
 <p><strong>Lambda Functions to the rescue</strong></p>
-<p>Lambda functions can be used to ensure that each assignment within .assign() is evaluated in the correct order. By using lambda functions, you can ensure that the Date column is first converted to datetime before the Month column tries to access it.</p>
+<p>Lambda functions can be used to ensure that each assignment within <code>.assign()</code> is evaluated in the correct order. By using lambda functions, you can ensure that the <code>Date</code> column is first converted to datetime before the <code>Month</code> column tries to access it.</p>
 <div id="cell-17" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(data</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> .assign(Date <span class="op">=</span> pd.to_datetime(data[<span class="st">'Date'</span>]),</span>
