@@ -105,7 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -204,9 +204,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
 
 
 
@@ -275,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 </section>
-<section id="computational-efficiency-a-case-study" class="level2">
+<section id="computational-efficiency-a-case-study" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="computational-efficiency-a-case-study">Computational Efficiency: A Case Study</h2>
 <p>Let us define a computationally expensive function called <code>mega_transform</code> that serves to illustrate the efficiency gains provided by the walrus operator:</p>
 <div id="b94cc963-db26-40e3-b115-4d6f69126846" class="cell" data-execution_count="3">
@@ -313,6 +314,33 @@ total time: 17.19 secs</code></pre>
 </div>
 </div>
 <p>The results clearly indicate that the walrus operator reduces the computational overhead by avoiding redundant function calls.</p>
+<section id="try-this-yourself" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="try-this-yourself">Try this yourself</h3>
+<p>You can try this in your IDE like vscode, sublime or whatever you find fun:</p>
+<p>You are to create a simple command-line interface in Python that allows you to execute shell commands until the user types “exit”.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>command <span class="op">=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> command <span class="op">!=</span> <span class="st">"exit"</span>:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    subprocess.run(command, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    command <span class="op">=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="no_walrus_19.06.2024.gif" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">we implement this shell without the walrus operator</figcaption>
+</figure>
+</div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (command <span class="op">:=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)) <span class="op">!=</span> <span class="st">"exit"</span>:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    subprocess.run(command, shell<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p><img src="walrus19.06.2024.gif" class="img-fluid figure-img"></p>
+<figcaption class="margin-caption">we implement this shell with the walrus operator</figcaption>
+</figure>
+</div>
+</section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
