@@ -183,6 +183,9 @@ df2 = (df2
 df2
 ```
 
+This seems to be working just fine. However, sometimes we might want to create a function that could insert multiple features at once based off of the users' choice. An example is given below:
+
+
 ```{python}
 def add_multiple_smas(df, col, *windows):
     for window in windows:
