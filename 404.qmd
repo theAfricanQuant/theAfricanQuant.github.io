@@ -2,4 +2,13 @@
 title: "404"
 ---
 
-Page not found, sorry! Try the search or navigate back to the base website.
+# 404 🚧  
+**Uh-oh! Looks like you've taken a wrong turn on the information superhighway! 🛣️💨**
+
+Don’t worry, even the best explorers get lost sometimes. 🧭  
+Here’s a map 🗺️ (just kidding, we don’t have one either).
+
+Why not:  
+- 🏠 [Go back to the homepage](index.qmd) and start fresh.  
+- 🔍 Try searching for what you need.  
+- 🍕 Take a pizza break while we figure this out!
