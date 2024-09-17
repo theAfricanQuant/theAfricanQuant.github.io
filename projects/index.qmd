@@ -17,7 +17,7 @@ Welcome to my project page! Here you'll find an overview of some of the exciting
 ### 🧑🏽‍💻 SisengAI Blog
 My personal blog, where I write about algorithmic trading, machine learning, and data science topics using **Quarto**. It’s hosted on **GitHub Pages**.
 
-<a href="https://SisengAI.com" target="_blank">Check out SisengAI Blog</a>
+<a href="https://www.sisengai.com/blog/" target="_blank">Check out SisengAI Blog</a>
 
 ---
 
