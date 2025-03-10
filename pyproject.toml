@@ -20,3 +20,9 @@ dependencies = [
     "polars>=1.24.0",
     "scikit-learn>=1.6.1",
 ]
+
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["img", "blog", "resume", "projects"]

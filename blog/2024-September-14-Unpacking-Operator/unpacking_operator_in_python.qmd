@@ -1,0 +1,219 @@
+---
+title: "Grokking the Unpacking Operator"
+author: "Ricky Macharm"
+date: "14 September 2024"
+image: unboxing.webp
+categories: [Python, Unpacking Operator, Method Chaining] # self-defined categories
+format: html
+execute:
+    eval: true
+jupyter: python3
+---
+
+
+# Introduction
+
+Imagine for a moment that it is your spouse's birthday and you planned to buy them a gift - a box with some selected items: jewelry, a watch, perfume, and airpods. You gleefully look at her/him smile as s/he unboxes it, carefully revealing each item one by one.
+
+Similarly, in Python, unpacking allows us to unbox the elements of an iterable such as a list, tuple, or dictionary into individual variables. 
+
+In this article, we will get into the weeds of how python unboxes items, properly known as  **unpacking**.
+
+## The Basics of Unpacking
+
+Let's start simple. Unpacking is the process of extracting individual elements from a collection like a list or a tuple and assigning them to variables. Think of it like unboxing your wife's birthday gift. Here's how we do that in Python:
+
+```{python}
+gift_box = ['jewelry', 'watch', 'perfume', 'airpods']
+item1, item2, item3, item4 = gift_box
+
+print(item1)  # 'jewelry'
+print(item2)  # 'watch'
+print(item3)  # 'perfume'
+print(item4)  # 'airpods'
+```
+
+Here, we "unbox" the list by assigning each item to a separate variable. Now, each variable contains one of the items from the `gift_box`.
+
+### What Happens if There Are Too Many or Too Few Items?
+
+What happens if the gift box has more items than variables?
+
+```{python}
+#| error: true 
+gift_box = ['jewelry', 'watch', 'perfume', 'airpods', 'flowers']
+item1, item2, item3 = gift_box  # Error: too many values to unpack
+```
+
+We get an error! Python doesn't know how to fit five items into just three variables. Likewise, if we had too few items, we'd also get an error:
+
+```{python}
+#| error: true
+gift_box = ['jewelry', 'watch']
+item1, item2, item3 = gift_box  # Error: not enough values to unpack
+```
+
+## Unpacking with the `*` Operator
+
+Now, imagine you want to only unpack the first and last items from the gift box, while ignoring the rest. This is where the `*` operator comes in handy:
+
+```{python}
+gift_box = ['jewelry', 'watch', 'perfume', 'airpods', 'flowers']
+first, *middle, last = gift_box
+
+print(first)  # 'jewelry'
+print(last)   # 'flowers'
+print(middle)  # ['watch', 'perfume', 'airpods']
+```
+
+The `*` operator captures the remaining elements and packs them into a list. You can even discard them by using `_`:
+
+```{python}
+first, *_, last = gift_box
+print(first, last)  # 'jewelry', 'flowers'
+```
+
+This method is incredibly useful when you only care about a few elements in a list or tuple.
+
+## Unpacking Dictionaries with `**`
+
+Now let's move on to unpacking dictionaries. Imagine the gift contains a dictionary with item names and their respective values.
+
+```{python}
+gift_details = {'jewelry': 'gold', 'watch': 'rolex', 'perfume': 'Chanel'}
+```
+
+You can unpack dictionaries using `**`. This is especially useful when you want to merge dictionaries, like adding more gifts in your spouse's box of gifts:
+
+```{python}
+extra_gift = {'airpods': 'pro'}
+merged_gifts = {**gift_details, **extra_gift}
+print(merged_gifts)
+# {'jewelry': 'gold', 'watch': 'rolex', 'perfume': 'Chanel', 'airpods': 'pro'}
+```
+
+The `**` operator spreads out the dictionary and allows you to combine multiple dictionaries into one.
+
+## Using `*args` and `**kwargs` in Functions
+
+You might have seen the terms `*args` and `**kwargs` before in Python. These are used when defining functions to accept a variable number of arguments and keyword arguments.
+
+- `*args` lets you pass a variable number of positional arguments to a function.
+- `**kwargs` lets you pass a variable number of keyword arguments.
+
+Let’s start with `*args`:
+
+```{python}
+def calculate_total(*args):
+    return sum(args)
+
+print(calculate_total(10, 20, 30))  # 60
+print(calculate_total(5, 15))  # 20
+```
+
+Here, `*args` captures all the positional arguments into a tuple. You can pass as many arguments as you like.
+
+Next, let's look at `**kwargs`:
+
+```{python}
+def print_gift_details(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_gift_details(jewelry="gold", watch="rolex", perfume="Chanel")
+# jewelry: gold
+# watch: rolex
+# perfume: Chanel
+```
+
+With `**kwargs`, all keyword arguments are captured into a dictionary, which you can iterate over.
+
+### Combining `*args` and `**kwargs`
+
+You can combine both in a function to accept any number of positional and keyword arguments:
+
+```{python}
+def gift_summary(*args, **kwargs):
+    print("Items:", args)
+    print("Details:", kwargs)
+
+gift_summary('jewelry', 'watch', jewelry="gold", watch="rolex")
+# Items: ('jewelry', 'watch')
+# Details: {'jewelry': 'gold', 'watch': 'rolex'}
+```
+
+
+## Method Chaining  
+
+Method chaining in pandas is a technique where multiple methods are called sequentially on a DataFrame or Series in a single statement. Each method operates on the output of the previous one, making the code concise and readable. It helps avoid intermediate variables and enables efficient data processing.
+
+let us create a dataframe from the numpy library:
+```{python}
+import pandas as pd
+import numpy as np 
+# Setting up random number generator
+rng = np.random.default_rng(seed=42)
+
+# Generating random data for open, high, low, close prices
+data = {
+    'Open': rng.uniform(low=100, high=200, size=10),
+    'High': rng.uniform(low=200, high=300, size=10),
+    'Low': rng.uniform(low=50, high=100, size=10),
+    'Close': rng.uniform(low=100, high=200, size=10)
+}
+
+# Creating the DataFrame
+df = pd.DataFrame(data).round(4)
+df1=df2=df.copy() # making copies to use for examples later. 
+df
+```
+To add a new feature like calculating the moving average of the Close price in a DataFrame, you can use the `rolling()` function in pandas. Here's how to calculate the moving average (for example, a 3-period moving average) of the Close price and add it as a new column to the DataFrame.
+
+```{python}
+df1['SMA'] = df1['Close'].rolling(window=3).mean()
+df1
+```
+To achieve the same using method chaining:
+
+```{python}
+df2 = (df2
+.assign(SMA=lambda x: x['Close'].rolling(window=3)
+.mean())
+)
+df2
+```
+
+This seems to be working just fine. However, sometimes we might want to create a function that could insert multiple features at once based off of the users' choice. An example is given below:
+
+
+```{python}
+def add_multiple_smas(df, col, *windows):
+    for window in windows:
+      df[f'SMA_{window}'] = df[col].rolling(window=window).mean()
+    return df
+
+# Example usage
+add_multiple_smas(df1, 'Close', 2, 3, 4)
+```
+Attempting to accomplish a similar feat using method chaining will result in an error because the `.assign` method expects keyword arguments. The best way is to use the unpacking operator to achieve this with the help of dictionary comprehension to loop through the different values for the SMAs.
+
+```{python}
+def add_multiple_smas(df, col, *windows, **kwargs):
+    
+    # Use assign to add the columns in a chained fashion
+    return df.assign(**{f'SMA_{window}': df[col].rolling(window=window, **kwargs).mean() for window in windows})
+
+# Example usage with method chaining
+add_multiple_smas(df2, 'Close', 2, 3, 4)
+
+```
+Method chaining in pandas allows for more concise, readable, and functional-style code by performing multiple transformations in a single statement without creating intermediate variables. This makes the code more compact and often easier to follow when handling complex data transformations. It can also help avoid side effects by keeping transformations within the same flow, making it easier to debug and maintain.
+
+However, it's also a matter of preference. Some developers prefer method chaining for its elegance and simplicity, while others prefer using intermediate variables for clarity, especially when dealing with more complex logic, as it can be easier to inspect the data at different stages of transformation. The choice depends on the coding style that the person or team finds most understandable and maintainable.
+
+
+## Conclusion
+
+Unpacking is a powerful feature in Python that helps you write cleaner and more efficient code. Whether you're unpacking lists, tuples, or dictionaries, or using `*args` and `**kwargs` in functions, this feature allows for flexible and dynamic code. Moreover, unpacking can be used with popular libraries like Pandas and NumPy to streamline data manipulation.
+
+So, the next time you find yourself opening a gift box, remember: Python unpacking is just like unboxing—taking out each item, one by one, and making it yours!

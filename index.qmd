@@ -1,7 +1,78 @@
 ---
-title: "theAfricanQuant.github.io"
+title: ""
+image: img/Ricky_Macharm.png
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  id: about-block
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/theafricanquant/
+      target: _blank
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/theAfricanQuant
+      target: _blank
+    - icon: github
+      text: GitHub
+      href: https://github.com/theAfricanQuant
+      target: _blank
+    - icon: envelope
+      text: e-mail
+      href: mailto:Ricky.Macharm@SisengAI.com
 ---
 
-This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+::: {#about-block}
+:::
+
+### Hello, World!  
+
+
+<p class="topbr">
+    Hey there! I'm Ricky, the brain behind SisengAI. It's more than just a project – it's my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python & pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia. 
+
+    When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out <a href="https://www.youtube.com/@theafricanquant501/featured" target="_blank">here</a>!). These days, you'll find me at WorldQuant University in New Orleans, LA, where I teach data science. It's a cool place, and you can learn more about it <a href="https://www.wqu.edu/programs/applied-ds-lab/" target="_blank">here</a>.
+
+    Not just a man behind the screen, I've also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you'll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects. Plus, you'll get the scoop on all the events and conferences where I'll be making an appearance. Dive into my world and explore to your heart's content!
+
+    Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don't hesitate to <a href="mailto:Ricky.Macharm@SisengAI.com">contact me</a>. I'm all ears and ready to chat!
+</p>
+
+
+### education
+
+<div class="topbr">
+<p class="custom-subtitle"> **MSc in Financial Engineering, 2021**</p>  
+<p class="custom-subtitle2">WorldQuant University, New Orleans, LA, USA.</p>
+
+<p class="custom-subtitle"> **BS in Electrical & Electronics Engineering, 2000**</p>  
+<p class="custom-subtitle2">Abubakar Tafawa Balewa University, Bauchi, Nigeria.</p>
+</div>
+
+
+
+### experience
+
+<div class="topbr">
+<p class="custom-subtitle"> **Data Science Instructor, 2022-present**</p>   
+<p class="custom-subtitle2">WorldQuant University</p>  
+
+<p class="custom-subtitle"> **Co-author and member of Masakhane, since 2020**</p>    
+<p class="custom-subtitle2">1. [Participatory Research for Low-resourced Machine Translation: A Case Study in African Languages](https://www.researchgate.net/publication/344505986_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages){target="_blank"}</p>
+
+<p class="custom-subtitle2">2. [AfriMTE and AfriCOMET: Empowering COMET to Embrace Under-resourced African Languages](https://arxiv.org/abs/2311.09828){target="_blank"}</p>
+</div>
+
+
+
+```{=html}
+<div  style="margin: 30px; text-align: center;">
+<a class="btn btn-primary" href="https://github.com/theAfricanQuant/theAfricanQuant.github.io" role="button" target="_blank" style="padding: 15px 30px;">View the template for this on my github repo</a>
+</div>
+```
+

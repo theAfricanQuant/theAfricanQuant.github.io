@@ -1,0 +1,17 @@
+---
+title: "Blog Posts"
+subtitle: "still working on writing more often"
+listing:
+  # contents: blog
+  sort: "date desc"
+  type: grid
+  image-align: right
+  max-description-length: 175
+  date-format: medium
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---
+

@@ -1,19 +1,83 @@
+
+
+# This file controls the settings for your Quarto template 
+
+# website settings
+website:
+  title: "SisengAI"                                # Your name
+ # description: "SisengAI is a website that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP."   # A brief slogan (optional)
+  image: img/Ricky_Macharm_LP.png
+  
+  favicon: img/favicon.png
+
+
+  
+  # start of the navigation bar at the top of the website
+  navbar:
+    pinned: true
+    logo: /img/SisengAI_Logo.png
+    
+    # your sub-pages
+    left:
+      - text: "Projects"
+        href: projects/index.qmd
+      - text: "Blog"
+        href: blog/index.qmd
+      - text: "Résumé"
+        href: resume/index.qmd
+    
+    # your social media handles
+    right:
+      
+      - icon: linkedin
+        href: https://www.linkedin.com/in/theafricanquant/
+      
+      - icon: twitter
+        href: https://twitter.com/theAfricanQuant
+     
+      - icon: github
+        href: https://github.com/theAfricanQuant
+
+      - icon: envelope
+        aria-label: email
+        href: "mailto:Ricky.Macharm@SisengAI.com"
+      
+
+
+  
+
+# Don't touch unless you know what you are doing :) ------------
+  search: 
+    location: navbar
+    type: textbox
+  page-footer: 
+    left: |
+      <span class="faux-block">&#169; Copyright © 2023, SisengAI</span>
+    
+# engine: jupyter
 project:
   type: website
+  # output-dir: docs
 
-website:
-  title: "theAfricanQuant.github.io"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+  preview: 
+    port: 22222
+    browser: true
+    watch-inputs: true
+    navigate: true
+
+execute:
+  freeze: true
+  eval: false
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
-    toc: true
-
-
-
+    fontsize: 1.1em
+    theme: 
+      - pulse
+      - html/styles.scss
+    toc: false
+    code-link: true
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true

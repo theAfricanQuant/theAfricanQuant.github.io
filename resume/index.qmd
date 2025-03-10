@@ -1,0 +1,40 @@
+---
+layout: page
+title: RÉSUMÉ
+excerpt: My current Résumé
+execute:
+  freeze: true  # never re-render during project render
+engine: jupyter
+resources:
+  - "Ricky_Data_Scientist_2023.pdf"
+---
+
+
+<style>
+.embed-container {
+    position: relative;
+    padding-bottom: 129%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+<p class="text-center">
+  <a class="btn btn-primary btn-lg cv-download" href="Ricky_Data_Scientist_2023.pdf" target="_blank">
+    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download my current Résumé
+  </a>
+</p>
+
+<div class="embed-container">
+  <iframe src="Ricky_Data_Scientist_2023.pdf#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
+</div>
