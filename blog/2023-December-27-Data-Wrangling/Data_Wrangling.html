@@ -1,0 +1,2147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2023-12-27">
+
+<title>Data Wrangling – SisengAI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-44a849ee5d72a957974aaebece2a0231.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Résumé</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com"> <i class="bi bi-envelope" role="img" aria-label="email">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Data Wrangling</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Method Chaining</div>
+                <div class="quarto-category">Data Wrangling</div>
+                <div class="quarto-category">pandas</div>
+                <div class="quarto-category">UCI Machine Learning Repository</div>
+                <div class="quarto-category">bike rentals</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 27, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Data wrangling, often also referred to as data munging, is the process of cleaning, structuring, and enriching raw data into a desired format for better decision-making. It’s a fundamental step in the data preparation process before analysis or processing. Data wrangling involves several tasks and can be quite complex depending on the state of the data and the desired outcome.</p>
+<section id="key-aspects-of-data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="key-aspects-of-data-wrangling">Key Aspects of Data Wrangling</h3>
+<p><strong>Data Cleaning</strong>: This involves handling missing or inconsistent data, correcting inaccuracies, and dealing with outliers. It might require filling missing values, smoothing noisy data, identifying or removing outliers, and resolving inconsistencies.</p>
+<p><strong>Data Transformation</strong>: This step is about converting data from one format or structure into another. This could involve aggregating data, normalizing or standardizing data (like bringing data to a common scale), or transforming data types.</p>
+<p><strong>Data Integration</strong>: In many cases, data needs to be combined from multiple sources. This could involve merging data from different databases, files, or formats, and aligning them into a single coherent data set.</p>
+<p><strong>Data Reduction</strong>: Large datasets are often reduced to a manageable size while maintaining their integrity. This can involve techniques like dimensionality reduction, binning, histograms, clustering, or principal component analysis (PCA).</p>
+<p><strong>Data Enrichment</strong>: Enhancing data by merging additional relevant information from external sources. This can provide more context for analysis or improve the accuracy of predictive models.</p>
+</section>
+<section id="importance-in-data-science" class="level3">
+<h3 class="anchored" data-anchor-id="importance-in-data-science">Importance in Data Science:</h3>
+<p><strong>Quality of Insights</strong>: Better data wrangling leads to higher-quality data, which in turn can produce more accurate and insightful analysis results.</p>
+<p><strong>Time Efficiency</strong>: Although time-consuming, efficient data wrangling can save time in the long run by making data easier to work with and reducing errors in the analysis phase.</p>
+<p><strong>Improved Decision Making</strong>: High-quality, well-structured data enables data scientists and businesses to make more informed and accurate decisions.</p>
+</section>
+</section>
+<section id="method-chaining-in-pandas" class="level2">
+<h2 class="anchored" data-anchor-id="method-chaining-in-pandas">Method Chaining in Pandas</h2>
+<p>Method chaining in Pandas is a powerful feature that refers to the practice of executing multiple operations in a single, streamlined expression using method calls linked together. This is simply executing multiple operations in a sequence, where the output of one operation feeds directly into the input of the next. This stylistic feature in Python enhances readability and conciseness of code, and is particularly effective due to Pandas’ method-based syntax.</p>
+<section id="advantages-of-chaining" class="level3">
+<h3 class="anchored" data-anchor-id="advantages-of-chaining">Advantages of Chaining</h3>
+<ol type="1">
+<li><p><strong>Readability and Clarity</strong>: Chaining enhances readability by presenting operations in a logical, top-to-bottom order.</p></li>
+<li><p><strong>Intermediate Variable Reduction</strong>: It eliminates the need for intermediate variables, thus reducing workspace clutter and error risk.</p></li>
+<li><p><strong>Encourages Functional Style</strong>: Promotes a functional programming style, leading to fewer side effects.</p></li>
+<li><p><strong>Ease of Debugging</strong>: Facilitates debugging through the insertion of debugging steps within the chain, such as using <code>.pipe()</code>.</p></li>
+</ol>
+</section>
+<section id="traditional-approach-vs-chaining" class="level3">
+<h3 class="anchored" data-anchor-id="traditional-approach-vs-chaining">Traditional Approach vs Chaining</h3>
+<p><strong>Traditional Approach:</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">'column1'</span>])</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'column2'</span>] <span class="op">=</span> df[<span class="st">'column2'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'column3'</span>] <span class="op">&gt;</span> <span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Chaining Approach:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>      .dropna(subset<span class="op">=</span>[<span class="st">'column1'</span>])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      .assign(column2<span class="op">=</span><span class="kw">lambda</span> df: df[<span class="st">'column2'</span>]<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      .query(<span class="st">'column3 &gt; 0'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="avoiding-inplacetrue" class="level3">
+<h3 class="anchored" data-anchor-id="avoiding-inplacetrue">Avoiding <code>inplace=True</code></h3>
+<p>It’s recommended to avoid <code>inplace=True</code> in Pandas operations for clarity, predictability, and consistency, as well as to enable chaining.</p>
+</section>
+<section id="utilizing-chaining-methods" class="level3">
+<h3 class="anchored" data-anchor-id="utilizing-chaining-methods">Utilizing Chaining Methods</h3>
+<section id="assign" class="level4">
+<h4 class="anchored" data-anchor-id="assign"><code>.assign()</code></h4>
+<p>Used for adding new columns in a chainable way.</p>
+<p><strong>New Way:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.assign(new_column<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'existing_column'</span>] <span class="op">*</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pipe" class="level4">
+<h4 class="anchored" data-anchor-id="pipe"><code>.pipe()</code></h4>
+<p>Allows applying a function in the middle of a chain.</p>
+<p><strong>New Way:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>      .pipe(process_data)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>      .query(<span class="st">'column &gt; 0'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="query" class="level4">
+<h4 class="anchored" data-anchor-id="query"><code>.query()</code></h4>
+<p>Provides a more readable way to filter rows using a string expression.</p>
+<p><strong>New Way:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.query(<span class="st">'column &gt; 0'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="example-of-extended-chaining" class="level3">
+<h3 class="anchored" data-anchor-id="example-of-extended-chaining">Example of Extended Chaining</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      .fillna(...)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      .query(<span class="st">'some_condition'</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      .assign(new_column<span class="op">=</span><span class="kw">lambda</span> df: df.cut(...))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      .pivot_table(...)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      .rename(...))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="lambda-functions-in-chaining" class="level3">
+<h3 class="anchored" data-anchor-id="lambda-functions-in-chaining">Lambda functions in chaining</h3>
+<p>Normal functions are defined using the <code>def</code> keyword and have a name. They are suitable for:</p>
+<ol type="1">
+<li><strong>Repeated Use</strong>: When the same functionality is needed in multiple places.</li>
+<li><strong>Complex Logic</strong>: For operations that involve multiple steps or complex logic.</li>
+<li><strong>Readability</strong>: Named functions can make code more readable by clearly stating their purpose.</li>
+<li><strong>Testing</strong>: Easier to test and debug since they are standalone entities.</li>
+</ol>
+<p>Example of a normal function:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(x):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Lambda functions are small, one-line functions defined without a name. They are ideal for:</p>
+<ol type="1">
+<li><strong>Simplicity and Conciseness</strong>: When the function is simple enough to be expressed in a single line.</li>
+<li><strong>One-Time Use</strong>: Particularly useful for quick, throwaway functions that are not needed elsewhere.</li>
+<li><strong>Chaining</strong>: In Pandas, lambdas are often used in methods like <code>.apply()</code>, <code>.map()</code>, <code>.assign()</code>, and <code>.filter()</code> for inline operations.</li>
+</ol>
+<p>Example of an anonymous function:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">lambda</span> x: x <span class="op">*</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="using-anonymous-functions-in-chaining" class="level4">
+<h4 class="anchored" data-anchor-id="using-anonymous-functions-in-chaining">Using Anonymous Functions in Chaining</h4>
+<p>Anonymous functions are highly useful in chaining for their brevity and inline nature. For instance:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> (pd.read_csv(<span class="st">'data.csv'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>      .assign(column2<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'column1'</span>] <span class="op">*</span> <span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      .query(<span class="kw">lambda</span> x: x[<span class="st">'column3'</span>] <span class="op">&gt;</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="when-to-use-and-when-not-to-use-lambda-functions" class="level4">
+<h4 class="anchored" data-anchor-id="when-to-use-and-when-not-to-use-lambda-functions">When to Use and When Not to Use Lambda Functions</h4>
+<p><strong>When to Use:</strong> - <strong>Short, Simple Operations</strong>: For short, one-off transformations that don’t need to be reused. - <strong>Inline Transformations</strong>: When working with Pandas chaining and the operation can be concisely expressed in a single line.</p>
+<p><strong>When Not to Use:</strong> - <strong>Complex Operations</strong>: If the logic is too complex for a single line, a normal function is more suitable. - <strong>Readability Concerns</strong>: If using a lambda function makes the code hard to understand, a named function is preferable. - <strong>Reuse Across the Codebase</strong>: If the same functionality is needed in multiple places, define it once with a normal function.</p>
+<p>Let us clean with some real world data next. We are opting out for the bike rentals dataset from the UCI <a href="https://archive.ics.uci.edu/ml/index.php">Machine Learning Repository</a>, a world-famous data warehouse that is free to the public.</p>
+<div id="809875f0-561e-44fb-98ac-7076894f0ab5" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="907cfb42-4ccd-41af-9728-afdf7b774cae" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://media.githubusercontent.com/media/theAfricanQuant/XGBoost4machinelearning/main/data/bike_rentals.csv'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What we will do is to create a function that receives the url and prints out the dataframe.</p>
+<div id="08757102-4a77-4fb9-ade4-a8b88fdbb152" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(url):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        pd.read_csv(url)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>df_bikes <span class="op">=</span> get_data(url)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>df_bikes.sample(n<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">335</td>
+<td>336</td>
+<td>2011-12-02</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.314167</td>
+<td>0.331433</td>
+<td>0.625833</td>
+<td>0.100754</td>
+<td>268</td>
+<td>3672</td>
+<td>3940</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">631</td>
+<td>632</td>
+<td>2012-09-23</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.529167</td>
+<td>0.518933</td>
+<td>0.467083</td>
+<td>0.223258</td>
+<td>2454</td>
+<td>5453</td>
+<td>7907</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">620</td>
+<td>621</td>
+<td>2012-09-12</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.599167</td>
+<td>0.570075</td>
+<td>0.577083</td>
+<td>0.131846</td>
+<td>1050</td>
+<td>6820</td>
+<td>7870</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">722</td>
+<td>723</td>
+<td>2012-12-23</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.245833</td>
+<td>0.259471</td>
+<td>0.515417</td>
+<td>0.133083</td>
+<td>408</td>
+<td>1379</td>
+<td>1787</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">388</td>
+<td>389</td>
+<td>2012-01-24</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.342500</td>
+<td>0.349108</td>
+<td>NaN</td>
+<td>0.123767</td>
+<td>439</td>
+<td>3900</td>
+<td>4339</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="e349fdb5-98e5-40df-8fed-02f04504b016" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df_bikes.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 731 entries, 0 to 730
+Data columns (total 16 columns):
+ #   Column      Non-Null Count  Dtype  
+---  ------      --------------  -----  
+ 0   instant     731 non-null    int64  
+ 1   dteday      731 non-null    object 
+ 2   season      731 non-null    float64
+ 3   yr          730 non-null    float64
+ 4   mnth        730 non-null    float64
+ 5   holiday     731 non-null    float64
+ 6   weekday     731 non-null    float64
+ 7   workingday  731 non-null    float64
+ 8   weathersit  731 non-null    int64  
+ 9   temp        730 non-null    float64
+ 10  atemp       730 non-null    float64
+ 11  hum         728 non-null    float64
+ 12  windspeed   726 non-null    float64
+ 13  casual      731 non-null    int64  
+ 14  registered  731 non-null    int64  
+ 15  cnt         731 non-null    int64  
+dtypes: float64(10), int64(5), object(1)
+memory usage: 91.5+ KB</code></pre>
+</div>
+</div>
+<p>From the output above, we can see that even though we should have about 731 entries for all, some columns do not have up to that. We will use data wrangling to handle that using our pandas method chaining.</p>
+<div id="7cec70e6-cf7b-4993-a706-9a3e205befeb" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(df_bikes</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> .isna()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> .<span class="bu">sum</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> .<span class="bu">sum</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>12</code></pre>
+</div>
+</div>
+<p>The output above tells us we have exactly 12 null values in the entire dataframe before us.</p>
+<p>We will create a function called <code>show_nulls</code> that will only show us the rows with the missing values as we begin to wrangle through our data.</p>
+<div id="b1e60774-d6af-4cb9-a6ad-2eb30837bd77" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_nulls(df):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (df[df</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>            .isna()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">any</span>(axis<span class="op">=</span><span class="dv">1</span>)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>show_nulls(df_bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">56</td>
+<td>57</td>
+<td>2011-02-26</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.282500</td>
+<td>0.282192</td>
+<td>0.537917</td>
+<td>NaN</td>
+<td>424</td>
+<td>1545</td>
+<td>1969</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">81</td>
+<td>82</td>
+<td>2011-03-23</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>2</td>
+<td>0.346957</td>
+<td>0.337939</td>
+<td>0.839565</td>
+<td>NaN</td>
+<td>203</td>
+<td>1918</td>
+<td>2121</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">128</td>
+<td>129</td>
+<td>2011-05-09</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.532500</td>
+<td>0.525246</td>
+<td>0.588750</td>
+<td>NaN</td>
+<td>664</td>
+<td>3698</td>
+<td>4362</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">129</td>
+<td>130</td>
+<td>2011-05-10</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.532500</td>
+<td>0.522721</td>
+<td>NaN</td>
+<td>0.115671</td>
+<td>694</td>
+<td>4109</td>
+<td>4803</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">213</td>
+<td>214</td>
+<td>2011-08-02</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.783333</td>
+<td>0.707071</td>
+<td>NaN</td>
+<td>0.205850</td>
+<td>801</td>
+<td>4044</td>
+<td>4845</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">298</td>
+<td>299</td>
+<td>2011-10-26</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>2</td>
+<td>0.484167</td>
+<td>0.472846</td>
+<td>0.720417</td>
+<td>NaN</td>
+<td>404</td>
+<td>3490</td>
+<td>3894</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">388</td>
+<td>389</td>
+<td>2012-01-24</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.342500</td>
+<td>0.349108</td>
+<td>NaN</td>
+<td>0.123767</td>
+<td>439</td>
+<td>3900</td>
+<td>4339</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">528</td>
+<td>529</td>
+<td>2012-06-12</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2</td>
+<td>0.653333</td>
+<td>0.597875</td>
+<td>0.833333</td>
+<td>NaN</td>
+<td>477</td>
+<td>4495</td>
+<td>4972</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">701</td>
+<td>702</td>
+<td>2012-12-02</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.823333</td>
+<td>0.124379</td>
+<td>892</td>
+<td>3757</td>
+<td>4649</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.577500</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>We will replace the null values in the windspeed column with the median. We choose to use the median over the mean because the median tends to guarantee that half the data is greater than the given value while the other half of the data is lower. The mean, by contrast, is vulnerable to outliers.</p>
+<p>This is the begining of building our wrangle function and we will call it <code>prep_data</code>. We will continue to build it step by step until the end. We will now use the <code>.assign</code> method to start our chain.</p>
+<div id="628213d4-d488-40c7-9f2a-76f589e5f3be" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                             .median())))           </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">129</td>
+<td>130</td>
+<td>2011-05-10</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.532500</td>
+<td>0.522721</td>
+<td>NaN</td>
+<td>0.115671</td>
+<td>694</td>
+<td>4109</td>
+<td>4803</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">213</td>
+<td>214</td>
+<td>2011-08-02</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.783333</td>
+<td>0.707071</td>
+<td>NaN</td>
+<td>0.205850</td>
+<td>801</td>
+<td>4044</td>
+<td>4845</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">388</td>
+<td>389</td>
+<td>2012-01-24</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.342500</td>
+<td>0.349108</td>
+<td>NaN</td>
+<td>0.123767</td>
+<td>439</td>
+<td>3900</td>
+<td>4339</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">701</td>
+<td>702</td>
+<td>2012-12-02</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.823333</td>
+<td>0.124379</td>
+<td>892</td>
+<td>3757</td>
+<td>4649</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.577500</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>We can now see that our output has shrunk a bit cos we have successfully eliminated the null values in the <code>windspeed</code> column.</p>
+<p>It is possible to get more nuanced when correcting null values by using a <code>groupby</code>. A <code>groupby</code> organizes rows by shared values. Since there are four shared seasons spread out among the rows, a groupby of seasons results in a total of four rows, one for each season. But each season comes from many different rows with different values. We need a way to combine, or aggregate, the values. Choices for the aggregate include <code>.sum()</code>, <code>.count()</code>, <code>.mean()</code>, and <code>.median()</code>.</p>
+<p>Grouping our dataframe by the <code>season</code> column with the <code>.median(numeric_only=True)</code> aggregate is shown below. <code>numeric_only=True</code> is a parameter that tells the method to ignore non-numeric columns and calculate the median only for numeric columns. If our DataFrame contains non-numeric columns (like strings or dates), they will not be included in the median calculation.</p>
+<div id="6d8e0d73-39c5-4de6-9407-a5a7621480d6" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bikes.groupby([<span class="st">'season'</span>]).median(numeric_only<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1.0</td>
+<td>366.0</td>
+<td>0.5</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.285833</td>
+<td>0.282821</td>
+<td>0.543750</td>
+<td>0.202750</td>
+<td>218.0</td>
+<td>1867.0</td>
+<td>2209.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2.0</td>
+<td>308.5</td>
+<td>0.5</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.562083</td>
+<td>0.538212</td>
+<td>0.646667</td>
+<td>0.191546</td>
+<td>867.0</td>
+<td>3844.0</td>
+<td>4941.5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3.0</td>
+<td>401.5</td>
+<td>0.5</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.714583</td>
+<td>0.656575</td>
+<td>0.635833</td>
+<td>0.165115</td>
+<td>1050.5</td>
+<td>4110.5</td>
+<td>5353.5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4.0</td>
+<td>493.0</td>
+<td>0.5</td>
+<td>11.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.410000</td>
+<td>0.409708</td>
+<td>0.661042</td>
+<td>0.167918</td>
+<td>544.5</td>
+<td>3815.0</td>
+<td>4634.5</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>To correct the null values in the ‘hum’ column (humidity), we can take the median humidity by season.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bikes[<span class="st">'hum'</span>] <span class="op">=</span> bikes[<span class="st">'hum'</span>].fillna()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The code that goes inside fillna is the desired values. The values obtained from <code>groupby</code> require the transform method as follows:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>bikes.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>].transform(<span class="st">'median'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Bringing everything together:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>bikes[<span class="st">'hum'</span>] <span class="op">=</span> (bikes[<span class="st">'hum'</span>]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                   .fillna(bikes.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, to implement it we are going to use the method of chaining and the <code>.assign</code> method in our code.</p>
+<div id="ef010461-bf72-43e0-9649-757ff22382c4" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                   )           </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">701</td>
+<td>702</td>
+<td>2012-12-02</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.823333</td>
+<td>0.124379</td>
+<td>892</td>
+<td>3757</td>
+<td>4649</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.577500</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>In some cases, it may be advantageous to replace null values with data from specific rows.</p>
+<p>When correcting temperature, aside from consulting historical records, taking the mean temperature of the day before and the day after should give a good estimate.</p>
+<p>To find null values of the ‘temp’ column, enter the following code:</p>
+<div id="afcb615f-e771-4e4c-bde8-e4be7e17cc01" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>bikes[bikes[<span class="st">'temp'</span>].isna()]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">701</td>
+<td>702</td>
+<td>2012-12-02</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.823333</td>
+<td>0.124379</td>
+<td>892</td>
+<td>3757</td>
+<td>4649</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>From the output above, index 701 contains null values.</p>
+<p>We will now find the <code>mean</code> temperature of the day before and the day after the 701 index.</p>
+<p>Let us sum the temperatures in rows 700 and 702 and divide by 2 for both the ‘temp’ and ‘atemp’ columns. We will create a function to do that so we can pass that to the chain.</p>
+<div id="5a76e913-9c4a-4767-9efe-d1676eb6c90e" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mean_vals(df, idx1, idx2, col):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        (df.iloc[idx1][col] <span class="op">+</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        df.iloc[idx2][col])<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>mean_vals(bikes, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>0.38634999999999997</code></pre>
+</div>
+</div>
+<div id="ff6a7f6b-db0b-431e-8d9a-36ca197fa34a" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                    temp <span class="op">=</span> (data[<span class="st">'temp'</span>]</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'temp'</span>))),</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                    atemp <span class="op">=</span> (data[<span class="st">'atemp'</span>]</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>)))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>                   )           </span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.5775</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The <code>dteday</code> is meant to be a date column but the <code>.info</code> we ran earlier revealed to us that it was an object or a string. Date objects such as years and months must be extrapolated from datetime types. Lets convert the column to a datetime.</p>
+<div id="35f5f1a4-7198-4956-b231-43a809603846" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                    temp <span class="op">=</span> (data[<span class="st">'temp'</span>]</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'temp'</span>))),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>                    atemp <span class="op">=</span> (data[<span class="st">'atemp'</span>]</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>))),</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>                    dteday <span class="op">=</span> pd.to_datetime(data[<span class="st">'dteday'</span>])</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>                   )           </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> (prep_data(df_bikes)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        .info())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 731 entries, 0 to 730
+Data columns (total 16 columns):
+ #   Column      Non-Null Count  Dtype         
+---  ------      --------------  -----         
+ 0   instant     731 non-null    int64         
+ 1   dteday      731 non-null    datetime64[ns]
+ 2   season      731 non-null    float64       
+ 3   yr          730 non-null    float64       
+ 4   mnth        730 non-null    float64       
+ 5   holiday     731 non-null    float64       
+ 6   weekday     731 non-null    float64       
+ 7   workingday  731 non-null    float64       
+ 8   weathersit  731 non-null    int64         
+ 9   temp        731 non-null    float64       
+ 10  atemp       731 non-null    float64       
+ 11  hum         731 non-null    float64       
+ 12  windspeed   731 non-null    float64       
+ 13  casual      731 non-null    int64         
+ 14  registered  731 non-null    int64         
+ 15  cnt         731 non-null    int64         
+dtypes: datetime64[ns](1), float64(10), int64(5)
+memory usage: 91.5 KB</code></pre>
+</div>
+</div>
+<p>The output shows us that we have successfully converted the <code>dteday</code> column to a DateTime object.</p>
+<p>We will convert the <code>mnth</code> column to the correct months extrpolated from the <code>dteday</code> column. We now introduce the use of the lambda function here or else we get an error. Without a lambda function, there’s a risk that the operation may refer to an outdated state of the DataFrame, especially if the referenced columns are being modified in the same <code>.assign()</code> method, which is actualyy our case here.</p>
+<div id="e9a7a6a6-7f68-468f-94d3-1b13cee80217" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                    temp <span class="op">=</span> (data[<span class="st">'temp'</span>]</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'temp'</span>))),</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>                    atemp <span class="op">=</span> (data[<span class="st">'atemp'</span>]</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>))),</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>                    dteday <span class="op">=</span> pd.to_datetime(data[<span class="st">'dteday'</span>]),</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                    mnth <span class="op">=</span> <span class="kw">lambda</span> x: x[<span class="st">'dteday'</span>].dt.month</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>                   )           </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>12</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.5775</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Let us check the last 5 values of the dataset we have worked on so far.</p>
+<div id="d5d5c7dd-c29d-491f-ab34-c8341ee067f0" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>bikes.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">726</td>
+<td>727</td>
+<td>2012-12-27</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>2</td>
+<td>0.254167</td>
+<td>0.226642</td>
+<td>0.652917</td>
+<td>0.350133</td>
+<td>247</td>
+<td>1867</td>
+<td>2114</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">727</td>
+<td>728</td>
+<td>2012-12-28</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>2</td>
+<td>0.253333</td>
+<td>0.255046</td>
+<td>0.590000</td>
+<td>0.155471</td>
+<td>644</td>
+<td>2451</td>
+<td>3095</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">728</td>
+<td>729</td>
+<td>2012-12-29</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.253333</td>
+<td>0.242400</td>
+<td>0.752917</td>
+<td>0.124383</td>
+<td>159</td>
+<td>1182</td>
+<td>1341</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">729</td>
+<td>730</td>
+<td>2012-12-30</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.255833</td>
+<td>0.231700</td>
+<td>0.483333</td>
+<td>0.350754</td>
+<td>364</td>
+<td>1432</td>
+<td>1796</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">730</td>
+<td>731</td>
+<td>2012-12-31</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>12</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2</td>
+<td>0.215833</td>
+<td>0.223487</td>
+<td>0.577500</td>
+<td>0.154846</td>
+<td>439</td>
+<td>2290</td>
+<td>2729</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>We can see that even though the year value on the <code>dteday</code> column has 2012 all through, the value on the <code>yr</code> column is 1.0. It probably means that the values have been normalized, probably between 0 &amp; 1. I think this was done because normalized data is often more efficient due to the fact that machine learning weights do not have to adjust for different ranges.</p>
+<p>We will just use the forward fill for the null values here since the row with the null value is in the same month with the preceding row:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'yr'</span>].ffill()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d249654a-619a-48bb-91b0-6a51430804fa" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                    temp <span class="op">=</span> (data[<span class="st">'temp'</span>]</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'temp'</span>))),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                    atemp <span class="op">=</span> (data[<span class="st">'atemp'</span>]</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>))),</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>                    dteday <span class="op">=</span> pd.to_datetime(data[<span class="st">'dteday'</span>]),</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>                    mnth <span class="op">=</span> <span class="kw">lambda</span> x: x[<span class="st">'dteday'</span>].dt.month,</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>                    yr <span class="op">=</span> data[<span class="st">'yr'</span>].ffill()</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>                   )           </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>show_nulls(bikes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">dteday</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Looks like we have no null values left in our cleaned dataframe. This is what we want.</p>
+<p>For machine learning, all data columns should be numerical. According to <code>.info()</code>, the only column that is not numerical is <code>dteday</code>. Furthermore, it’s redundant since all date information exists in other columns.</p>
+<div id="3d090131-2505-4dc1-b78b-7b2edc26c2c0" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep_data(data):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (data</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>            .assign(windspeed <span class="op">=</span> data[<span class="st">"windspeed"</span>]</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                    .fillna((data[<span class="st">"windspeed"</span>]</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                             .median())),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>                    hum <span class="op">=</span> (data[<span class="st">'hum'</span>]</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                   .fillna(data.groupby(<span class="st">'season'</span>)[<span class="st">'hum'</span>]</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                           .transform(<span class="st">'median'</span>))),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                    temp <span class="op">=</span> (data[<span class="st">'temp'</span>]</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'temp'</span>))),</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                    atemp <span class="op">=</span> (data[<span class="st">'atemp'</span>]</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>                            .fillna(mean_vals(data, <span class="dv">700</span>, <span class="dv">702</span>, <span class="st">'atemp'</span>))),</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>                    dteday <span class="op">=</span> pd.to_datetime(data[<span class="st">'dteday'</span>]),</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>                    mnth <span class="op">=</span> <span class="kw">lambda</span> x: x[<span class="st">'dteday'</span>].dt.month,</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>                    yr <span class="op">=</span> data[<span class="st">'yr'</span>].ffill()</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>                   )</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>            .drop(<span class="st">'dteday'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>           )</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> prep_data(df_bikes)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>bikes.sample(n<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">instant</th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">holiday</th>
+<th data-quarto-table-cell-role="th">weekday</th>
+<th data-quarto-table-cell-role="th">workingday</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">atemp</th>
+<th data-quarto-table-cell-role="th">hum</th>
+<th data-quarto-table-cell-role="th">windspeed</th>
+<th data-quarto-table-cell-role="th">casual</th>
+<th data-quarto-table-cell-role="th">registered</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">335</td>
+<td>336</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.314167</td>
+<td>0.331433</td>
+<td>0.625833</td>
+<td>0.100754</td>
+<td>268</td>
+<td>3672</td>
+<td>3940</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">631</td>
+<td>632</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>9</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.529167</td>
+<td>0.518933</td>
+<td>0.467083</td>
+<td>0.223258</td>
+<td>2454</td>
+<td>5453</td>
+<td>7907</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">620</td>
+<td>621</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>9</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.599167</td>
+<td>0.570075</td>
+<td>0.577083</td>
+<td>0.131846</td>
+<td>1050</td>
+<td>6820</td>
+<td>7870</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">722</td>
+<td>723</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>12</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1</td>
+<td>0.245833</td>
+<td>0.259471</td>
+<td>0.515417</td>
+<td>0.133083</td>
+<td>408</td>
+<td>1379</td>
+<td>1787</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">388</td>
+<td>389</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>1</td>
+<td>0.342500</td>
+<td>0.349108</td>
+<td>0.543750</td>
+<td>0.123767</td>
+<td>439</td>
+<td>3900</td>
+<td>4339</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>This is the beauty of method chaining. Now we have a function neatly done that will handle this dataset next time we come across it.</p>
+<p>Thank you for reading this.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/theAfricanQuant\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="theAfricanQuant/theAfricanQuant.github.io" data-repo-id="R_kgDOK8Zc8Q" data-category="Announcements" data-category-id="DIC_kwDOK8Zc8c4Cfc4R" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="noborder_light" data-lang="en" crossorigin="anonymous" data-loading="lazy" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
