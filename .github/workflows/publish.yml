@@ -24,10 +24,7 @@ jobs:
             cache: 'pip'
         - run: pip install --upgrade pip
         - run: pip install -e .
-
-        - name: Move CNAME file
-          run: mv html/CNAME _site/CNAME  # Adjust if Quarto outputs to another folder
-
+            
         - name: Render and Publish
           uses: quarto-dev/quarto-actions/publish@v2
           with:
