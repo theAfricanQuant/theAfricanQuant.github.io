@@ -36,5 +36,5 @@ resources:
 </p>
 
 <div class="embed-container">
-  <iframe src="RickyMacharm_EU-CV_2025.pdf"#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
+  <iframe src="RickyMacharm_EU-CV_2025.pdf#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
 </div>
