@@ -6,7 +6,7 @@ execute:
   freeze: true  # never re-render during project render
 engine: jupyter
 resources:
-  - "Ricky_Data_Scientist_2023.pdf"
+  - "RickyMacharm_EU-CV_2025.pdf"
 ---
 
 
