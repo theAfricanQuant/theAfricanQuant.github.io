@@ -2,7 +2,7 @@
 title: "Blog Posts"
 subtitle: "still working on writing more often"
 listing:
-  contents: blog
+  # contents: blog
   sort: "date desc"
   type: default
   image-align: right
