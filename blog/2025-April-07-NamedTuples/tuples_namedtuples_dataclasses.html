@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2025-04-07">
+
+<title>Python’s Data Structures: Tuples, namedTuples &amp; DataClasses (Retired Legends Edition) – SisengAI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-44a849ee5d72a957974aaebece2a0231.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects/index.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Résumé</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:Ricky.Macharm@SisengAI.com"> <i class="bi bi-envelope" role="img" aria-label="email">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Python’s Data Structures: Tuples, namedTuples &amp; DataClasses (Retired Legends Edition)</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">collections</div>
+                <div class="quarto-category">DataClasses</div>
+                <div class="quarto-category">NamedTuple</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 7, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Ever needed to store a fixed collection of related items, like coordinates (x, y) or basic info about a person (name, age)? How about details for legendary retired football players, many of whom famously wore the number 10 jersey? Think Pelé, Zidane, Platini, and the skillful Jay-Jay Okocha! Python offers several ways to structure this data. We’ll start with the basic <code>tuple</code> and see why sometimes we need more clarity. Then, we’ll explore <code>collections.namedtuple</code>, its modern cousin <code>typing.NamedTuple</code>, and finally, the flexible <code>dataclass</code>, using these football icons as our examples! Let’s dive in and make sense of these useful structures!</p>
+</section>
+<section id="whats-a-tuple" class="level2">
+<h2 class="anchored" data-anchor-id="whats-a-tuple">What’s a Tuple?</h2>
+<p>Think of a tuple as a fixed, ordered list. Once you create it, you can’t change its contents – it’s <em>immutable</em>. You define tuples using parentheses <code>()</code>. Let’s store some basic player info.</p>
+<div id="6a7f3542" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tuple representing basic player info (Name, Year of Birth)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>platini_basic <span class="op">=</span> (<span class="st">"Michel Platini"</span>, <span class="dv">1955</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Basic Platini tuple: </span><span class="sc">{</span>platini_basic<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A tuple representing more detailed player info (Name, YOB, Country, Active Years)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: Pelé's full name is Edson Arantes do Nascimento</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pele_details <span class="op">=</span> (<span class="st">"Pelé"</span>, <span class="dv">1940</span>, <span class="st">"Brazil"</span>, <span class="st">"1956–1977"</span>) </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Detailed Pelé tuple: </span><span class="sc">{</span>pele_details<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Basic Platini tuple: ('Michel Platini', 1955)
+Detailed Pelé tuple: ('Pelé', 1940, 'Brazil', '1956–1977')</code></pre>
+</div>
+</div>
+<p>You access items in a tuple using their position (index), starting from 0.</p>
+<div id="704a4d0d" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Continuing with the tuples from above</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>platini_basic <span class="op">=</span> (<span class="st">"Michel Platini"</span>, <span class="dv">1955</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pele_details <span class="op">=</span> (<span class="st">"Pelé"</span>, <span class="dv">1940</span>, <span class="st">"Brazil"</span>, <span class="st">"1956–1977"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Accessing elements by their index</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>platini_name <span class="op">=</span> platini_basic[<span class="dv">0</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>platini_yob <span class="op">=</span> platini_basic[<span class="dv">1</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>pele_name <span class="op">=</span> pele_details[<span class="dv">0</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>pele_country <span class="op">=</span> pele_details[<span class="dv">2</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>pele_active <span class="op">=</span> pele_details[<span class="dv">3</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Platini: Name = </span><span class="sc">{</span>platini_name<span class="sc">}</span><span class="ss">, YOB = </span><span class="sc">{</span>platini_yob<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pelé: Name = </span><span class="sc">{</span>pele_name<span class="sc">}</span><span class="ss">, Country = </span><span class="sc">{</span>pele_country<span class="sc">}</span><span class="ss">, Active = </span><span class="sc">{</span>pele_active<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Platini: Name = Michel Platini, YOB = 1955
+Pelé: Name = Pelé, Country = Brazil, Active = 1956–1977</code></pre>
+</div>
+</div>
+<p><strong>The Challenge with Simple Tuples:</strong></p>
+<p>Using indices like <code>pele_details[2]</code> works, but it isn’t very descriptive. What does index <code>2</code> represent? Country? Jersey number? Goals scored? This can get confusing, especially with tuples holding more items. We need a way to make accessing these elements more readable.</p>
+</section>
+<section id="making-tuples-readable-collections.namedtuple" class="level2">
+<h2 class="anchored" data-anchor-id="making-tuples-readable-collections.namedtuple">Making Tuples Readable: <code>collections.namedtuple</code></h2>
+<p>Python’s built-in <code>collections</code> module provides a fantastic solution: <code>namedtuple</code>. It lets you create tuple-like objects where you can access elements by a descriptive <em>name</em> as well as by their index! It acts like a factory that generates a new <em>type</em> of tuple tailored to our player data needs, featuring greats like Okocha and Pelé.</p>
+<div id="d1481b42" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> namedtuple</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 'blueprint' for a Player namedtuple</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fields: name, year_of_birth, country, years_active</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Player <span class="op">=</span> namedtuple(<span class="st">"Player"</span>, <span class="st">"name year_of_birth country years_active"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create instances (objects) of our Player namedtuple type</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Data: Jay-Jay Okocha, Pelé</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>okocha <span class="op">=</span> Player(<span class="st">"Jay-Jay Okocha"</span>, <span class="dv">1973</span>, <span class="st">"Nigeria"</span>, <span class="st">"1992–2008"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>pele <span class="op">=</span> Player(name<span class="op">=</span><span class="st">"Pelé"</span>, year_of_birth<span class="op">=</span><span class="dv">1940</span>, country<span class="op">=</span><span class="st">"Brazil"</span>, years_active<span class="op">=</span><span class="st">"1956–1977"</span>) <span class="co"># Keyword args work too</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Player Instances ---"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(okocha)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pele)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Access by name (much clearer!)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Access by Name ---"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's Country: </span><span class="sc">{</span>okocha<span class="sc">.</span>country<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pelé's Active Years: </span><span class="sc">{</span>pele<span class="sc">.</span>years_active<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Access by index (still works!)</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Access by Index ---"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's Name (Index 0): </span><span class="sc">{</span>okocha[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Pelé's YOB (Index 1): </span><span class="sc">{</span>pele[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Player Instances ---
+Player(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992–2008')
+Player(name='Pelé', year_of_birth=1940, country='Brazil', years_active='1956–1977')
+
+--- Access by Name ---
+Okocha's Country: Nigeria
+Pelé's Active Years: 1956–1977
+
+--- Access by Index ---
+Okocha's Name (Index 0): Jay-Jay Okocha
+Pelé's YOB (Index 1): 1940</code></pre>
+</div>
+</div>
+<p>See how <code>okocha.country</code> and <code>pele.years_active</code> are much clearer than <code>okocha[2]</code> and <code>pele[3]</code>? This significantly improves code readability.</p>
+<p><code>namedtuple</code> also comes with some handy built-in helper methods:</p>
+<div id="97e06ea5" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> namedtuple</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Player <span class="op">=</span> namedtuple(<span class="st">"Player"</span>, <span class="st">"name year_of_birth country years_active"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>okocha <span class="op">=</span> Player(<span class="st">"Jay-Jay Okocha"</span>, <span class="dv">1973</span>, <span class="st">"Nigeria"</span>, <span class="st">"1992–2008"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># _asdict(): Get fields as an ordered dictionary</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha as Dictionary: </span><span class="sc">{</span>okocha<span class="sc">.</span>_asdict()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># _fields: Get the field names as a tuple</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Player Fields: </span><span class="sc">{</span>Player<span class="sc">.</span>_fields<span class="sc">}</span><span class="ss">"</span>) <span class="co"># Access fields via the type</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># _make(): Create a new instance from an iterable (like a list or tuple)</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Data: Zinedine Zidane</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>zidane_data <span class="op">=</span> [<span class="st">"Zinedine Zidane"</span>, <span class="dv">1972</span>, <span class="st">"France"</span>, <span class="st">"1988–2006"</span>]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>zidane <span class="op">=</span> Player._make(zidane_data)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Made from list (Zidane): </span><span class="sc">{</span>zidane<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># _replace(): Create a *new* tuple with some fields replaced</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember, tuples are immutable! This doesn't change okocha.</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's imagine updating Okocha's active years hypothetically</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>okocha_updated <span class="op">=</span> okocha._replace(years_active<span class="op">=</span><span class="st">"1992-2010"</span>) <span class="co"># Creates a new instance</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Replaced years (hypothetical): </span><span class="sc">{</span>okocha_updated<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Original Okocha unchanged: </span><span class="sc">{</span>okocha<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Okocha as Dictionary: {'name': 'Jay-Jay Okocha', 'year_of_birth': 1973, 'country': 'Nigeria', 'years_active': '1992–2008'}
+Player Fields: ('name', 'year_of_birth', 'country', 'years_active')
+
+Made from list (Zidane): Player(name='Zinedine Zidane', year_of_birth=1972, country='France', years_active='1988–2006')
+
+Replaced years (hypothetical): Player(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992-2010')
+Original Okocha unchanged: Player(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992–2008')</code></pre>
+</div>
+</div>
+</section>
+<section id="the-modern-way-typing.namedtuple" class="level2">
+<h2 class="anchored" data-anchor-id="the-modern-way-typing.namedtuple">The Modern Way: <code>typing.NamedTuple</code></h2>
+<p>With the introduction of type hints in Python 3, a more modern way to create named tuples emerged: <code>typing.NamedTuple</code>. It integrates seamlessly with type checking tools.</p>
+<p>There are two main ways to define a <code>typing.NamedTuple</code>:</p>
+<p><strong>1. Functional Syntax:</strong> Similar to <code>collections.namedtuple</code>, but includes type information directly in the field definition.</p>
+<div id="27737e81" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> NamedTuple</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional syntax: Define type name and a list of (field_name, type) tuples</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>PlayerInfo <span class="op">=</span> NamedTuple(<span class="st">"PlayerInfo"</span>, [</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"name"</span>, <span class="bu">str</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"year_of_birth"</span>, <span class="bu">int</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"country"</span>, <span class="bu">str</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"years_active"</span>, <span class="bu">str</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an instance using this type</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>okocha_info <span class="op">=</span> PlayerInfo(<span class="st">"Jay-Jay Okocha"</span>, <span class="dv">1973</span>, <span class="st">"Nigeria"</span>, <span class="st">"1992-2008"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>zidane_info <span class="op">=</span> PlayerInfo(name<span class="op">=</span><span class="st">"Zinedine Zidane"</span>, year_of_birth<span class="op">=</span><span class="dv">1972</span>, country<span class="op">=</span><span class="st">"France"</span>, years_active<span class="op">=</span><span class="st">"1988–2006"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Player Instances (typing.NamedTuple - Functional) ---"</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(okocha_info)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(zidane_info)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Access by Name ---"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's Country: </span><span class="sc">{</span>okocha_info<span class="sc">.</span>country<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Zidane's YOB: </span><span class="sc">{</span>zidane_info<span class="sc">.</span>year_of_birth<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Access by Index ---"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's Name (Index 0): </span><span class="sc">{</span>okocha_info[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Player Instances (typing.NamedTuple - Functional) ---
+PlayerInfo(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992-2008')
+PlayerInfo(name='Zinedine Zidane', year_of_birth=1972, country='France', years_active='1988–2006')
+
+--- Access by Name ---
+Okocha's Country: Nigeria
+Zidane's YOB: 1972
+
+--- Access by Index ---
+Okocha's Name (Index 0): Jay-Jay Okocha</code></pre>
+</div>
+</div>
+<p><strong>2. Class Syntax:</strong> This uses standard class definition syntax, which many find more intuitive and familiar, especially when coming from object-oriented programming.</p>
+<div id="3c2d7433" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> NamedTuple</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="co"># To calculate age</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a Player using NamedTuple and type hints</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This looks like defining a class!</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Player(NamedTuple):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    year_of_birth: <span class="bu">int</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    country: <span class="bu">str</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    years_active: <span class="bu">str</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># </span><span class="al">NOTE</span><span class="co">: We are keeping this definition simple for clarity.</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You *can* add methods here if needed, but the core idea</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># is an immutable, typed structure.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create instances - works just like calling a class constructor</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Data: Michel Platini, Zinedine Zidane, Jay-Jay Okocha</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>platini <span class="op">=</span> Player(<span class="st">"Michel Platini"</span>, <span class="dv">1955</span>, <span class="st">"France"</span>, <span class="st">"1972–1987"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>zidane <span class="op">=</span> Player(name<span class="op">=</span><span class="st">"Zinedine Zidane"</span>, year_of_birth<span class="op">=</span><span class="dv">1972</span>, country<span class="op">=</span><span class="st">"France"</span>, years_active<span class="op">=</span><span class="st">"1988–2006"</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>okocha <span class="op">=</span> Player(name<span class="op">=</span><span class="st">"Jay-Jay Okocha"</span>, year_of_birth<span class="op">=</span><span class="dv">1973</span>, country<span class="op">=</span><span class="st">"Nigeria"</span>, years_active<span class="op">=</span><span class="st">"1992–2008"</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Player Instances (typing.NamedTuple - Class Syntax) ---"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(platini)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(zidane)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(okocha)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Access by Name ---"</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Platini's YOB: </span><span class="sc">{</span>platini<span class="sc">.</span>year_of_birth<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Zidane's Country: </span><span class="sc">{</span>zidane<span class="sc">.</span>country<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's Active Years: </span><span class="sc">{</span>okocha<span class="sc">.</span>years_active<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Access by index still works too!</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Access by Index ---"</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Platini's Name (Index 0): </span><span class="sc">{</span>platini[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Zidane's Active Years (Index 3): </span><span class="sc">{</span>zidane[<span class="dv">3</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Okocha's YOB (Index 1): </span><span class="sc">{</span>okocha[<span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Still immutable! This would raise an AttributeError:</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co"># try:</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#    zidane.country = "Algeria" # Can't change fields</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co"># except AttributeError as e:</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co">#    print(f"\nError trying to modify: {e}")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Player Instances (typing.NamedTuple - Class Syntax) ---
+Player(name='Michel Platini', year_of_birth=1955, country='France', years_active='1972–1987')
+Player(name='Zinedine Zidane', year_of_birth=1972, country='France', years_active='1988–2006')
+Player(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992–2008')
+
+--- Access by Name ---
+Platini's YOB: 1955
+Zidane's Country: France
+Okocha's Active Years: 1992–2008
+
+--- Access by Index ---
+Platini's Name (Index 0): Michel Platini
+Zidane's Active Years (Index 3): 1988–2006
+Okocha's YOB (Index 1): 1973</code></pre>
+</div>
+</div>
+<p>Notice how the class syntax looks much more like defining a regular Python class. It provides the same core benefits as <code>collections.namedtuple</code> (access by name, immutability, tuple behavior) but with the added advantages of:</p>
+<ol type="1">
+<li><strong>Clear Type Annotations:</strong> Improves code understanding and helps catch errors.</li>
+<li><strong>Standard Class Syntax:</strong> More familiar for object-oriented programming.</li>
+</ol>
+</section>
+<section id="namedtuple-is-almost-a-class" class="level2">
+<h2 class="anchored" data-anchor-id="namedtuple-is-almost-a-class">NamedTuple <em>is</em> (almost) a Class</h2>
+<p>It’s important to understand that both <code>collections.namedtuple</code> and <code>typing.NamedTuple</code> create actual Python classes for you behind the scenes. These generated classes inherit directly from the base <code>tuple</code> type. That’s why they behave like tuples (immutable, ordered, unpackable, indexed) but <em>also</em> gain named fields. <code>typing.NamedTuple</code> just makes this class-based nature much more explicit, especially with the class syntax.</p>
+</section>
+<section id="what-about-dataclasses" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-dataclasses">What About <code>dataclasses</code>?</h2>
+<p>Python 3.7 introduced another powerful tool for creating classes that primarily hold data: the <code>@dataclass</code> decorator from the <code>dataclasses</code> module. It automatically generates special methods like <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>, etc., saving you boilerplate code. Let’s model our retired legends using a dataclass.</p>
+<div id="722201d9" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass, field <span class="co"># field might be needed for complex defaults</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PlayerData:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    year_of_birth: <span class="bu">int</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    country: <span class="bu">str</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    years_active: <span class="bu">str</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Example: Add an optional field with a simple default</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    status: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Retired Legend"</span> </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># You can add methods here too</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_info_string(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>country<span class="sc">}</span><span class="ss">), Born: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>year_of_birth<span class="sc">}</span><span class="ss">, Active: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>years_active<span class="sc">}</span><span class="ss">, Status: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>status<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create instances - the __init__ is generated for us!</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Data: Pelé, Jay-Jay Okocha</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>pele_dc <span class="op">=</span> PlayerData(<span class="st">"Pelé"</span>, <span class="dv">1940</span>, <span class="st">"Brazil"</span>, <span class="st">"1956–1977"</span>) </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>okocha_dc <span class="op">=</span> PlayerData(<span class="st">"Jay-Jay Okocha"</span>, <span class="dv">1973</span>, <span class="st">"Nigeria"</span>, <span class="st">"1992–2008"</span>)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Player Instances (dataclass) ---"</span>)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pele_dc) <span class="co"># Nice __repr__ is generated!</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(okocha_dc)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataclasses are MUTABLE by default</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Mutability ---"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's hypothetically update Pelé's status if new info came to light</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>pele_dc.status <span class="op">=</span> <span class="st">"Global Ambassador"</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Modified Pelé data: </span><span class="sc">{</span>pele_dc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparison works out of the box (__eq__ is generated)</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>pele_dc_copy <span class="op">=</span> PlayerData(<span class="st">"Pelé"</span>, <span class="dv">1940</span>, <span class="st">"Brazil"</span>, <span class="st">"1956–1977"</span>, status<span class="op">=</span><span class="st">"Global Ambassador"</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>okocha_dc_copy <span class="op">=</span> PlayerData(<span class="st">"Jay-Jay Okocha"</span>, <span class="dv">1973</span>, <span class="st">"Nigeria"</span>, <span class="st">"1992–2008"</span>)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Is pele_dc equal to its copy? </span><span class="sc">{</span>pele_dc <span class="op">==</span> pele_dc_copy<span class="sc">}</span><span class="ss">"</span>) <span class="co"># Compares field values</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Is okocha_dc equal to its copy? </span><span class="sc">{</span>okocha_dc <span class="op">==</span> okocha_dc_copy<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Is pele_dc equal to okocha_dc? </span><span class="sc">{</span>pele_dc <span class="op">==</span> okocha_dc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the custom method</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- Custom Method ---"</span>)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(okocha_dc.get_info_string())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Player Instances (dataclass) ---
+PlayerData(name='Pelé', year_of_birth=1940, country='Brazil', years_active='1956–1977', status='Retired Legend')
+PlayerData(name='Jay-Jay Okocha', year_of_birth=1973, country='Nigeria', years_active='1992–2008', status='Retired Legend')
+
+--- Mutability ---
+Modified Pelé data: PlayerData(name='Pelé', year_of_birth=1940, country='Brazil', years_active='1956–1977', status='Global Ambassador')
+
+Is pele_dc equal to its copy? True
+Is okocha_dc equal to its copy? True
+Is pele_dc equal to okocha_dc? False
+
+--- Custom Method ---
+Jay-Jay Okocha (Nigeria), Born: 1973, Active: 1992–2008, Status: Retired Legend</code></pre>
+</div>
+</div>
+</section>
+<section id="typing.namedtuple-vs.-dataclasses.dataclass-when-to-choose" class="level2">
+<h2 class="anchored" data-anchor-id="typing.namedtuple-vs.-dataclasses.dataclass-when-to-choose"><code>typing.NamedTuple</code> vs.&nbsp;<code>dataclasses.dataclass</code>: When to Choose?</h2>
+<p>Both <code>typing.NamedTuple</code> and <code>dataclasses.dataclass</code> are excellent for structured data, but they differ crucially:</p>
+<ol type="1">
+<li><strong>Mutability:</strong>
+<ul>
+<li><code>NamedTuple</code>: <strong>Immutable</strong>. Cannot change values after creation. Create a new instance for changes (using <code>_replace</code> or creating anew).</li>
+<li><code>DataClass</code>: <strong>Mutable</strong> by default. Can change values (<code>pele_dc.status = ...</code>). Use <code>@dataclass(frozen=True)</code> to make it immutable, mimicking <code>NamedTuple</code> behavior.</li>
+</ul></li>
+<li><strong>Inheritance &amp; Type:</strong>
+<ul>
+<li><code>NamedTuple</code>: Inherits from <code>tuple</code>. <em>Is</em> a tuple.</li>
+<li><code>DataClass</code>: Inherits from <code>object</code> (by default). A regular class instance, not a tuple.</li>
+</ul></li>
+<li><strong>Memory &amp; Performance:</strong>
+<ul>
+<li><code>NamedTuple</code> <em>can</em> be slightly more memory-efficient (no <code>__dict__</code> usually needed).</li>
+<li>Performance differences are often negligible in practice. <strong>Choose based on required features (mutability, tuple behavior) first.</strong></li>
+</ul></li>
+<li><strong>Flexibility &amp; Features:</strong>
+<ul>
+<li><code>DataClass</code>: More flexible, more configuration options (<code>frozen</code>, <code>order</code>, <code>__post_init__</code>), easier handling of mutable defaults (<code>field(default_factory=...)</code>), feels like a standard class, easier to add complex methods.</li>
+<li><code>NamedTuple</code>: Simpler, focused on immutable, tuple-like records with named fields and types.</li>
+</ul></li>
+</ol>
+<p><strong>When to Use Which (Retired Player Example Context):</strong></p>
+<ul>
+<li><strong>Choose <code>typing.NamedTuple</code> for Players like Okocha, Pelé, Zidane when:</strong>
+<ul>
+<li>You want to ensure player records (like historical stats, birth year, active years) <strong>cannot be accidentally changed</strong> after creation. This represents fixed historical data well.</li>
+<li>You need to use the player record exactly like a <code>tuple</code> (e.g., as a dictionary key, unpacking into variables).</li>
+<li>You’re returning fixed player info from a function and want named fields plus type safety for clarity without the overhead or mutability of a full class.</li>
+</ul></li>
+<li><strong>Choose <code>dataclasses.dataclass</code> for Players when:</strong>
+<ul>
+<li>You need to <strong>modify</strong> player data after creation (e.g., updating <code>status</code>, adding recent accolades, potentially tracking temporary states).</li>
+<li>You want the <em>option</em> of immutability (<code>frozen=True</code>) but prefer the general structure and features of dataclasses (like easier method addition, <code>__post_init__</code>).</li>
+<li>You plan to add more complex methods related to player actions or state changes that go beyond simple data representation.</li>
+<li>You prefer the standard Python class feel and don’t specifically need tuple-like behavior.</li>
+</ul></li>
+</ul>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We’ve explored how to represent structured data in Python, moving from basic <code>tuple</code>s to more descriptive and powerful options using retired football legends like Pelé, Zidane, Platini, and the exceptionally skillful Jay-Jay Okocha (many of whom wore the iconic number 10) as our examples:</p>
+<ul>
+<li><strong><code>tuple</code></strong>: Simple, immutable, indexed sequence. Good for very basic, fixed data where names aren’t crucial.</li>
+<li><strong><code>collections.namedtuple</code></strong>: The classic way to add names to tuple fields for readability, creating simple tuple subclasses.</li>
+<li><strong><code>typing.NamedTuple</code></strong>: The modern, type-hinted way (using functional or class syntax) for creating <em>immutable</em> named tuple classes. Excellent for fixed records.</li>
+<li><strong><code>dataclasses.dataclass</code></strong>: A flexible decorator for creating data-centric classes (<em>mutable</em> by default, but can be <code>frozen</code>) with less boilerplate code. Great for general-purpose data holding.</li>
+</ul>
+<p>Understanding the <strong>immutability</strong> of tuples and <code>NamedTuple</code> versus the default <strong>mutability</strong> of <code>dataclass</code> is key. Choose <code>NamedTuple</code> for fixed, unchanging records like historical player details. Opt for <code>dataclass</code> when you need a more general-purpose container, perhaps for data that might evolve or require more complex class behaviors. Both help write cleaner, more understandable Python code! Happy coding!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="theAfricanQuant/theAfricanQuant.github.io" data-repo-id="R_kgDOK8Zc8Q" data-category="Announcements" data-category-id="DIC_kwDOK8Zc8c4Cfc4R" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="noborder_light" data-lang="en" crossorigin="anonymous" data-loading="lazy" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

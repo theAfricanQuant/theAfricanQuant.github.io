@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html",
       "/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html",
       "/blog/2024-June-19-Walrus-Operator/theWalrusOperator.html",
       "/blog/2024-May-25-Lambda-Functions/lambda_functions.html",
