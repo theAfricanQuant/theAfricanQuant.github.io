@@ -262,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   average = sum(valid_data) / len(valid_data)</code></pre>
 <p>This is a lot cleaner than the previous one; however, it is also quite inefficient. We can see that we are calling the computationally expensive function twice instead of once.</p>
 <p>With the walrus operator, we can condense this logic into a more efficient list comprehension:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> [result <span class="cf">for</span> value <span class="kw">in</span> sensor_data <span class="cf">if</span> (result <span class="op">:=</span> compute_exdataing regular expressions.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> [result <span class="cf">for</span> value <span class="kw">in</span> sensor_data <span class="cf">if</span> (result <span class="op">:=</span> compute_expensive_value(value))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="example-handling-regular-expressions" class="level4">
 <h4 class="anchored" data-anchor-id="example-handling-regular-expressions">Example: Handling Regular Expressions</h4>
 <p>A common pattern involves checking for matches and then acting upon them:</p>
