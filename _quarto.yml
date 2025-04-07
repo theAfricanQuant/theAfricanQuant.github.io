@@ -57,6 +57,10 @@ website:
 # engine: jupyter
 project:
   type: website
+  resources: 
+    - img/ricky_404.jpg
+    - 404.html
+    
   # output-dir: docs
 
   preview: 
