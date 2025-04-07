@@ -2,9 +2,9 @@
 title: "Blog Posts"
 subtitle: "still working on writing more often"
 listing:
-  # contents: blog
+  contents: blog
   sort: "date desc"
-  type: grid
+  type: default
   image-align: right
   max-description-length: 175
   date-format: medium
