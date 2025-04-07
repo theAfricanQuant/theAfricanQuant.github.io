@@ -15,4 +15,4 @@ We couldn't find the page you're looking for. but if you wait a little bit we wi
 
 [Go back to the homepage](/)
 
-<meta http-equiv="refresh" content="5;url=https://www.sisengai.com/blog//blog/">
+<meta http-equiv="refresh" content="7;url=https://www.sisengai.com/blog/">
