@@ -10,7 +10,7 @@ listing:
   date-format: medium
   categories: true
   sort-ui: false
-  filter-ui: false
+  filter-ui: True
 page-layout: full
 title-block-banner: true
 ---

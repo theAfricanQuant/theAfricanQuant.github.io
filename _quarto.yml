@@ -76,9 +76,9 @@ execute:
 format:
   html:
     fontsize: 1.1em
-    theme: default
-      # - cosmo
-      # - html/styles.scss
+    theme: 
+      - pulse
+      - html/styles.scss
     toc: false
     code-link: true
     anchor-sections: true
