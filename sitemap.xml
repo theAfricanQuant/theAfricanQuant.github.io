@@ -2,58 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.sisengai.com/projects/index.html</loc>
-    <lastmod>2025-04-07T18:01:11.452Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
-    <lastmod>2025-04-07T18:01:11.443Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
-    <lastmod>2025-04-07T18:01:11.440Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
-    <lastmod>2025-04-07T18:01:11.286Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html</loc>
-    <lastmod>2025-04-07T18:01:11.290Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/index.html</loc>
-    <lastmod>2025-04-07T18:01:11.450Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/about.html</loc>
-    <lastmod>2025-04-07T18:01:11.285Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/index.html</loc>
-    <lastmod>2025-04-07T18:01:11.452Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html</loc>
-    <lastmod>2025-04-07T18:01:11.361Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html</loc>
-    <lastmod>2025-04-07T18:01:11.309Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
-    <lastmod>2025-04-07T18:01:11.449Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
-    <lastmod>2025-04-07T18:01:11.450Z</lastmod>
+    <lastmod>2025-04-07T18:29:32.067Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-June-19-Walrus-Operator/theWalrusOperator.html</loc>
-    <lastmod>2025-04-07T18:01:11.430Z</lastmod>
+    <lastmod>2025-04-07T18:29:32.039Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
+    <lastmod>2025-04-07T18:29:32.060Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
+    <lastmod>2025-04-07T18:29:32.059Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html</loc>
+    <lastmod>2025-04-07T18:29:30.814Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html</loc>
+    <lastmod>2025-04-07T18:29:30.865Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/index.html</loc>
+    <lastmod>2025-04-07T18:29:32.067Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/about.html</loc>
+    <lastmod>2025-04-07T18:29:30.790Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/index.html</loc>
+    <lastmod>2025-04-07T18:29:32.060Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html</loc>
+    <lastmod>2025-04-07T18:29:30.794Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
+    <lastmod>2025-04-07T18:29:30.790Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
+    <lastmod>2025-04-07T18:29:32.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
+    <lastmod>2025-04-07T18:29:32.052Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/resume/index.html</loc>
-    <lastmod>2025-04-07T18:01:11.453Z</lastmod>
+    <lastmod>2025-04-07T18:29:32.068Z</lastmod>
   </url>
 </urlset>

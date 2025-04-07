@@ -219,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="whats-a-tuple" class="level2">
 <h2 class="anchored" data-anchor-id="whats-a-tuple">What’s a Tuple?</h2>
 <p>Think of a tuple as a fixed, ordered list. Once you create it, you can’t change its contents – it’s <em>immutable</em>. You define tuples using parentheses <code>()</code>. Let’s store some basic player info.</p>
-<div id="fd7a7909" class="cell" data-execution_count="1">
+<div id="31076cf9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tuple representing basic player info (Name, Year of Birth)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>platini_basic <span class="op">=</span> (<span class="st">"Michel Platini"</span>, <span class="dv">1955</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Basic Platini tuple: </span><span class="sc">{</span>platini_basic<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -234,7 +234,7 @@ Detailed Pelé tuple: ('Pelé', 1940, 'Brazil', '1956–1977')</code></pre>
 </div>
 </div>
 <p>You access items in a tuple using their position (index), starting from 0.</p>
-<div id="86f4f6b7" class="cell" data-execution_count="2">
+<div id="c16483a1" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Continuing with the tuples from above</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>platini_basic <span class="op">=</span> (<span class="st">"Michel Platini"</span>, <span class="dv">1955</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pele_details <span class="op">=</span> (<span class="st">"Pelé"</span>, <span class="dv">1940</span>, <span class="st">"Brazil"</span>, <span class="st">"1956–1977"</span>)</span>
@@ -261,7 +261,7 @@ Pelé: Name = Pelé, Country = Brazil, Active = 1956–1977</code></pre>
 <section id="making-tuples-readable-collections.namedtuple" class="level2">
 <h2 class="anchored" data-anchor-id="making-tuples-readable-collections.namedtuple">Making Tuples Readable: <code>collections.namedtuple</code></h2>
 <p>Python’s built-in <code>collections</code> module provides a fantastic solution: <code>namedtuple</code>. It lets you create tuple-like objects where you can access elements by a descriptive <em>name</em> as well as by their index! It acts like a factory that generates a new <em>type</em> of tuple tailored to our player data needs, featuring greats like Okocha and Pelé.</p>
-<div id="8a5bc669" class="cell" data-execution_count="3">
+<div id="bb06d9dd" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> namedtuple</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 'blueprint' for a Player namedtuple</span></span>
@@ -302,7 +302,7 @@ Pelé's YOB (Index 1): 1940</code></pre>
 </div>
 <p>See how <code>okocha.country</code> and <code>pele.years_active</code> are much clearer than <code>okocha[2]</code> and <code>pele[3]</code>? This significantly improves code readability.</p>
 <p><code>namedtuple</code> also comes with some handy built-in helper methods:</p>
-<div id="b2152640" class="cell" data-execution_count="4">
+<div id="64ca8e83" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> namedtuple</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Player <span class="op">=</span> namedtuple(<span class="st">"Player"</span>, <span class="st">"name year_of_birth country years_active"</span>)</span>
@@ -342,7 +342,7 @@ Original Okocha unchanged: Player(name='Jay-Jay Okocha', year_of_birth=1973, cou
 <p>With the introduction of type hints in Python 3, a more modern way to create named tuples emerged: <code>typing.NamedTuple</code>. It integrates seamlessly with type checking tools.</p>
 <p>There are two main ways to define a <code>typing.NamedTuple</code>:</p>
 <p><strong>1. Functional Syntax:</strong> Similar to <code>collections.namedtuple</code>, but includes type information directly in the field definition.</p>
-<div id="3b4670a7" class="cell" data-execution_count="5">
+<div id="974152ff" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> NamedTuple</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Functional syntax: Define type name and a list of (field_name, type) tuples</span></span>
@@ -381,7 +381,7 @@ Okocha's Name (Index 0): Jay-Jay Okocha</code></pre>
 </div>
 </div>
 <p><strong>2. Class Syntax:</strong> This uses standard class definition syntax, which many find more intuitive and familiar, especially when coming from object-oriented programming.</p>
-<div id="20525e97" class="cell" data-execution_count="6">
+<div id="65ea0626" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> NamedTuple</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="co"># To calculate age</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -456,7 +456,7 @@ Okocha's YOB (Index 1): 1973</code></pre>
 <section id="what-about-dataclasses" class="level2">
 <h2 class="anchored" data-anchor-id="what-about-dataclasses">What About <code>dataclasses</code>?</h2>
 <p>Python 3.7 introduced another powerful tool for creating classes that primarily hold data: the <code>@dataclass</code> decorator from the <code>dataclasses</code> module. It automatically generates special methods like <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>, etc., saving you boilerplate code. Let’s model our retired legends using a dataclass.</p>
-<div id="e73ae2a3" class="cell" data-execution_count="7">
+<div id="27c01763" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass, field <span class="co"># field might be needed for complex defaults</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
