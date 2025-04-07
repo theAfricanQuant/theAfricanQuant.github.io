@@ -2,7 +2,7 @@
 title: "Python's Data Structures: Tuples, namedTuples & DataClasses (Retired Legends Edition)"
 author: "Ricky Macharm"
 date: "7 April 2025"
-image: "JJOkocha"
+image: "JJOkocha.jpeg"
 categories: [Python, collections, DataClasses, NamedTuple] # self-defined categories
 format: html
 execute:
@@ -300,4 +300,4 @@ We've explored how to represent structured data in Python, moving from basic `tu
 * **`typing.NamedTuple`**: The modern, type-hinted way (using functional or class syntax) for creating *immutable* named tuple classes. Excellent for fixed records.
 * **`dataclasses.dataclass`**: A flexible decorator for creating data-centric classes (*mutable* by default, but can be `frozen`) with less boilerplate code. Great for general-purpose data holding.
 
-Understanding the **immutability** of tuples and `NamedTuple` versus the default **mutability** of `dataclass` is key. Choose `NamedTuple` for fixed, unchanging records like historical player details. Opt for `dataclass` when you need a more general-purpose container, perhaps for data that might evolve or require more complex class behaviors. Both help write cleaner, more understandable Python code! Happy coding!
+Understanding the **immutability** of tuples and `NamedTuple` versus the default **mutability** of `dataclass` is key. Choose `NamedTuple` for fixed, unchanging records like historical player details or trading strategy backtest results that should remain tamper-proof. Opt for `dataclass` when you need a more general-purpose container, perhaps for data that might evolve or require more complex class behaviors. Both help write cleaner, more understandable Python code! Happy coding!
