@@ -2,9 +2,6 @@
 layout: page
 title: RÉSUMÉ
 excerpt: My current Résumé
-execute:
-  freeze: true  # never re-render during project render
-engine: jupyter
 resources:
   - "RickyMacharm_EU-CV_2025.pdf"
 ---

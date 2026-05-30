@@ -2,4 +2,12 @@
 title: "About"
 ---
 
-About this site
+::: {.content-section}
+
+### About This Site
+
+SisengAI is the personal website of Ricky Macharm — a space to share knowledge, projects, and insights at the intersection of data science, machine learning, financial engineering, and natural language processing.
+
+The site is built with [Quarto](https://quarto.org), hosted on GitHub Pages, and deployed via GitHub Actions on every push to `main`.
+
+:::

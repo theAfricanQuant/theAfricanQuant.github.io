@@ -1,120 +1,732 @@
 /*-- scss:defaults --*/
 
-/* From https://github.com/andrewheiss/ath-quarto/blob/main/html/ath.scss */
+// LivingStory palette
+$white:    #ffffff;
+$cream-50: #FDFBF7;
+$cream-100:#F9F5EC;
+$cream-200:#F2EBD8;
+$cream-300:#E8DCC4;
 
-$white:    #ffffff !default;
-$gray-100: #f8f9fa !default;
-$gray-200: #e9ecef !default;
-$gray-300: #dee2e6 !default;
-$gray-400: #ced4da !default;
-$gray-500: #adb5bd !default;
-$gray-600: #868e96 !default;
-$gray-700: #495057 !default;
-$gray-800: #373a3c !default;
-$gray-900: #212529 !default;
-$black:    #000000 !default;
+$mahogany-50: #FDF5F2;
+$mahogany-900: #5C2D1E;
+$mahogany-950: #321208;
 
-$blue:    #2780e3 !default;
-$indigo:  #6610f2 !default;
-$purple:  #170C3A !default;
-$pink:    #A52C60 !default;
-$red:     #CF4446 !default;
-$orange:  #EE6A24 !default;
-$light-orange:  #FB9E07 !default;
-$yellow:  #F6D645 !default;
-$green:   #118230 !default;
-$teal:    #068194 !default;
-$cyan:    #3093CF !default;
+$stone-500: #78716C;
+$stone-600: #57534E;
 
-$primary:   $teal!default;
-$secondary: $gray-700 !default;
-$success:   $green !default;
-$info:      $cyan !default;
-$warning:   $orange !default;
-$danger:    $red !default;
-$light:     $gray-400 !default;
-$dark:      $black !default;
+$primary-50:  #FFF8EC;
+$primary-200: #FFDDA0;
+$primary-600: #D4720A;
+$primary-700: #B05A08;
 
+$sage-50:  #F3F8F4;
+$sage-700: #2D5C3C;
 
+$primary:   $primary-600;
+$secondary: $mahogany-900;
+$success:   $sage-700;
+$info:      $sage-700;
+$warning:   $primary-600;
+$danger:    #BE3E24;
+$light:     $cream-100;
+$dark:      $mahogany-950;
+
+// Backgrounds
+$body-bg: $cream-50;
+$body-color: $stone-600;
+
+// Typography
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace: "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+$headings-font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+$headings-font-weight: 700;
+$headings-color: $mahogany-950;
+$font-size-base: 1.0625rem;
+$line-height-base: 1.65;
 
 // Links
-$link-color: $primary !default;
-$link-decoration: none !default;
-$link-hover-color: $red !default;
-$link-hover-decoration: underline !default;
+$link-color: $primary;
+$link-decoration: none;
+$link-hover-color: $primary-700;
+$link-hover-decoration: underline;
+
+// Borders & radius
+$border-radius: 0.75rem;
+$border-radius-lg: 1rem;
+$border-radius-sm: 0.5rem;
+
+// Cards
+$card-border-radius: 1rem;
+$card-border-width: 1px;
+$card-border-color: $cream-200;
+$card-bg: $white;
+$card-cap-bg: transparent;
+
+// Buttons
+$btn-border-radius: 0.75rem;
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1.5rem;
+$btn-font-weight: 600;
+$btn-font-size: 0.875rem;
+
+// Navbar
+$navbar-light-color: $mahogany-900;
+$navbar-light-hover-color: $primary;
+$navbar-light-active-color: $primary;
+$navbar-bg: rgba($cream-50, 0.92);
 
 // Footer
-$footer-bg: $gray-900 !default;
-$footer-fg: $gray-300 !default;
+$footer-bg: $mahogany-950;
+$footer-fg: $cream-200;
 
-// Inline code
-$code-bg: $gray-200 !default;
-$code-color: $gray-900 !default;
+// Code
+$code-bg: $cream-100;
+$code-color: $mahogany-900;
+
+// Inputs
+$input-border-radius: 0.75rem;
+$input-border-color: $cream-300;
+$input-focus-border-color: $primary;
+$input-btn-focus-width: 0.15rem;
+
+// Shadows
+$box-shadow: 0 4px 24px rgba(92, 45, 30, 0.10) !default;
+$box-shadow-lg: 0 8px 48px rgba(92, 45, 30, 0.15) !default;
 
 // TOC
-$toc-color: $orange;
-$toc-font-size: 1em;
-
-// Code copy
-$btn-code-copy-color-active: $orange !default;
+$toc-color: $stone-500;
+$toc-font-size: 0.875em;
 
 
 /*-- scss:rules --*/
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap");
 
-.nav-footer {
-    align-items: flex-start;  // Align all flex items to the top
+body {
+  -webkit-font-smoothing: antialiased;
+  background: $cream-50;
+}
+
+// Navbar
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba($cream-50, 0.88) !important;
+  border-bottom: 1px solid $cream-200;
+  box-shadow: none;
+  height: 4rem;
+
+  .nav-link {
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem !important;
+    color: $mahogany-900 !important;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: $cream-100;
+    }
+    &.active {
+      color: $primary !important;
+    }
+  }
+
+  .navbar-brand {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: $mahogany-950;
+  }
+}
+
+// Hero
+.hero-section {
+  padding: 6rem 0 5rem;
+  text-align: center;
+  background: $cream-50;
+
+  h1 {
+    font-family: $headings-font-family;
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: $mahogany-950;
+    margin-bottom: 1rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.25rem;
+    font-weight: 500;
+    background: linear-gradient(135deg, $primary-600, $mahogany-900);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: $stone-600;
+    max-width: 42rem;
+    margin: 0 auto 2rem;
+    line-height: 1.625;
+  }
+
+  .hero-links {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
     flex-wrap: wrap;
-    border: 0 !important;
-    min-height: 3em;
-    //font-family: $footer-font-family;
 
-    a {
-        color: $primary;
+    .btn-primary {
+      background: $primary-600;
+      border: none;
+      color: $white;
+      box-shadow: 0 4px 24px rgba(212, 114, 10, 0.25);
+      font-weight: 600;
+
+      &:hover {
+        background: $primary-700;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 32px rgba(212, 114, 10, 0.35);
+      }
     }
 
-    .faux-block {
-        display: block;
-        padding-bottom: 0.4em;
+    .btn-outline-primary {
+      border: 2px solid $mahogany-900;
+      color: $mahogany-900;
+      background: transparent;
+      font-weight: 600;
+
+      &:hover {
+        background: $mahogany-50;
+      }
     }
 
-    // In the default Quarto template, .nav-footer-center has position: absolute 
-    // turned on, which makes the div not be a flex item
-    // This changes that so that it *is* a flex item
-    .nav-footer-center {
-        text-align: center;
-        position: inherit;
-        margin-top: 0;
+    .btn-outline-secondary {
+      border: 2px solid $cream-200;
+      color: $mahogany-900;
+      background: transparent;
+      font-weight: 600;
 
-        @media (max-width: map-get($grid-breakpoints, md)) {
-            margin-top: 0.5em;
-            margin-bottom: 1.5em;
-        }
+      &:hover {
+        background: $cream-100;
+      }
+    }
+  }
+}
+
+// Stats bar
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  padding: 2.5rem 0;
+  margin: 2rem 0;
+  border-top: 1px solid $cream-200;
+  border-bottom: 1px solid $cream-200;
+
+  .stat-item {
+    text-align: center;
+
+    .stat-number {
+      font-family: $headings-font-family;
+      font-size: 2rem;
+      font-weight: 700;
+      color: $mahogany-950;
+      line-height: 1.2;
     }
 
-    // When the screen is medium or smaller, make each footer chunk be 100% width 
-    // and centered; otherwise make them be 33% width and left/right/centerd
+    .stat-label {
+      font-size: 0.8rem;
+      color: $stone-500;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+}
+
+// Section spacing
+.content-section {
+  padding: 5rem 0;
+}
+
+.content-section-alt {
+  padding: 5rem 0;
+  background: $white;
+}
+
+.content-section-dark {
+  padding: 5rem 0;
+  background: $mahogany-950;
+  color: $cream-200;
+
+  h2, h3, h4, .section-title {
+    color: $cream-50;
+  }
+
+  .exp-title, .project-title {
+    color: $cream-50;
+  }
+
+  .exp-card, .project-card, .about-card {
+    background: $mahogany-900;
+    border-color: #832C1C;
+    color: $cream-200;
+
+    .exp-description, .project-description {
+      color: $cream-300;
+    }
+
+    .exp-institution {
+      color: $primary-200;
+    }
+  }
+
+  .stat-number {
+    color: $cream-50;
+  }
+
+  .stat-label {
+    color: $cream-300;
+  }
+}
+
+// Section titles
+.section-title {
+  font-family: $headings-font-family;
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-weight: 700;
+  color: $mahogany-950;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+}
+
+.section-label {
+  display: inline-block;
+  border-radius: 9999px;
+  border: 1px solid $primary-200;
+  background: $primary-50;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $primary-700;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.625;
+  color: $stone-600;
+  margin-bottom: 2.5rem;
+}
+
+// Cards
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $box-shadow-lg;
+    border-color: $primary;
+  }
+}
+
+.exp-card,
+.project-card {
+  padding: 1.5rem;
+  border: 1px solid $cream-200;
+  border-radius: 1rem;
+  background: $white;
+  box-shadow: 0 4px 24px rgba(92, 45, 30, 0.08);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $box-shadow-lg;
+    border-color: $primary;
+  }
+
+  .exp-title,
+  .project-title {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: $mahogany-950;
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-institution {
+    font-size: 0.925rem;
+    color: $primary;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-description,
+  .project-description {
+    font-size: 0.875rem;
+    color: $stone-600;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .exp-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: $primary-50;
+    border: 1px solid $primary-200;
+    color: $primary-700;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+
+    span {
+      background: $sage-50;
+      border: 1px solid #C8E1CE;
+      color: $sage-700;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+    }
+  }
+}
+
+.exp-grid,
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// About card
+.about-card {
+  padding: 2rem;
+  border: 1px solid $cream-200;
+  border-radius: 1rem;
+  background: $white;
+  box-shadow: 0 4px 24px rgba(92, 45, 30, 0.06);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: $stone-600;
+}
+
+// Post cards (blog listing)
+.post-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Blog post detail
+.quarto-title-block .quarto-title-banner {
+  background: linear-gradient(135deg, rgba($primary-600, 0.06), rgba($mahogany-900, 0.04));
+  border-bottom: 1px solid $cream-200;
+}
+
+// Page footer
+.nav-footer {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border: 0 !important;
+  min-height: 3em;
+  padding: 3rem 0;
+  background: $mahogany-950;
+  color: $cream-200;
+  font-size: 0.875rem;
+
+  a {
+    color: $primary-200;
+    text-decoration: none;
+
+    &:hover {
+      color: $cream-50;
+      text-decoration: underline;
+    }
+  }
+
+  .faux-block {
+    display: block;
+    padding-bottom: 0.4em;
+  }
+
+  .nav-footer-left,
+  .nav-footer-right,
+  .nav-footer-center {
+    text-align: center;
+    width: 100%;
+    min-height: 2em;
+  }
+
+  @media (min-width: 768px) {
+    .nav-footer-left { text-align: left; }
+    .nav-footer-right { text-align: right; }
     .nav-footer-left,
     .nav-footer-right,
-    .nav-footer-center {
-        text-align: center;
-        width: 100%;
-        min-height: 2em;
+    .nav-footer-center { flex: 1 1 33%; }
+  }
+}
+
+// Back to top
+#quarto-back-to-top {
+  background: $primary-600;
+  color: $white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(212, 114, 10, 0.25);
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  overflow: hidden;
+  text-indent: -9999px;
+
+  &::after {
+    content: "↑";
+    position: absolute;
+    text-indent: 0;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    background: $primary-700;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(212, 114, 10, 0.35);
+  }
+}
+
+// Code
+pre, code {
+  font-family: $font-family-monospace;
+}
+
+pre {
+  border-radius: 0.75rem;
+  border: 1px solid $cream-200;
+  background: $cream-100;
+}
+
+// TOC
+#TOC {
+  font-size: 0.85rem;
+
+  .nav-link {
+    padding: 0.2rem 0;
+    color: $stone-500;
+    border-left: 2px solid transparent;
+    padding-left: 0.75rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover { color: $primary; }
+    &.active {
+      color: $primary;
+      border-left-color: $primary;
+      font-weight: 500;
+    }
+  }
+
+  ul { list-style: none; padding-left: 0; }
+  ul ul { padding-left: 0.75rem; }
+}
+
+// Repo actions
+.toc-actions {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $cream-200;
+  font-size: 0.8rem;
+
+  a {
+    color: $stone-500;
+    text-decoration: none;
+    display: block;
+    padding: 0.15rem 0;
+
+    &:hover { color: $primary; }
+    i { margin-right: 0.35rem; }
+  }
+}
+
+// External links
+a.external::after {
+  content: " ↗";
+  font-size: 0.75em;
+  opacity: 0.5;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 4rem 0 3rem;
+    h1 { font-size: 2rem; }
+    .hero-tagline { font-size: 1.1rem; }
+  }
+
+  .content-section,
+  .content-section-alt,
+  .content-section-dark {
+    padding: 3rem 0;
+  }
+
+  .stats-bar {
+    gap: 1.5rem;
+    .stat-number { font-size: 1.5rem; }
+  }
+}
+
+// Dark mode
+[data-bs-theme="dark"] {
+  $dm-bg: #190B04;
+  $dm-surface: #2E1A0F;
+  $dm-card: #3D2315;
+  $dm-border: #4A2C1C;
+  $dm-text: #E8DCC4;
+  $dm-muted: #B8A898;
+
+  $body-bg: $dm-bg;
+  $body-color: $dm-text;
+  $headings-color: #FDFBF7;
+
+  body { background: $dm-bg; color: $dm-text; }
+
+  .navbar {
+    background: rgba($dm-bg, 0.92) !important;
+    border-bottom-color: $dm-border;
+    .nav-link {
+      color: $dm-text !important;
+      &:hover { background: $dm-card; }
+      &.active { color: #F08C14 !important; }
+    }
+    .navbar-brand { color: #FDFBF7; }
+  }
+
+  .hero-section {
+    background: $dm-bg;
+    h1 { color: #FDFBF7; }
+    .hero-subtitle { color: $dm-muted; }
+    .hero-links .btn-outline-primary {
+      border-color: $dm-text;
+      color: $dm-text;
+      &:hover { background: $dm-card; }
+    }
+    .hero-links .btn-outline-secondary {
+      border-color: $dm-border;
+      color: $dm-muted;
+      &:hover { background: $dm-card; }
+    }
+  }
+
+  .stats-bar {
+    border-top-color: $dm-border;
+    border-bottom-color: $dm-border;
+    .stat-number { color: #FDFBF7; }
+    .stat-label { color: $dm-muted; }
+  }
+
+  .about-card,
+  .exp-card,
+  .project-card {
+    background: $dm-card;
+    border-color: $dm-border;
+    color: $dm-text;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+
+    .exp-title, .project-title { color: #FDFBF7; }
+    .exp-description, .project-description { color: $dm-muted; }
+    .exp-institution { color: #F08C14; }
+
+    &:hover { border-color: #F08C14; }
+
+    .exp-badge {
+      background: rgba(240, 140, 20, 0.15);
+      border-color: rgba(240, 140, 20, 0.3);
+      color: #F08C14;
     }
 
-    @media (min-width: map-get($grid-breakpoints, md)) {
-        .nav-footer-left {
-            text-align: left;
-        }
-
-        .nav-footer-right {
-            text-align: right;
-        }
-
-        .nav-footer-left,
-        .nav-footer-right,
-        .nav-footer-center {
-            flex: 1 1 33%;
-        }
+    .project-tags span {
+      background: rgba(54, 115, 73, 0.15);
+      border-color: rgba(54, 115, 73, 0.3);
+      color: #4ADE80;
     }
+  }
+
+  .content-section-alt {
+    background: $dm-surface;
+  }
+
+  .content-section-dark {
+    background: darken($dm-bg, 1%);
+  }
+
+  .section-title { color: #FDFBF7; }
+  .section-subtitle { color: $dm-muted; }
+
+  .nav-footer {
+    background: darken($dm-bg, 1%);
+    color: $dm-muted;
+  }
+
+  .quarto-title-block .quarto-title-banner {
+    background: linear-gradient(135deg, rgba(240, 140, 20, 0.08), rgba(0,0,0,0));
+    border-bottom-color: $dm-border;
+  }
+
+  pre {
+    background: $dm-card;
+    border-color: $dm-border;
+    color: $dm-text;
+  }
+
+  code { color: $dm-text; }
+
+  .toc-actions {
+    border-top-color: $dm-border;
+    a { color: $dm-muted; }
+  }
+
+  #TOC .nav-link {
+    color: $dm-muted;
+    &.active { color: #F08C14; border-left-color: #F08C14; }
+  }
 }

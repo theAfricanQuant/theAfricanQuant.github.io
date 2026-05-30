@@ -1,59 +1,98 @@
 ---
 title: "My Projects"
-
-format: 
+format:
   html:
-    toc: true                # Enable Table of Contents
-    toc-location: left        # Display TOC on the left sidebar
-    toc-depth: 3              # Specify depth of headers to include in TOC
+    toc: true
+    toc-location: left
+    toc-depth: 3
 page-layout: full
 ---
 
-# 🚧 
-Welcome to my project page! Here you'll find an overview of some of the exciting projects I've worked on and significantly shaped throughout their life cycles. These projects span algorithmic trading, financial data science, and machine learning, and they reflect my passion for innovation and collaboration.
+::: {.content-section}
+
+<span class="section-label">Work</span>
+
+### Featured Projects
+
+<p class="section-subtitle">A selection of projects I've built and contributed to across algorithmic trading, financial data science, machine learning, and NLP.</p>
+
+<div class="project-grid">
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F4DD;</span>
+<p class="project-title">SisengAI Blog</p>
+<p class="project-description">My personal blog covering algorithmic trading, machine learning, and data science topics using Quarto. Hosted on GitHub Pages.</p>
+<div class="project-tags">
+  <span>Quarto</span>
+  <span>Blog</span>
+</div>
+<a href="https://www.sisengai.com/blog/" target="_blank" class="btn btn-sm btn-primary">Visit Blog</a>
+:::
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F30D;</span>
+<p class="project-title">Berom-English Corpus</p>
+<p class="project-description">Developing a corpus of contemporary words and sentences for the Berom language, preserving and expanding an under-resourced language.</p>
+<div class="project-tags">
+  <span>NLP</span>
+  <span>Corpus</span>
+  <span>African Languages</span>
+</div>
+<a href="https://docs.google.com/spreadsheets/d/1pNDy2Nol-j1bJacxQvrGgwZXwLmo_H5SyZR76jd8LUk/edit?usp=sharing" target="_blank" class="btn btn-sm btn-primary">Explore Corpus</a>
+:::
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F4DC;</span>
+<p class="project-title">Low-Resourced Machine Translation</p>
+<p class="project-description">Co-authored research on participatory research for low-resourced machine translation, with a case study on African languages.</p>
+<div class="project-tags">
+  <span>MT</span>
+  <span>Research</span>
+  <span>African Languages</span>
+</div>
+<a href="https://www.researchgate.net/publication/347235065_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages/citations?latestCitations=PB%3A355365230" target="_blank" class="btn btn-sm btn-primary">Read Paper</a>
+:::
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F30D;</span>
+<p class="project-title">AfriMTE and AfriCOMET</p>
+<p class="project-description">Research exploring how to empower COMET — a machine translation evaluation framework — to embrace African languages.</p>
+<div class="project-tags">
+  <span>COMET</span>
+  <span>Evaluation</span>
+  <span>African Languages</span>
+</div>
+<a href="https://arxiv.org/abs/2311.09828" target="_blank" class="btn btn-sm btn-primary">Read on Arxiv</a>
+:::
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F3B5;</span>
+<p class="project-title">Spotify Dashboard</p>
+<p class="project-description">An interactive dashboard curating hit songs on Spotify, giving a clear overview of trending music across genres and regions.</p>
+<div class="project-tags">
+  <span>Dashboard</span>
+  <span>Spotify</span>
+  <span>Data Viz</span>
+</div>
+<a href="https://www.sisengai.com/spotify-dashboard/dashboard.html" target="_blank" class="btn btn-sm btn-primary">View Dashboard</a>
+:::
+
+::: {.project-card}
+<span style="font-size:2rem;margin-bottom:0.75rem;display:block;">&#x1F4CA;</span>
+<p class="project-title">Donchian Channel Breakout Dashboard</p>
+<p class="project-description">A dashboard visualizing Donchian Breakouts on selected stocks using the Alphavantage API for tracking performance.</p>
+<div class="project-tags">
+  <span>Trading</span>
+  <span>Dashboard</span>
+  <span>Alphavantage</span>
+</div>
+<a href="https://www.sisengai.com/Alphavantage_Dashboard/Alphavantage_Dashboard.html" target="_blank" class="btn btn-sm btn-primary">View Dashboard</a>
+:::
+
+</div>
+
+:::
 
 ---
 
-### 🧑🏽‍💻 SisengAI Blog
-My personal blog, where I write about algorithmic trading, machine learning, and data science topics using **Quarto**. It’s hosted on **GitHub Pages**.
-
-<a href="https://www.sisengai.com/blog/" target="_blank">Check out SisengAI Blog</a>
-
----
-
-### 🌍 Berom-English Corpus
-In this project, I am developing a corpus of contemporary words and sentences for the **Berom Language**, focusing on preserving and expanding the use of this under-resourced language.
-
-<a href="https://docs.google.com/spreadsheets/d/1pNDy2Nol-j1bJacxQvrGgwZXwLmo_H5SyZR76jd8LUk/edit?usp=sharing" target="_blank">Explore the Berom-English Corpus</a>
-
----
-
-### 📜 Low-Resourced Machine Translation
-I co-authored this research paper on **participatory research** for low-resourced machine translation, with a case study on African languages. This study addresses the challenge of translating for languages with minimal resources.
-
-<a href="https://www.researchgate.net/publication/347235065_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages/citations?latestCitations=PB%3A355365230" target="_blank">Read the Paper on ResearchGate</a>
-
----
-
-### 🌍 AfriMTE and AfriCOMET
-This research explores empowering **COMET**, a machine translation evaluation framework, to embrace African languages, making machine translation more inclusive for under-resourced languages.
-
-<a href="https://arxiv.org/abs/2311.09828" target="_blank">Learn more about AfriMTE and AfriCOMET on Arxiv</a>
-
----
-
-### 🎵 Spotify Dashboard
-An interactive dashboard that curates hit songs on **Spotify**, giving a clear overview of trending music in various genres and regions.
-
-<a href="https://www.sisengai.com/spotify-dashboard/dashboard.html" target="_blank">Visit the Spotify Dashboard</a>
-
----
-
-### 📊 Donchian Channel Breakout Dashboard
-This dashboard visualizes **Donchian Breakouts** on selected stocks. It uses the **Alphavantage API** to track stock performance and show meaningful insights for traders.
-
-<a href="https://www.sisengai.com/Alphavantage_Dashboard/Alphavantage_Dashboard.html" target="_blank">Check out the Donchian Channel Breakout Dashboard</a>
-
----
-
-> Feel free to **reach out** to me through my social handles for any inquiries about these projects or if you're interested in collaborating!
+<p class="section-subtitle" style="text-align:center;">Feel free to reach out through my social handles for inquiries or collaboration.</p>

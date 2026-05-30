@@ -1,69 +1,60 @@
 
-
-# This file controls the settings for your Quarto template 
+# This file controls the settings for your Quarto template
 
 # website settings
 website:
-  title: "SisengAI"                                # Your name
- # description: "SisengAI is a website that showcases my venture in to Data Science, Machine Learning, Financial Engineering and NLP."   # A brief slogan (optional)
+  title: "SisengAI"
+  description: "Data Science Instructor & Quant Developer — exploring machine learning, financial engineering, and NLP."
+  site-url: https://www.sisengai.com
   image: img/Ricky_Macharm_LP.png
-  
   favicon: img/favicon.png
 
-
-  
   # start of the navigation bar at the top of the website
   navbar:
     pinned: true
     logo: /img/SisengAI_Logo.png
-    
-    # your sub-pages
+
     left:
       - text: "Projects"
         href: projects/index.qmd
       - text: "Blog"
         href: blog/index.qmd
-      - text: "Résumé"
+      - text: "Resume"
         href: resume/index.qmd
-    
-    # your social media handles
+
     right:
-      
       - icon: linkedin
         href: https://www.linkedin.com/in/theafricanquant/
-      
       - icon: twitter
         href: https://twitter.com/theAfricanQuant
-     
       - icon: github
         href: https://github.com/theAfricanQuant
-
       - icon: envelope
         aria-label: email
         href: "mailto:Ricky.Macharm@SisengAI.com"
-      
 
-
-  
-
-# Don't touch unless you know what you are doing :) ------------
-  search: 
+  search:
     location: navbar
     type: textbox
-  page-footer: 
+
+  page-footer:
     left: |
-      <span class="faux-block">&#169; Copyright © 2023, SisengAI</span>
-    
-# engine: jupyter
+      <span class="faux-block">&#169; 2023–2026 SisengAI</span>
+    right: |
+      <span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span>
+
+  back-to-top-navigation: true
+
+  repo-url: "https://github.com/theAfricanQuant/theAfricanQuant.github.io"
+  repo-actions: [edit, issue, source]
+
 project:
   type: website
-  resources: 
+  resources:
     - img/ricky_404.jpg
     - 404.html
-    
-  # output-dir: docs
 
-  preview: 
+  preview:
     port: 22222
     browser: true
     watch-inputs: true
@@ -75,14 +66,18 @@ execute:
 
 format:
   html:
-    fontsize: 1.1em
-    theme: 
-      - pulse
-      - html/styles.scss
+    theme:
+      light: [cosmo, html/styles.scss]
+      dark: [darkly, html/styles.scss]
+    mainfont: Inter
+    monofont: "JetBrains Mono"
+    googlefonts: true
+    highlight-style: a11y
+    callout-appearance: simple
     toc: false
     code-link: true
     anchor-sections: true
     fig-cap-location: margin
     reference-location: margin
     footnotes-hover: true
-    include-after-body: chatbot.html
+    page-layout: full

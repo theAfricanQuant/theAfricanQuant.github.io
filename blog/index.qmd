@@ -1,17 +1,16 @@
 ---
-title: "Blog Posts"
-subtitle: "still working on writing more often"
+title: "Blog"
+subtitle: "Thoughts on data science, machine learning, and Python"
 listing:
-  # contents: blog
+  contents: "."
   sort: "date desc"
-  type: default
-  image-align: right
-  max-description-length: 175
-  date-format: medium
-  categories: true
+  type: grid
   sort-ui: false
-  filter-ui: True
+  filter-ui: true
+  categories: true
+  max-description-length: 180
+  date-format: medium
+  grid-columns: 2
 page-layout: full
 title-block-banner: true
 ---
-
