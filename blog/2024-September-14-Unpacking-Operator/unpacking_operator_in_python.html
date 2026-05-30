@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
@@ -71,10 +71,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -101,14 +103,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -138,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../resume/index.html"> 
-<span class="menu-text">Résumé</span></a>
+<span class="menu-text">Resume</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -165,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -172,7 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
+    <div class="quarto-title column-page">
       <h1 class="title">Grokking the Unpacking Operator</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Python</div>
@@ -183,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page">
 
       <div>
       <div class="quarto-title-meta-heading">Author</div>
@@ -203,12 +206,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
@@ -222,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-basics-of-unpacking" class="level2">
 <h2 class="anchored" data-anchor-id="the-basics-of-unpacking">The Basics of Unpacking</h2>
 <p>Let’s start simple. Unpacking is the process of extracting individual elements from a collection like a list or a tuple and assigning them to variables. Think of it like unboxing your wife’s birthday gift. Here’s how we do that in Python:</p>
-<div id="28b629aa" class="cell" data-execution_count="1">
+<div id="4870eb91" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>gift_box <span class="op">=</span> [<span class="st">'jewelry'</span>, <span class="st">'watch'</span>, <span class="st">'perfume'</span>, <span class="st">'airpods'</span>]</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>item1, item2, item3, item4 <span class="op">=</span> gift_box</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -241,7 +244,7 @@ airpods</code></pre>
 <section id="what-happens-if-there-are-too-many-or-too-few-items" class="level3">
 <h3 class="anchored" data-anchor-id="what-happens-if-there-are-too-many-or-too-few-items">What Happens if There Are Too Many or Too Few Items?</h3>
 <p>What happens if the gift box has more items than variables?</p>
-<div id="3bf9b34b" class="cell" data-execution_count="2">
+<div id="a138b9ea" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gift_box <span class="op">=</span> [<span class="st">'jewelry'</span>, <span class="st">'watch'</span>, <span class="st">'perfume'</span>, <span class="st">'airpods'</span>, <span class="st">'flowers'</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>item1, item2, item3 <span class="op">=</span> gift_box  <span class="co"># Error: too many values to unpack</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
@@ -257,7 +260,7 @@ airpods</code></pre>
 </div>
 </div>
 <p>We get an error! Python doesn’t know how to fit five items into just three variables. Likewise, if we had too few items, we’d also get an error:</p>
-<div id="d59a9e49" class="cell" data-execution_count="3">
+<div id="451b32fb" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gift_box <span class="op">=</span> [<span class="st">'jewelry'</span>, <span class="st">'watch'</span>]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>item1, item2, item3 <span class="op">=</span> gift_box  <span class="co"># Error: not enough values to unpack</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
@@ -277,7 +280,7 @@ airpods</code></pre>
 <section id="unpacking-with-the-operator" class="level2">
 <h2 class="anchored" data-anchor-id="unpacking-with-the-operator">Unpacking with the <code>*</code> Operator</h2>
 <p>Now, imagine you want to only unpack the first and last items from the gift box, while ignoring the rest. This is where the <code>*</code> operator comes in handy:</p>
-<div id="83577e6a" class="cell" data-execution_count="4">
+<div id="a56af38e" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gift_box <span class="op">=</span> [<span class="st">'jewelry'</span>, <span class="st">'watch'</span>, <span class="st">'perfume'</span>, <span class="st">'airpods'</span>, <span class="st">'flowers'</span>]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>first, <span class="op">*</span>middle, last <span class="op">=</span> gift_box</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -291,7 +294,7 @@ flowers
 </div>
 </div>
 <p>The <code>*</code> operator captures the remaining elements and packs them into a list. You can even discard them by using <code>_</code>:</p>
-<div id="cce9cb2b" class="cell" data-execution_count="5">
+<div id="6a4ba325" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>first, <span class="op">*</span>_, last <span class="op">=</span> gift_box</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(first, last)  <span class="co"># 'jewelry', 'flowers'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -303,11 +306,11 @@ flowers
 <section id="unpacking-dictionaries-with" class="level2">
 <h2 class="anchored" data-anchor-id="unpacking-dictionaries-with">Unpacking Dictionaries with <code>**</code></h2>
 <p>Now let’s move on to unpacking dictionaries. Imagine the gift contains a dictionary with item names and their respective values.</p>
-<div id="353622be" class="cell" data-execution_count="6">
+<div id="8fcc7e8b" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gift_details <span class="op">=</span> {<span class="st">'jewelry'</span>: <span class="st">'gold'</span>, <span class="st">'watch'</span>: <span class="st">'rolex'</span>, <span class="st">'perfume'</span>: <span class="st">'Chanel'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can unpack dictionaries using <code>**</code>. This is especially useful when you want to merge dictionaries, like adding more gifts in your spouse’s box of gifts:</p>
-<div id="26e411e5" class="cell" data-execution_count="7">
+<div id="a9bdb785" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>extra_gift <span class="op">=</span> {<span class="st">'airpods'</span>: <span class="st">'pro'</span>}</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>merged_gifts <span class="op">=</span> {<span class="op">**</span>gift_details, <span class="op">**</span>extra_gift}</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(merged_gifts)</span>
@@ -326,7 +329,7 @@ flowers
 <li><code>**kwargs</code> lets you pass a variable number of keyword arguments.</li>
 </ul>
 <p>Let’s start with <code>*args</code>:</p>
-<div id="9c6d24bd" class="cell" data-execution_count="8">
+<div id="aa8e8025" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_total(<span class="op">*</span>args):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(args)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -339,7 +342,7 @@ flowers
 </div>
 <p>Here, <code>*args</code> captures all the positional arguments into a tuple. You can pass as many arguments as you like.</p>
 <p>Next, let’s look at <code>**kwargs</code>:</p>
-<div id="b1c97a7b" class="cell" data-execution_count="9">
+<div id="e5b260ae" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_gift_details(<span class="op">**</span>kwargs):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key, value <span class="kw">in</span> kwargs.items():</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -358,7 +361,7 @@ perfume: Chanel</code></pre>
 <section id="combining-args-and-kwargs" class="level3">
 <h3 class="anchored" data-anchor-id="combining-args-and-kwargs">Combining <code>*args</code> and <code>**kwargs</code></h3>
 <p>You can combine both in a function to accept any number of positional and keyword arguments:</p>
-<div id="31bd4fd2" class="cell" data-execution_count="10">
+<div id="5d23ee03" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gift_summary(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Items:"</span>, args)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Details:"</span>, kwargs)</span>
@@ -377,7 +380,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 <h2 class="anchored" data-anchor-id="method-chaining">Method Chaining</h2>
 <p>Method chaining in pandas is a technique where multiple methods are called sequentially on a DataFrame or Series in a single statement. Each method operates on the output of the previous one, making the code concise and readable. It helps avoid intermediate variables and enables efficient data processing.</p>
 <p>let us create a dataframe from the numpy library:</p>
-<div id="7749c9e2" class="cell" data-execution_count="11">
+<div id="1aa24c30" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting up random number generator</span></span>
@@ -487,7 +490,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 </div>
 </div>
 <p>To add a new feature like calculating the moving average of the Close price in a DataFrame, you can use the <code>rolling()</code> function in pandas. Here’s how to calculate the moving average (for example, a 3-period moving average) of the Close price and add it as a new column to the DataFrame.</p>
-<div id="4e55406d" class="cell" data-execution_count="12">
+<div id="2fe5c2c3" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df1[<span class="st">'SMA'</span>] <span class="op">=</span> df1[<span class="st">'Close'</span>].rolling(window<span class="op">=</span><span class="dv">3</span>).mean()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -593,7 +596,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 </div>
 </div>
 <p>To achieve the same using method chaining:</p>
-<div id="7abaef14" class="cell" data-execution_count="13">
+<div id="305bdb92" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> (df2</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>.assign(SMA<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'Close'</span>].rolling(window<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>.mean())</span>
@@ -702,7 +705,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 </div>
 </div>
 <p>This seems to be working just fine. However, sometimes we might want to create a function that could insert multiple features at once based off of the users’ choice. An example is given below:</p>
-<div id="68be00ec" class="cell" data-execution_count="14">
+<div id="0ca8320b" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_multiple_smas(df, col, <span class="op">*</span>windows):</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> window <span class="kw">in</span> windows:</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>      df[<span class="ss">f'SMA_</span><span class="sc">{</span>window<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> df[col].rolling(window<span class="op">=</span>window).mean()</span>
@@ -846,7 +849,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 </div>
 </div>
 <p>Attempting to accomplish a similar feat using method chaining will result in an error because the <code>.assign</code> method expects keyword arguments. The best way is to use the unpacking operator to achieve this with the help of dictionary comprehension to loop through the different values for the SMAs.</p>
-<div id="e9e65984" class="cell" data-execution_count="15">
+<div id="c4f985bf" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_multiple_smas(df, col, <span class="op">*</span>windows, <span class="op">**</span>kwargs):</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use assign to add the columns in a chained fashion</span></span>
@@ -1001,26 +1004,7 @@ Details: {'jewelry': 'gold', 'watch': 'rolex'}</code></pre>
 </section>
 </section>
 
-</main> <!-- /main -->
-<!-- PocketFlow Chatbot - Start -->
-<script>
-(function() {
-    var script = document.createElement("script");
-    script.src = "https://askthispage.com/embed/chatbot.js";
-    script.onload = function() {
-        initializeChatbot({
-            extra_urls: ["https://www.sisengai.com/resume/"],
-            prefixes: [],
-            chatbotName: 'SisengAI',
-            wsUrl: 'wss://askthispage.com/api/ws/chat',
-            instruction: 'Ask SisengAI anything',
-            isOpen: false
-        });
-    };
-    document.head.appendChild(script);
-})();
-</script>
-<!-- PocketFlow Chatbot - End -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1041,6 +1025,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1449,14 +1577,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
-      &nbsp;
-    </div>
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
   </div>
 </footer>
 

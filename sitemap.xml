@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
-    <lastmod>2025-12-28T22:04:48.953Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
-    <lastmod>2025-12-28T22:04:50.661Z</lastmod>
+    <loc>https://www.sisengai.com/projects/index.html</loc>
+    <lastmod>2026-05-30T21:46:26.231Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html</loc>
-    <lastmod>2025-12-28T22:04:48.957Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
-    <lastmod>2025-12-28T22:04:50.651Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/index.html</loc>
-    <lastmod>2025-12-28T22:04:50.661Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/about.html</loc>
-    <lastmod>2025-12-28T22:04:48.953Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/resume/index.html</loc>
-    <lastmod>2025-12-28T22:04:50.668Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/projects/index.html</loc>
-    <lastmod>2025-12-28T22:04:50.667Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/index.html</loc>
-    <lastmod>2025-12-28T22:04:50.667Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
-    <lastmod>2025-12-28T22:04:50.660Z</lastmod>
+    <lastmod>2026-05-30T21:46:25.527Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html</loc>
-    <lastmod>2025-12-28T22:04:49.027Z</lastmod>
+    <lastmod>2026-05-30T21:46:25.594Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
+    <lastmod>2026-05-30T21:46:26.226Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
+    <lastmod>2026-05-30T21:46:26.217Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
+    <lastmod>2026-05-30T21:46:25.525Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/about.html</loc>
+    <lastmod>2026-05-30T21:46:25.524Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/index.html</loc>
+    <lastmod>2026-05-30T21:46:26.231Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/resume/index.html</loc>
+    <lastmod>2026-05-30T21:46:26.232Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html</loc>
-    <lastmod>2025-12-28T22:04:48.977Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
-    <lastmod>2025-12-28T22:04:50.653Z</lastmod>
+    <lastmod>2026-05-30T21:46:25.546Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-June-19-Walrus-Operator/theWalrusOperator.html</loc>
-    <lastmod>2025-12-28T22:04:50.640Z</lastmod>
+    <lastmod>2026-05-30T21:46:26.208Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
+    <lastmod>2026-05-30T21:46:26.219Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/index.html</loc>
+    <lastmod>2026-05-30T21:46:26.226Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
+    <lastmod>2026-05-30T21:46:26.226Z</lastmod>
   </url>
 </urlset>

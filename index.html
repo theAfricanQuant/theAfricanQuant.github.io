@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>SisengAI</title>
+<title>Home – SisengAI</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,14 +30,19 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./img/favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -64,11 +69,69 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-latest-posts .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-latest-posts'] = new List('listing-latest-posts', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -98,7 +161,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./resume/index.html"> 
-<span class="menu-text">Résumé</span></a>
+<span class="menu-text">Resume</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -125,125 +188,262 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
-
-
-
-<div class="quarto-about-jolla">
-  <img src="img/Ricky_Macharm.png" class="about-image
-  round " style="height: 17em; width: 17em;">
- <div id="about-block">
-</div> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://www.linkedin.com/in/theafricanquant/" class="about-link" rel="" target="_blank">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://twitter.com/theAfricanQuant" class="about-link" rel="" target="_blank">
-    <i class="bi bi-twitter"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="https://github.com/theAfricanQuant" class="about-link" rel="" target="_blank">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="mailto:Ricky.Macharm@SisengAI.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">e-mail</span>
-  </a>
-</div>
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Home</h1>
 </div>
 
-<section id="hello-world" class="level3">
-<h3 data-anchor-id="hello-world">Hello, World!</h3>
-<p class="topbr">
-</p><p>Hey there! I’m Ricky, the brain behind SisengAI. It’s more than just a project – it’s my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python &amp; pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia.</p>
-<p>When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out <a href="https://www.youtube.com/@theafricanquant501/featured" target="_blank">here</a>!). These days, you’ll find me at WorldQuant University in New Orleans, LA, where I teach data science. It’s a cool place, and you can learn more about it <a href="https://www.wqu.edu/programs/applied-ds-lab/" target="_blank">here</a>.</p>
-<p>Not just a man behind the screen, I’ve also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you’ll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects. Plus, you’ll get the scoop on all the events and conferences where I’ll be making an appearance. Dive into my world and explore to your heart’s content!</p>
-Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don’t hesitate to <a href="mailto:Ricky.Macharm@SisengAI.com">contact me</a>. I’m all ears and ready to chat!
-<p></p>
-</section>
-<section id="education" class="level3">
-<h3 data-anchor-id="education">education</h3>
-<div class="topbr">
-<p class="custom-subtitle">
-<strong>MSc in Financial Engineering, 2021</strong>
+
+
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="ricky-macharm" class="level1 hero-section">
+<h1>Ricky Macharm</h1>
+<p class="hero-tagline">
+Data Science Instructor &amp; Quant Developer
 </p>
-<p class="custom-subtitle2">
-WorldQuant University, New Orleans, LA, USA.
+<p class="hero-subtitle">
+Exploring machine learning, financial engineering, and NLP. Sharing knowledge through teaching, writing, and open-source.
 </p>
-<p class="custom-subtitle">
-<strong>BS in Electrical &amp; Electronics Engineering, 2000</strong>
-</p>
-<p class="custom-subtitle2">
-Abubakar Tafawa Balewa University, Bauchi, Nigeria.
-</p>
+<div class="hero-links">
+<p><a href="./blog/" class="btn btn-primary">Read the Blog</a> <a href="./projects/" class="btn btn-outline-primary">View My Work</a> <a href="mailto:Ricky.Macharm@SisengAI.com" class="btn btn-outline-secondary">Get in Touch</a></p>
 </div>
 </section>
-<section id="experience" class="level3">
-<h3 data-anchor-id="experience">experience</h3>
-<div class="topbr">
-<p class="custom-subtitle">
-<strong>Data Science Instructor, 2022-present</strong>
+<div class="stats-bar">
+<div class="stat-item">
+<div class="stat-number">
+9+
+</div>
+<div class="stat-label">
+Blog Posts
+</div>
+</div>
+<div class="stat-item">
+<div class="stat-number">
+8+
+</div>
+<div class="stat-label">
+Years in Data
+</div>
+</div>
+<div class="stat-item">
+<div class="stat-number">
+6
+</div>
+<div class="stat-label">
+Projects
+</div>
+</div>
+<div class="stat-item">
+<div class="stat-number">
+2
+</div>
+<div class="stat-label">
+Publications
+</div>
+</div>
+</div>
+<hr>
+<div class="content-section">
+<p><span class="section-label">About</span></p>
+<section id="about-me" class="level3">
+<h3 class="anchored" data-anchor-id="about-me">About Me</h3>
+<div class="about-card">
+<p>Hey there! I’m Ricky, the brain behind SisengAI. It’s more than just a project — it’s my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python &amp; pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia.</p>
+<p>When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out <a href="https://www.youtube.com/@theafricanquant501/featured">here</a>). These days, you’ll find me at WorldQuant University in New Orleans, LA, where I teach data science. It’s a cool place, and you can learn more about it <a href="https://www.wqu.edu/programs/applied-ds-lab/">here</a>.</p>
+<p>Not just a man behind the screen, I’ve also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you’ll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects.</p>
+<p>Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don’t hesitate to <a href="mailto:Ricky.Macharm@SisengAI.com">contact me</a>. I’m all ears and ready to chat!</p>
+</div>
+</section>
+</div>
+<hr>
+<div class="content-section-alt">
+<p><span class="section-label">Journey</span></p>
+<section id="education-experience" class="level3">
+<h3 class="anchored" data-anchor-id="education-experience">Education &amp; Experience</h3>
+<p class="section-subtitle">
+A path from electrical engineering to financial engineering, with data science at the centre.
 </p>
-<p class="custom-subtitle2">
+<div class="exp-grid">
+<div class="exp-card">
+<p class="exp-title">
+MSc in Financial Engineering
+</p>
+<p class="exp-institution">
 WorldQuant University
 </p>
-<p class="custom-subtitle">
-<strong>Co-author and member of Masakhane, since 2020</strong>
+<p class="exp-description">
+New Orleans, LA, USA
 </p>
-<p class="custom-subtitle2">
-</p><ol type="1">
-<li><a href="https://www.researchgate.net/publication/344505986_Participatory_Research_for_Low-resourced_Machine_Translation_A_Case_Study_in_African_Languages" target="_blank">Participatory Research for Low-resourced Machine Translation: A Case Study in African Languages</a>
-<p></p></li>
-</ol>
-<p class="custom-subtitle2">
-</p><ol start="2" type="1">
-<li><a href="https://arxiv.org/abs/2311.09828" target="_blank">AfriMTE and AfriCOMET: Empowering COMET to Embrace Under-resourced African Languages</a>
-<p></p>
-</li></ol></div>
+<p><span class="exp-badge">2021</span></p>
+</div>
+<div class="exp-card">
+<p class="exp-title">
+BS in Electrical &amp; Electronics Engineering
+</p>
+<p class="exp-institution">
+Abubakar Tafawa Balewa University
+</p>
+<p class="exp-description">
+Bauchi, Nigeria
+</p>
+<p><span class="exp-badge">2000</span></p>
+</div>
+<div class="exp-card">
+<p class="exp-title">
+Data Science Instructor
+</p>
+<p class="exp-institution">
+WorldQuant University
+</p>
+<p class="exp-description">
+Teaching data science in the Applied Data Science Lab.
+</p>
+<p><span class="exp-badge">2022–Present</span></p>
+</div>
+<div class="exp-card">
+<p class="exp-title">
+Co-Author &amp; Researcher
+</p>
+<p class="exp-institution">
+Masakhane
+</p>
+<p class="exp-description">
+Participatory research for low-resourced machine translation in African languages.
+</p>
+<p><span class="exp-badge">2020–Present</span></p>
+</div>
+</div>
+</section>
+</div>
+<hr>
+<div class="content-section">
+<p><span class="section-label">Writing</span></p>
+<section id="latest-posts" class="level3">
+<h3 class="anchored" data-anchor-id="latest-posts">Latest Posts</h3>
+<p class="section-subtitle">
+Thoughts on Python, data science, machine learning, and the craft of building things with code.
+</p>
+<div id="listing-latest-posts" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1780177586226" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail">
+<p><a href="./blog/index.html" class="no-external"></a></p><a href="./blog/index.html" class="no-external">
+<p class="card-img-top"><img src="blog/2025-April-07-NamedTuples/JJOkocha.jpeg"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./blog/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./blog/index.html" class="no-external">Blog</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./blog/index.html" class="no-external">Thoughts on data science, machine learning, and Python</a>
+</div>
+<div class="listing-description">
+<a href="./blog/index.html" class="no-external">
 
-<div style="margin: 30px; text-align: center;">
-<a class="btn btn-primary" href="https://github.com/theAfricanQuant/theAfricanQuant.github.io" role="button" target="_blank" style="padding: 15px 30px;">View the template for this on my github repo</a>
+</a>
+</div>
+</div>
+<div class="metadata">
+<p><a href="./blog/index.html" class="no-external"></a></p><a href="./blog/index.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Python,collections,DataClasses,NamedTuple" data-listing-date-sort="1743984000000" data-listing-file-modified-sort="1780177586226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1808">
+<div class="thumbnail">
+<p><a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external"></a></p><a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">
+<p><img loading="lazy" src="./blog/2025-April-07-NamedTuples/JJOkocha.jpeg" class="thumbnail-image"></p>
+</a><p><a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">Python’s Data Structures: Tuples, namedTuples &amp; DataClasses (Retired Legends Edition)</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">Ever needed to store a fixed collection of related items, like coordinates (x, y) or basic info about a person (name, age)? How about details for legendary retired football…<code></code><code></code><code></code><code></code></a>
+</div>
+</div>
+<div class="metadata">
+<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">
+<div class="listing-date">
+Apr 7, 2025
+</div>
+<div class="listing-author">
+Ricky Macharm
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="Python,Unpacking Operator,Method Chaining" data-listing-date-sort="1726272000000" data-listing-file-modified-sort="1780177586226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1170">
+<div class="thumbnail">
+<p><a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external"></a></p><a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">
+<p><img loading="lazy" src="./blog/2024-September-14-Unpacking-Operator/unboxing.webp" class="thumbnail-image"></p>
+</a><p><a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">Grokking the Unpacking Operator</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external"></a>
+</div>
+<div class="listing-description">
+<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">Imagine for a moment that it is your spouse’s birthday and you planned to buy them a gift - a box with some selected items: jewelry, a watch, perfume, and airpods. You…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">
+<div class="listing-date">
+Sep 14, 2024
+</div>
+<div class="listing-author">
+Ricky Macharm
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div>
+<p style="text-align: center; margin-top: 1.5rem;">
+<a href="./blog/" class="btn btn-outline-primary">View All Posts</a>
+</p>
+</section>
 </div>
 
 
 
-</section></main></div>
 
-
- <!-- /main -->
-<!-- PocketFlow Chatbot - Start -->
-<script>
-(function() {
-    var script = document.createElement("script");
-    script.src = "https://askthispage.com/embed/chatbot.js";
-    script.onload = function() {
-        initializeChatbot({
-            extra_urls: ["https://www.sisengai.com/resume/"],
-            prefixes: [],
-            chatbotName: 'SisengAI',
-            wsUrl: 'wss://askthispage.com/api/ws/chat',
-            instruction: 'Ask SisengAI anything',
-            isOpen: false
-        });
-    };
-    document.head.appendChild(script);
-})();
-</script>
-<!-- PocketFlow Chatbot - End -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -264,6 +464,157 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -657,18 +1008,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p><span class="faux-block">© Copyright © 2023, SisengAI</span></p>
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
-      &nbsp;
-    </div>
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
   </div>
 </footer>
 
