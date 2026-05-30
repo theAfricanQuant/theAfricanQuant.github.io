@@ -72,8 +72,7 @@ format:
     mainfont: Inter
     monofont: "JetBrains Mono"
     googlefonts: true
-    highlight-style: a11y
-    callout-appearance: simple
+    callout-style: simple
     toc: false
     code-link: true
     anchor-sections: true
