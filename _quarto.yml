@@ -50,6 +50,11 @@ website:
 
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "*.ipynb"
+    - "!AGENTS.md"
+
   resources:
     - img/ricky_404.jpg
     - 404.html
