@@ -109,9 +109,21 @@ Cards lift 3px on hover with warmer shadow. In dark mode, cards use `$mahogany-9
 
 ### Dark Mode
 
-Triggered by Quarto's built-in `data-bs-theme="dark"` toggle. The entire dark palette is in `html/styles.scss` under `[data-bs-theme="dark"] { ... }`.
+The site has two completely separate compiled Bootstrap CSS files. Quarto's built-in `data-bs-theme` toggle switches between them.
 
-Dark theme colors differ from light entirely — cream becomes `#190B04`, white cards become `#3D2315`, amber primary becomes `#F08C14`.
+| | Light (LivingStory) | Dark (CreatorMagic) |
+|---|---|---|
+| **SCSS file** | `html/styles.scss` | `html/styles-dark.scss` |
+| **Background** | Cream `#FDFBF7` | Zinc `#09090b` |
+| **Cards** | White + mahogany shadow | Zinc-900 `#18181b` + zinc border |
+| **Primary** | Amber `#D4720A` | Amber `#f59e0b` |
+| **Headings** | Mahogany `#321208` | `#fafafa` |
+| **Body text** | Stone `#57534E` | Zinc-200 `#e4e4e7` |
+| **Footer** | Dark mahogany `#321208` | Pure zinc-950 `#09090b` |
+
+**Both files must be kept in sync.** When adding a new component or class, add it to BOTH `html/styles.scss` AND `html/styles-dark.scss` — each with its own color palette. The light file uses `$cream-*`, `$mahogany-*`, `$stone-*` variables. The dark file uses `$zinc-*`, `$amber-*`, `$zinc-*` variables.
+
+**Do NOT use `[data-bs-theme="dark"]` blocks or Bootstrap's `color-mode()` mixin.** The two-file approach (separate compiled CSS) is what makes the toggle work reliably.
 
 ---
 
@@ -120,7 +132,8 @@ Dark theme colors differ from light entirely — cream becomes `#190B04`, white 
 | File | Role |
 |---|---|
 | `_quarto.yml` | Site config: theme, navbar, footer, repo-actions, fonts |
-| `html/styles.scss` | Complete design system (~400 lines): colors, typography, cards, hero, navbar, footer, dark mode |
+| `html/styles.scss` | Complete design system (~450 lines): colors, typography, cards, hero, navbar, footer |
+| `html/styles-dark.scss` | Dark mode design system (~400 lines): same components, zinc/amber palette. MUST be kept in sync with styles.scss |
 | `index.qmd` | Homepage: hero + stats bar + about card + education cards + latest posts listing |
 | `blog/index.qmd` | Blog listing page (grid, 2 columns) |
 | `blog/_metadata.yml` | Defaults for all blog posts: freeze, banner, callout-style, repo-actions, giscus |

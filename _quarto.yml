@@ -73,7 +73,7 @@ format:
   html:
     theme:
       light: [cosmo, html/styles.scss]
-      dark: [darkly, html/styles.scss]
+      dark: [cosmo, html/styles-dark.scss]
     mainfont: Inter
     monofont: "JetBrains Mono"
     googlefonts: true
