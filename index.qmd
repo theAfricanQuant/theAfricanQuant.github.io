@@ -12,9 +12,9 @@ listing:
 
 ::: {.hero-section}
 
-# Ricky Macharm
+# Ricky Macharm, MScFE
 
-<p class="hero-tagline">Data Science Instructor &amp; Quant Developer</p>
+<p class="hero-tagline">Data Science Instructor | AI Researcher | Consultant</p>
 
 <p class="hero-subtitle">
 Exploring machine learning, financial engineering, and NLP.
@@ -88,7 +88,7 @@ Got questions? Ideas bubbling up? Or maybe a project you think we can collaborat
 :::
 
 ::: {.exp-card}
-<p class="exp-title">BS in Electrical & Electronics Engineering</p>
+<p class="exp-title">B. Eng in Electrical & Electronics Engineering</p>
 <p class="exp-institution">Abubakar Tafawa Balewa University</p>
 <p class="exp-description">Bauchi, Nigeria</p>
 <span class="exp-badge">2000</span>
