@@ -14,7 +14,7 @@ listing:
 
 # Ricky Macharm, MScFE
 
-<p class="hero-tagline">Data Science Instructor | AI Researcher | Consultant</p>
+<p class="hero-tagline">AI Researcher &amp; Consultant | Data Science Instructor</p>
 
 <p class="hero-subtitle">
 Exploring machine learning, financial engineering, and NLP.
