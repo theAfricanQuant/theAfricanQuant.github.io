@@ -70,6 +70,7 @@ load_env()
 MODEL = os.environ.get("CHATBOT_MODEL", "deepseek-v4-flash")
 BASE_URL = os.environ.get("CHATBOT_BASE_URL", "https://opencode.ai/zen/go/v1")
 API_KEY = os.environ.get("OPENCODE_GO_API_KEY") or os.environ.get("OPENAI_API_KEY") or os.environ.get("OPENCODE_ZEN_API_KEY") or ""
+ADMIN_KEY = os.environ.get("CHATBOT_ADMIN_KEY", "")
 
 DATA_DIR = Path(os.environ.get("CHATBOT_DATA", Path.home() / "sisengai/chatbot/data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -105,6 +106,14 @@ def init_db():
         url TEXT,
         text TEXT NOT NULL,
         PRIMARY KEY (bot_id, chunk_id)
+    );
+    CREATE TABLE IF NOT EXISTS leads (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        bot_id TEXT NOT NULL,
+        name TEXT,
+        email TEXT NOT NULL,
+        message TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
     );
     """)
     cols = [r["name"] for r in c.execute("PRAGMA table_info(bots)").fetchall()]
@@ -276,6 +285,88 @@ def _alias_note(q: str, aliases: dict) -> str:
     return ""
 
 
+# ---- lead capture ------------------------------------------------------
+
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
+
+_SALES_INTENT = {
+    "price", "pricing", "cost", "costs", "quote", "quotes", "quotation", "estimate",
+    "fee", "fees", "rate", "rates", "charge", "charges", "how much", "pay", "payment",
+    "buy", "purchase", "subscribe", "subscription", "plan", "plans", "tier", "tiers",
+    "hire", "hiring", "work with", "contact", "get in touch", "demo", "book a",
+    "schedule", "trial", "proposal", "engagement", "start a project", "consult",
+    "consultation", "onboard", "onboarding",
+}
+
+_NAME_STOP = {
+    "hi", "hello", "hey", "dear", "good", "morning", "contact", "interested", "please",
+    "thanks", "thank", "the", "this", "that", "my", "name", "is", "email", "mail",
+    "here", "at", "i", "we", "you", "your", "our", "wanna", "want", "wanted", "like",
+    "im", "am", "to", "with", "for", "about", "get", "me", "reach", "out",
+}
+
+
+def _is_sales_intent(q: str) -> bool:
+    ql = q.lower()
+    return any(k in ql for k in _SALES_INTENT)
+
+
+def _extract_email(q: str) -> str | None:
+    m = EMAIL_RE.search(q)
+    return m.group(0).strip().lower() if m else None
+
+
+def _extract_name(q: str, email: str) -> str:
+    # Explicit "my name is X" is the reliable signal.
+    m = re.search(r"(?:my name is|my name's)\s+([A-Za-z][A-Za-z' -]{1,40})", q, re.IGNORECASE)
+    if m:
+        name = re.sub(r"\s+", " ", m.group(1)).strip(" -.,")
+        if 1 < len(name) <= 40:
+            return name
+    # Fallback: a short run of Capitalized words immediately before the email.
+    before = q.split(email, 1)[0] if email in q else ""
+    words = re.findall(r"[A-Za-z']+", before)
+    out = []
+    for w in words:
+        if w[:1].isupper() and len(w) > 1 and w.lower() not in _NAME_STOP:
+            out.append(w)
+        else:
+            break
+    return " ".join(out).strip(" -.,") if out else ""
+
+
+def save_lead(bot_id: str, name: str, email: str, message: str):
+    c = db()
+    c.execute("INSERT INTO leads(bot_id,name,email,message) VALUES(?,?,?,?)",
+              (bot_id, name, email, message))
+    c.commit()
+    c.close()
+
+
+def _lead_ask(bot, question: str) -> str:
+    prompt = (
+        f"{bot['system_prompt']}\n\n"
+        f"A visitor asked: \"{question}\". This looks like a sales, pricing or contact inquiry.\n"
+        "Respond warmly in 1-2 short sentences: briefly acknowledge their question, then ask "
+        "them to leave their name and email address so a real person on our team can follow up "
+        "with details. Keep it short and friendly, and vary your wording each time. "
+        "No citations, no invented facts."
+    )
+    return generate(prompt, question, temperature=0.7)
+
+
+def _lead_confirm(bot, name: str, email: str, question: str) -> str:
+    prompt = (
+        f"{bot['system_prompt']}\n\n"
+        f"A visitor just shared their contact info: name=\"{name}\", email={email}. "
+        f"Their message was: \"{question}\".\n"
+        "Confirm warmly in 1-2 short sentences that we've received their details and a real "
+        "person will follow up soon. Vary your wording each time. Do not invent specific "
+        "next steps beyond 'a human will reach out'."
+    )
+    return generate(prompt, question, temperature=0.7)
+
+
 def _greet(bot_id: str, bot, question: str) -> str:
     topics = _topics(bot_id)
     prompt = (
@@ -318,6 +409,21 @@ def render_markdown(text: str) -> str:
     )
 
 
+def _url_label(url: str) -> str:
+    p = urllib.parse.urlparse(url)
+    path = p.path.strip("/")
+    if path:
+        return path if len(path) <= 60 else path[:57] + "…"
+    return p.netloc or url
+
+
+def _source_footer(sources: list[str]) -> str:
+    if not sources:
+        return ""
+    links = " · ".join(f"[{_url_label(u)}]({u})" for u in sources[:4])
+    return f"\n\n---\n**Read more:** {links}"
+
+
 def answer(bot_id: str, question: str) -> dict:
     c = db()
     bot = c.execute("SELECT * FROM bots WHERE bot_id=?", (bot_id,)).fetchone()
@@ -327,6 +433,17 @@ def answer(bot_id: str, question: str) -> dict:
 
     if _is_greeting(question):
         return {"answer": _greet(bot_id, bot, question), "sources": []}
+
+    # Collect Leads: if the visitor typed an email, capture the lead and confirm.
+    email = _extract_email(question)
+    if email:
+        name = _extract_name(question, email)
+        save_lead(bot_id, name, email, question)
+        return {"answer": _lead_confirm(bot, name, email, question), "sources": [], "lead": True}
+
+    # Collect Leads: sales / pricing / contact intent -> ask for name + email.
+    if _is_sales_intent(question):
+        return {"answer": _lead_ask(bot, question), "sources": [], "lead_intent": True}
 
     aliases = json.loads(bot["aliases"] or "{}")
     alias_note = _alias_note(question, aliases)
@@ -358,12 +475,16 @@ def answer(bot_id: str, question: str) -> dict:
         "Answer the visitor's question using ONLY the context below. "
         "Be concise, warm and friendly. If the context doesn't fully cover it, "
         "say so briefly and offer to help with something related. "
-        "Cite sources by number like [1]."
+        "Do NOT add citation numbers or markdown links — the source pages will be "
+        "linked automatically below your answer."
         f"{alias_note}\n\n"
         f"CONTEXT:\n{context}"
     )
     ans = generate(sys_prompt, question)
     sources = list({x["url"] for x in ctx})
+    footer = _source_footer(sources)
+    if footer:
+        ans = ans.rstrip() + footer
     return {"answer": ans, "sources": sources}
 
 
@@ -381,6 +502,13 @@ class IngestReq(BaseModel):
 class ChatReq(BaseModel):
     bot_id: str
     message: str
+
+
+class LeadReq(BaseModel):
+    bot_id: str
+    email: str
+    name: str = ""
+    message: str = ""
 
 
 def create_app() -> FastAPI:
@@ -414,6 +542,31 @@ def create_app() -> FastAPI:
             raise HTTPException(404, "unknown bot_id")
         res["answer_html"] = render_markdown(res["answer"])
         return res
+
+    @app.post("/lead")
+    def lead_api(req: LeadReq):
+        email = (_extract_email(req.email) or "").strip().lower()
+        if not email or not EMAIL_RE.fullmatch(email):
+            raise HTTPException(400, "a valid email is required")
+        name = req.name.strip() or _extract_name(req.message, email)
+        save_lead(req.bot_id, name, email, req.message.strip() or "")
+        return {"ok": True, "lead": {"bot_id": req.bot_id, "name": name, "email": email}}
+
+    @app.get("/leads")
+    def leads_api(bot_id: str | None = None, key: str | None = None):
+        if ADMIN_KEY and key != ADMIN_KEY:
+            raise HTTPException(401, "invalid admin key")
+        c = db()
+        if bot_id:
+            rows = c.execute(
+                "SELECT id, bot_id, name, email, message, created_at FROM leads "
+                "WHERE bot_id=? ORDER BY id DESC LIMIT 200", (bot_id,)).fetchall()
+        else:
+            rows = c.execute(
+                "SELECT id, bot_id, name, email, message, created_at FROM leads "
+                "ORDER BY id DESC LIMIT 200").fetchall()
+        c.close()
+        return {"leads": [dict(r) for r in rows]}
 
     @app.get("/widget/{bot_id}.js")
     def widget(bot_id: str):
@@ -526,7 +679,14 @@ WIDGET_JS = r"""
   }
 
   sendBtn.addEventListener("click", send);
-  input.addEventListener("keydown", function (e) { if (e.key === "Enter") send(); });
+  // Keep keystrokes inside the chat widget so the host site's global search
+  // shortcut (e.g. Quarto's "/" key) never steals focus mid-typing.
+  function trapKey(e) { e.stopPropagation(); e.stopImmediatePropagation(); }
+  input.addEventListener("keydown", function (e) { trapKey(e); if (e.key === "Enter") send(); });
+  input.addEventListener("keyup", trapKey);
+  input.addEventListener("keypress", trapKey);
+  sendBtn.addEventListener("keydown", trapKey);
+  sendBtn.addEventListener("keyup", trapKey);
 })();
 """
 
