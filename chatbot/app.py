@@ -41,7 +41,7 @@ except ImportError:
     HAS_FASTAPI = False
 
 try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.feature_extraction.text import TfidfVectorizer, ENGLISH_STOP_WORDS
     from sklearn.metrics.pairwise import cosine_similarity
     HAS_SKLEARN = True
 except ImportError:
@@ -88,6 +88,7 @@ def init_db():
         name TEXT NOT NULL,
         system_prompt TEXT NOT NULL DEFAULT 'You are a helpful assistant.',
         brand_color TEXT,
+        aliases TEXT NOT NULL DEFAULT '{}',
         urls TEXT NOT NULL DEFAULT '[]',
         created_at TEXT DEFAULT (datetime('now'))
     );
@@ -99,6 +100,9 @@ def init_db():
         PRIMARY KEY (bot_id, chunk_id)
     );
     """)
+    cols = [r["name"] for r in c.execute("PRAGMA table_info(bots)").fetchall()]
+    if "aliases" not in cols:
+        c.execute("ALTER TABLE bots ADD COLUMN aliases TEXT NOT NULL DEFAULT '{}'")
     c.commit()
     c.close()
 
@@ -185,8 +189,12 @@ def retrieve(bot_id: str, query: str, top_k: int = 4) -> list[dict]:
         return ranked(sim, 0.01)
 
     # Stage 2: character n-grams — catches nicknames, typos and partial words,
-    # so "who is rick" still finds the "Ricky Macharm" chunks.
-    vc = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5)).fit_transform(corpus + [query])
+    # so "who is rick" still finds the "Ricky Macharm" chunks. Stopwords are
+    # stripped from the query first (sklearn ignores stop_words for char_wb),
+    # so filler words ("what does ... do") don't dilute the name signal.
+    tokens = [w for w in re.findall(r"[a-z0-9]+", query.lower()) if w not in ENGLISH_STOP_WORDS]
+    q_clean = " ".join(tokens) if tokens else query.lower()
+    vc = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5)).fit_transform(corpus + [q_clean])
     sim = cosine_similarity(vc[-1], vc[:-1]).flatten()
     return ranked(sim, 0.06)
 
@@ -228,12 +236,65 @@ def _topics(bot_id: str, max_n: int = 6) -> str:
     return ", ".join(topics) if topics else "questions about this site"
 
 
+_GREETINGS = {
+    "hi", "hii", "hiii", "hey", "heyy", "heyyy", "hello", "hallo", "howdy", "yo",
+    "hiya", "sup", "greetings", "hola", "namaste", "welcome", "good morning",
+    "good afternoon", "good evening", "good day", "hey there", "hi there",
+    "hello there", "what's up", "whats up", "wassup",
+}
+_GREET_STARTS = {"hi", "hey", "hello", "hallo", "howdy", "hiya", "yo"}
+
+
+def _is_greeting(q: str) -> bool:
+    t = re.sub(r"[^a-z'\s]", " ", q.lower())
+    t = re.sub(r"\s+", " ", t).strip()
+    if not t:
+        return False
+    if t in _GREETINGS:
+        return True
+    parts = t.split()
+    return 1 <= len(parts) <= 3 and parts[0] in _GREET_STARTS
+
+
+def _alias_note(q: str, aliases: dict) -> str:
+    if not aliases:
+        return ""
+    ql = q.lower()
+    for alias, canonical in aliases.items():
+        if re.search(rf"\b{re.escape(str(alias).lower())}\b", ql) and str(canonical).lower() not in ql:
+            return (
+                f"\nNote: the visitor wrote \"{alias}\". The correct name is \"{canonical}\". "
+                "If your answer mentions this person, gently and naturally clarify the correct name."
+            )
+    return ""
+
+
+def _greet(bot_id: str, bot, question: str) -> str:
+    topics = _topics(bot_id)
+    prompt = (
+        f"{bot['system_prompt']}\n\n"
+        f"A visitor just greeted you: \"{question}\".\n"
+        "Greet them back warmly and briefly (1–2 short sentences), then offer to help "
+        "them find what they need on this site. Vary your wording each time. "
+        f"Things you can help with: {topics}.\n"
+        "No citations, no invented facts."
+    )
+    return generate(prompt, question, temperature=0.7)
+
+
 def answer(bot_id: str, question: str) -> dict:
     c = db()
     bot = c.execute("SELECT * FROM bots WHERE bot_id=?", (bot_id,)).fetchone()
     c.close()
     if not bot:
         raise KeyError(bot_id)
+
+    if _is_greeting(question):
+        return {"answer": _greet(bot_id, bot, question), "sources": []}
+
+    aliases = json.loads(bot["aliases"] or "{}")
+    alias_note = _alias_note(question, aliases)
+
     ctx = retrieve(bot_id, question)
     if not ctx:
         # No matching content — respond like a human, not a canned refusal.
@@ -252,6 +313,7 @@ def answer(bot_id: str, question: str) -> dict:
             "warm clarifying question, or offer a couple of things you can help with.\n"
             f"- Topics you can help with: {topics}.\n"
             "Keep it to 1–3 short sentences, no invented facts, no citations."
+            f"{alias_note}"
         )
         return {"answer": generate(fallback, question, temperature=0.7), "sources": []}
     context = "\n\n".join(f"[{i+1}] {x['text']}" for i, x in enumerate(ctx))
@@ -260,7 +322,8 @@ def answer(bot_id: str, question: str) -> dict:
         "Answer the visitor's question using ONLY the context below. "
         "Be concise, warm and friendly. If the context doesn't fully cover it, "
         "say so briefly and offer to help with something related. "
-        "Cite sources by number like [1].\n\n"
+        "Cite sources by number like [1]."
+        f"{alias_note}\n\n"
         f"CONTEXT:\n{context}"
     )
     ans = generate(sys_prompt, question)
@@ -276,6 +339,7 @@ class IngestReq(BaseModel):
     urls: list[str]
     system_prompt: str = "You are a helpful customer-service assistant."
     brand_color: str = "#D4720A"
+    aliases: dict = {}
 
 
 class ChatReq(BaseModel):
@@ -297,10 +361,10 @@ def create_app() -> FastAPI:
         n = ingest(req.bot_id, req.urls)
         c = db()
         c.execute(
-            "INSERT INTO bots(bot_id,name,system_prompt,brand_color,urls) VALUES(?,?,?,?,?) "
+            "INSERT INTO bots(bot_id,name,system_prompt,brand_color,aliases,urls) VALUES(?,?,?,?,?,?) "
             "ON CONFLICT(bot_id) DO UPDATE SET name=excluded.name, system_prompt=excluded.system_prompt, "
-            "brand_color=excluded.brand_color, urls=excluded.urls",
-            (req.bot_id, req.name, req.system_prompt, req.brand_color, json.dumps(req.urls)),
+            "brand_color=excluded.brand_color, aliases=excluded.aliases, urls=excluded.urls",
+            (req.bot_id, req.name, req.system_prompt, req.brand_color, json.dumps(req.aliases), json.dumps(req.urls)),
         )
         c.commit()
         c.close()
