@@ -118,7 +118,7 @@ def scrape(url: str) -> list[dict]:
         tag.decompose()
     main = soup.find("main") or soup.body or soup
     chunks, cur = [], None
-    for el in main.find_all(["h1", "h2", "h3", "p", "li"]):
+    for el in main.find_all(["h1", "h2", "h3", "p", "li", "pre", "blockquote"]):
         if el.name in ("h1", "h2", "h3"):
             cur = {"heading": clean_text(el.get_text()), "text": ""}
             chunks.append(cur)
@@ -155,24 +155,45 @@ def retrieve(bot_id: str, query: str, top_k: int = 4) -> list[dict]:
     if not rows:
         return []
     if not HAS_SKLEARN:
-        # crude fallback: keyword overlap
-        qw = set(query.lower().split())
+        # crude fallback: keyword overlap + substring/prefix match
+        q = query.lower()
+        qw = set(re.findall(r"[a-z0-9]+", q))
         scored = []
         for r in rows:
-            tw = set(r["text"].lower().split())
-            scored.append((len(qw & tw), dict(r)))
+            low = r["text"].lower()
+            tw = set(re.findall(r"[a-z0-9]+", low))
+            overlap = len(qw & tw)
+            # nickname/partial-word boost: 'rick' must still match 'ricky'
+            partial = sum(1 for t in qw if len(t) >= 3 and t in low)
+            scored.append((overlap + partial, dict(r)))
         scored.sort(key=lambda x: -x[0])
         return [r for s, r in scored[:top_k] if s > 0]
     corpus = [r["text"] for r in rows]
+
+    def ranked(sim, floor):
+        out = []
+        for i in sim.argsort()[-top_k:][::-1]:
+            if float(sim[i]) > floor:
+                out.append({"url": rows[i]["url"], "text": rows[i]["text"], "score": float(sim[i])})
+        return out
+
+    # Stage 1: word n-grams (semantic / phrase matching).
     v = TfidfVectorizer(stop_words="english", ngram_range=(1, 2)).fit_transform(corpus + [query])
     sim = cosine_similarity(v[-1], v[:-1]).flatten()
-    top = sim.argsort()[-top_k:][::-1]
-    return [{"url": rows[i]["url"], "text": rows[i]["text"], "score": float(sim[i])} for i in top if sim[i] > 0.01]
+    best = float(sim.max()) if sim.size else 0.0
+    if best >= 0.03:
+        return ranked(sim, 0.01)
+
+    # Stage 2: character n-grams — catches nicknames, typos and partial words,
+    # so "who is rick" still finds the "Ricky Macharm" chunks.
+    vc = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5)).fit_transform(corpus + [query])
+    sim = cosine_similarity(vc[-1], vc[:-1]).flatten()
+    return ranked(sim, 0.06)
 
 
 # ---- generation --------------------------------------------------------
 
-def generate(system: str, user: str) -> str:
+def generate(system: str, user: str, temperature: float = 0.3) -> str:
     if not API_KEY:
         return "⚠️ Chatbot backend not configured (no API key). Add OPENCODE_GO_API_KEY to ~/.hermes/.env."
     payload = {
@@ -181,13 +202,30 @@ def generate(system: str, user: str) -> str:
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        "temperature": 0.3,
+        "temperature": temperature,
         "max_tokens": 500,
     }
     r = requests.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload, timeout=60)
     r.raise_for_status()
     data = r.json()
     return data["choices"][0]["message"]["content"].strip()
+
+
+def _topics(bot_id: str, max_n: int = 6) -> str:
+    """Short human-readable list of what a bot can talk about (from chunk headings)."""
+    c = db()
+    rows = c.execute("SELECT text FROM chunks WHERE bot_id=?", (bot_id,)).fetchall()
+    c.close()
+    topics, seen = [], set()
+    for r in rows:
+        head = re.split(r"[.\n]", r["text"])[0].strip()
+        head = re.sub(r"^[\W_]+", "", head).strip()
+        if 2 < len(head) < 70 and head.lower() not in seen:
+            topics.append(head)
+            seen.add(head.lower())
+        if len(topics) >= max_n:
+            break
+    return ", ".join(topics) if topics else "questions about this site"
 
 
 def answer(bot_id: str, question: str) -> dict:
@@ -198,12 +236,30 @@ def answer(bot_id: str, question: str) -> dict:
         raise KeyError(bot_id)
     ctx = retrieve(bot_id, question)
     if not ctx:
-        return {"answer": "I don't have enough content from this site to answer that yet.", "sources": []}
+        # No matching content — respond like a human, not a canned refusal.
+        topics = _topics(bot_id)
+        fallback = (
+            f"{bot['system_prompt']}\n\n"
+            f"A visitor asked: \"{question}\"\n\n"
+            "You could not find anything on this website that answers that. "
+            "Reply the way a friendly, real person would — do NOT use a fixed or "
+            "robotic phrase, and vary your wording from one reply to the next. "
+            "Follow these rules:\n"
+            "- If the question is clearly outside this website's scope (e.g. the "
+            "weather, news, general-knowledge or personal questions), politely say you "
+            "only help with this site's content and gently steer them back.\n"
+            "- If it might relate to the site but you lack the details, ask one short, "
+            "warm clarifying question, or offer a couple of things you can help with.\n"
+            f"- Topics you can help with: {topics}.\n"
+            "Keep it to 1–3 short sentences, no invented facts, no citations."
+        )
+        return {"answer": generate(fallback, question, temperature=0.7), "sources": []}
     context = "\n\n".join(f"[{i+1}] {x['text']}" for i, x in enumerate(ctx))
     sys_prompt = (
         f"{bot['system_prompt']}\n\n"
         "Answer the visitor's question using ONLY the context below. "
-        "Be concise and friendly. If the context doesn't contain the answer, say so. "
+        "Be concise, warm and friendly. If the context doesn't fully cover it, "
+        "say so briefly and offer to help with something related. "
         "Cite sources by number like [1].\n\n"
         f"CONTEXT:\n{context}"
     )
