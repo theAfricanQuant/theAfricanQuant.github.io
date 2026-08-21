@@ -47,6 +47,13 @@ try:
 except ImportError:
     HAS_SKLEARN = False
 
+try:
+    import markdown as _markdown
+    import nh3
+    HAS_MARKDOWN = True
+except ImportError:
+    HAS_MARKDOWN = False
+
 # ---- config ------------------------------------------------------------
 
 def load_env():
@@ -282,6 +289,35 @@ def _greet(bot_id: str, bot, question: str) -> str:
     return generate(prompt, question, temperature=0.7)
 
 
+def _normalize_lists(text: str) -> str:
+    """Insert blank lines before bullet lists so CommonMark parsers recognize them.
+
+    LLM output often writes a lead-in line directly above a `- ` list with no
+    blank line; strict Markdown then treats the bullets as literal text.
+    """
+    bullet = re.compile(r"^[ \t]*[-*+][ \t]+")
+    out = []
+    for line in text.split("\n"):
+        if bullet.match(line) and out and out[-1].strip() and not bullet.match(out[-1]):
+            out.append("")
+        out.append(line)
+    return "\n".join(out)
+
+
+def render_markdown(text: str) -> str:
+    """Convert the model's Markdown answer to sanitized HTML for the widget."""
+    if not text or not HAS_MARKDOWN:
+        return text
+    html = _markdown.markdown(_normalize_lists(text), extensions=["fenced_code", "tables", "sane_lists"])
+    return nh3.clean(
+        html,
+        tags={"p", "br", "strong", "em", "code", "pre", "ul", "ol", "li", "a",
+              "h1", "h2", "h3", "h4", "blockquote", "table", "thead", "tbody",
+              "tr", "th", "td", "hr"},
+        attributes={"a": {"href", "title"}, "th": {"align"}, "td": {"align"}},
+    )
+
+
 def answer(bot_id: str, question: str) -> dict:
     c = db()
     bot = c.execute("SELECT * FROM bots WHERE bot_id=?", (bot_id,)).fetchone()
@@ -373,9 +409,11 @@ def create_app() -> FastAPI:
     @app.post("/chat")
     def chat_api(req: ChatReq):
         try:
-            return answer(req.bot_id, req.message)
+            res = answer(req.bot_id, req.message)
         except KeyError:
             raise HTTPException(404, "unknown bot_id")
+        res["answer_html"] = render_markdown(res["answer"])
+        return res
 
     @app.get("/widget/{bot_id}.js")
     def widget(bot_id: str):
@@ -416,7 +454,18 @@ WIDGET_JS = r"""
     ".s-msgs{flex:1 1 auto;overflow-y:auto;padding:14px;font-size:14px;line-height:1.45;background:" + MSG_BG + ";color:" + INK + "}" +
     ".s-msg{max-width:85%;margin:6px 0;padding:9px 13px;border-radius:12px;overflow-wrap:break-word;white-space:pre-wrap}" +
     ".s-msg.u{margin-left:auto;background:" + BRAND + ";color:#fff}" +
-    ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + "}" +
+    ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + ";white-space:normal}" +
+    ".s-msg.a p{margin:0 0 8px}.s-msg.a p:last-child{margin-bottom:0}" +
+    ".s-msg.a ul,.s-msg.a ol{margin:2px 0 8px;padding-left:20px}" +
+    ".s-msg.a li{margin:2px 0}.s-msg.a li>ul,.s-msg.a li>ol{margin-bottom:0}" +
+    ".s-msg.a strong{font-weight:700}.s-msg.a em{font-style:italic}" +
+    ".s-msg.a code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:" + MSG_BG + ";border:1px solid " + LINE + ";padding:1px 5px;border-radius:4px}" +
+    ".s-msg.a pre{background:" + MSG_BG + ";border:1px solid " + LINE + ";border-radius:8px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre}" +
+    ".s-msg.a pre code{background:none;border:none;padding:0;font-size:12.5px;display:block}" +
+    ".s-msg.a a{color:" + BRAND + ";text-decoration:underline}" +
+    ".s-msg.a h1,.s-msg.a h2,.s-msg.a h3,.s-msg.a h4{margin:8px 0 4px;font-weight:700;font-size:1.05em}" +
+    ".s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
+    ".s-msg.a hr{border:none;border-top:1px solid " + LINE + ";margin:8px 0}" +
     ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
     ".s-bar{display:flex;flex:0 0 auto;border-top:1px solid " + LINE + ";background:#fff}" +
     ".s-in{flex:1;border:none;outline:none;padding:13px 14px;font-size:14px;background:#fff;color:" + INK + ";caret-color:" + BRAND + "}" +
@@ -447,10 +496,10 @@ WIDGET_JS = r"""
   var input = box.querySelector(".s-in");
   var sendBtn = box.querySelector(".s-send");
 
-  function add(who, txt) {
+  function add(who, txt, html) {
     var m = document.createElement("div");
     m.className = "s-msg " + (who === "u" ? "u" : "a");
-    m.textContent = txt;
+    if (html) { m.innerHTML = html; } else { m.textContent = txt; }
     msgs.appendChild(m);
     msgs.scrollTop = msgs.scrollHeight;
   }
@@ -472,7 +521,7 @@ WIDGET_JS = r"""
     msgs.appendChild(t);
     fetch(API + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ bot_id: BOT_ID, message: q }) })
       .then(function (r) { return r.json(); })
-      .then(function (j) { if (t.parentNode) t.remove(); add("a", j.answer || "Sorry, try again."); })
+      .then(function (j) { if (t.parentNode) t.remove(); add("a", j.answer || "Sorry, try again.", j.answer_html); })
       .catch(function () { if (t.parentNode) t.remove(); add("a", "Error reaching assistant."); });
   }
 
