@@ -277,7 +277,9 @@ def create_app() -> FastAPI:
 
 WIDGET_JS = r"""
 (function(){
-  var BOT_ID = "__BOT_ID__", BRAND = "__BRAND__", API = (window.__SISENG_API__ || "https://sisengai.com");
+  var SCRIPT = document.currentScript;
+  var API = window.__SISENG_API__ || (SCRIPT && SCRIPT.src ? SCRIPT.src.slice(0, SCRIPT.src.indexOf("/widget/")) : "https://sisengai.com");
+  var BOT_ID = "__BOT_ID__", BRAND = "__BRAND__";
   var d = document.createElement("div");
   d.id = "sisengai-chat";
   d.innerHTML = '<button id="s-btn" style="position:fixed;right:18px;bottom:18px;z-index:99999;width:56px;height:56px;border-radius:50%;border:none;background:'+BRAND+';color:#fff;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25)">💬</button>'+

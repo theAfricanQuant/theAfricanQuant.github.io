@@ -71,6 +71,7 @@ execute:
 
 format:
   html:
+    include-after-body: chatbot-widget.html
     theme:
       light: [cosmo, html/styles.scss]
       dark: [cosmo, html/styles-dark.scss]
