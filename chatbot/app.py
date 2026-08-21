@@ -280,20 +280,84 @@ WIDGET_JS = r"""
   var SCRIPT = document.currentScript;
   var API = window.__SISENG_API__ || (SCRIPT && SCRIPT.src ? SCRIPT.src.slice(0, SCRIPT.src.indexOf("/widget/")) : "https://sisengai.com");
   var BOT_ID = "__BOT_ID__", BRAND = "__BRAND__";
-  var d = document.createElement("div");
-  d.id = "sisengai-chat";
-  d.innerHTML = '<button id="s-btn" style="position:fixed;right:18px;bottom:18px;z-index:99999;width:56px;height:56px;border-radius:50%;border:none;background:'+BRAND+';color:#fff;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25)">💬</button>'+
-    '<div id="s-box" style="display:none;position:fixed;right:18px;bottom:84px;z-index:99999;width:340px;max-width:90vw;height:440px;background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.3);overflow:hidden;font-family:system-ui,sans-serif">'+
-    '<div style="background:'+BRAND+';color:#fff;padding:12px 16px;font-weight:700">Ask us anything</div>'+
-    '<div id="s-msgs" style="height:330px;overflow-y:auto;padding:14px;font-size:14px;background:#f7f8fa"></div>'+
-    '<div style="display:flex;border-top:1px solid #eee"><input id="s-in" placeholder="Type a question…" style="flex:1;border:none;padding:12px;font-size:14px;outline:none"><button id="s-send" style="border:none;background:'+BRAND+';color:#fff;padding:0 16px;font-weight:700">Send</button></div></div>';
-  document.body.appendChild(d);
-  function add(who, txt){ var m=document.createElement('div'); m.style.cssText='margin:6px 0;padding:8px 12px;border-radius:12px;max-width:85%;'+(who==='u'?'margin-left:auto;background:'+BRAND+';color:#fff':'background:#fff;border:1px solid #eee'); m.textContent=txt; document.getElementById('s-msgs').appendChild(m); document.getElementById('s-msgs').scrollTop=1e9; }
-  document.getElementById('s-btn').onclick=function(){var b=document.getElementById('s-box');b.style.display=b.style.display==='none'?'block':'none';};
-  function send(){ var q=document.getElementById('s-in').value.trim(); if(!q)return; add('u',q); document.getElementById('s-in').value=''; var t=document.createElement('div');t.id='s-typing';t.style.cssText='margin:6px 0;color:#999;font-size:12px';t.textContent='…';document.getElementById('s-msgs').appendChild(t);
-    fetch(API+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({bot_id:BOT_ID,message:q})})
-    .then(function(r){return r.json()}).then(function(j){var tp=document.getElementById('s-typing');if(tp)tp.remove();add('a',j.answer||'Sorry, try again.');}).catch(function(){var tp=document.getElementById('s-typing');if(tp)tp.remove();add('a','Error reaching assistant.');}); }
-  document.getElementById('s-send').onclick=send; document.getElementById('s-in').addEventListener('keydown',function(e){if(e.key==='Enter')send();});
+  var INK = "#18181b", LINE = "#e4e4e7", MSG_BG = "#f4f4f5", MUTED = "#71717a";
+
+  var host = document.createElement("div");
+  host.id = "sisengai-chat";
+  var root = host.attachShadow({ mode: "open" });
+
+  var style = document.createElement("style");
+  style.textContent =
+    ":host{position:static;display:block;z-index:2147483000;color-scheme:light}" +
+    "*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}" +
+    ".s-btn{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;border:2px solid #fff;background:" + BRAND + ";color:#fff;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}" +
+    ".s-box{display:none;position:fixed;right:18px;bottom:88px;width:340px;max-width:calc(100vw - 36px);height:460px;max-height:calc(100vh - 130px);background:#fff;color:" + INK + ";border:1px solid #d4d4d8;border-radius:14px;box-shadow:0 16px 60px rgba(0,0,0,.5);overflow:hidden;flex-direction:column}" +
+    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto}" +
+    ".s-msgs{flex:1 1 auto;overflow-y:auto;padding:14px;font-size:14px;line-height:1.45;background:" + MSG_BG + ";color:" + INK + "}" +
+    ".s-msg{max-width:85%;margin:6px 0;padding:9px 13px;border-radius:12px;overflow-wrap:break-word;white-space:pre-wrap}" +
+    ".s-msg.u{margin-left:auto;background:" + BRAND + ";color:#fff}" +
+    ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + "}" +
+    ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
+    ".s-bar{display:flex;flex:0 0 auto;border-top:1px solid " + LINE + ";background:#fff}" +
+    ".s-in{flex:1;border:none;outline:none;padding:13px 14px;font-size:14px;background:#fff;color:" + INK + ";caret-color:" + BRAND + "}" +
+    ".s-in::placeholder{color:" + MUTED + "}" +
+    ".s-send{border:none;background:" + BRAND + ";color:#fff;padding:0 18px;font-weight:700;font-size:14px;cursor:pointer}" +
+    ".s-send:hover{filter:brightness(1.08)}";
+
+  root.appendChild(style);
+
+  var btn = document.createElement("button");
+  btn.className = "s-btn";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Open chat");
+  btn.textContent = "💬";
+
+  var box = document.createElement("div");
+  box.className = "s-box";
+  box.innerHTML =
+    '<div class="s-head">Ask us anything</div>' +
+    '<div class="s-msgs"></div>' +
+    '<div class="s-bar"><input class="s-in" placeholder="Type a question…" aria-label="Your question" /><button class="s-send" type="button">Send</button></div>';
+
+  root.appendChild(btn);
+  root.appendChild(box);
+  document.body.appendChild(host);
+
+  var msgs = box.querySelector(".s-msgs");
+  var input = box.querySelector(".s-in");
+  var sendBtn = box.querySelector(".s-send");
+
+  function add(who, txt) {
+    var m = document.createElement("div");
+    m.className = "s-msg " + (who === "u" ? "u" : "a");
+    m.textContent = txt;
+    msgs.appendChild(m);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  btn.addEventListener("click", function () {
+    var open = box.style.display === "flex";
+    box.style.display = open ? "none" : "flex";
+    if (!open) { input.focus(); }
+  });
+
+  function send() {
+    var q = input.value.trim();
+    if (!q) return;
+    add("u", q);
+    input.value = "";
+    var t = document.createElement("div");
+    t.className = "s-typing";
+    t.textContent = "…";
+    msgs.appendChild(t);
+    fetch(API + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ bot_id: BOT_ID, message: q }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (t.parentNode) t.remove(); add("a", j.answer || "Sorry, try again."); })
+      .catch(function () { if (t.parentNode) t.remove(); add("a", "Error reaching assistant."); });
+  }
+
+  sendBtn.addEventListener("click", send);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") send(); });
 })();
 """
 
