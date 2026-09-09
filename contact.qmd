@@ -27,10 +27,10 @@ toc: false
 </div>
 
 <form id="email-contact-form" class="email-contact-form">
-  <div class="contact-form-grid">
-    <p><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required></p>
-    <p><label for="contact-email">Your email</label><input id="contact-email" name="email" type="email" autocomplete="email" required></p>
-  </div>
+<div class="contact-form-grid">
+<p><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required></p>
+<p><label for="contact-email">Your email</label><input id="contact-email" name="email" type="email" autocomplete="email" required></p>
+</div>
   <p><label for="contact-subject">What would you like to discuss?</label><input id="contact-subject" name="subject" placeholder="For example: an AI assistant for client research" required></p>
   <p><label for="contact-message">A little context</label><textarea id="contact-message" name="message" rows="6" placeholder="What is happening now, and what would you like to be easier?" required></textarea></p>
   <div class="contact-form-action"><button type="submit" class="btn btn-primary">Open my email and send message <span aria-hidden="true">→</span></button><p id="contact-form-status" role="status" aria-live="polite"></p></div>
