@@ -20,18 +20,24 @@ Env (all optional, read from ~/.hermes/.env if present):
 """
 import argparse
 import hashlib
+import hmac
 import json
 import os
 import re
+import smtplib
 import sqlite3
+import time
 import urllib.parse
+from collections import defaultdict, deque
+from datetime import datetime, timezone
+from email.message import EmailMessage
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
 try:
-    from fastapi import FastAPI, HTTPException
+    from fastapi import FastAPI, HTTPException, Header, Request
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
     from pydantic import BaseModel
@@ -69,8 +75,96 @@ load_env()
 
 MODEL = os.environ.get("CHATBOT_MODEL", "deepseek-v4-flash")
 BASE_URL = os.environ.get("CHATBOT_BASE_URL", "https://opencode.ai/zen/go/v1")
-API_KEY = os.environ.get("OPENCODE_GO_API_KEY") or os.environ.get("OPENAI_API_KEY") or os.environ.get("OPENCODE_ZEN_API_KEY") or ""
+
+
+def _pick_key() -> str:
+    """Pick the API key matching the chosen base URL. With multiple dead/legacy
+    keys in the env, matching by provider avoids sending the wrong key."""
+    if "openrouter" in BASE_URL:
+        return os.environ.get("OPENROUTER_API_KEY", "")
+    if "opencode" in BASE_URL:
+        return (
+            os.environ.get("OPENCODE_GO_API_KEY")
+            or os.environ.get("OPENCODE_ZEN_API_KEY")
+            or ""
+        )
+    return os.environ.get("OPENAI_API_KEY", "")
+
+
+API_KEY = _pick_key()
 ADMIN_KEY = os.environ.get("CHATBOT_ADMIN_KEY", "")
+
+# ---- contact-form email (POST /contact) --------------------------------
+
+SMTP_HOST = os.environ.get("SISENGAI_CONTACT_SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.environ.get("SISENGAI_CONTACT_SMTP_PORT", "587"))
+SMTP_USERNAME = os.environ.get("SISENGAI_CONTACT_SMTP_USERNAME", "")
+SMTP_PASSWORD = os.environ.get("SISENGAI_CONTACT_SMTP_PASSWORD", "")
+CONTACT_FROM = os.environ.get("SISENGAI_CONTACT_FROM", SMTP_USERNAME)
+CONTACT_TO = os.environ.get("SISENGAI_CONTACT_TO", SMTP_USERNAME)
+ALLOWED_ORIGINS = {
+    o.strip().rstrip("/")
+    for o in os.environ.get("CONTACT_ALLOWED_ORIGINS", "").split(",")
+    if o.strip()
+}
+
+# Per-IP sliding-window rate limiter for /contact (in-memory; resets on restart).
+RATE_LIMIT = 5  # max submissions per IP per hour
+RATE_WINDOW = 3600
+_contact_hits: dict[str, deque] = defaultdict(deque)
+
+
+def _client_ip(request) -> str:
+    fwd = request.headers.get("x-forwarded-for", "")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    return request.headers.get("x-real-ip") or (request.client.host if request.client else "unknown")
+
+
+def _contact_rate_limited(ip: str) -> bool:
+    """Record a submission attempt; True when the IP is over quota."""
+    now = time.time()
+    dq = _contact_hits[ip]
+    while dq and now - dq[0] > RATE_WINDOW:
+        dq.popleft()
+    if len(dq) >= RATE_LIMIT:
+        return True
+    dq.append(now)
+    return False
+
+
+def _origin_allowed(origin: str | None) -> bool:
+    """Browser requests must come from a configured origin. Missing Origin
+    (curl, server-to-server) is allowed — browsers always send it on
+    cross-origin POSTs, so this is CSRF protection, not authentication."""
+    if not origin:
+        return True
+    return origin.rstrip("/") in ALLOWED_ORIGINS
+
+
+def send_contact_email(name: str, email: str, subject: str, message: str) -> None:
+    """Send the contact-form email via Gmail SMTP (STARTTLS). Raises on failure."""
+    if not (SMTP_USERNAME and SMTP_PASSWORD):
+        raise RuntimeError("SMTP not configured (SISENGAI_CONTACT_SMTP_USERNAME/PASSWORD)")
+    msg = EmailMessage()
+    # Gmail requires From == authenticated user (or a verified alias); the
+    # visitor's address goes in Reply-To so a reply lands in their inbox.
+    msg["From"] = CONTACT_FROM or SMTP_USERNAME
+    msg["To"] = CONTACT_TO or SMTP_USERNAME
+    msg["Reply-To"] = email
+    msg["Subject"] = f"[SisengAI contact] {subject}"
+    body = (
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Subject: {subject}\n"
+        f"Sent: {datetime.now(timezone.utc).isoformat()} UTC\n\n"
+        f"Message:\n{message}\n"
+    )
+    msg.set_content(body)
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as s:
+        s.starttls()
+        s.login(SMTP_USERNAME, SMTP_PASSWORD)
+        s.send_message(msg)
 
 DATA_DIR = Path(os.environ.get("CHATBOT_DATA", Path.home() / "sisengai/chatbot/data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -220,19 +314,30 @@ def retrieve(bot_id: str, query: str, top_k: int = 4) -> list[dict]:
 def generate(system: str, user: str, temperature: float = 0.3) -> str:
     if not API_KEY:
         return "⚠️ Chatbot backend not configured (no API key). Add OPENCODE_GO_API_KEY to ~/.hermes/.env."
-    payload = {
-        "model": MODEL,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
-        "temperature": temperature,
-        "max_tokens": 500,
-    }
-    r = requests.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload, timeout=60)
-    r.raise_for_status()
-    data = r.json()
-    return data["choices"][0]["message"]["content"].strip()
+    models = [MODEL] + [m.strip() for m in os.environ.get("CHATBOT_FALLBACK_MODELS", "").split(",") if m.strip()]
+    last_err = None
+    for model in models:
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "temperature": temperature,
+            "max_tokens": 500,
+        }
+        try:
+            r = requests.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload, timeout=90)
+            r.raise_for_status()
+            data = r.json()
+            return data["choices"][0]["message"]["content"].strip()
+        except Exception as e:
+            last_err = e
+            # only fall through on provider/rate/balance errors, not auth errors
+            code = getattr(getattr(e, "response", None), "status_code", None)
+            if code in (401, 403):
+                raise
+    raise last_err
 
 
 def _topics(bot_id: str, max_n: int = 6) -> str:
@@ -511,6 +616,14 @@ class LeadReq(BaseModel):
     message: str = ""
 
 
+class ContactReq(BaseModel):
+    name: str = ""
+    email: str = ""
+    subject: str = ""
+    message: str = ""
+    company: str = ""  # honeypot: if filled, silently succeed without sending
+
+
 def create_app() -> FastAPI:
     init_db()
     app = FastAPI(title="SisengAI Chatbot", version="1.0")
@@ -552,10 +665,47 @@ def create_app() -> FastAPI:
         save_lead(req.bot_id, name, email, req.message.strip() or "")
         return {"ok": True, "lead": {"bot_id": req.bot_id, "name": name, "email": email}}
 
+    @app.post("/contact")
+    def contact_api(req: ContactReq, request: Request):
+        ip = _client_ip(request)
+        if _contact_rate_limited(ip):
+            raise HTTPException(429, "Too many submissions. Try again later.")
+        if not _origin_allowed(request.headers.get("origin")):
+            raise HTTPException(403, "Origin not allowed.")
+        # Honeypot: bots fill hidden fields — pretend success, send nothing.
+        if req.company.strip():
+            return {"ok": True}
+        name = req.name.strip()
+        email = req.email.strip().lower()
+        subject = req.subject.strip()
+        message = req.message.strip()
+        errors = {}
+        if not (2 <= len(name) <= 100):
+            errors["name"] = "must be 2–100 characters"
+        if not email or not EMAIL_RE.fullmatch(email):
+            errors["email"] = "must be a valid email address"
+        if not (3 <= len(subject) <= 160):
+            errors["subject"] = "must be 3–160 characters"
+        if not (10 <= len(message) <= 5000):
+            errors["message"] = "must be 10–5000 characters"
+        if errors:
+            raise HTTPException(400, detail={"errors": errors})
+        try:
+            send_contact_email(name, email, subject, message)
+        except Exception:
+            # Log the technical detail server-side only; never expose SMTP
+            # credentials or stack traces to the client.
+            print(f"[contact] SMTP failure from {ip} (origin={request.headers.get('origin') or '-'})", exc_info=True)
+            raise HTTPException(503, "Email is temporarily unavailable. Please book a call instead.")
+        print(f"[contact] ok from {ip} (origin={request.headers.get('origin') or '-'})")
+        return {"ok": True}
+
     @app.get("/leads")
-    def leads_api(bot_id: str | None = None, key: str | None = None):
-        if ADMIN_KEY and key != ADMIN_KEY:
-            raise HTTPException(401, "invalid admin key")
+    def leads_api(bot_id: str | None = None, key: str | None = None,
+                  x_admin_key: str | None = Header(default=None)):
+        supplied = (x_admin_key or key or "").strip()
+        if not ADMIN_KEY or not supplied or not hmac.compare_digest(supplied, ADMIN_KEY):
+            raise HTTPException(401, "missing or invalid admin key")
         c = db()
         if bot_id:
             rows = c.execute(
