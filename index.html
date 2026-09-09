@@ -33,8 +33,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./img/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -46,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6ede90c9d4d24678413e14d5ba0b1930.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-07a1335ee0edae863d9ebaf3fb0e0fc3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-6ede90c9d4d24678413e14d5ba0b1930.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b3f195e8b898adc4148f437d3e68bfc7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-a55827069de626cb55ec3e56a4b9f829.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-b3f195e8b898adc4148f437d3e68bfc7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,65 +73,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-latest-posts .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-latest-posts'] = new List('listing-latest-posts', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -321,6 +261,14 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="./services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./free-website-brief.html"> 
+<span class="menu-text">Free website brief</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./projects/index.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
@@ -331,6 +279,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="./resume/index.html"> 
 <span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./contact.html"> 
+<span class="menu-text">Book a call</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -390,224 +342,180 @@ window.Quarto = {
 </header>
 
 
-<section id="ricky-macharm-mscfe" class="level1 hero-section">
-<h1>Ricky Macharm, MScFE</h1>
-<p class="hero-tagline">
-AI Researcher &amp; Consultant | Data Science Instructor
-</p>
+<div class="hero-section studio-hero">
+<div class="studio-hero-copy">
+<p><span class="eyebrow-line">SisengAI · practical AI systems</span></p>
+<section id="give-your-team-more-time-for-the-work-only-humans-can-do." class="level1">
+<h1>Give your team more time for the work only humans can do.</h1>
 <p class="hero-subtitle">
-Exploring machine learning, financial engineering, and NLP. Sharing knowledge through teaching, writing, and open-source.
+I design AI automations, personal AI assistants, and AI-enabled websites for service businesses ready to spend less time on repetitive work.
 </p>
 <div class="hero-links">
-<p><a href="./blog/" class="btn btn-primary">Read the Blog</a> <a href="./projects/" class="btn btn-outline-primary">View My Work</a> <a href="mailto:Ricky.Macharm@SisengAI.com" class="btn btn-outline-secondary">Get in Touch</a></p>
+<p><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a 20-minute Google Meet call</a> <a href="./services.html" class="btn btn-outline-primary">Explore services</a></p>
 </div>
+<p class="hero-proof">
+AI engineer · 20+ years in engineering · Data Science Instructor at WorldQuant University
+</p>
 </section>
-<div class="stats-bar">
-<div class="stat-item">
-<div class="stat-number">
-9+
-</div>
-<div class="stat-label">
-Blog Posts
 </div>
 </div>
-<div class="stat-item">
-<div class="stat-number">
-8+
+<div class="workflow-ribbon">
+<div class="ribbon-step">
+<span>01</span><strong>Find the friction</strong>
+<p>
+Name the task that keeps returning.
+</p>
 </div>
-<div class="stat-label">
-Years in Data
+<div class="ribbon-arrow" aria-hidden="true">
+→
+</div>
+<div class="ribbon-step">
+<span>02</span><strong>Build the system</strong>
+<p>
+Make the workflow useful and reliable.
+</p>
+</div>
+<div class="ribbon-arrow" aria-hidden="true">
+→
+</div>
+<div class="ribbon-step">
+<span>03</span><strong>Measure the relief</strong>
+<p>
+Track time saved and response quality.
+</p>
 </div>
 </div>
-<div class="stat-item">
-<div class="stat-number">
-6
+<div class="free-tool-strip">
+<div class="free-tool-copy">
+<p><span class="section-label">A useful free tool</span></p>
+<section id="get-a-fresh-brief-on-any-public-website." class="level2">
+<h2 class="anchored" data-anchor-id="get-a-fresh-brief-on-any-public-website.">Get a fresh brief on any public website.</h2>
+<p>
+Paste a website address and get a source-grounded view of its offer, audience, clarity, and one practical AI opportunity. Then ask follow-up questions about the page.
+</p>
+</section>
 </div>
-<div class="stat-label">
-Projects
+<form class="free-tool-form" action="free-website-brief.html" method="get">
+<label for="homepage-website-url">Website address</label>
+<div>
+<input id="homepage-website-url" name="url" type="url" inputmode="url" placeholder="https://example.com" required=""><button type="submit" class="btn btn-primary">Create a free brief <span aria-hidden="true">→</span></button>
 </div>
+<small>Public pages only · free and separate from the SisengAI site chatbot</small>
+</form>
 </div>
-<div class="stat-item">
-<div class="stat-number">
-2
-</div>
-<div class="stat-label">
-Publications
-</div>
-</div>
-</div>
-<hr>
 <div class="content-section">
-<p><span class="section-label">About</span></p>
-<section id="about-me" class="level3">
-<h3 class="anchored" data-anchor-id="about-me">About Me</h3>
-<div class="about-card">
-<p>Hey there! I’m Ricky, the brain behind SisengAI. It’s more than just a project — it’s my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python &amp; pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia.</p>
-<p>When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out <a href="https://www.youtube.com/@theafricanquant501/featured">here</a>). These days, you’ll find me at WorldQuant University in New Orleans, LA, where I teach data science. It’s a cool place, and you can learn more about it <a href="https://www.wqu.edu/programs/applied-ds-lab/">here</a>.</p>
-<p>Not just a man behind the screen, I’ve also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you’ll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects.</p>
-<p>Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don’t hesitate to <a href="mailto:Ricky.Macharm@SisengAI.com">contact me</a>. I’m all ears and ready to chat!</p>
-</div>
-</section>
-</div>
-<hr>
-<div class="content-section-alt">
-<p><span class="section-label">Journey</span></p>
-<section id="education-experience" class="level3">
-<h3 class="anchored" data-anchor-id="education-experience">Education &amp; Experience</h3>
+<p><span class="section-label">What I build</span></p>
+<section id="ai-systems-that-fit-how-your-business-already-works" class="level2">
+<h2 class="anchored" data-anchor-id="ai-systems-that-fit-how-your-business-already-works">AI systems that fit how your business already works</h2>
 <p class="section-subtitle">
-A path from electrical engineering to financial engineering, with data science at the centre.
+Not AI theatre. Each engagement begins with one meaningful bottleneck, then ships a tool your team can actually use.
 </p>
-<div class="exp-grid">
-<div class="exp-card">
-<p class="exp-title">
-MSc in Financial Engineering
+<div class="service-grid">
+<div class="service-card service-card-featured">
+<p class="service-kicker">
+Start here
 </p>
-<p class="exp-institution">
-WorldQuant University
+<h3 class="anchored">
+Automation Blueprint
+</h3>
+<p class="service-outcome">
+Turn a messy, repetitive process into a practical plan for automation.
 </p>
-<p class="exp-description">
-New Orleans, LA, USA
-</p>
-<p><span class="exp-badge">2021</span></p>
+<ul>
+<li>
+Process and tool review
+</li>
+<li>
+Opportunity map with priorities
+</li>
+<li>
+Build plan and clear next step
+</li>
+</ul>
+<p><a href="./services.html#blueprint" class="service-link">See the blueprint <span>→</span></a></p>
 </div>
-<div class="exp-card">
-<p class="exp-title">
-B. Eng in Electrical &amp; Electronics Engineering
+<div class="service-card">
+<p class="service-kicker">
+Build
 </p>
-<p class="exp-institution">
-Abubakar Tafawa Balewa University
+<h3 class="anchored">
+Workflow Automation
+</h3>
+<p class="service-outcome">
+Remove manual hand-offs, repeated reporting, and predictable admin work.
 </p>
-<p class="exp-description">
-Bauchi, Nigeria
-</p>
-<p><span class="exp-badge">2000</span></p>
+<ul>
+<li>
+Lead and enquiry routing
+</li>
+<li>
+Data, document, and reporting flows
+</li>
+<li>
+Human approval where it matters
+</li>
+</ul>
+<p><a href="./services.html#automation" class="service-link">Explore automation <span>→</span></a></p>
 </div>
-<div class="exp-card">
-<p class="exp-title">
-Data Science Instructor
+<div class="service-card">
+<p class="service-kicker">
+Research &amp; personal
 </p>
-<p class="exp-institution">
-WorldQuant University
+<h3 class="anchored">
+AI Personal Assistant
+</h3>
+<p class="service-outcome">
+A personality-led assistant that researches, synthesises, and helps the client move work forward.
 </p>
-<p class="exp-description">
-Teaching data science in the Applied Data Science Lab.
-</p>
-<p><span class="exp-badge">2022–Present</span></p>
+<ul>
+<li>
+Research and concise briefings
+</li>
+<li>
+A custom voice, personality, and working style
+</li>
+<li>
+Clear permissions and human approval boundaries
+</li>
+</ul>
+<p><a href="./services.html#assistant" class="service-link">Meet the assistant <span>→</span></a></p>
 </div>
-<div class="exp-card">
-<p class="exp-title">
-Co-Author &amp; Researcher
+<div class="service-card">
+<p class="service-kicker">
+Client-facing
 </p>
-<p class="exp-institution">
-Masakhane
+<h3 class="anchored">
+AI Website &amp; Chatbot
+</h3>
+<p class="service-outcome">
+A credible website that explains the offer clearly, with an on-site chatbot ready to help visitors take the next step.
 </p>
-<p class="exp-description">
-Participatory research for low-resourced machine translation in African languages.
-</p>
-<p><span class="exp-badge">2020–Present</span></p>
+<ul>
+<li>
+Website design and build around the client’s offer
+</li>
+<li>
+On-site chatbot trained on approved business material
+</li>
+<li>
+Lead capture, qualifying questions, and clear hand-off paths
+</li>
+</ul>
+<p><a href="./services.html#website" class="service-link">Explore client-facing AI <span>→</span></a></p>
 </div>
 </div>
 </section>
 </div>
-<hr>
-<div class="content-section">
-<p><span class="section-label">Writing</span></p>
-<section id="latest-posts" class="level3">
-<h3 class="anchored" data-anchor-id="latest-posts">Latest Posts</h3>
-<p class="section-subtitle">
-Thoughts on Python, data science, machine learning, and the craft of building things with code.
+<div class="content-section-dark cta-panel">
+<p><span class="section-label">The first conversation</span></p>
+<section id="what-is-the-one-task-your-team-repeats-every-week" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-one-task-your-team-repeats-every-week">What is the one task your team repeats every week?</h2>
+<p>
+Bring one stubborn workflow to a 20-minute Google Meet call. We’ll decide whether it is a meaningful automation opportunity and what a sensible first step looks like.
 </p>
-<div id="listing-latest-posts" class="quarto-listing quarto-listing-container-default">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1787291619488" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="./blog/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="blog/2025-April-07-NamedTuples/JJOkocha.jpeg"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/index.html" class="no-external">Blog</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./blog/index.html" class="no-external">Thoughts on data science, machine learning, and Python</a>
-</div>
-<div class="delink listing-description"><a href="./blog/index.html" class="no-external">
-
-
-
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/index.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UHl0aG9uJTJDY29sbGVjdGlvbnMlMkNEYXRhQ2xhc3NlcyUyQ05hbWVkVHVwbGU=" data-listing-date-sort="1743984000000" data-listing-file-modified-sort="1787291619488" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1808">
-<div class="thumbnail"><a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">
-
-<img loading="lazy" src="./blog/2025-April-07-NamedTuples/JJOkocha.jpeg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">Python’s Data Structures: Tuples, namedTuples &amp; DataClasses (Retired Legends Edition)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">
-Ever needed to store a fixed collection of related items, like coordinates (x, y) or basic info about a person (name, age)? How about details for legendary retired football…<code></code><code></code><code></code><code></code>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html" class="no-external">
-<div class="listing-date">
-Apr 7, 2025
-</div>
-<div class="listing-author">
-Ricky Macharm
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UHl0aG9uJTJDVW5wYWNraW5nJTIwT3BlcmF0b3IlMkNNZXRob2QlMjBDaGFpbmluZw==" data-listing-date-sort="1726272000000" data-listing-file-modified-sort="1787291619487" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1170">
-<div class="thumbnail"><a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">
-
-<img loading="lazy" src="./blog/2024-September-14-Unpacking-Operator/unboxing.webp" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">Grokking the Unpacking Operator</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external"></a>
-</div>
-<div class="delink listing-description"><a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">
-Imagine for a moment that it is your spouse’s birthday and you planned to buy them a gift - a box with some selected items: jewelry, a watch, perfume, and airpods. You…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html" class="no-external">
-<div class="listing-date">
-Sep 14, 2024
-</div>
-<div class="listing-author">
-Ricky Macharm
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
-<p style="text-align: center; margin-top: 1.5rem;">
-<a href="./blog/" class="btn btn-outline-primary">View All Posts</a>
-</p>
+<p><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a Google Meet call</a></p>
 </section>
 </div>
-
 
 
 
