@@ -1,214 +1,148 @@
-# SisengAI — Design System & Maintenance Guide
+# SisengAI website — agent guide
 
-## Quick Start
+Use this file as the operating context for future work on the public SisengAI website and its supporting AI services.
 
-```bash
-# Render locally (Jupyter notebooks need project venv)
-uv run quarto render
+## What this repository publishes
 
-# Preview with live reload
-uv run quarto preview
-```
+This is a Quarto website for SisengAI. A push to `main` triggers GitHub Actions, renders the site with Quarto 1.9.37, and publishes the static output to the `gh-pages` branch. The public site is served at `www.sisengai.com`.
 
-Site is deployed to **www.sisengai.com** via GitHub Actions on push to `main`. The CI publishes to the `gh-pages` branch which GitHub Pages serves.
+The site is a service business website, not primarily a portfolio. Its job is to explain offers clearly and direct suitable visitors to a short Google Meet conversation.
 
----
+### Established business decisions
 
-## Quarto Version Trap
+- The SisengAI logo belongs in the top-left navbar home link only. Do not repeat it as a large in-page hero mark.
+- The main CTA is the Google Calendar appointment page: https://calendar.app.google/d7Ttfbm1Masri4vB8
+- Client contact on the site should lead to Google Meet calls or the direct email form. Do not add Telegram, WhatsApp, Calendly, n8n, or Make as client-contact flows.
+- Pi.dev is the preferred automation/delivery environment when automation implementation is discussed.
+- Current offers are:
+  1. Automation Blueprint
+  2. Workflow Automation
+  3. AI Personal Assistant — research, concise briefings, agreed personality/voice, and approval boundaries
+  4. AI Website and Chatbot — client-facing websites, grounded on-site chatbots, lead qualification, and hand-off
+- The master CV published on the site is `resume/RickyMacharm_CV_2026.pdf`. Keep earlier CV files intact unless the user specifically asks to replace/remove them.
 
-**Your local Quarto and CI Quarto must match.** If they don't, YAML validation errors or missing features will silently break the build.
+## Essential commands
 
-| Where | Version | Set in |
-|---|---|---|
-| Local | `1.9.37` | `quarto check` |
-| CI | `1.9.37` | `.github/workflows/publish.yml:20` |
+Render before any website hand-off:
 
-If you upgrade quarto locally (`quarto upgrade`), update the CI version too.
+    uv run quarto render
 
-### Names that changed between Quarto versions
+Preview locally:
 
-| Feature | 1.5 name | 1.9 name | Used in |
-|---|---|---|---|
-| Callout style | `callout-style` | `callout-appearance` | `_quarto.yml` |
-| Highlight | — | `highlight-style` | (not used, relies on theme default) |
+    uv run quarto preview
 
-We use the 1.5-compatible names to stay safe: `callout-style: simple`.
+The repository’s GitHub Action is `.github/workflows/publish.yml`. Keep its Quarto version aligned with the local version. The workflow currently uses 1.9.37.
 
----
+A Quarto CSS-variable export warning has occurred with this theme even when rendering succeeds. Treat a non-zero render or a theme compilation failure as a real failure; a successful render with only that known export warning still produces site output. Remove the generated `_quarto_internal_scss_error.scss` artifact before committing it.
 
-## Design System — LivingStory
+## Important layout
 
-### Colors
+- `_quarto.yml` — navigation, global metadata, dual theme setup, footer, and chatbot widget include
+- `index.qmd` — service-led homepage and free Website Brief entry point
+- `services.qmd` — full offer descriptions
+- `contact.qmd` — Google Meet booking plus visitor-composed email form
+- `free-website-brief.qmd` — public Website Brief user interface
+- `resume/index.qmd` — embedded/downloadable master CV
+- `chatbot/app.py` — existing self-hosted RAG chatbot service; this is not run by GitHub Pages
+- `chatbot/website_research_assistant.py` — separate public Website Research Assistant backend; this is not run by GitHub Pages
+- `chatbot-widget.html` — small public-site loader for the existing chat bubble
+- `html/styles.scss` — light theme
+- `html/styles-dark.scss` — dark theme
 
-| Token | Value | Usage |
-|---|---|---|
-| `$cream-50` | `#FDFBF7` | Page background |
-| `$cream-200` | `#F2EBD8` | Card borders, navbar border |
-| `$primary-600` | `#D4720A` | Primary buttons, links, active states |
-| `$primary-700` | `#B05A08` | Button hover |
-| `$mahogany-950` | `#321208` | Headings, dark section bg |
-| `$mahogany-900` | `#5C2D1E` | Secondary borders, card bg (dark mode) |
-| `$stone-600` | `#57534E` | Body text |
-| `$sage-700` | `#2D5C3C` | Project tags |
-| `#832C1C` | — | Dark mode borders |
+## Frontend and brand rules
 
-### Typography
+The light theme uses cream, mahogany, stone, and amber. The dark theme uses zinc and amber. Both are complete, separate SCSS files.
 
-| Role | Font | Weight |
-|---|---|---|
-| Headings (`h1`–`h4`) | Playfair Display | 700 |
-| Body, nav, UI | Inter | 400/500/600 |
-| Code | JetBrains Mono | 400/500 |
+When adding or changing a component:
 
-`h1`: `clamp(2.25rem, 5vw, 4.5rem)` — responsive, 36px–72px
-`h2`: `clamp(1.875rem, 4vw, 3rem)` — 30px–48px
-Body: `1.0625rem` (17px), line-height `1.65`
+1. Update both `html/styles.scss` and `html/styles-dark.scss`.
+2. Use each theme’s own variables; do not copy light-theme tokens into the dark stylesheet.
+3. Render the entire site and inspect the relevant output.
+4. Keep the visual language editorial, warm, practical, and restrained. The Website Brief is a utility panel, not a competing second hero.
 
-### Border Radius
+Typography is Playfair Display for headings, Inter for body/UI, and JetBrains Mono for technical labels. Typical radius: 0.75rem for buttons, 1rem for cards.
 
-| Element | Radius |
-|---|---|
-| Buttons | `0.75rem` (12px) |
-| Cards | `1rem` (16px) |
-| Badges/pills | `9999px` (full pill) |
-| Nav links | `0.5rem` (8px) |
+## Direct email contact form
 
-### Shadows
+The public contact form is a static-site mailto form. It collects a name, email, subject, and message on the page, then opens the visitor's configured email application with a pre-filled message addressed to Ricky.Macharm@SisengAI.com. It does not send email silently from GitHub Pages.
 
-```scss
-$box-shadow:     0 4px 24px rgba(92, 45, 30, 0.10);  // warm mahogany
-$box-shadow-lg:  0 8px 48px rgba(92, 45, 30, 0.15);
-// Buttons also get: 0 4px 24px rgba(212, 114, 10, 0.25); // amber glow
-```
+If a future task requires form submission without a visitor email application, select and explicitly configure an email-form backend/service; do not put email-service credentials in browser code.
 
-### Section Layout
+## Existing chatbot
 
-Pages use alternating backgrounds for visual rhythm:
+The live widget is loaded from `https://bot.sisengai.com/widget/sisengai-demo.js`. It is a Python FastAPI service with:
 
-```
-hero-section        → cream (default)
-content-section     → cream (default)
-content-section-alt → white
-content-section-dark→ dark mahogany (#321208)
-```
+- SQLite storage for bots, source chunks, and leads
+- public-site ingestion plus TF-IDF retrieval
+- an OpenAI-compatible model call
+- a Shadow DOM widget
 
-Sections have `5rem` top/bottom padding with labels (`.section-label` amber pill badge) and subtitles (`.section-subtitle` max-width 672px).
+Configuration is environment based:
 
-### Cards
+- `CHATBOT_MODEL`
+- `CHATBOT_BASE_URL`
+- `OPENCODE_GO_API_KEY` or compatible fallback key names
+- `CHATBOT_ADMIN_KEY`
+- `CHATBOT_DATA`
 
-```html
-<div class="exp-card">        <!-- or project-card -->
-  <p class="exp-title">...</p>
-  <p class="exp-institution">...</p>
-  <p class="exp-description">...</p>
-  <span class="exp-badge">2021</span>  <!-- amber pill badge -->
-</div>
-```
+Never commit API keys or copy environment files into the repository.
 
-Cards lift 3px on hover with warmer shadow. In dark mode, cards use `$mahogany-900` background.
+### Current chatbot incident
 
-### Dark Mode
+On 2026-09-09, the live health endpoint returned 200 and the demo widget existed, but a valid chat request such as “hello” returned HTTP 500. The local code sends greetings directly to the model provider and lets upstream HTTP/response-shape errors escape uncaught. The static-site push did not cause that failure.
 
-The site has two completely separate compiled Bootstrap CSS files. Quarto's built-in `data-bs-theme` toggle switches between them.
+Before changing the provider:
 
-| | Light (LivingStory) | Dark (CreatorMagic) |
-|---|---|---|
-| **SCSS file** | `html/styles.scss` | `html/styles-dark.scss` |
-| **Background** | Cream `#FDFBF7` | Zinc `#09090b` |
-| **Cards** | White + mahogany shadow | Zinc-900 `#18181b` + zinc border |
-| **Primary** | Amber `#D4720A` | Amber `#f59e0b` |
-| **Headings** | Mahogany `#321208` | `#fafafa` |
-| **Body text** | Stone `#57534E` | Zinc-200 `#e4e4e7` |
-| **Footer** | Dark mahogany `#321208` | Pure zinc-950 `#09090b` |
+1. Inspect the deployed bot service logs to capture the upstream error.
+2. Configure the replacement provider and model through server environment variables, not source-code secrets.
+3. Add graceful provider error handling so the visitor receives a short retry message rather than a generic widget error.
+4. Verify `/health`, a greeting, a grounded website question, lead capture, and the embedded widget.
+5. Commit source/config documentation only; deploy service secrets through the hosting environment.
 
-**Both files must be kept in sync.** When adding a new component or class, add it to BOTH `html/styles.scss` AND `html/styles-dark.scss` — each with its own color palette. The light file uses `$cream-*`, `$mahogany-*`, `$stone-*` variables. The dark file uses `$zinc-*`, `$amber-*`, `$zinc-*` variables.
+OpenRouter is the candidate provider discussed with the user. Confirm the currently supported model ID and pricing from official OpenRouter documentation at implementation time; model availability changes.
 
-**Do NOT use `[data-bs-theme="dark"]` blocks or Bootstrap's `color-mode()` mixin.** The two-file approach (separate compiled CSS) is what makes the toggle work reliably.
+## Free Website Brief
 
----
+The public page at `/free-website-brief.html` is a normal Quarto page with the same navbar, footer, and styling as the rest of the site. Visitors submit a public URL, receive a source-grounded brief, then can ask follow-up questions about that page.
 
-## File Map
+Its Python service is intentionally separate from the existing support chatbot:
 
-| File | Role |
-|---|---|
-| `_quarto.yml` | Site config: theme, navbar, footer, repo-actions, fonts |
-| `html/styles.scss` | Complete design system (~450 lines): colors, typography, cards, hero, navbar, footer |
-| `html/styles-dark.scss` | Dark mode design system (~400 lines): same components, zinc/amber palette. MUST be kept in sync with styles.scss |
-| `index.qmd` | Homepage: hero + stats bar + about card + education cards + latest posts listing |
-| `blog/index.qmd` | Blog listing page (grid, 2 columns) |
-| `blog/_metadata.yml` | Defaults for all blog posts: freeze, banner, callout-style, repo-actions, giscus |
-| `projects/index.qmd` | Project cards in a 2-column grid |
-| `resume/index.qmd` | PDF resume embed |
-| `about.qmd` | Simple about page |
-| `404.qmd` | Custom 404 with redirect |
-| `.github/workflows/publish.yml` | CI: render → publish to gh-pages |
+- isolated endpoints, SQLite data, sessions, prompts, and rate limits
+- one public HTML page per analysis
+- short-lived sessions (24 hours)
+- blocks local/private/reserved addresses and custom ports
+- checks redirect destinations, respects readable robots rules, and caps response size
+- never place AI keys in the Quarto page or browser JavaScript
 
----
+### Current deployment state and plan
 
-## How To…
+The page UI has been published, but GitHub Pages cannot run its Python backend. The default browser configuration currently names `research.sisengai.com` as a future dedicated API origin. The user prefers no new public subdomain.
 
-### Change the primary color
+Preferred next architecture:
 
-Edit `html/styles.scss` lines 13–16:
-```scss
-$primary-600: #D4720A;  // buttons, links
-$primary-700: #B05A08;  // hover state
-```
-Also update dark mode `#F08C14` near line 640.
+1. Keep the visitor-facing page at `www.sisengai.com/free-website-brief.html`.
+2. After repairing the existing bot service, deploy/mount the Website Brief backend behind the existing bot host, for example `https://bot.sisengai.com/research`.
+3. Update `free-website-brief.qmd` to call that verified route.
+4. Give the research service a dedicated API key and data directory, strict allowed browser origins, request limits, and network-level egress rules that deny private/internal IP ranges.
+5. Test with a permitted public website, an invalid URL, a local/private URL, a redirect, a follow-up question, and mobile layout.
+6. Only then describe the free analysis as live in public-facing copy.
 
-### Change heading font
+Do not reuse the existing chatbot’s public `/ingest` endpoint for arbitrary visitor URLs.
 
-Edit `html/styles.scss` line 41:
-```scss
-$headings-font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-```
-Also update the `@import url(...)` on line 101 to include the new Google Font.
+## Change workflow
 
-### Add a new page
+For content or UI work:
 
-1. Create `new-page.qmd` at the project root (or in a subfolder)
-2. Add to `_quarto.yml` navbar under `left:` or `right:`
-3. Render — Quarto auto-discovers `.qmd` files
+1. Read the relevant QMD, SCSS, and config files before editing.
+2. Preserve user changes that are unrelated to the requested work.
+3. Render the website.
+4. Check the rendered page and mobile layout where practical.
+5. Review `git diff --check` and `git status`.
+6. Commit and push only when the user asks.
 
-### Add a new blog post
+For backend or deployment work:
 
-Create a folder under `blog/` with the date prefix (e.g., `blog/2026-June-01-My-Post/`), put an `.qmd` or `.ipynb` inside. The blog listing auto-discovers it.
-
-### Add a section label (pill badge)
-
-```markdown
-<span class="section-label">Your Label</span>
-```
-
-### Use alternating section backgrounds
-
-```markdown
-::: {.content-section}
-<!-- cream background -->
-:::
-
-::: {.content-section-alt}
-<!-- white background -->
-:::
-```
-
-### Test locally before pushing
-
-```bash
-uv run quarto render && uv run quarto preview
-```
-
-### Debug CI failures
-
-1. Check that CI Quarto version matches local: `quarto check` vs `.github/workflows/publish.yml:20`
-2. Check that YAML keys use 1.5-compatible names (see table above)
-3. GitHub Actions logs are at `https://github.com/theAfricanQuant/theAfricanQuant.github.io/actions`
-
-### Regenerate after deleting _freeze/
-
-```bash
-rm -rf _freeze/ _site/
-uv run quarto render
-```
-
-This forces full re-execution of all Jupyter notebooks — needs the project venv with jupyter installed.
+1. Keep public static-site code and secret-bearing backend configuration separate.
+2. Create a repeatable local request test before changing provider, model, retrieval, or scraping behaviour.
+3. Use friendly structured API errors; never turn provider failures into unexplained HTTP 500 responses.
+4. Do not deploy or alter DNS without explicit user approval.
