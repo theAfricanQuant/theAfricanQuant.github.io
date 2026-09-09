@@ -4,7 +4,7 @@
 # website settings
 website:
   title: "SisengAI"
-  description: "Data Science Instructor & Quant Developer — exploring machine learning, financial engineering, and NLP."
+  description: "AI automation consultant — practical AI systems, research assistants, and workflow automation for service businesses."
   site-url: https://www.sisengai.com
   image: img/Ricky_Macharm_LP.png
   favicon: img/favicon.png
@@ -15,12 +15,18 @@ website:
     logo: /img/SisengAI_Logo.png
 
     left:
+      - text: "Services"
+        href: services.qmd
+      - text: "Free website brief"
+        href: free-website-brief.qmd
       - text: "Projects"
         href: projects/index.qmd
       - text: "Blog"
         href: blog/index.qmd
       - text: "Resume"
         href: resume/index.qmd
+      - text: "Book a call"
+        href: contact.qmd
 
     right:
       - icon: linkedin

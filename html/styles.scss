@@ -537,3 +537,65 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
     .stat-number { font-size: 1.5rem; }
   }
 }
+
+
+/* SisengAI service studio */
+.studio-hero{max-width:76rem;margin:auto;padding:7rem 2rem 5rem;text-align:left}
+.studio-hero h1,.services-page-hero h1,.contact-hero h1{max-width:15ch}
+.studio-hero .hero-subtitle,.services-page-hero .hero-subtitle,.contact-hero .hero-subtitle{margin-left:0;max-width:40rem}
+.studio-hero .hero-links,.services-page-hero .hero-links,.contact-hero .hero-links{justify-content:flex-start}
+.hero-proof{color:$stone-500;font-size:.88rem}
+.eyebrow-line{display:inline-flex;align-items:center;gap:.5rem;color:$primary-700;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem}
+.eyebrow-line:before{content:"";display:inline-block;width:2.25rem;height:2px;background:$primary-600}
+.workflow-ribbon{max-width:76rem;margin:0 auto 3rem;padding:1.25rem 1.5rem;border:1px solid $cream-200;border-radius:1rem;background:$white;box-shadow:$box-shadow;display:flex;align-items:center;gap:1rem}
+.ribbon-step{flex:1}
+.ribbon-step span,.engagement-grid span{display:block;color:$primary;font-family:$font-family-monospace;font-size:.72rem;font-weight:700;letter-spacing:.1em;margin-bottom:.35rem}
+.ribbon-step strong{color:$mahogany-950;font-size:.95rem}
+.ribbon-step p{color:$stone-500;font-size:.8rem;line-height:1.4;margin:.15rem 0 0}
+.ribbon-arrow{color:$primary;font-size:1.5rem}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1rem}
+.service-card{border:1px solid $cream-200;border-radius:1rem;background:$white;padding:1.7rem;display:flex;flex-direction:column;min-height:23rem;transition:transform .2s ease,box-shadow .2s ease}
+.service-card:hover{transform:translateY(-4px);box-shadow:$box-shadow-lg}
+.service-card h3{font-size:1.55rem;margin:.4rem 0 .7rem}
+.service-card ul{padding-left:1.1rem;color:$stone-600;font-size:.92rem}
+.service-card li+li{margin-top:.4rem}
+.service-card-featured{background:$mahogany-950;border-color:$mahogany-950}
+.service-card-featured h3,.service-card-featured .service-outcome{color:$cream-50}
+.service-card-featured ul,.service-card-featured .service-link,.service-card-featured .service-kicker{color:$primary-200}
+.service-kicker{color:$primary-700;font-size:.72rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;margin:0}
+.service-outcome{color:$mahogany-900;font-size:1.02rem;line-height:1.5}
+.service-link{color:$primary-700;font-weight:700;font-size:.9rem;text-decoration:none;margin-top:auto}
+.cta-panel{text-align:center}
+.cta-panel p{max-width:40rem;margin:0 auto 1.75rem;color:$cream-300}
+.cta-panel .section-label{background:rgba($primary-600,.15);border-color:rgba($primary-200,.4);color:$primary-200}
+.services-page-hero,.contact-hero{padding:7rem 2rem 4rem;text-align:left;max-width:76rem;margin:auto}
+.engagement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;max-width:65rem}
+.engagement-grid>div{border-top:2px solid $primary-200;padding-top:1rem}
+.engagement-grid h3{font-size:1.3rem;margin:.5rem 0}
+.engagement-grid p{font-size:.95rem;color:$stone-600}
+.service-detail-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
+.service-detail-lead{color:$mahogany-900;font-family:$headings-font-family;font-size:clamp(1.35rem,2.3vw,2rem);line-height:1.3;margin:0 0 1.5rem}
+.detail-checklist,.meeting-card{padding:1.5rem;background:$primary-50;border:1px solid $primary-200;border-radius:1rem}
+.detail-checklist ul{padding-left:1.15rem;color:$stone-600}
+.meeting-card{display:flex;align-items:center;gap:1rem;max-width:48rem;margin-top:2rem}
+.meeting-card p{font-size:.88rem;color:$stone-600;margin:.15rem 0}
+.meeting-card .btn{margin-left:auto;white-space:nowrap}
+.meeting-icon{width:2.5rem;height:2.5rem;border-radius:50%;display:grid;place-items:center;background:$white;color:$primary-700;font-weight:700}
+.email-fallback{font-size:.9rem;color:$stone-500;margin-top:1.5rem}
+@media(max-width:768px){.studio-hero{padding:5rem 1rem 3rem}.service-detail-layout{grid-template-columns:1fr;gap:2rem}
+.services-page-hero,.contact-hero{padding:5rem 1rem 3rem}
+.workflow-ribbon{margin:0 1rem 2rem;display:block}
+.ribbon-arrow{transform:rotate(90deg);margin:.25rem 0}
+.service-grid,.engagement-grid{grid-template-columns:1fr;gap:1rem}
+.service-card{min-height:0}
+.meeting-card{align-items:flex-start;flex-wrap:wrap}
+.meeting-card .btn{margin-left:3.5rem}
+}
+
+
+
+/* Free Website Research Assistant — separate public product surface. */
+.free-tool-strip{max-width:76rem;margin:0 auto 3rem;padding:2.25rem;display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center;background:$primary-50;border:1px solid $primary-200;border-radius:1rem}.free-tool-copy h2{margin:.65rem 0;font-size:clamp(1.8rem,3vw,2.7rem);line-height:1.08}.free-tool-copy p{margin:0;color:$stone-600;max-width:35rem}.free-tool-form label{display:block;color:$mahogany-900;font-weight:700;font-size:.82rem;margin-bottom:.45rem}.free-tool-form>div,.website-brief-input-row,.brief-chat-form{display:flex;gap:.6rem}.free-tool-form input,.website-brief-form input,.brief-chat-form input{width:100%;min-width:0;border:1px solid $cream-200;border-radius:.55rem;background:$white;color:$mahogany-950;padding:.8rem .9rem;font:inherit}.free-tool-form input:focus,.website-brief-form input:focus,.brief-chat-form input:focus{outline:3px solid rgba($primary,.2);border-color:$primary}.free-tool-form small{display:block;color:$stone-500;font-size:.75rem;margin-top:.65rem}
+.website-brief-hero{max-width:76rem;margin:0 auto;padding:7rem 2rem 2.8rem}.website-brief-hero h1{max-width:15ch}.website-brief-hero .hero-subtitle{max-width:43rem;margin-left:0}.brief-boundary{display:flex;flex-wrap:wrap;gap:.55rem;color:$stone-500;font-size:.82rem;margin-top:1.5rem}.brief-boundary span:nth-child(odd){font-weight:600}.website-brief-shell{max-width:76rem;margin:0 auto 5rem;padding:0 2rem}.website-brief-form{padding:1.75rem;background:$mahogany-950;border-radius:1rem;box-shadow:$box-shadow-lg}.website-brief-form label{display:block;color:$cream-50;font-weight:700;margin-bottom:.55rem}.website-brief-input-row input{border-color:transparent}.website-brief-input-row .btn,.brief-chat-form .btn{white-space:nowrap}.form-hint{margin:.75rem 0 0;color:$cream-300;font-size:.82rem}.brief-status{min-height:1.3rem;margin:.8rem 0 0;color:$cream-200;font-size:.88rem}.brief-status.success{color:#d5f2da}.brief-status.error{color:#ffd2c2}
+.website-brief-result{margin-top:2rem}.brief-source{display:flex;gap:.6rem;align-items:center;color:$stone-500;font-size:.8rem;margin-bottom:.65rem}.brief-source span{font-weight:700;text-transform:uppercase;letter-spacing:.08em}.brief-source a{color:$primary-700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.brief-summary-card{padding:2rem 2.2rem;background:$cream-100;border-left:4px solid $primary;border-radius:.2rem 1rem 1rem .2rem}.brief-summary-card p{font-family:$headings-font-family;font-size:clamp(1.25rem,2.2vw,1.85rem);line-height:1.35;color:$mahogany-950;margin:.8rem 0 0}.brief-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0}.brief-grid article,.brief-questions{padding:1.5rem;border:1px solid $cream-200;border-radius:1rem;background:$white}.brief-grid h2,.brief-questions h2{font-size:1.08rem;margin:0 0 .75rem}.brief-grid ul,.brief-questions ul{padding-left:1.1rem;margin:0;color:$stone-600;font-size:.92rem}.brief-grid li+li,.brief-questions li+li{margin-top:.5rem}.brief-opportunity{padding:1.8rem 2rem;margin-bottom:1rem;background:$primary-50;border:1px solid $primary-200;border-radius:1rem}.brief-opportunity h2{font-size:1.45rem;margin:.65rem 0 .4rem}.brief-opportunity p{margin:0;color:$stone-600;max-width:50rem}.website-brief-chat{margin-top:1rem;padding:2rem;background:$white;border:1px solid $cream-200;border-radius:1rem}.brief-chat-heading h2{margin:.6rem 0 .25rem;font-size:1.5rem}.brief-chat-heading p{margin:0;color:$stone-500;font-size:.9rem}.brief-messages{max-height:23rem;overflow:auto;margin:1.25rem 0;padding:1rem;background:$cream-100;border-radius:.75rem;display:flex;flex-direction:column;gap:.75rem}.brief-message{max-width:85%;padding:.7rem .9rem;border-radius:.65rem;font-size:.92rem;line-height:1.45;white-space:pre-wrap}.brief-message.visitor{align-self:flex-end;background:$primary;color:$white}.brief-message.assistant{align-self:flex-start;background:$white;border:1px solid $cream-200;color:$mahogany-950}.brief-message.pending{color:$stone-500;font-style:italic}.brief-message.error{border-color:#e8a389;color:#8d3216}.brief-next-step{margin-top:2rem;padding:2rem;background:$mahogany-950;color:$cream-50;border-radius:1rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}.brief-next-step h2{font-size:1.5rem;margin:.6rem 0}.brief-next-step p{margin:0;color:$cream-300;max-width:39rem}.brief-next-step .section-label{color:$primary-200;border-color:rgba($primary-200,.5);background:rgba($primary,.15)}
+@media(max-width:768px){.free-tool-strip{margin:0 1rem 2rem;padding:1.5rem;grid-template-columns:1fr;gap:1.5rem}.free-tool-form>div,.website-brief-input-row,.brief-chat-form{flex-direction:column}.free-tool-form .btn,.website-brief-input-row .btn,.brief-chat-form .btn{width:100%}.website-brief-hero{padding:5rem 1rem 2rem}.website-brief-shell{padding:0 1rem;margin-bottom:3rem}.website-brief-form{padding:1.25rem}.brief-grid{grid-template-columns:1fr}.brief-summary-card{padding:1.5rem}.website-brief-chat{padding:1.25rem}.brief-next-step{padding:1.5rem;align-items:flex-start;flex-direction:column}.brief-next-step .btn{width:100%}}

@@ -1,0 +1,21 @@
+---
+title: "Book a call"
+description: "Book a short Google Meet call with SisengAI."
+toc: false
+---
+
+::: {.hero-section .contact-hero}
+<span class="eyebrow-line">Start with one workflow</span>
+
+# Book a 20-minute Google Meet call.
+
+<p class="hero-subtitle">Bring the repetitive task you want to improve. We’ll decide whether it is a sensible candidate for automation and what to do next.</p>
+
+<div class="meeting-card">
+  <div class="meeting-icon">G</div>
+  <div><strong>AI automation fit call</strong><p>20 minutes · Google Meet · booking confirmation arrives by email</p></div>
+  <a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Choose a time</a>
+</div>
+
+<p class="email-fallback">Prefer email? <a href="mailto:Ricky.Macharm@SisengAI.com?subject=AI%20automation%20enquiry">Write to Ricky@SisengAI.com</a>.</p>
+:::

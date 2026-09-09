@@ -1,0 +1,60 @@
+---
+title: "Services"
+description: "Practical AI automation, research, and personal assistant services from SisengAI."
+toc: false
+---
+
+::: {.hero-section .services-page-hero}
+<span class="eyebrow-line">Services · practical AI systems</span>
+
+# Choose the right first move—not the biggest possible project.
+
+<p class="hero-subtitle">Every engagement creates a clear improvement in how work moves through your business. We start with the problem, then choose the technology.</p>
+
+<div class="hero-links"><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a 20-minute Google Meet call</a></div>
+:::
+
+::: {.content-section}
+<span class="section-label">How engagements work</span>
+
+## A clear path from friction to a working system
+
+<div class="engagement-grid">
+<div><span>01</span><h3>Google Meet call</h3><p>We identify the repeated task, its cost, and whether automation is a good fit.</p></div>
+<div><span>02</span><h3>Scope</h3><p>You receive a focused recommendation, timeline, and proposal before work starts.</p></div>
+<div><span>03</span><h3>Build & handover</h3><p>I build, test with your team, document the system, and train the people who use it.</p></div>
+</div>
+:::
+
+::: {.content-section-alt .service-detail-section}
+<span class="section-label" id="blueprint">01 · Diagnose</span>
+
+## Automation Blueprint
+
+<div class="service-detail-layout"><div><p class="service-detail-lead">A fixed-scope diagnostic for a business that knows something is inefficient but needs a confident, practical plan before investing in a build.</p><a class="btn btn-primary" href="https://calendar.app.google/d7Ttfbm1Masri4vB8">Book a Google Meet call</a></div><div class="detail-checklist"><p><strong>You receive</strong></p><ul><li>Process walkthrough and bottleneck diagnosis</li><li>Prioritised automation opportunities</li><li>Recommended approach, risks, and implementation plan</li><li>A fixed build proposal, if we decide to continue</li></ul></div></div>
+:::
+
+::: {.content-section .service-detail-section}
+<span class="section-label" id="automation">02 · Build</span>
+
+## Workflow Automation
+
+<div class="service-detail-layout"><div><p class="service-detail-lead">A custom workflow that handles the predictable work between your inbox, documents, spreadsheets, CRM, and internal tools—without removing sensible human review.</p><a class="btn btn-primary" href="https://calendar.app.google/d7Ttfbm1Masri4vB8">Discuss a workflow on Meet</a></div><div class="detail-checklist"><p><strong>Typical outcomes</strong></p><ul><li>Capture and route new leads consistently</li><li>Reduce repeat data entry and status chasing</li><li>Generate reliable reports from live data</li><li>Keep teams informed without manual follow-ups</li></ul></div></div>
+:::
+
+::: {.content-section-alt .service-detail-section}
+<span class="section-label" id="assistant">03 · Research & personal</span>
+
+## AI Research & Personal Assistant
+
+<div class="service-detail-layout"><div><p class="service-detail-lead">A personality-led AI assistant that researches a client’s topics, distils what matters, and works in an agreed voice, style, and set of permissions.</p><a class="btn btn-primary" href="https://calendar.app.google/d7Ttfbm1Masri4vB8">Discuss an assistant on Meet</a></div><div class="detail-checklist"><p><strong>Built around the client</strong></p><ul><li>Research, synthesis, and briefings for defined topics</li><li>A distinct personality and communication style</li><li>Approved sources, clear memory boundaries, and human review</li><li>Optional delivery into the client’s preferred workflow</li></ul></div></div>
+:::
+
+
+::: {.content-section .service-detail-section}
+<span class="section-label" id="website">04 · Client-facing</span>
+
+## AI-enabled Website & On-site Chatbot
+
+<div class="service-detail-layout"><div><p class="service-detail-lead">A client-facing website built to explain a clear offer, earn trust, and help visitors get answers or book a conversation without waiting for an email reply.</p><a class="btn btn-primary" href="https://calendar.app.google/d7Ttfbm1Masri4vB8">Discuss a website on Meet</a></div><div class="detail-checklist"><p><strong>What clients receive</strong></p><ul><li>A polished website built around their service and conversion path</li><li>An on-site chatbot grounded in approved business content</li><li>Lead capture and qualifying questions before hand-off</li><li>Clear messaging and human escalation when a visitor needs it</li></ul></div></div>
+:::

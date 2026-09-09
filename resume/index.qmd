@@ -1,9 +1,9 @@
 ---
 layout: page
-title: RÉSUMÉ
-excerpt: My current Résumé
+title: CURRICULUM VITAE
+excerpt: Current Curriculum Vitae — August 2026
 resources:
-  - "RickyMacharm_EU-CV_2025.pdf"
+  - "RickyMacharm_CV_2026.pdf"
 ---
 
 
@@ -27,11 +27,11 @@ resources:
 </style>
 
 <p class="text-center">
-  <a class="btn btn-primary btn-lg cv-download" href="RickyMacharm_EU-CV_2025.pdf" target="_blank">
-    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download my current Résumé
+  <a class="btn btn-primary btn-lg cv-download" href="RickyMacharm_CV_2026.pdf" target="_blank">
+    <i class="fa-solid fa-file-arrow-down"></i>&ensp;Download current CV (August 2026)
   </a>
 </p>
 
 <div class="embed-container">
-  <iframe src="RickyMacharm_EU-CV_2025.pdf#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
+  <iframe src="RickyMacharm_CV_2026.pdf#toolbar=0" style="border: 0.5px;width: 100%;"></iframe>
 </div>

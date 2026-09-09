@@ -2,132 +2,104 @@
 title: "Home"
 image: img/Ricky_Macharm.png
 toc: false
-listing:
-  - id: latest-posts
-    contents: blog
-    sort: "date desc"
-    type: default
-    max-items: 3
 ---
 
-::: {.hero-section}
+::: {.hero-section .studio-hero}
 
-# Ricky Macharm, MScFE
+<div class="studio-hero-copy">
+<span class="eyebrow-line">SisengAI · practical AI systems</span>
 
-<p class="hero-tagline">AI Researcher &amp; Consultant | Data Science Instructor</p>
+# Give your team more time for the work only humans can do.
 
-<p class="hero-subtitle">
-Exploring machine learning, financial engineering, and NLP.
-Sharing knowledge through teaching, writing, and open-source.
-</p>
+<p class="hero-subtitle">I design AI automations, personal AI assistants, and AI-enabled websites for service businesses ready to spend less time on repetitive work.</p>
 
 <div class="hero-links">
-  <a href="/blog/" class="btn btn-primary">Read the Blog</a>
-  <a href="/projects/" class="btn btn-outline-primary">View My Work</a>
-  <a href="mailto:Ricky.Macharm@SisengAI.com" class="btn btn-outline-secondary">Get in Touch</a>
+  <a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a 20-minute Google Meet call</a>
+  <a href="services.qmd" class="btn btn-outline-primary">Explore services</a>
 </div>
+
+<p class="hero-proof">AI engineer · 20+ years in engineering · Data Science Instructor at WorldQuant University</p>
+</div>
+
 
 :::
 
-::: {.stats-bar}
-<div class="stat-item">
-  <div class="stat-number">9+</div>
-  <div class="stat-label">Blog Posts</div>
-</div>
-<div class="stat-item">
-  <div class="stat-number">8+</div>
-  <div class="stat-label">Years in Data</div>
-</div>
-<div class="stat-item">
-  <div class="stat-number">6</div>
-  <div class="stat-label">Projects</div>
-</div>
-<div class="stat-item">
-  <div class="stat-number">2</div>
-  <div class="stat-label">Publications</div>
-</div>
+::: {.workflow-ribbon}
+<div class="ribbon-step"><span>01</span><strong>Find the friction</strong><p>Name the task that keeps returning.</p></div>
+<div class="ribbon-arrow" aria-hidden="true">→</div>
+<div class="ribbon-step"><span>02</span><strong>Build the system</strong><p>Make the workflow useful and reliable.</p></div>
+<div class="ribbon-arrow" aria-hidden="true">→</div>
+<div class="ribbon-step"><span>03</span><strong>Measure the relief</strong><p>Track time saved and response quality.</p></div>
 :::
 
----
+
+::: {.free-tool-strip}
+<div class="free-tool-copy">
+<span class="section-label">A useful free tool</span>
+
+## Get a fresh brief on any public website.
+
+<p>Paste a website address and get a source-grounded view of its offer, audience, clarity, and one practical AI opportunity. Then ask follow-up questions about the page.</p>
+</div>
+<form class="free-tool-form" action="free-website-brief.html" method="get">
+  <label for="homepage-website-url">Website address</label>
+  <div><input id="homepage-website-url" name="url" type="url" inputmode="url" placeholder="https://example.com" required><button type="submit" class="btn btn-primary">Create a free brief <span aria-hidden="true">→</span></button></div>
+  <small>Public pages only · free and separate from the SisengAI site chatbot</small>
+</form>
+:::
 
 ::: {.content-section}
+<span class="section-label">What I build</span>
 
-<span class="section-label">About</span>
+## AI systems that fit how your business already works
 
-### About Me
+<p class="section-subtitle">Not AI theatre. Each engagement begins with one meaningful bottleneck, then ships a tool your team can actually use.</p>
 
-<div class="about-card">
-Hey there! I'm Ricky, the brain behind SisengAI. It's more than just a project — it's my playground in the ever-exciting world of Data Science, Machine Learning, Financial Engineering, and NLP. My adventure in this realm kicked off in 2017, when I was 43 and stumbled upon the wonders of Python & pandas. It was a game-changer for me, shifting gears from my days as a maintenance engineer in Nigeria and dabbling in renewable energy consultancy across Nigeria and Ethiopia.
+<div class="service-grid">
 
-When the world paused during the pandemic, I turned to YouTube, sharing Python tricks and tips on my channel (check it out [here](https://www.youtube.com/@theafricanquant501/featured)). These days, you'll find me at WorldQuant University in New Orleans, LA, where I teach data science. It's a cool place, and you can learn more about it [here](https://www.wqu.edu/programs/applied-ds-lab/).
-
-Not just a man behind the screen, I've also been out and about, consulting for companies and people, spreading the data science cheer through seminars, and teaching both online and in-person. On this very website, you'll discover a treasure trove of my published works, thought-provoking blog posts, and the latest buzz on my research projects.
-
-Got questions? Ideas bubbling up? Or maybe a project you think we can collaborate on? Don't hesitate to [contact me](mailto:Ricky.Macharm@SisengAI.com). I'm all ears and ready to chat!
-</div>
-
+::: {.service-card .service-card-featured}
+<p class="service-kicker">Start here</p>
+<h3>Automation Blueprint</h3>
+<p class="service-outcome">Turn a messy, repetitive process into a practical plan for automation.</p>
+<ul><li>Process and tool review</li><li>Opportunity map with priorities</li><li>Build plan and clear next step</li></ul>
+<a href="services.qmd#blueprint" class="service-link">See the blueprint <span>→</span></a>
 :::
 
----
-
-::: {.content-section-alt}
-
-<span class="section-label">Journey</span>
-
-### Education & Experience
-
-<p class="section-subtitle">A path from electrical engineering to financial engineering, with data science at the centre.</p>
-
-<div class="exp-grid">
-
-::: {.exp-card}
-<p class="exp-title">MSc in Financial Engineering</p>
-<p class="exp-institution">WorldQuant University</p>
-<p class="exp-description">New Orleans, LA, USA</p>
-<span class="exp-badge">2021</span>
+::: {.service-card}
+<p class="service-kicker">Build</p>
+<h3>Workflow Automation</h3>
+<p class="service-outcome">Remove manual hand-offs, repeated reporting, and predictable admin work.</p>
+<ul><li>Lead and enquiry routing</li><li>Data, document, and reporting flows</li><li>Human approval where it matters</li></ul>
+<a href="services.qmd#automation" class="service-link">Explore automation <span>→</span></a>
 :::
 
-::: {.exp-card}
-<p class="exp-title">B. Eng in Electrical & Electronics Engineering</p>
-<p class="exp-institution">Abubakar Tafawa Balewa University</p>
-<p class="exp-description">Bauchi, Nigeria</p>
-<span class="exp-badge">2000</span>
+::: {.service-card}
+<p class="service-kicker">Research & personal</p>
+<h3>AI Personal Assistant</h3>
+<p class="service-outcome">A personality-led assistant that researches, synthesises, and helps the client move work forward.</p>
+<ul><li>Research and concise briefings</li><li>A custom voice, personality, and working style</li><li>Clear permissions and human approval boundaries</li></ul>
+<a href="services.qmd#assistant" class="service-link">Meet the assistant <span>→</span></a>
 :::
 
-::: {.exp-card}
-<p class="exp-title">Data Science Instructor</p>
-<p class="exp-institution">WorldQuant University</p>
-<p class="exp-description">Teaching data science in the Applied Data Science Lab.</p>
-<span class="exp-badge">2022–Present</span>
-:::
 
-::: {.exp-card}
-<p class="exp-title">Co-Author & Researcher</p>
-<p class="exp-institution">Masakhane</p>
-<p class="exp-description">Participatory research for low-resourced machine translation in African languages.</p>
-<span class="exp-badge">2020–Present</span>
+
+::: {.service-card}
+<p class="service-kicker">Client-facing</p>
+<h3>AI Website & Chatbot</h3>
+<p class="service-outcome">A credible website that explains the offer clearly, with an on-site chatbot ready to help visitors take the next step.</p>
+<ul><li>Website design and build around the client’s offer</li><li>On-site chatbot trained on approved business material</li><li>Lead capture, qualifying questions, and clear hand-off paths</li></ul>
+<a href="services.qmd#website" class="service-link">Explore client-facing AI <span>→</span></a>
 :::
 
 </div>
-
 :::
 
----
+::: {.content-section-dark .cta-panel}
+<span class="section-label">The first conversation</span>
 
-::: {.content-section}
+## What is the one task your team repeats every week?
 
-<span class="section-label">Writing</span>
+<p>Bring one stubborn workflow to a 20-minute Google Meet call. We’ll decide whether it is a meaningful automation opportunity and what a sensible first step looks like.</p>
 
-### Latest Posts
-
-<p class="section-subtitle">Thoughts on Python, data science, machine learning, and the craft of building things with code.</p>
-
-::: {#latest-posts}
-
-:::
-
-<p style="text-align: center; margin-top: 1.5rem;">
-  <a href="/blog/" class="btn btn-outline-primary">View All Posts</a>
-</p>
-
+<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a Google Meet call</a>
 :::
