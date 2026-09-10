@@ -1,0 +1,41 @@
+---
+title: "Freebies"
+toc: false
+---
+
+::: {.content-section}
+<span class="section-label">Free tools</span>
+
+## Practical freebies, built to be actually useful
+
+<p class="section-subtitle">No sign-up walls. Drop your link in, get something useful back. More free tools land here over time — each one solves one small problem properly.</p>
+
+<div class="service-grid">
+
+::: {.service-card .service-card-featured}
+<p class="service-kicker">Live now</p>
+<h3>Free Website Chatbot</h3>
+<p class="service-outcome">Paste any public website address and get a source-grounded brief of its offer, audience, and clarity — then ask follow-up questions about that page.</p>
+<ul><li>One page analysed in under two minutes</li><li>Answers grounded only in the page you provide</li><li>Session stays with you for 24 hours</li></ul>
+<a href="free-website-brief.qmd" class="service-link">Try the website chatbot <span>→</span></a>
+:::
+
+::: {.service-card}
+<p class="service-kicker">Coming soon</p>
+<h3>More free tools on the way</h3>
+<p class="service-outcome">A free resource library is in the works — templates, checklists, and small automations you can use without hiring anyone.</p>
+<ul><li>Automation opportunity checklist</li><li>Prompt templates for common business tasks</li><li>Plain-language AI guides</li></ul>
+<span class="service-link">Watch this space <span>→</span></span>
+:::
+
+</div>
+:::
+
+::: {.content-section-dark .cta-panel}
+<span class="section-label">Something specific in mind?</span>
+
+## Need a freebie that doesn't exist yet?
+
+<p>If a small tool, template, or checklist would genuinely help you — say the word. If it fits, I'll build it as a free tool.</p>
+<p><a href="contact.qmd" class="btn btn-primary">Suggest a freebie <span aria-hidden="true">→</span></a></p>
+:::

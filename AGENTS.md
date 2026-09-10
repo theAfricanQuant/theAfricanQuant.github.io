@@ -41,7 +41,8 @@ A Quarto CSS-variable export warning has occurred with this theme even when rend
 - `index.qmd` — service-led homepage and free Website Brief entry point
 - `services.qmd` — full offer descriptions
 - `contact.qmd` — Google Meet booking plus direct server-delivered email form
-- `free-website-brief.qmd` — public Website Chatbot user interface
+- `freebies.qmd` — Freebies hub: cards linking to each free tool
+- `free-website-brief.qmd` — public Website Chatbot user interface (the first freebie)
 - `resume/index.qmd` — embedded/downloadable master CV
 - `chatbot/app.py` — existing self-hosted RAG chatbot service; this is not run by GitHub Pages
 - `chatbot/website_research_assistant.py` — separate public Website Research Assistant backend; this is not run by GitHub Pages
@@ -101,9 +102,9 @@ Before changing the provider:
 
 OpenRouter is the candidate provider discussed with the user. Confirm the currently supported model ID and pricing from official OpenRouter documentation at implementation time; model availability changes.
 
-## Free Website Chatbot
+## Freebies hub
 
-The public page at `/free-website-brief.html` is a normal Quarto page with the same navbar, footer, and styling as the rest of the site. Visitors submit a public URL, receive a source-grounded brief, then can ask follow-up questions about that page.
+`freebies.qmd` is the landing page for all free tools (navbar "Freebies"). Each freebie is a `.service-card` in a grid linking to its own page. First live freebie: the **Free Website Chatbot** at `/free-website-brief.html` — visitors submit a public URL, receive a source-grounded brief, then can ask follow-up questions about that page. New freebies get a card here and a dedicated page.
 
 Its Python service is intentionally separate from the existing support chatbot:
 

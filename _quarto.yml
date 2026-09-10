@@ -17,8 +17,8 @@ website:
     left:
       - text: "Services"
         href: services.qmd
-      - text: "Free website chatbot"
-        href: free-website-brief.qmd
+      - text: "Freebies"
+        href: freebies.qmd
       - text: "Projects"
         href: projects/index.qmd
       - text: "Blog"
