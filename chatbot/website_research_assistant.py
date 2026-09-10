@@ -167,21 +167,33 @@ def extract_page(html):
         raise HTTPException(422, "There was not enough readable public content on that page to make a useful brief.")
     return title[:180], source[:MAX_CHARS]
 
+FALLBACK_MODELS = [m.strip() for m in os.environ.get("WEBSITE_RESEARCH_FALLBACK_MODELS", os.environ.get("CHATBOT_FALLBACK_MODELS", "")).split(",") if m.strip()]
+
+
 def model_call(system, user, max_tokens):
     if not API_KEY:
         raise HTTPException(503, "The research assistant is not configured yet. Please try again later.")
-    try:
-        response = requests.post(BASE_URL.rstrip("/") + "/chat/completions", headers={"Authorization": "Bearer " + API_KEY}, json={"model": MODEL, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}], "temperature": 0.25, "max_tokens": max_tokens}, timeout=55)
-        response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"].strip()
-    except (requests.RequestException, KeyError, IndexError, TypeError) as exc:
-        raise HTTPException(503, "The research assistant could not complete that request. Please try again shortly.") from exc
+    models = [MODEL] + FALLBACK_MODELS
+    last_error = None
+    for attempt in range(2):  # retry whole chain once to ride out free-tier blips
+        for candidate in models:
+            try:
+                response = requests.post(BASE_URL.rstrip("/") + "/chat/completions", headers={"Authorization": "Bearer " + API_KEY}, json={"model": candidate, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}], "temperature": 0.25, "max_tokens": max_tokens}, timeout=55)
+                response.raise_for_status()
+                content = response.json()["choices"][0]["message"].get("content")
+                if not content or not content.strip():  # some free models return null content
+                    raise ValueError("empty model response")
+                return content.strip()
+            except (requests.RequestException, KeyError, IndexError, TypeError, ValueError) as exc:
+                last_error = exc
+                continue
+    raise HTTPException(503, "The research assistant could not complete that request. Please try again shortly.") from last_error
 
 def create_brief(source_url, title, source):
     system = """Create a practical, source-grounded website brief for a business owner.
-Use only the public page text. Return JSON only:
+Use ONLY the public page text. Return JSON only:
 {"summary":"one concise paragraph","offer":["up to 3 bullets"],"audience":["up to 3 bullets"],"clarity":["up to 3 observations"],"opportunity":{"title":"one AI or automation opportunity","detail":"two concise sentences"},"questions":["three questions"]}
-Avoid hype, private-data suggestions, guarantees, and claims about unseen pages."""
+Avoid hype, private-data suggestions, guarantees, and claims about unseen pages. Cover nothing that is not on the page — no weather, sports, politics, or outside facts."""
     raw = model_call(system, "PAGE TITLE: " + title + "\nSOURCE URL: " + source_url + "\n\nPUBLIC PAGE TEXT:\n" + source, 800)
     candidate, fence = raw.strip(), chr(96) * 3
     if candidate.startswith(fence):
@@ -237,8 +249,7 @@ def create_app():
         conn.close()
         if not row or row["expires_at"] < int(time.time()):
             raise HTTPException(404, "This research session has expired. Analyse the website again to continue.")
-        system = """You are the SisengAI Website Research Assistant. Answer only from supplied public page text.
-Be concise and precise. State when the page lacks evidence. Do not browse, infer private data, or claim an action was performed."""
+        system = """You are a strict website analyst. Answer ONLY from the supplied public page text — no outside knowledge, no general facts, and nothing about weather, sports, politics, or any other topic unless it is literally written on that page. If the page does not cover what is asked, say so plainly. Be concise and precise. Never browse, never infer private data, and never claim an action was performed."""
         answer = model_call(system, "SOURCE URL: " + row["source_url"] + "\nPAGE TITLE: " + row["title"] + "\nPUBLIC PAGE TEXT:\n" + row["source_text"] + "\n\nVISITOR QUESTION: " + payload.message, 500)
         return {"answer": answer, "source_url": row["source_url"]}
 

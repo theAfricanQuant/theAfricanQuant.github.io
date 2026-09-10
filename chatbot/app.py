@@ -728,6 +728,13 @@ def create_app() -> FastAPI:
         c.close()
         return {"leads": [dict(r) for r in rows]}
 
+    @app.get("/widget/universal.js")
+    def universal_widget():
+        """Floating chat widget for ANY external website: paste a URL, get a
+        brief, then ask questions about that site. Same look as the branded
+        widget; backed by the /research service."""
+        return PlainTextResponse(UNIVERSAL_WIDGET_JS, media_type="application/javascript")
+
     @app.get("/widget/{bot_id}.js")
     def widget(bot_id: str):
         c = db()
@@ -841,6 +848,178 @@ WIDGET_JS = r"""
   sendBtn.addEventListener("click", send);
   // Keep keystrokes inside the chat widget so the host site's global search
   // shortcut (e.g. Quarto's "/" key) never steals focus mid-typing.
+  function trapKey(e) { e.stopPropagation(); e.stopImmediatePropagation(); }
+  input.addEventListener("keydown", function (e) { trapKey(e); if (e.key === "Enter") send(); });
+  input.addEventListener("keyup", trapKey);
+  input.addEventListener("keypress", trapKey);
+  sendBtn.addEventListener("keydown", trapKey);
+  sendBtn.addEventListener("keyup", trapKey);
+})();
+"""
+
+UNIVERSAL_WIDGET_JS = r"""
+(function(){
+  var SCRIPT = document.currentScript;
+  var API = window.__SISENG_API__ || (SCRIPT && SCRIPT.src ? SCRIPT.src.slice(0, SCRIPT.src.indexOf("/widget/")) : "https://bot.sisengai.com");
+  var BRAND = "#D4720A";
+  var INK = "#18181b", LINE = "#e4e4e7", MSG_BG = "#f4f4f5", MUTED = "#71717a";
+
+  var host = document.createElement("div");
+  host.id = "sisengai-universal-chat";
+  var root = host.attachShadow({ mode: "open" });
+
+  var style = document.createElement("style");
+  style.textContent =
+    ":host{position:static;display:block;z-index:2147483000;color-scheme:light}" +
+    "*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}" +
+    ".s-btn{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;border:2px solid #fff;background:" + BRAND + ";color:#fff;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}" +
+    ".s-box{display:none;position:fixed;right:18px;bottom:88px;width:340px;max-width:calc(100vw - 36px);height:460px;max-height:calc(100vh - 130px);background:#fff;color:" + INK + ";border:1px solid #d4d4d8;border-radius:14px;box-shadow:0 16px 60px rgba(0,0,0,.5);overflow:hidden;flex-direction:column}" +
+    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto}" +
+    ".s-msgs{flex:1 1 auto;overflow-y:auto;padding:14px;font-size:14px;line-height:1.45;background:" + MSG_BG + ";color:" + INK + "}" +
+    ".s-msg{max-width:85%;margin:6px 0;padding:9px 13px;border-radius:12px;overflow-wrap:break-word;white-space:pre-wrap}" +
+    ".s-msg.u{margin-left:auto;background:" + BRAND + ";color:#fff}" +
+    ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + ";white-space:normal}" +
+    ".s-msg.a p{margin:0 0 8px}.s-msg.a p:last-child{margin-bottom:0}" +
+    ".s-msg.a ul,.s-msg.a ol{margin:2px 0 8px;padding-left:20px}" +
+    ".s-msg.a li{margin:2px 0}" +
+    ".s-msg.a strong{font-weight:700}.s-msg.a em{font-style:italic}" +
+    ".s-msg.a code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:" + MSG_BG + ";border:1px solid " + LINE + ";padding:1px 5px;border-radius:4px}" +
+    ".s-msg.a a{color:" + BRAND + ";text-decoration:underline}" +
+    ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
+    ".s-bar{display:flex;flex:0 0 auto;border-top:1px solid " + LINE + ";background:#fff}" +
+    ".s-in{flex:1;border:none;outline:none;padding:13px 14px;font-size:14px;background:#fff;color:" + INK + ";caret-color:" + BRAND + "}" +
+    ".s-in::placeholder{color:" + MUTED + "}" +
+    ".s-send{border:none;background:" + BRAND + ";color:#fff;padding:0 18px;font-weight:700;font-size:14px;cursor:pointer}" +
+    ".s-send:hover{filter:brightness(1.08)}";
+
+  root.appendChild(style);
+
+  var btn = document.createElement("button");
+  btn.className = "s-btn";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Open chat");
+  btn.textContent = "🌐";
+
+  var box = document.createElement("div");
+  box.className = "s-box";
+  box.innerHTML =
+    '<div class="s-head">Chat with any website</div>' +
+    '<div class="s-msgs"></div>' +
+    '<div class="s-bar"><input class="s-in" placeholder="Paste a website URL…" aria-label="Website URL" /><button class="s-send" type="button">Go</button></div>';
+
+  root.appendChild(btn);
+  root.appendChild(box);
+  document.body.appendChild(host);
+
+  var msgs = box.querySelector(".s-msgs");
+  var input = box.querySelector(".s-in");
+  var sendBtn = box.querySelector(".s-send");
+
+  var session = null;
+  var busy = false;
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function md(s) {
+    s = esc(s);
+    s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+    s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+    return s.split("\n").map(function (l) { return "<p>" + (l || " ") + "</p>"; }).join("");
+  }
+  function add(who, txt, html) {
+    var m = document.createElement("div");
+    m.className = "s-msg " + (who === "u" ? "u" : "a");
+    if (html) { m.innerHTML = html; } else { m.textContent = txt; }
+    msgs.appendChild(m);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  function note(txt) {
+    var t = document.createElement("div");
+    t.className = "s-typing";
+    t.textContent = txt;
+    msgs.appendChild(t);
+    msgs.scrollTop = msgs.scrollHeight;
+    return t;
+  }
+  function errMsg(j) {
+    var d = j && j.detail;
+    if (typeof d === "string") return d;
+    if (d && d.errors) return Object.keys(d.errors).map(function (k) { return k + ": " + d.errors[k]; }).join("; ");
+    return "Something went wrong. Please try again.";
+  }
+
+  btn.addEventListener("click", function () {
+    var open = box.style.display === "flex";
+    box.style.display = open ? "none" : "flex";
+    if (!open) input.focus();
+  });
+
+  function send() {
+    var q = input.value.trim();
+    if (!q || busy) return;
+    busy = true;
+    add("u", q);
+    input.value = "";
+    var t;
+    if (!session) {
+      t = note("Working on your brief… the free research model can take up to two minutes.");
+      fetch(API + "/research/analyse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: q })
+      }).then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (t.parentNode) t.remove();
+          busy = false;
+          if (j.session_id) {
+            session = j.session_id;
+            var sum = (j.brief && j.brief.summary) ? j.brief.summary : "Brief ready.";
+            var title = j.title || "the site";
+            add("a", "", md("✅ **" + title + "**\n" + sum + "\n\nAsk me anything about this site!"));
+            input.placeholder = "Ask about " + title + "…";
+            input.setAttribute("aria-label", "Your question");
+            input.focus();
+          } else {
+            add("a", errMsg(j));
+            input.placeholder = "Paste a website URL…";
+          }
+        })
+        .catch(function () {
+          if (t.parentNode) t.remove();
+          busy = false;
+          add("a", "Could not reach the research service. Please try again.");
+        });
+    } else {
+      t = note("…");
+      fetch(API + "/research/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: session, message: q })
+      }).then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (t.parentNode) t.remove();
+          busy = false;
+          if (j.answer) {
+            add("a", "", md(j.answer));
+          } else if (j.detail && /expired/i.test(JSON.stringify(j.detail))) {
+            session = null;
+            add("a", "That session expired — paste the website URL again to start a new chat.");
+            input.placeholder = "Paste a website URL…";
+          } else {
+            add("a", errMsg(j));
+          }
+        })
+        .catch(function () {
+          if (t.parentNode) t.remove();
+          busy = false;
+          add("a", "Could not reach the research service. Please try again.");
+        });
+    }
+  }
+
+  sendBtn.addEventListener("click", send);
   function trapKey(e) { e.stopPropagation(); e.stopImmediatePropagation(); }
   input.addEventListener("keydown", function (e) { trapKey(e); if (e.key === "Enter") send(); });
   input.addEventListener("keyup", trapKey);
