@@ -55,7 +55,7 @@ toc: false
 <script>
 (() => {
   // This is deliberately a different service from the SisengAI support chatbot.
-  const API = window.__SISENG_RESEARCH_API__ || "https://research.sisengai.com";
+  const API = window.__SISENG_RESEARCH_API__ || "https://bot.sisengai.com/research";
   const form = document.querySelector("#website-brief-form");
   const urlInput = document.querySelector("#website-url");
   const status = document.querySelector("#website-brief-status");
@@ -114,7 +114,8 @@ toc: false
     if (!url) return;
     const button = form.querySelector("button");
     button.disabled = true;
-    setStatus("Reading the public page and making your brief…");
+    form.setAttribute("aria-busy", "true");
+    setStatus("Working on your brief… the free research model can take up to two minutes.");
     try {
       const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})});
       if (!response.ok) throw new Error(await readError(response));
@@ -122,9 +123,13 @@ toc: false
       setStatus("Your brief is ready.", "success");
       history.replaceState(null, "", "#brief");
     } catch (error) {
-      setStatus(error.message || "The assistant could not complete that request.", "error");
+      const message = error instanceof TypeError
+        ? "The research service could not be reached. Please try again in a moment."
+        : (error.message || "The assistant could not complete that request.");
+      setStatus(message, "error");
     } finally {
       button.disabled = false;
+      form.removeAttribute("aria-busy");
     }
   });
 

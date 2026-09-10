@@ -114,21 +114,15 @@ Its Python service is intentionally separate from the existing support chatbot:
 - checks redirect destinations, respects readable robots rules, and caps response size
 - never place AI keys in the Quarto page or browser JavaScript
 
-### Current deployment state and plan
+### Live backend contract
 
-The page UI has been published, but GitHub Pages cannot run its Python backend. The default browser configuration currently names `research.sisengai.com` as a future dedicated API origin. The user prefers no new public subdomain.
+The backend is live on the existing bot host; no additional subdomain is used. The public page calls https://bot.sisengai.com/research, which exposes health, analyse, and chat routes.
 
-Preferred next architecture:
+The research service is an isolated FastAPI sub-app. It has its own SQLite database, 24-hour sessions, URL/redirect/robots checks, page-size limits, and rate limits. The inner app is configured for SisengAI origins, but the parent bot app currently returns wildcard CORS on preflight; enforce the same origin allowlist at the research routes before describing CORS as restricted.
 
-1. Keep the visitor-facing page at `www.sisengai.com/free-website-brief.html`.
-2. After repairing the existing bot service, deploy/mount the Website Brief backend behind the existing bot host, for example `https://bot.sisengai.com/research`.
-3. Update `free-website-brief.qmd` to call that verified route.
-4. Give the research service a dedicated API key and data directory, strict allowed browser origins, request limits, and network-level egress rules that deny private/internal IP ranges.
-5. Test with a permitted public website, an invalid URL, a local/private URL, a redirect, a follow-up question, and mobile layout.
-6. Only then describe the free analysis as live in public-facing copy.
+The current free model can take roughly one to two minutes to analyse a page. Keep the visible working state and avoid a short browser timeout. Before changing its provider or model, test one public analysis, a follow-up chat, and private-URL rejection.
 
-Do not reuse the existing chatbot’s public `/ingest` endpoint for arbitrary visitor URLs.
-
+Do not reuse the existing chatbot’s public ingest endpoint for arbitrary visitor URLs.
 ## Change workflow
 
 For content or UI work:
