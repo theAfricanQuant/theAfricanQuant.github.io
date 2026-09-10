@@ -955,6 +955,8 @@ UNIVERSAL_WIDGET_JS = r"""
     ".s-msg.a ul,.s-msg.a ol{margin:2px 0 8px;padding-left:20px}" +
     ".s-msg.a li{margin:2px 0}.s-msg.a li p{margin:0}" +
     ".s-msg.a strong{font-weight:700}.s-msg.a em{font-style:italic}" +
+    ".s-msg.a .s-conn{font-weight:700;font-size:15px}" +
+    ".s-msg.a .s-conn strong{font-weight:800;font-size:16px}" +
     ".s-msg.a code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:" + MSG_BG + ";border:1px solid " + LINE + ";padding:1px 5px;border-radius:4px}" +
     ".s-msg.a pre{background:" + MSG_BG + ";border:1px solid " + LINE + ";border-radius:8px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre}" +
     ".s-msg.a pre code{background:none;border:none;padding:0;font-size:12.5px;display:block}" +
@@ -1045,6 +1047,26 @@ UNIVERSAL_WIDGET_JS = r"""
     saveChat();
   });
 
+  function confetti() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var colors = ["#D4720A", "#F59E0B", "#FBBF24", "#EF4444", "#10B981", "#3B82F6", "#8B5CF6", "#EC4899"];
+    var N = 90;
+    for (var i = 0; i < N; i++) {
+      (function () {
+        var c = document.createElement("div");
+        var x = Math.random() * 100, y = -22 - Math.random() * 30;
+        var vx = (Math.random() - 0.5) * 9, vy = Math.random() * 5 + 3, rot = Math.random() * 360;
+        c.style.cssText = "position:fixed;left:" + x + "vw;top:" + y + "px;width:" + (6 + Math.random() * 6) + "px;height:" + (8 + Math.random() * 8) + "px;background:" + colors[i % colors.length] + ";border-radius:2px;z-index:2147483001;pointer-events:none;opacity:.95";
+        root.appendChild(c);
+        (function step() {
+          x += vx; vx *= 0.985; y += vy; vy += 0.22; rot += 1.6;
+          c.style.left = x + "vw"; c.style.top = y + "px"; c.style.transform = "rotate(" + rot + "deg)";
+          if (y < window.innerHeight + 40 && x > -5 && x < 105) { requestAnimationFrame(step); } else { c.remove(); }
+        })();
+      })();
+    }
+  }
+
   function send() {
     var q = input.value.trim();
     if (!q || busy) return;
@@ -1065,7 +1087,8 @@ UNIVERSAL_WIDGET_JS = r"""
           if (j.session_id) {
             session = j.session_id;
             var title = j.title || "this website";
-            add("a", "", md("✅ Connected to **" + title + "**. Ask me anything about the site!"));
+            add("a", "", '<p class="s-conn">✅ Connected to <strong>' + esc(title) + "</strong>. Ask me anything about the site!</p>");
+            confetti();
             input.placeholder = "Ask about " + title + "…";
             input.setAttribute("aria-label", "Your question");
             input.focus();
