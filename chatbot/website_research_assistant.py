@@ -15,6 +15,14 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 import uvicorn
 
+try:
+    import markdown as _markdown
+    import nh3
+    HAS_MARKDOWN = True
+except Exception:
+    _markdown = nh3 = None
+    HAS_MARKDOWN = False
+
 def load_env():
     for path in (Path.home() / ".hermes/.env", Path(".env")):
         if path.exists():
@@ -217,9 +225,38 @@ def model_call(system, user, max_tokens):
                 continue
     raise HTTPException(503, "The research assistant could not complete that request. Please try again shortly.") from last_error
 
+def _normalize_lists(text: str) -> str:
+    """Insert blank lines before list markers so CommonMark renders them as lists."""
+    if not text:
+        return text
+    out, prev = [], ""
+    for line in text.splitlines():
+        stripped = line.lstrip()
+        if re.match(r"^([-*+]|\d+[.)])\s+", stripped) and not re.match(r"^\s{4,}", line):
+            if prev and prev.strip():
+                out.append("")
+        out.append(line)
+        prev = line
+    return "\n".join(out)
+
+
+def render_markdown(text: str) -> str:
+    """Convert the model's Markdown answer to sanitized HTML for the widget."""
+    if not text or not HAS_MARKDOWN:
+        return text
+    html = _markdown.markdown(_normalize_lists(text), extensions=["fenced_code", "tables", "sane_lists"])
+    return nh3.clean(
+        html,
+        tags={"p", "br", "strong", "em", "code", "pre", "ul", "ol", "li", "a",
+              "h1", "h2", "h3", "h4", "blockquote", "table", "thead", "tbody",
+              "tr", "th", "td", "hr"},
+        attributes={"a": {"href", "title"}, "th": {"align"}, "td": {"align"}},
+    )
+
+
 def _clean_brief(candidate):
     """Parse the model's JSON brief, tolerating code fences and models that
-    double-encode the JSON inside a string field (e.g. summary='```json\\n{...}')."""
+    double-encode the JSON inside a string field (e.g. summary='```json\n{...}')."""
     candidate, fence = candidate.strip(), chr(96) * 3
     if candidate.startswith(fence):
         candidate = candidate.split("\n", 1)[-1].rsplit(fence, 1)[0].strip()
@@ -300,7 +337,7 @@ def create_app():
             raise HTTPException(404, "This research session has expired. Analyse the website again to continue.")
         system = """You are a strict website analyst. Answer ONLY from the supplied public page text — no outside knowledge, no general facts, and nothing about weather, sports, politics, or any other topic unless it is literally written on that page. If the page does not cover what is asked, say so plainly. Be concise and precise. Never browse, never infer private data, and never claim an action was performed."""
         answer = model_call(system, "SOURCE URL: " + row["source_url"] + "\nPAGE TITLE: " + row["title"] + "\nPUBLIC PAGE TEXT:\n" + row["source_text"] + "\n\nVISITOR QUESTION: " + payload.message, 500)
-        return {"answer": answer, "source_url": row["source_url"]}
+        return {"answer": answer, "answer_html": render_markdown(answer), "source_url": row["source_url"]}
 
     @app.get("/", response_class=HTMLResponse)
     def root():

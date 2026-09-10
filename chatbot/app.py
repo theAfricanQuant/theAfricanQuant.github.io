@@ -817,7 +817,7 @@ WIDGET_JS = r"""
     ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + ";white-space:normal}" +
     ".s-msg.a p{margin:0 0 8px}.s-msg.a p:last-child{margin-bottom:0}" +
     ".s-msg.a ul,.s-msg.a ol{margin:2px 0 8px;padding-left:20px}" +
-    ".s-msg.a li{margin:2px 0}.s-msg.a li>ul,.s-msg.a li>ol{margin-bottom:0}" +
+    ".s-msg.a li{margin:2px 0}.s-msg.a li>ul,.s-msg.a li>ol{margin-bottom:0}.s-msg.a li p{margin:0}" +
     ".s-msg.a strong{font-weight:700}.s-msg.a em{font-style:italic}" +
     ".s-msg.a code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:" + MSG_BG + ";border:1px solid " + LINE + ";padding:1px 5px;border-radius:4px}" +
     ".s-msg.a pre{background:" + MSG_BG + ";border:1px solid " + LINE + ";border-radius:8px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre}" +
@@ -953,9 +953,14 @@ UNIVERSAL_WIDGET_JS = r"""
     ".s-msg.a{background:#fff;color:" + INK + ";border:1px solid " + LINE + ";white-space:normal}" +
     ".s-msg.a p{margin:0 0 8px}.s-msg.a p:last-child{margin-bottom:0}" +
     ".s-msg.a ul,.s-msg.a ol{margin:2px 0 8px;padding-left:20px}" +
-    ".s-msg.a li{margin:2px 0}" +
+    ".s-msg.a li{margin:2px 0}.s-msg.a li p{margin:0}" +
     ".s-msg.a strong{font-weight:700}.s-msg.a em{font-style:italic}" +
     ".s-msg.a code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:" + MSG_BG + ";border:1px solid " + LINE + ";padding:1px 5px;border-radius:4px}" +
+    ".s-msg.a pre{background:" + MSG_BG + ";border:1px solid " + LINE + ";border-radius:8px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre}" +
+    ".s-msg.a pre code{background:none;border:none;padding:0;font-size:12.5px;display:block}" +
+    ".s-msg.a h1,.s-msg.a h2,.s-msg.a h3,.s-msg.a h4{margin:8px 0 4px;font-weight:700;font-size:1.05em}" +
+    ".s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
+    ".s-msg.a hr{border:none;border-top:1px solid " + LINE + ";margin:8px 0}" +
     ".s-msg.a a{color:" + BRAND + ";text-decoration:underline}" +
     ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
     ".s-bar{display:flex;flex:0 0 auto;border-top:1px solid " + LINE + ";background:#fff}" +
@@ -1060,7 +1065,7 @@ UNIVERSAL_WIDGET_JS = r"""
           if (j.session_id) {
             session = j.session_id;
             var title = j.title || "this website";
-            add("a", "✅ Connected to **" + title + "**. Ask me anything about the site!");
+            add("a", "", md("✅ Connected to **" + title + "**. Ask me anything about the site!"));
             input.placeholder = "Ask about " + title + "…";
             input.setAttribute("aria-label", "Your question");
             input.focus();
@@ -1085,7 +1090,7 @@ UNIVERSAL_WIDGET_JS = r"""
           if (t.parentNode) t.remove();
           busy = false;
           if (j.answer) {
-            add("a", "", md(j.answer));
+            add("a", "", j.answer_html || md(j.answer));
           } else if (j.detail && /expired/i.test(JSON.stringify(j.detail))) {
             session = null;
             add("a", "That session expired — paste the website URL again to start a new chat.");
