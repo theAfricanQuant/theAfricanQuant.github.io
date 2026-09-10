@@ -55,6 +55,15 @@ def client_ip(request):
     forwarded = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
     return forwarded or (request.client.host if request.client else "unknown")
 
+
+def origin_allowed(origin, allowed_origins):
+    """Allow a missing Origin (curl, server-to-server) but reject browsers from
+    unapproved origins. Mirrors the /contact endpoint's CSRF-style protection —
+    the parent app's wildcard CORS must not let foreign sites drive /research."""
+    if not origin:
+        return True
+    return origin.rstrip("/") in allowed_origins
+
 def rate_limit(request, action):
     now, bucket = time.monotonic(), BUCKETS[client_ip(request)][action]
     while bucket and now - bucket[0] >= 3600:
@@ -195,12 +204,18 @@ def create_app():
     origins = [item.strip() for item in os.environ.get("WEBSITE_RESEARCH_ORIGINS", "https://www.sisengai.com,https://sisengai.com,http://127.0.0.1:22222").split(",") if item.strip()]
     app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"], allow_headers=["content-type"])
 
+    def require_origin(request: Request) -> None:
+        if not origin_allowed(request.headers.get("origin"), origins):
+            raise HTTPException(403, "Origin not allowed.")
+
     @app.get("/health")
-    def health():
+    def health(request: Request):
+        require_origin(request)
         return {"ok": True, "service": "website-research", "model": MODEL, "key_configured": bool(API_KEY)}
 
     @app.post("/analyse")
     def analyse(payload: AnalyseRequest, request: Request):
+        require_origin(request)
         rate_limit(request, "analyse")
         source_url, html = fetch_public_html(payload.url)
         title, source = extract_page(html)
@@ -215,6 +230,7 @@ def create_app():
 
     @app.post("/chat")
     def chat(payload: ChatRequest, request: Request):
+        require_origin(request)
         rate_limit(request, "chat")
         conn = db()
         row = conn.execute("SELECT source_url,title,source_text,expires_at FROM research_sessions WHERE session_id=?", (payload.session_id,)).fetchone()
