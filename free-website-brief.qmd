@@ -66,14 +66,45 @@ toc: false
   const addMessage = (role, text) => {
     const item = document.createElement("div");
     item.className = "brief-message " + role;
-    item.textContent = text;
+    if (role === "assistant" && text && /[#*`>\-]/.test(text)) {
+      // render light markdown -> HTML for assistant answers (bold, lists, code, links)
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      let html = esc(text);
+      html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+      html = html.replace(/^###?\s+(.*)$/gm, "<h4>$1</h4>");
+      html = html.replace(/^\s*[-*]\s+(.*)$/gm, "<li>$1</li>");
+      if (/<li>/.test(html)) html = "<ul>" + html + "</ul>";
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      html = html.replace(/\n/g, "<br>");
+      item.innerHTML = html;
+    } else {
+      item.textContent = text;
+    }
     messages.append(item);
     messages.scrollTop = messages.scrollHeight;
+  };
+  const confetti = () => {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const colors = ["#D4720A", "#F59E0B", "#FBBF24", "#EF4444", "#10B981", "#3B82F6", "#8B5CF6", "#EC4899"];
+    for (let i = 0; i < 90; i++) {
+      const c = document.createElement("div");
+      let x = Math.random() * 100, y = -22 - Math.random() * 30;
+      let vx = (Math.random() - 0.5) * 9, vy = Math.random() * 5 + 3, rot = Math.random() * 360;
+      c.style.cssText = "position:fixed;left:" + x + "vw;top:" + y + "px;width:" + (6 + Math.random() * 6) + "px;height:" + (8 + Math.random() * 8) + "px;background:" + colors[i % colors.length] + ";border-radius:2px;z-index:2147483001;pointer-events:none;opacity:.95";
+      document.body.appendChild(c);
+      (function step() {
+        x += vx; vx *= 0.985; y += vy; vy += 0.22; rot += 1.6;
+        c.style.left = x + "vw"; c.style.top = y + "px"; c.style.transform = "rotate(" + rot + "deg)";
+        if (y < window.innerHeight + 40 && x > -5 && x < 105) requestAnimationFrame(step); else c.remove();
+      })();
+    }
   };
   const showChat = (data) => {
     sessionId = data.session_id;
     chat.hidden = false;
-    addMessage("assistant", "Connected to " + (data.title || data.source_url || "this website") + ". Ask me anything about the site!");
+    addMessage("assistant", "**✅ Connected to " + (data.title || data.source_url || "this website") + ".** Ask me anything about the site!");
+    confetti();
     document.querySelector("#brief-question").focus();
   };
 
