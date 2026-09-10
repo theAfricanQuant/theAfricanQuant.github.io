@@ -629,6 +629,16 @@ def create_app() -> FastAPI:
     app = FastAPI(title="SisengAI Chatbot", version="1.0")
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
+    # Mount the Website Research Assistant as a separate sub-app under /research.
+    # It keeps its own CORS (restricted to SisengAI origins), its own SQLite DB
+    # (WEBSITE_RESEARCH_DATA) and its own rate limits — independent of /chat & /contact.
+    try:
+        from website_research_assistant import create_app as create_research_app
+
+        app.mount("/research", create_research_app())
+    except Exception as exc:  # never let a research-assistant import failure kill the chatbot
+        print(f"[startup] website research assistant NOT mounted: {exc}", exc_info=True)
+
     @app.get("/health")
     def health():
         return {"ok": True, "model": MODEL, "key_configured": bool(API_KEY), "sklearn": HAS_SKLEARN}
