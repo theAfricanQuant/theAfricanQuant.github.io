@@ -33,9 +33,6 @@ website:
         href: https://twitter.com/theAfricanQuant
       - icon: github
         href: https://github.com/theAfricanQuant
-      - icon: envelope
-        aria-label: email
-        href: "mailto:Ricky.Macharm@SisengAI.com"
 
   search:
     location: navbar
