@@ -25,7 +25,7 @@ toc: false
 </form>
 
 <section id="website-brief-chat" class="website-brief-chat" hidden>
-  <div class="brief-chat-heading"><span class="section-label">Website chatbot</span><h2>Ask about this website</h2><p>Answers are grounded in the page you provided.</p></div>
+  <div class="brief-chat-heading"><div><span class="section-label">Website chatbot</span><h2>Ask about this website</h2><p>Answers are grounded in the page you provided.</p></div><button type="button" id="brief-reset" class="btn btn-outline-primary brief-reset" title="Clear this conversation and start over">Reset</button></div>
   <div id="brief-messages" class="brief-messages" aria-live="polite"></div>
   <form id="website-brief-chat-form" class="brief-chat-form">
     <label class="visually-hidden" for="brief-question">Your question</label>
@@ -107,6 +107,16 @@ toc: false
     confetti();
     document.querySelector("#brief-question").focus();
   };
+  const resetChat = () => {
+    sessionId = null;
+    messages.innerHTML = "";
+    chat.hidden = true;
+    urlInput.value = "";
+    setStatus("");
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+    urlInput.focus();
+  };
+  document.querySelector("#brief-reset").addEventListener("click", resetChat);
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
