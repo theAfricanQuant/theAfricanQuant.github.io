@@ -730,9 +730,9 @@ def create_app() -> FastAPI:
 
     @app.get("/widget/universal.js")
     def universal_widget():
-        """Floating chat widget for ANY external website: paste a URL, get a
-        brief, then ask questions about that site. Same look as the branded
-        widget; backed by the /research service."""
+        """Floating chat widget for ANY external website: paste a URL, the bot
+        reads that site and answers questions from its content. Same look as the
+        branded widget; backed by the /research service."""
         return PlainTextResponse(UNIVERSAL_WIDGET_JS, media_type="application/javascript")
 
     @app.get("/widget/{bot_id}.js")
@@ -1004,7 +1004,7 @@ UNIVERSAL_WIDGET_JS = r"""
     input.value = "";
     var t;
     if (!session) {
-      t = note("Working on your brief… the free research model can take up to two minutes.");
+      t = note("Reading that website… this can take up to a minute.");
       fetch(API + "/research/analyse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1015,9 +1015,8 @@ UNIVERSAL_WIDGET_JS = r"""
           busy = false;
           if (j.session_id) {
             session = j.session_id;
-            var sum = (j.brief && j.brief.summary) ? j.brief.summary : "Brief ready.";
-            var title = j.title || "the site";
-            add("a", "", md("✅ **" + title + "**\n" + sum + "\n\nAsk me anything about this site!"));
+            var title = j.title || "this website";
+            add("a", "✅ Connected to **" + title + "**. Ask me anything about the site!");
             input.placeholder = "Ask about " + title + "…";
             input.setAttribute("aria-label", "Your question");
             input.focus();

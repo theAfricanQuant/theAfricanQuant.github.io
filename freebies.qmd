@@ -15,7 +15,7 @@ toc: false
 ::: {.service-card .service-card-featured}
 <p class="service-kicker">Live now</p>
 <h3>Free Website Chatbot</h3>
-<p class="service-outcome">Paste any public website address and get a source-grounded brief of its offer, audience, and clarity — then ask follow-up questions about that page.</p>
+<p class="service-outcome">Paste any public website address and chat with it — the chatbot reads the page and answers your questions from that site's own content.</p>
 <ul><li>One page analysed in under two minutes</li><li>Answers grounded only in the page you provide</li><li>Session stays with you for 24 hours</li></ul>
 <a href="free-website-brief.qmd" class="service-link">Try the website chatbot <span>→</span></a>
 :::

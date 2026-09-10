@@ -59,7 +59,7 @@ When adding or changing a component:
 1. Update both `html/styles.scss` and `html/styles-dark.scss`.
 2. Use each theme’s own variables; do not copy light-theme tokens into the dark stylesheet.
 3. Render the entire site and inspect the relevant output.
-4. Keep the visual language editorial, warm, practical, and restrained. The Website Brief is a utility panel, not a competing second hero.
+4. Keep the visual language editorial, warm, practical, and restrained. The Website Chatbot is a utility panel, not a competing second hero.
 
 Typography is Playfair Display for headings, Inter for body/UI, and JetBrains Mono for technical labels. Typical radius: 0.75rem for buttons, 1rem for cards.
 
@@ -104,7 +104,7 @@ OpenRouter is the candidate provider discussed with the user. Confirm the curren
 
 ## Freebies hub
 
-`freebies.qmd` is the landing page for all free tools (navbar "Freebies"). Each freebie is a `.service-card` in a grid linking to its own page. First live freebie: the **Free Website Chatbot** at `/free-website-brief.html` — visitors submit a public URL, receive a source-grounded brief, then can ask follow-up questions about that page. New freebies get a card here and a dedicated page.
+`freebies.qmd` is the landing page for all free tools (navbar "Freebies"). Each freebie is a `.service-card` in a grid linking to its own page. First live freebie: the **Free Website Chatbot** at `/free-website-brief.html` — visitors paste a public URL and the chatbot connects to that page, then answers their questions from the site's own content. **No brief step: the flow is URL → chat.** New freebies get a card here and a dedicated page.
 
 **Keep the "More free tools on the way" coming-soon card on the Freebies page AT ALL TIMES** — it stays there permanently, even after more free tools are added, as the last card in the grid. Only update its copy when the list of upcoming tools changes.
 
