@@ -874,7 +874,7 @@ WIDGET_JS = r"""
   btn.addEventListener("click", function () {
     var open = box.style.display === "flex";
     box.style.display = open ? "none" : "flex";
-    if (!open) { input.focus(); }
+    if (!open) { msgs.scrollTop = msgs.scrollHeight; input.focus(); }
     saveChat();
   });
 
@@ -907,7 +907,7 @@ WIDGET_JS = r"""
   var state = loadChat();
   if (state && state.items) {
     for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
-    if (state.open) { box.style.display = "flex"; }
+    if (state.open) { box.style.display = "flex"; msgs.scrollTop = msgs.scrollHeight; }
     saveChat();
   }
 })();
@@ -1041,7 +1041,7 @@ UNIVERSAL_WIDGET_JS = r"""
   btn.addEventListener("click", function () {
     var open = box.style.display === "flex";
     box.style.display = open ? "none" : "flex";
-    if (!open) input.focus();
+    if (!open) { msgs.scrollTop = msgs.scrollHeight; input.focus(); }
     saveChat();
   });
 
@@ -1120,7 +1120,7 @@ UNIVERSAL_WIDGET_JS = r"""
     for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
     session = state.session || null;
     if (session) { input.placeholder = "Ask about this site…"; }
-    if (state.open) { box.style.display = "flex"; }
+    if (state.open) { box.style.display = "flex"; msgs.scrollTop = msgs.scrollHeight; }
     saveChat();
   }
 })();
