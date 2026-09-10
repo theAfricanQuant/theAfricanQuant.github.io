@@ -40,7 +40,7 @@ A Quarto CSS-variable export warning has occurred with this theme even when rend
 - `_quarto.yml` — navigation, global metadata, dual theme setup, footer, and chatbot widget include
 - `index.qmd` — service-led homepage and free Website Brief entry point
 - `services.qmd` — full offer descriptions
-- `contact.qmd` — Google Meet booking plus visitor-composed email form
+- `contact.qmd` — Google Meet booking plus direct server-delivered email form
 - `free-website-brief.qmd` — public Website Brief user interface
 - `resume/index.qmd` — embedded/downloadable master CV
 - `chatbot/app.py` — existing self-hosted RAG chatbot service; this is not run by GitHub Pages
@@ -64,9 +64,9 @@ Typography is Playfair Display for headings, Inter for body/UI, and JetBrains Mo
 
 ## Direct email contact form
 
-The public contact form is a static-site mailto form. It collects a name, email, subject, and message on the page, then opens the visitor's configured email application with a pre-filled message addressed to Ricky.Macharm@SisengAI.com. It does not send email silently from GitHub Pages.
+The public contact form sends JSON directly to https://bot.sisengai.com/contact. The browser never sees email credentials; the bot service sends mail through its server-side Gmail SMTP configuration.
 
-If a future task requires form submission without a visitor email application, select and explicitly configure an email-form backend/service; do not put email-service credentials in browser code.
+Payload fields: name, email, subject, message, and hidden company. The company field is a honeypot and must remain in the browser payload. The server enforces the SisengAI origin allowlist, rate limits submissions to five per IP per hour, validates fields, and returns friendly 400, 403, 429, or 503 responses. Preserve the existing client status states when editing the form.
 
 ## Existing chatbot
 
