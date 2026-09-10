@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-df54b6e8d83130792281c1d7318ea62f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-67a4737a3656784db1710aff76662f38.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-df54b6e8d83130792281c1d7318ea62f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-beb8d6f413a13f1362f4d2233c3b9db0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-14f96b2d6c0d7aacc4e524e701a59dd8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-beb8d6f413a13f1362f4d2233c3b9db0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -379,28 +379,31 @@ Tell me what you are trying to improve.
 A little context is enough: the work that repeats, who does it now, and what a better outcome would look like.
 </p>
 <p class="contact-note-detail">
-Your message is addressed to <a href="mailto:Ricky.Macharm@SisengAI.com">Ricky.Macharm@SisengAI.com</a>.
+Your note is sent directly and privately to Ricky.Macharm@SisengAI.com.
 </p>
 </div>
 <form id="email-contact-form" class="email-contact-form">
 <div class="contact-form-grid">
 <p>
-<label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required="">
+<label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" minlength="2" maxlength="100" required="">
 </p>
 <p>
 <label for="contact-email">Your email</label><input id="contact-email" name="email" type="email" autocomplete="email" required="">
 </p>
 </div>
 <p>
-<label for="contact-subject">What would you like to discuss?</label><input id="contact-subject" name="subject" placeholder="For example: an AI assistant for client research" required="">
+<label for="contact-subject">What would you like to discuss?</label><input id="contact-subject" name="subject" placeholder="For example: an AI assistant for client research" minlength="3" maxlength="160" required="">
 </p>
 <p>
 <label for="contact-message">A little context</label>
-<textarea id="contact-message" name="message" rows="6" placeholder="What is happening now, and what would you like to be easier?" required=""></textarea>
+<textarea id="contact-message" name="message" rows="6" placeholder="What is happening now, and what would you like to be easier?" minlength="10" maxlength="5000" required=""></textarea>
+</p>
+<p class="contact-honeypot" aria-hidden="true">
+<label for="contact-company">Company</label><input id="contact-company" name="company" tabindex="-1" autocomplete="off">
 </p>
 <div class="contact-form-action">
-<button type="submit" class="btn btn-primary">
-Open my email and send message <span aria-hidden="true">→</span>
+<button id="contact-submit" type="submit" class="btn btn-primary">
+Send message <span aria-hidden="true">→</span>
 </button>
 <p id="contact-form-status" role="status" aria-live="polite">
 </p>
@@ -409,18 +412,53 @@ Open my email and send message <span aria-hidden="true">→</span>
 </div>
 <script>
 (() => {
+  const endpoint = "https://bot.sisengai.com/contact";
   const form = document.querySelector("#email-contact-form");
   const status = document.querySelector("#contact-form-status");
-  form.addEventListener("submit", (event) => {
+  const submit = document.querySelector("#contact-submit");
+  const initialButton = submit.innerHTML;
+
+  const readError = async (response) => {
+    try {
+      const payload = await response.json();
+      if (typeof payload.detail === "string") return payload.detail;
+      if (payload.detail && payload.detail.errors) return Object.values(payload.detail.errors).join(" ");
+    } catch (_) {}
+    return "Your message could not be sent right now. Please book a call instead.";
+  };
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
-    const name = document.querySelector("#contact-name").value.trim();
-    const email = document.querySelector("#contact-email").value.trim();
-    const subject = document.querySelector("#contact-subject").value.trim();
-    const message = document.querySelector("#contact-message").value.trim();
-    const body = "Hello Ricky,\n\nName: " + name + "\nEmail: " + email + "\n\n" + message + "\n\n— Sent from the SisengAI website";
-    window.location.href = "mailto:Ricky.Macharm@SisengAI.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    status.textContent = "Your email app should now be open with this message ready to send.";
+    const body = {
+      name: document.querySelector("#contact-name").value.trim(),
+      email: document.querySelector("#contact-email").value.trim(),
+      subject: document.querySelector("#contact-subject").value.trim(),
+      message: document.querySelector("#contact-message").value.trim(),
+      company: document.querySelector("#contact-company").value.trim()
+    };
+    submit.disabled = true;
+    submit.textContent = "Sending…";
+    status.className = "";
+    status.textContent = "Sending your message directly to Ricky…";
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) throw new Error(await readError(response));
+      form.reset();
+      status.className = "success";
+      status.textContent = "Message sent. Ricky will reply to the email address you provided.";
+    } catch (error) {
+      status.className = "error";
+      status.textContent = error.message || "Your message could not be sent right now. Please book a call instead.";
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML = initialButton;
+    }
   });
 })();
 </script>
