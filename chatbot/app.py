@@ -759,6 +759,20 @@ WIDGET_JS = r"""
   var API = window.__SISENG_API__ || (SCRIPT && SCRIPT.src ? SCRIPT.src.slice(0, SCRIPT.src.indexOf("/widget/")) : "https://sisengai.com");
   var BOT_ID = "__BOT_ID__", BRAND = "__BRAND__";
   var INK = "#18181b", LINE = "#e4e4e7", MSG_BG = "#f4f4f5", MUTED = "#71717a";
+  var KEY = "sisengai_chat_" + BOT_ID;
+  function loadChat() { try { var v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function saveChat() {
+    try {
+      var items = [], els = msgs.children;
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.className.indexOf("s-typing") !== -1) continue;
+        items.push(el.className.indexOf("s-msg u") !== -1 ? { w: "u", h: el.innerHTML } : { w: "a", h: el.innerHTML });
+      }
+      if (items.length > 60) items = items.slice(items.length - 60);
+      localStorage.setItem(KEY, JSON.stringify({ items: items, open: box.style.display === "flex" }));
+    } catch (e) {}
+  }
 
   var host = document.createElement("div");
   host.id = "sisengai-chat";
@@ -822,12 +836,14 @@ WIDGET_JS = r"""
     if (html) { m.innerHTML = html; } else { m.textContent = txt; }
     msgs.appendChild(m);
     msgs.scrollTop = msgs.scrollHeight;
+    saveChat();
   }
 
   btn.addEventListener("click", function () {
     var open = box.style.display === "flex";
     box.style.display = open ? "none" : "flex";
     if (!open) { input.focus(); }
+    saveChat();
   });
 
   function send() {
@@ -854,6 +870,14 @@ WIDGET_JS = r"""
   input.addEventListener("keypress", trapKey);
   sendBtn.addEventListener("keydown", trapKey);
   sendBtn.addEventListener("keyup", trapKey);
+  // Restore the previous chat (survives page navigations) and re-open it if
+  // the visitor left it open — e.g. after clicking a link the bot shared.
+  var state = loadChat();
+  if (state && state.items) {
+    for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
+    if (state.open) { box.style.display = "flex"; }
+    saveChat();
+  }
 })();
 """
 
@@ -863,6 +887,20 @@ UNIVERSAL_WIDGET_JS = r"""
   var API = window.__SISENG_API__ || (SCRIPT && SCRIPT.src ? SCRIPT.src.slice(0, SCRIPT.src.indexOf("/widget/")) : "https://bot.sisengai.com");
   var BRAND = "#D4720A";
   var INK = "#18181b", LINE = "#e4e4e7", MSG_BG = "#f4f4f5", MUTED = "#71717a";
+  var KEY = "sisengai_uni_chat";
+  function loadChat() { try { var v = localStorage.getItem(KEY); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function saveChat() {
+    try {
+      var items = [], els = msgs.children;
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.className.indexOf("s-typing") !== -1) continue;
+        items.push(el.className.indexOf("s-msg u") !== -1 ? { w: "u", h: el.innerHTML } : { w: "a", h: el.innerHTML });
+      }
+      if (items.length > 60) items = items.slice(items.length - 60);
+      localStorage.setItem(KEY, JSON.stringify({ items: items, open: box.style.display === "flex", session: session }));
+    } catch (e) {}
+  }
 
   var host = document.createElement("div");
   host.id = "sisengai-universal-chat";
@@ -934,6 +972,7 @@ UNIVERSAL_WIDGET_JS = r"""
     if (html) { m.innerHTML = html; } else { m.textContent = txt; }
     msgs.appendChild(m);
     msgs.scrollTop = msgs.scrollHeight;
+    saveChat();
   }
   function note(txt) {
     var t = document.createElement("div");
@@ -954,6 +993,7 @@ UNIVERSAL_WIDGET_JS = r"""
     var open = box.style.display === "flex";
     box.style.display = open ? "none" : "flex";
     if (!open) input.focus();
+    saveChat();
   });
 
   function send() {
@@ -1026,6 +1066,15 @@ UNIVERSAL_WIDGET_JS = r"""
   input.addEventListener("keypress", trapKey);
   sendBtn.addEventListener("keydown", trapKey);
   sendBtn.addEventListener("keyup", trapKey);
+  // Restore previous chat + research session so navigation keeps the brief.
+  var state = loadChat();
+  if (state && state.items) {
+    for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
+    session = state.session || null;
+    if (session) { input.placeholder = "Ask about this site…"; }
+    if (state.open) { box.style.display = "flex"; }
+    saveChat();
+  }
 })();
 """
 
