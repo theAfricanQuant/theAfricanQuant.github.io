@@ -808,7 +808,9 @@ WIDGET_JS = r"""
     "*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}" +
     ".s-btn{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;border:2px solid #fff;background:" + BRAND + ";color:#fff;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}" +
     ".s-box{display:none;position:fixed;right:18px;bottom:88px;width:340px;max-width:calc(100vw - 36px);height:460px;max-height:calc(100vh - 130px);background:#fff;color:" + INK + ";border:1px solid #d4d4d8;border-radius:14px;box-shadow:0 16px 60px rgba(0,0,0,.5);overflow:hidden;flex-direction:column}" +
-    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto}" +
+    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px}" +
+    ".s-reset{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer;line-height:1.4}" +
+    ".s-reset:hover{background:rgba(255,255,255,.32)}" +
     ".s-msgs{flex:1 1 auto;overflow-y:auto;padding:14px;font-size:14px;line-height:1.45;background:" + MSG_BG + ";color:" + INK + "}" +
     ".s-msg{max-width:85%;margin:6px 0;padding:9px 13px;border-radius:12px;overflow-wrap:break-word;white-space:pre-wrap}" +
     ".s-msg.u{margin-left:auto;background:" + BRAND + ";color:#fff}" +
@@ -842,7 +844,7 @@ WIDGET_JS = r"""
   var box = document.createElement("div");
   box.className = "s-box";
   box.innerHTML =
-    '<div class="s-head">Ask us anything</div>' +
+    '<div class="s-head"><span>Ask us anything</span><button class="s-reset" type="button" title="Clear this conversation">Reset</button></div>' +
     '<div class="s-msgs"></div>' +
     '<div class="s-bar"><input class="s-in" placeholder="Type a question…" aria-label="Your question" /><button class="s-send" type="button">Send</button></div>';
 
@@ -853,6 +855,12 @@ WIDGET_JS = r"""
   var msgs = box.querySelector(".s-msgs");
   var input = box.querySelector(".s-in");
   var sendBtn = box.querySelector(".s-send");
+  var resetBtn = box.querySelector(".s-reset");
+  resetBtn.addEventListener("click", function () {
+    msgs.innerHTML = "";
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    input.focus();
+  });
 
   function add(who, txt, html) {
     var m = document.createElement("div");
@@ -936,7 +944,9 @@ UNIVERSAL_WIDGET_JS = r"""
     "*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}" +
     ".s-btn{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;border:2px solid #fff;background:" + BRAND + ";color:#fff;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.4)}" +
     ".s-box{display:none;position:fixed;right:18px;bottom:88px;width:340px;max-width:calc(100vw - 36px);height:460px;max-height:calc(100vh - 130px);background:#fff;color:" + INK + ";border:1px solid #d4d4d8;border-radius:14px;box-shadow:0 16px 60px rgba(0,0,0,.5);overflow:hidden;flex-direction:column}" +
-    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto}" +
+    ".s-head{background:" + BRAND + ";color:#fff;padding:13px 16px;font-weight:700;font-size:15px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px}" +
+    ".s-reset{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer;line-height:1.4}" +
+    ".s-reset:hover{background:rgba(255,255,255,.32)}" +
     ".s-msgs{flex:1 1 auto;overflow-y:auto;padding:14px;font-size:14px;line-height:1.45;background:" + MSG_BG + ";color:" + INK + "}" +
     ".s-msg{max-width:85%;margin:6px 0;padding:9px 13px;border-radius:12px;overflow-wrap:break-word;white-space:pre-wrap}" +
     ".s-msg.u{margin-left:auto;background:" + BRAND + ";color:#fff}" +
@@ -965,7 +975,7 @@ UNIVERSAL_WIDGET_JS = r"""
   var box = document.createElement("div");
   box.className = "s-box";
   box.innerHTML =
-    '<div class="s-head">Chat with any website</div>' +
+    '<div class="s-head"><span>Chat with any website</span><button class="s-reset" type="button" title="Clear this conversation">Reset</button></div>' +
     '<div class="s-msgs"></div>' +
     '<div class="s-bar"><input class="s-in" placeholder="Paste a website URL…" aria-label="Website URL" /><button class="s-send" type="button">Go</button></div>';
 
@@ -979,6 +989,16 @@ UNIVERSAL_WIDGET_JS = r"""
 
   var session = null;
   var busy = false;
+
+  var resetBtn = box.querySelector(".s-reset");
+  resetBtn.addEventListener("click", function () {
+    session = null;
+    msgs.innerHTML = "";
+    input.placeholder = "Paste a website URL…";
+    input.setAttribute("aria-label", "Website URL");
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    input.focus();
+  });
 
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
