@@ -80,6 +80,9 @@ BASE_URL = os.environ.get("CHATBOT_BASE_URL", "https://opencode.ai/zen/go/v1")
 def _pick_key() -> str:
     """Pick the API key matching the chosen base URL. With multiple dead/legacy
     keys in the env, matching by provider avoids sending the wrong key."""
+    if "nousresearch" in BASE_URL:
+        from nous_token import get_nous_token
+        return get_nous_token()
     if "openrouter" in BASE_URL:
         return os.environ.get("OPENROUTER_API_KEY", "")
     if "opencode" in BASE_URL:
@@ -311,12 +314,31 @@ def retrieve(bot_id: str, query: str, top_k: int = 4) -> list[dict]:
 
 # ---- generation --------------------------------------------------------
 
+OR_BASE = "https://openrouter.ai/api/v1"
+
+
+def _route(model: str):
+    """Return (base_url, api_key) for a model string. The primary model runs on
+    the configured backend (Nous Portal when CHATBOT_BASE_URL is Nous; the token
+    is read fresh per call so expiry self-heals); OpenRouter free models in the
+    fallback chain get OpenRouter's base + key."""
+    if "nousresearch" in BASE_URL and model == MODEL:
+        from nous_token import get_nous_token
+        return BASE_URL, get_nous_token()
+    if model != MODEL:
+        return OR_BASE, os.environ.get("OPENROUTER_API_KEY", "")
+    return BASE_URL, API_KEY
+
+
 def generate(system: str, user: str, temperature: float = 0.3) -> str:
-    if not API_KEY:
+    if not API_KEY and "openrouter" not in BASE_URL and "nousresearch" not in BASE_URL:
         return "⚠️ Chatbot backend not configured (no API key). Add OPENCODE_GO_API_KEY to ~/.hermes/.env."
     models = [MODEL] + [m.strip() for m in os.environ.get("CHATBOT_FALLBACK_MODELS", "").split(",") if m.strip()]
     last_err = None
     for model in models:
+        base, key = _route(model)
+        if not key:
+            continue
         payload = {
             "model": model,
             "messages": [
@@ -327,16 +349,12 @@ def generate(system: str, user: str, temperature: float = 0.3) -> str:
             "max_tokens": 500,
         }
         try:
-            r = requests.post(f"{BASE_URL}/chat/completions", headers={"Authorization": f"Bearer {API_KEY}"}, json=payload, timeout=90)
+            r = requests.post(f"{base}/chat/completions", headers={"Authorization": f"Bearer {key}"}, json=payload, timeout=90)
             r.raise_for_status()
             data = r.json()
             return data["choices"][0]["message"]["content"].strip()
         except Exception as e:
             last_err = e
-            # only fall through on provider/rate/balance errors, not auth errors
-            code = getattr(getattr(e, "response", None), "status_code", None)
-            if code in (401, 403):
-                raise
     raise last_err
 
 

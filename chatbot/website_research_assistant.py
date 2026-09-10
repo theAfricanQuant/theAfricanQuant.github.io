@@ -27,13 +27,30 @@ def load_env():
 load_env()
 MODEL = os.environ.get("WEBSITE_RESEARCH_MODEL", os.environ.get("CHATBOT_MODEL", "deepseek-v4-flash"))
 BASE_URL = os.environ.get("WEBSITE_RESEARCH_BASE_URL", os.environ.get("CHATBOT_BASE_URL", "https://opencode.ai/zen/go/v1"))
-API_KEY = os.environ.get("WEBSITE_RESEARCH_API_KEY") or os.environ.get("OPENCODE_GO_API_KEY") or os.environ.get("OPENAI_API_KEY") or os.environ.get("OPENCODE_ZEN_API_KEY") or ""
+
+
+def _research_key() -> str:
+    """API key for the research service. Nous Portal tokens are read fresh from
+    auth.json (never refreshed here — single-use refresh tokens are Hermes-only);
+    otherwise use the env key matching the base URL."""
+    if "nousresearch" in BASE_URL:
+        from nous_token import get_nous_token
+        return get_nous_token()
+    if "openrouter" in BASE_URL:
+        return os.environ.get("OPENROUTER_API_KEY", "")
+    return (os.environ.get("WEBSITE_RESEARCH_API_KEY")
+            or os.environ.get("OPENCODE_GO_API_KEY")
+            or os.environ.get("OPENAI_API_KEY")
+            or os.environ.get("OPENCODE_ZEN_API_KEY") or "")
+
+
+API_KEY = _research_key()
 DATA_DIR = Path(os.environ.get("WEBSITE_RESEARCH_DATA", Path.home() / "sisengai/website-research/data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = DATA_DIR / "research.sqlite"
 UA = "SisengAI Website Research Assistant/1.0 (+https://www.sisengai.com)"
 MAX_BYTES, MAX_CHARS, TTL = 750000, 28000, 86400
-LIMITS, BUCKETS = {"analyse": 4, "chat": 20}, defaultdict(lambda: defaultdict(deque))
+LIMITS, BUCKETS = {"analyse": 30, "chat": 200}, defaultdict(lambda: defaultdict(deque))
 
 def db():
     conn = sqlite3.connect(DB_PATH)
@@ -171,14 +188,25 @@ FALLBACK_MODELS = [m.strip() for m in os.environ.get("WEBSITE_RESEARCH_FALLBACK_
 
 
 def model_call(system, user, max_tokens):
-    if not API_KEY:
+    if not API_KEY and "openrouter" not in BASE_URL and "nousresearch" not in BASE_URL:
         raise HTTPException(503, "The research assistant is not configured yet. Please try again later.")
     models = [MODEL] + FALLBACK_MODELS
     last_error = None
     for attempt in range(2):  # retry whole chain once to ride out free-tier blips
         for candidate in models:
+            # route: primary → configured backend (Nous token read fresh per
+            # call so expiry self-heals); fallbacks → OpenRouter free models
+            if "nousresearch" in BASE_URL and candidate == MODEL:
+                from nous_token import get_nous_token
+                base, key = BASE_URL, get_nous_token()
+            elif candidate != MODEL:
+                base, key = "https://openrouter.ai/api/v1", os.environ.get("OPENROUTER_API_KEY", "")
+            else:
+                base, key = BASE_URL, API_KEY
+            if not key:
+                continue
             try:
-                response = requests.post(BASE_URL.rstrip("/") + "/chat/completions", headers={"Authorization": "Bearer " + API_KEY}, json={"model": candidate, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}], "temperature": 0.25, "max_tokens": max_tokens}, timeout=55)
+                response = requests.post(base.rstrip("/") + "/chat/completions", headers={"Authorization": "Bearer " + key}, json={"model": candidate, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}], "temperature": 0.25, "max_tokens": max_tokens}, timeout=55)
                 response.raise_for_status()
                 content = response.json()["choices"][0]["message"].get("content")
                 if not content or not content.strip():  # some free models return null content
