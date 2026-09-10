@@ -595,7 +595,13 @@ def answer(bot_id: str, question: str) -> dict:
     context = "\n\n".join(f"[{i+1}] {x['text']}" for i, x in enumerate(ctx))
     sys_prompt = (
         f"{bot['system_prompt']}\n\n"
-        "Answer the visitor's question using ONLY the context below. "
+        "The CONTEXT below is real content from this website (services, About, "
+        "and Ricky's technical blog posts on Python, data, DuckDB and related "
+        "topics). If the context answers the visitor's question, ALWAYS answer "
+        "from it — blog topics like method chaining, pandas, or Python are "
+        "perfectly in scope when the context covers them. Only decline when the "
+        "context has nothing relevant (weather, sports, politics, or general "
+        "knowledge not on this site). "
         "Be concise, warm and friendly. If the context doesn't fully cover it, "
         "say so briefly and offer to help with something related. "
         "Do NOT add citation numbers or markdown links — the source pages will be "
