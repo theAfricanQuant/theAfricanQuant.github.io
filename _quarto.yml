@@ -19,8 +19,6 @@ website:
         href: services.qmd
       - text: "Freebies"
         href: freebies.qmd
-      - text: "Projects"
-        href: projects/index.qmd
       - text: "Blog"
         href: blog/index.qmd
       - text: "Resume"
