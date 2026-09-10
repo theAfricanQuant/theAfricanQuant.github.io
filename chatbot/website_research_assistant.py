@@ -4,7 +4,7 @@
 This service is intentionally independent of the SisengAI support chatbot and
 its ingestion routes. Run it on its own origin, e.g. research.sisengai.com.
 """
-import argparse, hashlib, ipaddress, json, os, socket, sqlite3, time, urllib.parse, urllib.robotparser
+import argparse, hashlib, ipaddress, json, os, re, socket, sqlite3, time, urllib.parse, urllib.robotparser
 from collections import defaultdict, deque
 from pathlib import Path
 import requests
@@ -189,19 +189,40 @@ def model_call(system, user, max_tokens):
                 continue
     raise HTTPException(503, "The research assistant could not complete that request. Please try again shortly.") from last_error
 
-def create_brief(source_url, title, source):
-    system = """Create a practical, source-grounded website brief for a business owner.
-Use ONLY the public page text. Return JSON only:
-{"summary":"one concise paragraph","offer":["up to 3 bullets"],"audience":["up to 3 bullets"],"clarity":["up to 3 observations"],"opportunity":{"title":"one AI or automation opportunity","detail":"two concise sentences"},"questions":["three questions"]}
-Avoid hype, private-data suggestions, guarantees, and claims about unseen pages. Cover nothing that is not on the page — no weather, sports, politics, or outside facts."""
-    raw = model_call(system, "PAGE TITLE: " + title + "\nSOURCE URL: " + source_url + "\n\nPUBLIC PAGE TEXT:\n" + source, 800)
-    candidate, fence = raw.strip(), chr(96) * 3
+def _clean_brief(candidate):
+    """Parse the model's JSON brief, tolerating code fences and models that
+    double-encode the JSON inside a string field (e.g. summary='```json\\n{...}')."""
+    candidate, fence = candidate.strip(), chr(96) * 3
     if candidate.startswith(fence):
         candidate = candidate.split("\n", 1)[-1].rsplit(fence, 1)[0].strip()
     try:
         return json.loads(candidate)
     except json.JSONDecodeError:
+        return None
+
+
+def create_brief(source_url, title, source):
+    system = """Create a practical, source-grounded website brief for a business owner.
+Use ONLY the public page text. Return JSON only:
+{"summary":"one concise paragraph","offer":["up to 3 bullets"],"audience":["up to 3 bullets"],"clarity":["up to 3 observations"],"opportunity":{"title":"one AI or automation opportunity","detail":"two concise sentences"},"questions":["three questions"]}
+No explanations, no markdown, no format description — output the JSON object and nothing else.
+Avoid hype, private-data suggestions, guarantees, and claims about unseen pages. Cover nothing that is not on the page — no weather, sports, politics, or outside facts."""
+    raw = model_call(system, "PAGE TITLE: " + title + "\nSOURCE URL: " + source_url + "\n\nPUBLIC PAGE TEXT:\n" + source, 800)
+    brief = _clean_brief(raw)
+    if brief is None and '"summary"' in raw:
+        # Model double-encoded the JSON inside a string field: extract the inner fenced block.
+        inner = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", raw, re.S)
+        if inner:
+            brief = _clean_brief(inner.group(1))
+    if brief is None:
         return {"summary": raw[:1200], "offer": [], "audience": [], "clarity": ["The page was read, but the structured brief needs another try."], "opportunity": {"title": "Review the visitor journey", "detail": "Identify the first repeated visitor question and make the answer easy to find."}, "questions": []}
+    if isinstance(brief.get("summary"), str) and brief["summary"].lstrip().startswith(chr(96) * 3):
+        inner = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", brief["summary"], re.S)
+        if inner:
+            inner_brief = _clean_brief(inner.group(1))
+            if isinstance(inner_brief, dict):
+                brief = {**inner_brief, **{k: v for k, v in brief.items() if k != "summary"}}
+    return brief
 
 class AnalyseRequest(BaseModel):
     url: str = Field(max_length=2048)
