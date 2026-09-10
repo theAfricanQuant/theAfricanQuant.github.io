@@ -2,70 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
-    <lastmod>2026-09-10T10:27:40.761Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.442Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-June-19-Walrus-Operator/theWalrusOperator.html</loc>
-    <lastmod>2026-09-10T10:27:40.751Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.436Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html</loc>
-    <lastmod>2026-09-10T10:27:40.635Z</lastmod>
+    <lastmod>2026-09-10T10:31:12.766Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
-    <lastmod>2026-09-10T10:27:40.613Z</lastmod>
+    <lastmod>2026-09-10T10:31:12.752Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/resume/index.html</loc>
-    <lastmod>2026-09-10T10:27:40.775Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.452Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/index.html</loc>
-    <lastmod>2026-09-10T10:27:40.774Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/contact.html</loc>
-    <lastmod>2026-09-10T10:27:40.770Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
-    <lastmod>2026-09-10T10:27:40.770Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/about.html</loc>
-    <lastmod>2026-09-10T10:27:40.613Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
-    <lastmod>2026-09-10T10:27:40.769Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.sisengai.com/blog/index.html</loc>
-    <lastmod>2026-09-10T10:27:40.770Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.451Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/free-website-brief.html</loc>
-    <lastmod>2026-09-10T10:27:40.770Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.449Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/index.html</loc>
+    <lastmod>2026-09-10T10:31:13.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
+    <lastmod>2026-09-10T10:31:13.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/about.html</loc>
+    <lastmod>2026-09-10T10:31:12.752Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
+    <lastmod>2026-09-10T10:31:13.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/contact.html</loc>
+    <lastmod>2026-09-10T10:31:13.449Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.sisengai.com/freebies.html</loc>
+    <lastmod>2026-09-10T10:31:13.449Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/projects/index.html</loc>
-    <lastmod>2026-09-10T10:27:40.774Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.451Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/services.html</loc>
-    <lastmod>2026-09-10T10:27:40.775Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.452Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html</loc>
-    <lastmod>2026-09-10T10:27:40.615Z</lastmod>
+    <lastmod>2026-09-10T10:31:12.753Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html</loc>
-    <lastmod>2026-09-10T10:27:40.684Z</lastmod>
+    <lastmod>2026-09-10T10:31:12.801Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
-    <lastmod>2026-09-10T10:27:40.759Z</lastmod>
+    <lastmod>2026-09-10T10:31:13.441Z</lastmod>
   </url>
 </urlset>
