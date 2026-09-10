@@ -343,7 +343,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="see-your-website-through-a-fresh-pair-of-eyes." class="level1">
 <h1>See your website through a fresh pair of eyes.</h1>
 <p class="hero-subtitle">
-Drop in a public website address. The Website Research Assistant turns the visible page into a concise brief, then stays with you for a few follow-up questions.
+Drop in a public website address. The chatbot reads that page, then answers your questions from the site’s own content — no sign-up, nothing to install.
 </p>
 <div class="brief-boundary">
 <span>Reads one public page</span><span>•</span><span>No login areas</span><span>•</span><span>Session clears after 24 hours</span>
@@ -354,7 +354,7 @@ Drop in a public website address. The Website Research Assistant turns the visib
 <form id="website-brief-form" class="website-brief-form" novalidate="">
 <label for="website-url">Website address</label>
 <div class="website-brief-input-row">
-<p><input id="website-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://yourwebsite.com" required=""> <button type="submit" class="btn btn-primary">Create my brief <span aria-hidden="true">→</span></button></p>
+<p><input id="website-url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://yourwebsite.com" required=""> <button type="submit" class="btn btn-primary">Start chatting <span aria-hidden="true">→</span></button></p>
 </div>
 <p class="form-hint">
 Try a homepage or service page you own or are permitted to review.
@@ -362,38 +362,9 @@ Try a homepage or service page you own or are permitted to review.
 <p id="website-brief-status" class="brief-status" role="status" aria-live="polite">
 </p>
 </form>
-<section id="website-brief-result" class="website-brief-result" hidden="" aria-live="polite">
-<div class="brief-source">
-<span>Reading</span><a id="brief-source-link" href="#" rel="noopener noreferrer" target="_blank"></a>
-</div>
-<div class="brief-summary-card">
-<span class="section-label">The brief</span>
-<p id="brief-summary">
-</p>
-</div>
-<div class="brief-grid">
-<pre><code>&lt;article&gt;&lt;h2&gt;What the offer seems to be&lt;/h2&gt;&lt;ul id="brief-offer"&gt;&lt;/ul&gt;&lt;/article&gt;
-&lt;article&gt;&lt;h2&gt;Who it appears to serve&lt;/h2&gt;&lt;ul id="brief-audience"&gt;&lt;/ul&gt;&lt;/article&gt;
-&lt;article&gt;&lt;h2&gt;Clarity notes&lt;/h2&gt;&lt;ul id="brief-clarity"&gt;&lt;/ul&gt;&lt;/article&gt;</code></pre>
-</div>
-<article class="brief-opportunity">
-<span class="section-label">A practical opportunity</span>
-<h2 id="brief-opportunity-title" class="anchored">
-</h2>
-<p id="brief-opportunity-detail">
-</p>
-</article>
-<article class="brief-questions">
-<h2 class="anchored">
-Questions worth asking next
-</h2>
-<ul id="brief-questions-list">
-</ul>
-</article>
-</section>
 <section id="website-brief-chat" class="website-brief-chat" hidden="">
 <div class="brief-chat-heading">
-<span class="section-label">Continue the research</span>
+<span class="section-label">Website chatbot</span>
 <h2 class="anchored">
 Ask about this website
 </h2>
@@ -405,7 +376,7 @@ Answers are grounded in the page you provided.
 
 </div>
 <form id="website-brief-chat-form" class="brief-chat-form">
-<label class="visually-hidden" for="brief-question">Your question</label> <input id="brief-question" maxlength="900" placeholder="What would make the offer clearer?" required=""> <button class="btn btn-outline-primary" type="submit">Ask</button>
+<label class="visually-hidden" for="brief-question">Your question</label> <input id="brief-question" maxlength="900" placeholder="Ask anything about this site…" required=""> <button class="btn btn-outline-primary" type="submit">Ask</button>
 </form>
 </section>
 <div class="brief-next-step">
@@ -415,7 +386,7 @@ Answers are grounded in the page you provided.
 Turn the best opportunity into a working system.
 </h2>
 <p>
-Bring the brief to a short Google Meet call and we can decide what deserves to be built.
+Bring the idea to a short Google Meet call and we can decide what deserves to be built.
 </p>
 </div>
 <p><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a Google Meet call</a></p>
@@ -428,19 +399,10 @@ Bring the brief to a short Google Meet call and we can decide what deserves to b
   const form = document.querySelector("#website-brief-form");
   const urlInput = document.querySelector("#website-url");
   const status = document.querySelector("#website-brief-status");
-  const result = document.querySelector("#website-brief-result");
   const chat = document.querySelector("#website-brief-chat");
   const messages = document.querySelector("#brief-messages");
   let sessionId = null;
 
-  const setList = (selector, items) => {
-    const target = document.querySelector(selector);
-    target.replaceChildren(...(items || []).map((item) => {
-      const li = document.createElement("li");
-      li.textContent = item;
-      return li;
-    }));
-  };
   const setStatus = (message, kind) => {
     status.textContent = message;
     status.className = "brief-status " + (kind || "");
@@ -460,21 +422,11 @@ Bring the brief to a short Google Meet call and we can decide what deserves to b
     messages.append(item);
     messages.scrollTop = messages.scrollHeight;
   };
-  const showBrief = (data) => {
-    const brief = data.brief || {};
-    const source = document.querySelector("#brief-source-link");
-    source.href = data.source_url;
-    source.textContent = data.title || data.source_url;
-    document.querySelector("#brief-summary").textContent = brief.summary || "";
-    setList("#brief-offer", brief.offer);
-    setList("#brief-audience", brief.audience);
-    setList("#brief-clarity", brief.clarity);
-    setList("#brief-questions-list", brief.questions);
-    document.querySelector("#brief-opportunity-title").textContent = (brief.opportunity || {}).title || "A practical next step";
-    document.querySelector("#brief-opportunity-detail").textContent = (brief.opportunity || {}).detail || "";
+  const showChat = (data) => {
     sessionId = data.session_id;
-    result.hidden = false;
     chat.hidden = false;
+    addMessage("assistant", "Connected to " + (data.title || data.source_url || "this website") + ". Ask me anything about the site!");
+    document.querySelector("#brief-question").focus();
   };
 
   form.addEventListener("submit", async (event) => {
@@ -484,13 +436,13 @@ Bring the brief to a short Google Meet call and we can decide what deserves to b
     const button = form.querySelector("button");
     button.disabled = true;
     form.setAttribute("aria-busy", "true");
-    setStatus("Working on your brief… the free research model can take up to two minutes.");
+    setStatus("Reading that website… this can take up to a minute.");
     try {
       const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})});
       if (!response.ok) throw new Error(await readError(response));
-      showBrief(await response.json());
-      setStatus("Your brief is ready.", "success");
-      history.replaceState(null, "", "#brief");
+      showChat(await response.json());
+      setStatus("Connected.", "success");
+      history.replaceState(null, "", "#chat");
     } catch (error) {
       const message = error instanceof TypeError
         ? "The research service could not be reached. Please try again in a moment."
