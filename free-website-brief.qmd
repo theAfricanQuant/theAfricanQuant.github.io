@@ -1,5 +1,5 @@
 ---
-title: "Free Website Brief"
+title: "Free Website Chatbot"
 toc: false
 ---
 

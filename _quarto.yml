@@ -17,7 +17,7 @@ website:
     left:
       - text: "Services"
         href: services.qmd
-      - text: "Free website brief"
+      - text: "Free website chatbot"
         href: free-website-brief.qmd
       - text: "Projects"
         href: projects/index.qmd
