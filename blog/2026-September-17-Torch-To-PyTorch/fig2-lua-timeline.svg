@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 96" role="img" aria-label="Timeline strip from 1993 to 2005 showing Lua, Torch, and LuaJIT milestones.">
+  <line x1="40" y1="52" x2="600" y2="52" stroke="#E8DCC4" stroke-width="2"/>
+  <circle cx="70" cy="52" r="7" fill="#ffffff" stroke="#D4720A" stroke-width="2.5"/>
+  <text x="70" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#D4720A">1993</text>
+  <text x="70" y="80" text-anchor="middle" font-family="Inter" font-size="13" fill="#57534E">Lua born at PUC-Rio</text>
+  <circle cx="330" cy="52" r="7" fill="#ffffff" stroke="#D4720A" stroke-width="2.5"/>
+  <text x="330" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#D4720A">2002</text>
+  <text x="330" y="80" text-anchor="middle" font-family="Inter" font-size="13" fill="#57534E">Torch released at Idiap</text>
+  <circle cx="560" cy="52" r="7" fill="#ffffff" stroke="#D4720A" stroke-width="2.5"/>
+  <text x="560" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#D4720A">2005</text>
+  <text x="560" y="80" text-anchor="middle" font-family="Inter" font-size="13" fill="#57534E">LuaJIT begins</text>
+</svg>

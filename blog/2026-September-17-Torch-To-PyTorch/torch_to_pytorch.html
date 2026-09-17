@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2026-09-17">
+<meta name="description" content="The framework that trains most of the world’s AI runs on a language nobody designed for mathematics — and it replaced another one exactly like it. The story of two bets, fourteen years apart.">
+
+<title>From Torch to PyTorch: How AI Ended Up Speaking the “Wrong” Language Twice – SisengAI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6f71449e07096edb43a4dcb7fb4b5b7e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-592d7741031a994a23da3547af4721d2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-fa177270554525b86865b2685fde4845.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-592d7741031a994a23da3547af4721d2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../freebies.html"> 
+<span class="menu-text">Freebies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Book a call</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">From Torch to PyTorch: How AI Ended Up Speaking the “Wrong” Language Twice</h1>
+                  <div>
+        <div class="description">
+          The framework that trains most of the world’s AI runs on a language nobody designed for mathematics — and it replaced another one exactly like it. The story of two bets, fourteen years apart.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">PyTorch</div>
+                <div class="quarto-category">Lua</div>
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Language History</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 17, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full column-page-left" id="quarto-document-content">
+
+
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Imagine you own a car. To change the radio station, you must take the engine apart, put it back together, and only then can you hear the new station.</p>
+<p>That was machine-learning research in the early 2000s.</p>
+<p>Not because anyone was lazy. It was simply the only option available. Researchers wrote their code in C and C++ — <strong>compiled languages</strong>. You write the code, a compiler turns it into instructions the machine understands, and then it runs. Extremely fast. That speed is why C and C++ still sit underneath almost everything in AI today.</p>
+<p>But there is a price. Change one line, and everything stops while the computer rebuilds the whole program. Compiled languages are not built to be <em>thought in</em>.</p>
+<p>Think of the difference between writing a letter and making a phone call. With a letter, you write it, post it, and wait days for a reply before you can fix one wrong sentence. With a phone call, you fix the mistake inside the same conversation.</p>
+<p><strong>Research is a conversation, not a letter.</strong> It is a loop: try something, look at the answer, change one thing, try again. Change the learning rate. Add a layer. Swap a function. Every one of those small changes meant a full rebuild — minutes of waiting, hundreds of times a day.</p>
+<p>Go to Balogun Market in Lagos and watch a tailor work. Measure, cut, sew, try it on, adjust the sleeve — all in one afternoon. That is what research needs. A tailor who takes two weeks per fitting would lose the customer. And a compiler that takes minutes per change loses the thinking.</p>
+<blockquote class="blockquote">
+<p>The loop you work in shapes the science you can do inside it.</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled" title="The short version">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The short version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Lua was created in 1993 by three researchers in Rio de Janeiro, to help Brazil work around a ban on importing foreign software. Twelve years later, it became the language of a machine-learning library.</p>
+<p>Python was created in 1989 as a holiday project by a man who just wanted a nicer programming language. Twenty-seven years later, it became the language of the framework that trains the world’s AI.</p>
+<p>Neither language was built for machine learning. Both ended up at the centre of it. And here is the strangest part: <strong>we are still doing it.</strong></p>
+</div>
+</div>
+</section>
+<section id="torch-2002-two-layers-one-idea" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="torch-2002-two-layers-one-idea">Torch, 2002: two layers, one idea</h2>
+<p>In 2002, three researchers at the Idiap Research Institute in Martigny, Switzerland — <strong>Ronan Collobert</strong>, <strong>Samy Bengio</strong> and <strong>Johnny Mariéthoz</strong> — decided to fix this. They released <em>Torch: a modular machine learning software library</em>, a free, BSD-licensed library that collected most of the best machine-learning algorithms of the day into one framework.</p>
+<p>The important part of their solution was not a language. It was a <strong>division of labour</strong>.</p>
+<div id="fig-two-layer" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-two-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig1-two-layer-idea.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-two-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The two-layer idea
+</figcaption>
+</figure>
+</div>
+<p>Think of a buka. The big pot of rice is cooked once, in bulk, by the kitchen. The person serving plates it up differently for every customer — more stew here, less pepper there, extra meat for the next person. The heavy work happens once. The adjusting happens per customer, and it is fast.</p>
+<p>Torch did exactly that to software: a heavy number-crunching engine written in C, cooked once, with a light scripting layer on top that a researcher could adjust all day long.</p>
+<p>So the question the Torch team faced was never “what is the best programming language in the world?” It was much smaller and much more useful:</p>
+<blockquote class="blockquote">
+<p>What is the best language to sit on top of a fast C engine, adding as little weight as possible, while letting a researcher work in real time?</p>
+</blockquote>
+<p>That reframing is the whole trick. And more than twenty years later, Mojo would discover the exact same idea again.</p>
+</section>
+<section id="the-five-languages-torch-could-have-chosen" class="level2">
+<h2 class="anchored" data-anchor-id="the-five-languages-torch-could-have-chosen">The five languages Torch could have chosen</h2>
+<p>The bottom layer was never really a debate. For pure speed, C — and later CUDA — was the only serious answer. The open question was the top layer, and in 2002 several existing languages were genuinely in the running.</p>
+<p>Think about how we move around Lagos or Abuja. A staff bus is fast and cheap, but it follows one fixed route and it will not turn because you asked it to. A keke napep is slower, but you can stop it anywhere and turn at any corner.</p>
+<p>That is the trade-off between compiled and scripting languages. In 2002, the ideal would have been a keke that moved at bus speed. Here were the keke on offer:</p>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<p>Already ten years old, and it even had a real numerical library called <strong>Numeric</strong> — the direct ancestor of NumPy. But in 2002 it had three problems for this job. Its C extension API was heavier to bind against than Lua’s, its interpreter used more memory, and it had no just-in-time compiler at all. The scientific ecosystem we now take for granted was still years away.</p>
+</section>
+<section id="perl-and-tcl" class="level3">
+<h3 class="anchored" data-anchor-id="perl-and-tcl">Perl and Tcl</h3>
+<p>Both mature. Both embeddable. Both doing real production work in serious systems. But neither was designed around the clean, minimal C-embedding API that Lua was built for from day one. For a library whose entire selling point was “almost no weight on top of C,” that mattered.</p>
+</section>
+<section id="java" class="level3">
+<h3 class="anchored" data-anchor-id="java">Java</h3>
+<p>Genuinely fast by 2002, thanks to the HotSpot JIT compiler. But the Java Virtual Machine used a lot of memory, took time to start, and paused unpredictably to clean up after itself — bad news for tight numerical loops. And connecting Java to native C and CUDA code was far clumsier than Lua’s C API.</p>
+</section>
+<section id="ruby" class="level3">
+<h3 class="anchored" data-anchor-id="ruby">Ruby</h3>
+<p>Released in 1995, with no JIT of any kind for years afterward, and if anything slower than Python for numerical work. Ruby was a serious contender — but it was built for programmer happiness, not for speed, and it lost on exactly that.</p>
+</section>
+<section id="and-lua" class="level3">
+<h3 class="anchored" data-anchor-id="and-lua">And Lua</h3>
+<p>A language built to be tiny, easy to embed, and almost frictionless to connect to C. It added barely any weight to Torch’s C engine while still giving researchers a live, interactive environment.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="The honest version">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The honest version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nothing about Torch’s idea <em>required</em> Lua. Lua simply offered the best combination available at that moment: small, easy to embed, and out of C’s way.</p>
+<p>But Lua was missing something that would matter enormously fourteen years later. It had no <strong>ecosystem</strong>. No NumPy. No pandas. Almost nobody outside game scripting was using Lua for numbers, so nobody built those libraries for it.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="where-lua-came-from-and-why-that-mattered" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="where-lua-came-from-and-why-that-mattered">Where Lua came from, and why that mattered</h2>
+<p>Lua’s own story has nothing to do with machine learning. It is nearly a decade older than Torch, and it starts with a trade policy.</p>
+<p>In 1993, three researchers at <strong>Tecgraf</strong>, the Computer Graphics Technology Group at the Pontifical Catholic University of Rio de Janeiro, created Lua: <strong>Roberto Ierusalimschy</strong>, <strong>Luiz Henrique de Figueiredo</strong> and <strong>Waldemar Celes</strong>.</p>
+<p>Through the 1980s, Brazil had a “market reserve” — a policy that restricted imports of foreign computer hardware and software, in order to grow a local technology industry. Engineers at <strong>Petrobras</strong>, the state oil company, needed flexible tools for processing and visualising their data. They could not easily buy the commercial software that existed. So Tecgraf built its own.</p>
+<p>If you have ever watched a Nigerian industry build its own solution because importing was impossible or too expensive, you already understand the mood in that room. The existing scripting languages were judged too slow, too hard to move between systems, or too awkward to connect to C.</p>
+<p>Lua’s answer was a language that was fully ANSI C compliant, small, and designed from the ground up to extend C programs.</p>
+<blockquote class="blockquote">
+<p>The language underneath 2002’s most advanced machine-learning library was a workaround for an import ban.</p>
+</blockquote>
+<p>And nobody owns Lua. There is no company behind it and no foundation holding the keys. It is free, open-source, MIT-licensed software, still cared for at the same Brazilian university by essentially the same team — Ierusalimschy has led its design for over thirty years.</p>
+<div id="fig-lua-timeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig2-lua-timeline.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Lua predates the framework that made it briefly famous
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-gap-closes" class="level2">
+<h2 class="anchored" data-anchor-id="the-gap-closes">2011: the gap closes</h2>
+<p>Lua had one real weakness as a front end: speed. A scripting language sitting on top of compiled C always costs you something.</p>
+<p>That weakness did not survive <strong>LuaJIT</strong>, Mike Pall’s just-in-time compiler for Lua, in continuous development since 2005. By the early 2010s, the Torch team had rewritten the library as <strong>Torch7</strong> on top of LuaJIT — and now the thin scripting layer ran at speeds close to native C.</p>
+<p>Lua’s last real gap against a compiled language had closed. Torch7 also brought the library to a much wider audience, and it is the version most researchers still remember. By any fair measure, it was excellent engineering.</p>
+<p>And then, in 2016, it was replaced.</p>
+</section>
+<section id="pytorch-changes-its-mind" class="level2">
+<h2 class="anchored" data-anchor-id="pytorch-changes-its-mind">2016: PyTorch changes its mind</h2>
+<p>PyTorch was released in <strong>September 2016</strong> by <strong>Adam Paszke</strong>, <strong>Sam Gross</strong>, <strong>Soumith Chintala</strong> and <strong>Gregory Chanan</strong> at Facebook AI Research.</p>
+<p>If you have followed the story this far, the surprising part is what PyTorch kept. It kept the shape. PyTorch was built on Torch’s existing C++ engine — fast core underneath, light scripting layer on top. The two-layer idea survived completely intact.</p>
+<p>What changed was the layer on top. <strong>Lua out. Python in.</strong></p>
+<p>Three things drove that decision.</p>
+<section id="the-libraries-were-already-there" class="level3">
+<h3 class="anchored" data-anchor-id="the-libraries-were-already-there">1. The libraries were already there</h3>
+<p>By 2016, Python had already become the default language of scientific computing, on the strength of NumPy, SciPy and pandas. Lua’s use outside Torch was mostly limited to scripting inside other programs, with games being the best-known example. This is what finally sank Lua — not a flaw in the language itself, but the absence of a scientific toolkit around it.</p>
+</section>
+<section id="nobody-had-to-learn-a-new-language" class="level3">
+<h3 class="anchored" data-anchor-id="nobody-had-to-learn-a-new-language">2. Nobody had to learn a new language</h3>
+<p>Making every new researcher learn a second language before they could touch the framework was pure friction. Wrapping the same C++ engine in Python meant new users could start with tools they already knew. You do not ask a new staff member to learn your village dialect before they are allowed to use the photocopier.</p>
+</section>
+<section id="you-could-see-your-code-actually-run" class="level3">
+<h3 class="anchored" data-anchor-id="you-could-see-your-code-actually-run">3. You could see your code actually run</h3>
+<p>This one is subtle but it changed everything. Python made it natural to build the computation step by step <em>as the code ran</em>, instead of defining the whole calculation up front as a separate static graph — which is the approach TensorFlow launched with on 9 November 2015. The practical result: fixing a PyTorch model felt like fixing ordinary Python code, because that is exactly what it was.</p>
+<blockquote class="blockquote">
+<p>Torch picked the fastest front end available. PyTorch picked the one every researcher already had on their laptop.</p>
+</blockquote>
+</section>
+</section>
+<section id="why-python-and-not-r-matlab-or-julia" class="level2">
+<h2 class="anchored" data-anchor-id="why-python-and-not-r-matlab-or-julia">Why Python, and not R, MATLAB or Julia</h2>
+<p>Python did not win by being the best language at mathematics. It won because each rival had one specific, structural reason it could not do this particular job.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Language</th>
+<th style="text-align: left;">Why it could not do the job</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>R</strong></td>
+<td style="text-align: left;">Built by statisticians to analyse <em>tables</em> of data, and it shows. The way it copies data in memory, its object system, and its design around two-dimensional data frames made the huge grids of numbers and graphics-card memory handling that deep learning needs feel glued on rather than built in.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>MATLAB</strong></td>
+<td style="text-align: left;">Strong early popularity in universities, thanks to friendly matrix syntax and mature numerical routines. But MathWorks sells it under a proprietary licence, charged per user — which could not survive how research scaled after 2012: thousands of disposable machines in the cloud, and code shared openly between labs.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Julia</strong></td>
+<td style="text-align: left;">On paper, exactly the right technical shape — the speed of C without having to write C. But it was simply too young. In 2016 it had not even reached version 1.0 (that came on 8 August 2018), its APIs were still changing between releases, and it had no mature way to talk to CUDA or C++.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Python</strong></td>
+<td style="text-align: left;">None of those problems, plus one advantage none of the others had: it was useful for everything else too. It could run web servers, talk to databases and drive data pipelines. A team could build the whole path from research to production in one language.</td>
+</tr>
+</tbody>
+</table>
+<p>Two more things then let Python actually <em>win</em> instead of merely qualify.</p>
+<section id="the-spare-parts-rule" class="level3">
+<h3 class="anchored" data-anchor-id="the-spare-parts-rule">The spare-parts rule</h3>
+<p>Why does almost everyone in Nigeria drive a Toyota? Not because it is the nicest car. Because there is a mechanic on nearly every street and spare parts in every market. You buy the car you can keep on the road. Buy something exotic, and every small repair means ordering from abroad and waiting weeks.</p>
+<p>Software works the same way. <strong>The language is the car. The libraries are the spare parts.</strong></p>
+<p>Lua was an excellent car with no parts anywhere. Python was the Toyota.</p>
+<p><strong>NumPy was the first real part.</strong> Built by Travis Oliphant — work starting in 2005 and released in 2006 by combining two earlier libraries, Numeric and NumArray — it gave Python something R and MATLAB never had in the open: one shared way to store a grid of numbers in memory, which SciPy, pandas and scikit-learn could all build on. pandas followed from Wes McKinney in 2008.</p>
+<p>So a full data-science toolkit already existed <em>before</em> deep learning took off. That timing was not luck. It was fifteen years of work landing exactly when it was needed.</p>
+<p><strong>And Python was easy to plug fast code into.</strong> Connecting performance-critical C and CUDA code to Python was comparatively simple — exactly what PyTorch needed in order to expose its C++ engine through a clean Python surface. The very thing that made Python second-best in 2002 made it the obvious choice in 2016.</p>
+</section>
+</section>
+<section id="the-ground-under-everything-c-c-and-cuda" class="level2">
+<h2 class="anchored" data-anchor-id="the-ground-under-everything-c-c-and-cuda">The ground under everything: C, C++ and CUDA</h2>
+<p>Below all of this sits a layer that never competes for attention, because it never had a marketing budget or a conference keynote.</p>
+<p>Think of a road. <strong>C is the road itself</strong> — the surface everything drives on. <strong>C++ is that road with lanes, signs and traffic rules</strong> added on top. <strong>CUDA is the express lane reserved for the heavy trucks</strong> — and only certain trucks are allowed in.</p>
+<p><strong>C</strong> was created by Dennis Ritchie at Bell Labs in 1972, mainly so that the Unix operating system could be rewritten in a portable language instead of assembly. No company owns it; it is defined by an international ISO standard maintained by committee. It is still the language that everything else in this story eventually compiles down through or connects to.</p>
+<p><strong>C++</strong> began as “C with Classes,” a project Bjarne Stroustrup started at Bell Labs in 1979 to add object-oriented features to C without losing its speed or its ability to talk directly to hardware. The first version was in use inside AT&amp;T by August 1983, the name C++ arrived around the same time, the first commercial version — Cfront 1.0 — shipped on 14 October 1985, and the first international standard was ratified in 1998. Like C, no company owns it. It is the language behind the actual number-crunching engines of Torch, PyTorch and most other frameworks.</p>
+<p><strong>CUDA</strong> is not quite a language in the same sense, but a platform and programming model for running code on NVIDIA graphics cards. NVIDIA released it in 2006–2007 so that ordinary software could use hardware that had previously only drawn pictures on screen. Unlike everything else here, CUDA is proprietary NVIDIA technology and only runs on NVIDIA hardware. It is the layer every framework in this story ultimately calls down to.</p>
+<p>So the full stack, from top to bottom, looks like this: <strong>researcher’s idea → Python (or Lua) → C++ engine → C → CUDA → silicon.</strong> Every layer earned its place by being the best available option for one narrow job. And not one of them was designed with the others in mind.</p>
+</section>
+<section id="the-popular-languages-that-missed-the-boat" class="level2">
+<h2 class="anchored" data-anchor-id="the-popular-languages-that-missed-the-boat">The popular languages that missed the boat</h2>
+<p>Three languages from the 1980s and 90s are worth mentioning, because together they prove the whole point. All three were widely used, well designed, and completely absent from the AI story.</p>
+<p><strong>Tcl</strong> — 1988, John Ousterhout, UC Berkeley. He created it while building tools for designing computer chips, so that every tool would not need its own custom scripting language. That is <em>exactly</em> the problem Lua solved better, and Tcl is one of the languages Lua’s creators openly judged too slow and too awkward to connect to C. Tcl did not die, though. It is the scripting layer underneath almost every major chip-design tool in the world, including Synopsys Design Compiler and Cadence Innovus. Chip designers still learn it today.</p>
+<p><strong>Perl</strong> — 1987, Larry Wall. Built as a practical scripting language for Unix, mainly to make report processing easier. Wall is a linguist by training, which is why the design motto is “there is more than one way to do it” — the thinking of a natural language, not a machine. It was another of the alternatives Lua’s creators rejected. Perl survives in older system administration work and in bioinformatics pipelines, and its intended successor, Perl 6, split off to become a separate language called Raku.</p>
+<p><strong>Ruby</strong> — 1995, Yukihiro “Matz” Matsumoto, Japan. Built deliberately for programmer happiness, borrowing ideas from Perl, Smalltalk, Eiffel, Ada and Lisp. Of the three, Ruby came closest to this story: it was a genuine contender for Torch’s front end in 2002 and lost on speed. Ruby on Rails is still a serious web framework. The language did not fail. It just won a different race.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="The punchline">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The punchline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tcl runs chip design. Perl runs bioinformatics pipelines. Ruby runs web applications.</p>
+<p>It is like three very good traders in the market — known, respected, busy all day — who simply never stocked the one item the whole market came to buy.</p>
+<p><strong>None of them run tensors.</strong> Being popular was never the advantage. Having a numerical ecosystem was — and that is the one thing none of the three ever built.</p>
+</div>
+</div>
+</section>
+<section id="who-owns-a-language" class="level2">
+<h2 class="anchored" data-anchor-id="who-owns-a-language">Who owns a language?</h2>
+<p>One quiet pattern runs through every entry in this story, and it is the part most histories skip.</p>
+<p>The languages that became infrastructure ended up owned by <strong>neutral non-profit institutions</strong> — not by the companies that made them famous.</p>
+<ul>
+<li><strong>C and C++</strong> — no corporate owner at all; defined by international standards committees.</li>
+<li><strong>Python</strong> — the Python Software Foundation, founded in 2001, and since 2018 run by a steering council rather than one person.</li>
+<li><strong>R</strong> — the R Foundation, with CRAN as the authority for its packages.</li>
+<li><strong>Julia</strong> — the Julia Language organisation, with commercial support from JuliaHub.</li>
+<li><strong>Rust</strong> — the Rust Foundation, formed on 8 February 2021 with founding members including AWS, Google, Huawei, Microsoft and Mozilla.</li>
+<li><strong>PyTorch itself</strong> — on <strong>12 September 2022</strong>, Meta handed PyTorch to the Linux Foundation, creating the PyTorch Foundation with AMD, Amazon, Google Cloud, Meta, Microsoft Azure and NVIDIA as founding members.</li>
+</ul>
+<p>And Lua, the language that carried this whole story for fourteen years? It never got one. It stayed with its three creators at a Brazilian university.</p>
+<p>That is not automatically a bad thing. Lua is still free, still maintained, still used. But it tells you something. Frameworks get handed to neutral foundations when an entire industry depends on them and no single company can be trusted to hold the keys. Think of a market association: when the whole market relies on something, no one trader gets to control it.</p>
+<p>Lua never reached that point, because the ecosystem around it never reached the point of mattering to an industry.</p>
+<blockquote class="blockquote">
+<p>A language becomes infrastructure when people stop asking who owns it.</p>
+</blockquote>
+</section>
+<section id="the-problem-nobody-has-solved" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="the-problem-nobody-has-solved">2026: the problem nobody has solved</h2>
+<p>Here is where the story gets honest, because the problem Torch spotted in 2002 is <strong>still unsolved</strong>.</p>
+<p>Remember the shape: a fast compiled core, with a friendly scripting layer on top. That means you still write two languages to do one job. Python for the model, C++ or CUDA for anything that must be fast. Every serious PyTorch user eventually hits this wall — you drop into a custom kernel, or write your own CUDA extension, and suddenly you are maintaining two codebases, in two languages, with two sets of tools.</p>
+<p>It is like working in a Nigerian office. The memo goes out in English, but the moment you need someone to really understand the numbers, you switch to your own language. You need both. And every switch costs you something.</p>
+<p>This is called the <strong>two-language problem</strong>, and as of 2026 three different groups are attacking it from three different directions.</p>
+<section id="rust-make-the-bottom-layer-better" class="level3">
+<h3 class="anchored" data-anchor-id="rust-make-the-bottom-layer-better">Rust — make the bottom layer better</h3>
+<p>Started as a personal project by Graydon Hoare in 2006, taken up by Mozilla from 2009, and stable since version 1.0 on 21 May 2015. Rust aims at the same territory as C++ — speed with safety — which makes it a natural fit for the <em>bottom</em> of the stack. Frameworks like <strong>Candle</strong> and <strong>Burn</strong> are building deep-learning tools directly in Rust, with a focus on lightweight inference on small and edge devices rather than training. This is the least ambitious of the three answers: it does not try to remove the second language, it tries to make that language better.</p>
+</section>
+<section id="mojo-collapse-the-two-layers-into-one" class="level3">
+<h3 class="anchored" data-anchor-id="mojo-collapse-the-two-layers-into-one">Mojo — collapse the two layers into one</h3>
+<p>Announced by Modular in May 2023 and led by Chris Lattner, the creator of LLVM and Swift, Mojo is the most direct attack on the problem. The goal is one language that is as easy to write as Python but can also write hardware-level code — a single language for the whole stack. Technically it is built on <strong>MLIR</strong>, a compiler framework that grew out of LLVM. Adoption is still early and it is not compatible with the whole Python ecosystem, but Modular open-sourced Mojo’s standard library in March 2024 under the Apache 2.0 licence. The intention is unmistakable: this is Torch’s 2002 idea, except the ambition is to eventually not need two languages at all.</p>
+</section>
+<section id="zig-an-honest-c-replacement-with-mlir-underneath" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="zig-an-honest-c-replacement-with-mlir-underneath">Zig — an honest C replacement, with MLIR underneath</h3>
+<p>Announced by Andrew Kelley in February 2016, and aiming to replace <strong>C</strong> rather than C++ — a different job from Rust’s. Its priorities are full compatibility with C, no hidden control flow, no hidden memory allocations, and excellent cross-compilation. It is governed by the Zig Software Foundation, a non-profit, and as of 2026 it still has not reached version 1.0.</p>
+<p>Its entry into the AI story is <strong>ZML</strong>, a machine-learning framework for Zig that — like Mojo — is built on <strong>MLIR</strong>, alongside XLA. It focuses on inference rather than training, and targets NVIDIA, AMD and Google TPU hardware.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="The detail worth sitting with">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The detail worth sitting with
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Mojo and ZML are built on <strong>the same compiler foundation</strong> — MLIR — yet they are different languages, built by different people, attacking the same problem from opposite ends of the stack.</p>
+<p>Two separate teams betting on one piece of technology is usually a sign that the problem is real, and that nobody has found the answer yet.</p>
+</div>
+</div>
+<div id="fig-mlir" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-mlir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig3-mlir-convergence.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mlir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Different teams, the same compiler layer underneath
+</figcaption>
+</figure>
+</div>
+<p>For all of that activity, one fact should calm any prediction: <strong>as of 2026, Python still dominates model training.</strong> The two-language problem has three credible challengers and no winner.</p>
+</section>
+</section>
+<section id="what-the-pattern-tells-us" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-pattern-tells-us">What the pattern tells us</h2>
+<p>Look back across more than fifty years and the lesson is not the simple one. It is not “Python won because Python was better.” It is narrower, and far more useful.</p>
+<ol type="1">
+<li><strong>You do not pick a language for a job. You pick one for a job at a moment.</strong> R, MATLAB and Julia were not worse languages than Python. Each was ruled out by one specific constraint of that specific time — a data model, a licence, a release date.</li>
+<li><strong>Structure outlives popularity.</strong> C++ has never been anyone’s favourite language, and it is still the load-bearing wall of modern AI. Tcl, Perl and Ruby were all more pleasant to write at some point. None of them run tensors.</li>
+<li><strong>Ecosystems beat languages.</strong> Lua lost to Python not because it was slow — LuaJIT fixed that — but because nobody ever built a NumPy for it. The library you can import matters more than the syntax you type.</li>
+<li><strong>The right design at the wrong time loses to an adequate design at the right time.</strong> Julia is the cleanest example in this entire history.</li>
+<li><strong>And the core problem was never solved.</strong> Torch’s 2002 division of labour is still the shape of PyTorch in 2026. We have simply stopped noticing that we write two languages to do one job.</li>
+</ol>
+<blockquote class="blockquote">
+<p>No single language had to win everything. That was never the requirement.</p>
+</blockquote>
+<p>Seen that way, the future looks less like a race to replace Python and more like a slow widening: one language for exploring ideas, several for running them fast, and the line between them always moving. Which is exactly what Mojo, Rust and Zig are arguing about — without agreeing on the answer.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Coming next in this series">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Coming next in this series
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This article is the trunk of the story. Each language below gets its own deep dive, published over the coming weeks:</p>
+<ol type="1">
+<li><strong>Lua</strong> — the import ban, Tecgraf, and the language chosen to carry Torch</li>
+<li><strong>Python</strong> — Christmas 1989, ABC, and the climb to becoming the default</li>
+<li><strong>R, MATLAB &amp; Julia</strong> — three rivals, three structural reasons</li>
+<li><strong>C, C++ &amp; CUDA</strong> — the invisible layer everything runs on</li>
+<li><strong>Tcl, Perl &amp; Ruby</strong> — popular, and nowhere near the tensors</li>
+<li><strong>Rust, Mojo &amp; Zig</strong> — three answers to the two-language problem</li>
+</ol>
+</div>
+</div>
+<p>Which language did you start with, and how did you end up in Python? I am curious whether people here came to Python through science, or came to science through Python. Let me know in the comments below — and if you found this useful, share it with someone who is starting out.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<!-- SisengAI Chatbot widget — freemium demo -->
+<script>
+  window.__SISENG_API__ = "https://bot.sisengai.com";
+</script>
+<script src="https://bot.sisengai.com/widget/sisengai-demo.js" async=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "theAfricanQuant/theAfricanQuant.github.io";
+    script.dataset.repoId = "R_kgDOK8Zc8Q";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOK8Zc8c4Cfc4R";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-17-Torch-To-PyTorch/torch_to_pytorch.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-17-Torch-To-PyTorch/torch_to_pytorch.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-label="Diagram: a thin interactive scripting layer sits above a compiled C and CUDA numerical engine, with researchers working in the top layer and performance living in the bottom layer.">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#D4720A"/>
+    </marker>
+  </defs>
+  <rect x="40" y="26" width="560" height="104" rx="12" fill="#FFF8EC" stroke="#FFDDA0" stroke-width="2"/>
+  <text x="320" y="62" text-anchor="middle" font-family="Inter" font-size="17" font-weight="600" fill="#321208">Thin interactive layer &#8212; the front end</text>
+  <text x="320" y="88" text-anchor="middle" font-family="Inter" font-size="14" fill="#57534E">Lua in 2002 &#183; Python from 2016</text>
+  <text x="320" y="112" text-anchor="middle" font-family="Inter" font-size="13" font-style="italic" fill="#78716C">researchers reshape experiments here, hundreds of times a day</text>
+
+  <line x1="320" y1="140" x2="320" y2="176" stroke="#D4720A" stroke-width="2.5" marker-end="url(#ar)" marker-start="url(#ar)"/>
+  <text x="338" y="163" font-family="Inter" font-size="12" fill="#78716C">calls down &#183; brings results back</text>
+
+  <rect x="40" y="186" width="560" height="88" rx="12" fill="#F3F8F4" stroke="#CFE0D4" stroke-width="2"/>
+  <text x="320" y="220" text-anchor="middle" font-family="Inter" font-size="17" font-weight="600" fill="#321208">Fast compiled numerical core &#8212; the back end</text>
+  <text x="320" y="245" text-anchor="middle" font-family="Inter" font-size="14" fill="#57534E">C &#183; C++ &#183; CUDA</text>
+  <text x="320" y="265" text-anchor="middle" font-family="Inter" font-size="13" font-style="italic" fill="#78716C">compiled once, stays fast, nobody edits it casually</text>
+</svg>
