@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 560" role="img" aria-label="Two ways to build a model: describe everything then run it, versus run and adjust as you go">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#D4720A"></path></marker>
+    <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#2D5C3C"></path></marker>
+  </defs>
+
+  <rect x="4" y="4" width="422" height="250" rx="12" fill="#ffffff" stroke="#E8DCC4"></rect>
+  <text x="26" y="40" font-family="Inter,sans-serif" font-size="21" font-weight="600" fill="#321208">TensorFlow 1.x</text>
+  <text x="26" y="64" font-family="Inter,sans-serif" font-size="17" fill="#78716C">define it, then run it</text>
+
+  <rect x="26" y="80" width="378" height="46" rx="8" fill="#FFF8EC" stroke="#FFDDA0"></rect>
+  <text x="42" y="109" font-family="Inter,sans-serif" font-size="19" fill="#57534E">Describe the whole model</text>
+  <line x1="215" y1="128" x2="215" y2="146" stroke="#D4720A" stroke-width="2" marker-end="url(#ar)"></line>
+
+  <rect x="26" y="148" width="378" height="46" rx="8" fill="#FFF8EC" stroke="#FFDDA0"></rect>
+  <text x="42" y="177" font-family="Inter,sans-serif" font-size="19" fill="#57534E">Hand it over to run</text>
+  <line x1="215" y1="196" x2="215" y2="214" stroke="#D4720A" stroke-width="2" marker-end="url(#ar)"></line>
+
+  <rect x="26" y="216" width="378" height="46" rx="8" fill="#FFF8EC" stroke="#FFDDA0"></rect>
+  <text x="42" y="245" font-family="Inter,sans-serif" font-size="19" fill="#57534E">See the result</text>
+
+  <text x="26" y="292" font-family="Inter,sans-serif" font-size="18" fill="#BE3E24">The oven door stays shut.</text>
+  <text x="26" y="318" font-family="Inter,sans-serif" font-size="18" fill="#78716C">Every experiment: a full rebuild.</text>
+
+  <rect x="4" y="334" width="422" height="220" rx="12" fill="#ffffff" stroke="#E8DCC4"></rect>
+  <text x="26" y="370" font-family="Inter,sans-serif" font-size="21" font-weight="600" fill="#321208">PyTorch</text>
+  <text x="26" y="394" font-family="Inter,sans-serif" font-size="17" fill="#78716C">define it as you run it</text>
+
+  <rect x="26" y="410" width="378" height="46" rx="8" fill="#F3F8F4" stroke="#CFE0D4"></rect>
+  <text x="42" y="439" font-family="Inter,sans-serif" font-size="19" fill="#57534E">Run one step</text>
+  <line x1="215" y1="458" x2="215" y2="472" stroke="#2D5C3C" stroke-width="2" marker-end="url(#ar2)"></line>
+
+  <rect x="26" y="474" width="378" height="46" rx="8" fill="#F3F8F4" stroke="#CFE0D4"></rect>
+  <text x="42" y="503" font-family="Inter,sans-serif" font-size="19" fill="#57534E">Look at it, right now</text>
+
+  <text x="26" y="544" font-family="Inter,sans-serif" font-size="18" fill="#2D5C3C">You taste the pot while it cooks.</text>
+</svg>

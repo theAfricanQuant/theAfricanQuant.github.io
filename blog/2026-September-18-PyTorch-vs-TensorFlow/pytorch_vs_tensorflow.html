@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2026-09-18">
+<meta name="description" content="TensorFlow came from one of the most powerful engineering organisations on earth; PyTorch from a small team who wanted research to hurt less. A decade later, one of them trains almost everything.">
+
+<title>The Framework War: How PyTorch Won the Kitchen and TensorFlow Kept the Generator – SisengAI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6f71449e07096edb43a4dcb7fb4b5b7e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-592d7741031a994a23da3547af4721d2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-fa177270554525b86865b2685fde4845.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-592d7741031a994a23da3547af4721d2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../freebies.html"> 
+<span class="menu-text">Freebies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Book a call</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">The Framework War: How PyTorch Won the Kitchen and TensorFlow Kept the Generator</h1>
+                  <div>
+        <div class="description">
+          TensorFlow came from one of the most powerful engineering organisations on earth; PyTorch from a small team who wanted research to hurt less. A decade later, one of them trains almost everything.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">PyTorch</div>
+                <div class="quarto-category">TensorFlow</div>
+                <div class="quarto-category">Keras</div>
+                <div class="quarto-category">JAX</div>
+                <div class="quarto-category">fastai</div>
+                <div class="quarto-category">Kaggle</div>
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Framework Wars</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 18, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+<style>
+/* Mobile readability for this post (phone widths only) */
+@media (max-width: 768px) {
+  /* Figures: full width, caption directly underneath instead of in the margin */
+  figure.quarto-float,
+  figure.quarto-float > div,
+  figure.quarto-float img.img-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  figure.quarto-float figcaption,
+  figcaption.quarto-float-caption,
+  .margin-caption {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0.6rem 0 0 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Long words, links and code must never push the page sideways */
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+  #quarto-document-content pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.82rem;
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+  #quarto-document-content thead { display: none; }
+  #quarto-document-content tbody,
+  #quarto-document-content tr,
+  #quarto-document-content td { display: block; width: 100%; }
+  #quarto-document-content tr {
+    background: #FFFFFF;
+    border: 1px solid #F2EBD8;
+    border-radius: 0.75rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+  }
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+  #quarto-document-content td:first-child {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #321208;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+  .callout { margin: 1.1rem 0 !important; }
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+}
+</style>
+<div class="callout callout-style-default callout-note callout-titled" title="The short version">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The short version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TensorFlow arrived in <strong>November 2015</strong> from Google Brain, built to take deep learning out of the research lab and into production. PyTorch arrived in <strong>September 2016</strong> from Facebook’s AI lab, built by a handful of people who wanted the opposite kind of tool: something you could change while you were thinking. PyTorch won the researchers. TensorFlow won the deployed systems. Then Google moved its own researchers off TensorFlow and onto <strong>JAX</strong> — the framework it had quietly released in December 2018. That is the part of the story people usually get wrong: Google did not lose the framework war to PyTorch and leave the field. It changed frameworks, and left TensorFlow to do the job TensorFlow is still genuinely excellent at. Along the way, an entire second war was fought one floor above the frameworks, over who owns the friendly layer that people actually type: <strong>Keras</strong>, <strong>fastai</strong> and <strong>PyTorch Lightning</strong>. That fight included one very public accusation, in February 2021, that has never really been settled.</p>
+</div>
+</div>
+<p><strong>In this article</strong></p>
+<ol type="1">
+<li><a href="#problem">The pot you can taste, and the oven you cannot open</a></li>
+<li><a href="#who">Who was actually behind them</a></li>
+<li><a href="#wrapper">The floor everyone fights over</a></li>
+<li><a href="#fastai">fast.ai: the class that changed its textbook</a></li>
+<li><a href="#kaggle">What fast.ai’s students did with it</a></li>
+<li><a href="#keraswhy">Why anyone would still learn Keras</a></li>
+<li><a href="#ankara">Two stalls, one <em>Ankara</em> print</a></li>
+<li><a href="#jax">Why Google left its own framework</a></li>
+<li><a href="#academia">Why academia picked PyTorch</a></li>
+<li><a href="#now">Where all of them are now: September 2026</a></li>
+<li><a href="#close">What the fight was really about</a></li>
+<li><a href="#sources">Sources and further reading</a></li>
+</ol>
+<section id="problem" class="level2">
+<h2 class="anchored" data-anchor-id="problem">The pot you can taste, and the oven you cannot open</h2>
+<p>Two people are cooking for the same <em>owambe</em> — the big Nigerian party where the food matters as much as the music. One is making <em>jollof</em> rice. She tastes it as it cooks, adds a little water, drops the heat, tastes again, and only then serves it. The other is baking a cake. He mixes everything, puts it in the oven, closes the door, and cannot taste or adjust anything until the cake is out. Both are cooking. Only one of them can change her mind halfway. That single difference is the cleanest way to understand the war between the two frameworks that have trained most of the world’s AI. <a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow</a>, in its first three years, was the cake. <a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch</a> was the <em>jollof</em>. Technically, this is the difference between a <strong>static graph</strong> and a <strong>dynamic graph</strong>. In early TensorFlow you described the entire computation first — every tensor, every operation, every connection — and then handed that finished description to something called a session to run. The graph was built, then executed. Your Python code was really just a description of a computation that would happen somewhere else, later. To find out whether you had got it right, you ran the whole thing and looked at what came out the other end. PyTorch worked the other way round. The graph was built as the code ran, one line at a time. The line you wrote was the line that executed. If you wanted to know what a tensor looked like halfway through a training step, you printed it. You could stop in the middle, change one line, and run again — the same way you would debug any ordinary Python program. If that sounds like a small thing, think about how music is actually made. Nobody produces an Afrobeats record the way a composer writes sheet music for an orchestra — writing every part perfectly, then handing it over to be performed. A producer lays down a kick, listens, drops it, adds a log drum, listens, takes the hi-hat out, listens. The whole craft lives inside that loop between <em>do it</em> and <em>hear it</em>. Shorten that loop and better music comes out of the same hands. Research works the same way. It is not one submission and a result. It is a thousand small “hmm, what if” moments, and each one needs to be cheap. TensorFlow 1.x made each one expensive. PyTorch made each one cheap. That is the seed of everything that came after.</p>
+<div id="fig-two-philosophies" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-philosophies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig1-two-philosophies.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-philosophies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The same computation, two philosophies. TensorFlow 1.x asked you to finish describing a model before you could see what it did; PyTorch let you build it while you ran it, so the loop between a guess and an answer stayed short.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="who" class="level2">
+<h2 class="anchored" data-anchor-id="who">Who was actually behind them</h2>
+<p>Both frameworks came out of the same kind of place — a big company’s research lab — but they were asked to do opposite jobs.</p>
+<section id="tensorflow-googles-second-attempt" class="level3">
+<h3 class="anchored" data-anchor-id="tensorflow-googles-second-attempt">TensorFlow: Google’s second attempt</h3>
+<p>Google’s first serious deep learning system was called <strong>DistBelief</strong>, built around 2011 and described in a 2012 paper titled, with no modesty at all, <em>Large Scale Distributed Deep Networks</em>. Its whole reason for existing was scale: training models spread across thousands of machines, the way Google had already learned to spread web search across thousands of machines. It worked. It was also internal, awkward to extend, and never meant to be handed to the public. TensorFlow was the second generation, released as open source on <strong>9 November 2015</strong> under the Apache 2.0 licence. The name described the design: data flowing through a graph of operations, as tensors. Version 1.0 followed on 11 February 2017. This was a Google Brain project, from the organisation that had built the distributed systems everyone else was trying to catch up with — and the pitch to the world was simple: <em>this is the machinery Google uses to run machine learning in production, and now you can use it too.</em> The intent matters. TensorFlow was designed to be a system you deploy. That is why its early graph felt like paperwork: a deployed system wants the whole computation defined and frozen, so it can be optimised, exported, and served to millions of users without surprises. The cake analogy was not an accident. It was a requirement.</p>
+</section>
+<section id="pytorch-a-small-teams-fix-for-a-daily-annoyance" class="level3">
+<h3 class="anchored" data-anchor-id="pytorch-a-small-teams-fix-for-a-daily-annoyance">PyTorch: a small team’s fix for a daily annoyance</h3>
+<p>PyTorch came from the other side of the same world — Facebook AI Research, opened in 2013 — and it came out of Torch, the Lua library we met in the last article. The four original authors are usually listed as <strong>Adam Paszke</strong>, <strong>Sam Gross</strong>, <strong>Soumith Chintala</strong> and <strong>Gregory Chanan</strong>. PyTorch was released in <strong>September 2016</strong>. The paper describing it, published in 2019, has more than twenty authors, which tells you how quickly it grew from a small tool into infrastructure. PyTorch was not designed to serve search results to a billion people. It was designed to make a researcher’s afternoon less annoying. That is a much smaller ambition — and, as it turned out, a much larger market. Here is the part that decided the war later. Google needed TensorFlow to serve Google. Its design had to satisfy an enormous internal customer with production requirements. Meta had nothing like that to protect: Facebook’s AI lab wanted to publish papers and attract researchers, and the fastest way to do that was to give the world a tool that felt like ordinary Python. A framework built for its owner’s production needs is optimised for stability. A framework built for its owner’s reputation is optimised for <em>adoption</em>. PyTorch was optimised for adoption.</p>
+<ul>
+<li><strong>2011</strong> — DistBelief, Google’s first deep learning system, goes into internal use.</li>
+<li><strong>2012</strong> — The DistBelief paper describes training on clusters of thousands of machines.</li>
+<li><strong>2015</strong> — TensorFlow released as open source on 9 November.</li>
+<li><strong>2016</strong> — PyTorch released in September by a small team at Facebook AI Research.</li>
+<li><strong>2017</strong> — TensorFlow 1.0 lands in February; Google holds its first TensorFlow Dev Summit.</li>
+<li><strong>2018</strong> — Google quietly open-sources <a href="https://jax.readthedocs.io/" target="_blank" rel="noopener">JAX</a> in December.</li>
+<li><strong>2019</strong> — TensorFlow 2.0 arrives in September, with the “run it as you write it” behaviour PyTorch had all along — and <a href="https://keras.io/" target="_blank" rel="noopener">Keras</a> becomes its official interface.</li>
+<li><strong>2022</strong> — PyTorch is handed to the Linux Foundation as the <a href="https://pytorch.org/foundation" target="_blank" rel="noopener">PyTorch Foundation</a>.</li>
+<li><strong>2023</strong> — Keras 3 makes the friendly layer multi-backend: one API, three engines.</li>
+<li><strong>2025</strong> — Soumith Chintala leaves Meta in November, after almost eight years leading PyTorch.</li>
+<li><strong>2026</strong> — Alban Desmaison becomes lead core maintainer in May; PyTorch 2.14.0 ships on 2 September; TensorFlow 2.21.0 (6 March) narrows its own focus to security and bug fixes.</li>
+</ul>
+</section>
+</section>
+<section id="wrapper" class="level2">
+<h2 class="anchored" data-anchor-id="wrapper">The floor everyone fights over</h2>
+<p>To understand the rest of this story, you need to see the whole building. Modern AI tools stack up in four floors.</p>
+<div id="fig-four-floors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-floors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig2-four-floors.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-floors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Four floors. Working data scientists almost never touch floors one and two and never choose between them directly — which is why the fight for attention happens on floor four, and why it was fought between wrappers.
+</figcaption>
+</figure>
+</div>
+<p>Floors one and two do the actual arithmetic: matrix multiplications running on chips, written in C++ and CUDA. Floor three holds the engines — PyTorch, TensorFlow, JAX — the layer that turns your Python into those operations and tracks gradients for you. Floor four is the friendly layer: the short, human API that people actually type. Everybody outside the field thinks the framework war was about floors two and three. It was not. Most working data scientists never chose a kernel or a graph design in their lives. They chose a <em>typing experience</em>. And the typing experience — the top floor — was contested by far more projects than the two famous ones.</p>
+<section id="tensorflows-crowded-top-floor" class="level3">
+<h3 class="anchored" data-anchor-id="tensorflows-crowded-top-floor">TensorFlow’s crowded top floor</h3>
+<p>Google’s own framework had so many friendly layers competing inside it that the acronyms alone are a small history: <code>tf.layers</code>, <code>tf.contrib</code>, Estimators, TF-Slim, TFLearn, and a beautiful one called Sonnet from DeepMind. Each promised to make TensorFlow easier. Each was maintained by a different group, with a different idea of what “easier” meant. And then there was Keras.</p>
+</section>
+<section id="keras-one-cube-that-works-in-any-pot" class="level3">
+<h3 class="anchored" data-anchor-id="keras-one-cube-that-works-in-any-pot">Keras: one cube that works in any pot</h3>
+<p>Think about <em>Maggi</em>. A single seasoning cube, and suddenly a pot of rice, a pot of beans and a pot of stew can be made by the same person with the same hand movements. That is what Keras was: one friendly interface that worked on top of different engines underneath. It was created by <strong><a href="https://fchollet.com/" target="_blank" rel="noopener">François Chollet</a></strong> in March 2015, when it could run on Theano, TensorFlow or Microsoft’s CNTK. Then TensorFlow 2.0 arrived in 2019 and Keras became the official way to write TensorFlow. Many people, to this day, believe that was Keras’ creator’s master plan. It was not, and he has said so plainly. Asked on Hacker News in November 2024 why he decided to merge Keras into TensorFlow in 2019, Chollet answered:</p>
+<blockquote class="blockquote">
+<p>“I didn’t! The decision was made in 2018 by the TF leads — I was a L5 IC at the time and that was an L8 decision. The TF team was huge at the time, 50+ people, while Keras was just me and the open-source community. In retrospect I think Keras would have been better off as an independent multi-backend framework — but that would have required me quitting Google back then.” <em>Source: François Chollet, answering “Why did you decide to merge Keras into TensorFlow?” in a Hacker News discussion, 14 November 2024 — <a href="https://news.ycombinator.com/item?id=42133844" target="_blank" rel="noopener">news.ycombinator.com/item?id=42133844</a>.</em> Read that again, because it is the clearest sentence anyone has written about how these decisions really get made. A researcher in California had built a tool used by millions. A management decision inside a large company folded it into a framework. And the person who wrote it says that, looking back, the tool should have stayed independent. In 2023, Keras 3 did exactly that: it became multi-backend again, running the same code on TensorFlow, JAX or PyTorch. Chollet left Google in November 2024 to start his own company. Keras, by his own count, has around two million developers, and shows up in production at places like Waymo, YouTube, Netflix, Spotify and Midjourney. There is something delightfully strange in the current arrangement: <strong>the friendliest way to use TensorFlow is now also a perfectly good way to use PyTorch.</strong></p>
+</blockquote>
+</section>
+</section>
+<section id="fastai" class="level2">
+<h2 class="anchored" data-anchor-id="fastai">fast.ai: the class that changed its textbook</h2>
+<p>If the framework war was fought on the top floor, the most important weapon was not code. It was teaching. <strong><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai</a></strong> was founded in May 2016 by <strong>Jeremy Howard</strong> and <strong><a href="https://rachel.fast.ai/" target="_blank" rel="noopener">Rachel Thomas</a></strong>, with a teaching philosophy that annoyed a lot of people at the time: go top-down. Do not start a beginner with linear algebra and a proof. In lesson one, train a model that would have been unthinkable a few years earlier. Let the student be amazed first, and curious second. Then explain why it works. The philosophy had a name and a paper trail behind it. Howard called it <strong>top-down learning</strong>, and he was not inventing it from nothing: it descends from George Polya’s <em>How to Solve It</em> (1945), which argued that students learn fastest by tackling a real problem, restating it, planning, carrying the plan out, then reflecting on what happened. fast.ai’s version of that became the whole game: in the first lesson you train a model that would have been unthinkable a few years earlier, and you find out that it works. The maths and the derivations arrive afterwards, when you have something concrete to hang them on. Everything was published free — notebooks, videos, and in 2020 the book <em><a href="https://github.com/fastai/fastbook" target="_blank" rel="noopener">Deep Learning for Coders with fastai and PyTorch</a></em>. I met PyTorch the way a great many people did: through fast.ai. In 2018 I stayed up late more than a few times to catch their live classes, which were then being streamed out of the Bay Area. I was living in Nigeria at the time, and California is eight hours behind, so “staying up late” meant something very particular: it meant being lucky. Lucky that the light — the electricity — was still on. A blackout is still called <em>NEPA</em> here, after the power authority whose name outlived the authority itself. When the light went, the night came with a price attached: start the generator and keep the whole street awake, or close the laptop and catch up the next day — fast.ai always posted the recordings, so nothing was ever really lost, only delayed. By the time the later courses were being shot, Jeremy and Rachel had moved to Australia, where they still live — the 2022 course opened at 6pm Brisbane time. What stayed with me was not one API. It was the ordering of the lessons: build something real first, understand it second. I work directly in PyTorch now rather than through fastai, but that ordering is the part I want to carry into my own introductory classes — and, later, into teaching agents. That last sentence is worth being precise about, because it is the real transfer here. The fastai library gave people a shortcut; the fastai <em>method</em> gave them a way of learning that kept working after the shortcut changed. A framework you can lose. A teaching order you keep. Their first courses were taught with Keras on top of TensorFlow and Theano. In September 2017 they announced that fast.ai was moving to PyTorch — and the reason they gave was precisely the taste-the-pot difference from Figure 1: the dynamic behaviour made experimentation and iteration faster, and, more bluntly, most of the newest research papers were already written in PyTorch. In January 2018 the new course launched on PyTorch. And here is the detail that should be framed in every framework history written since. The course still showed the same task done with Keras and TensorFlow — and described the result in its own launch notes: it took a lot more code and compute time to get a much lower accuracy. A teacher with no shares in either company had put both pots on the same fire and let the students compare the food. <em>Source: fast.ai, “Practical Deep Learning for Coders” launch post, 26 January 2018 — <a href="https://www.fast.ai/posts/2018-01-26-v2-launch.html" target="_blank" rel="noopener">fast.ai/posts/2018-01-26-v2-launch.html</a>. The wording on the page is: “The course also shows how to use Keras with Tensorflow, although it takes a lot more code and compute time to get a much lower accuracy in this case.”</em> fastai v1, a full library on top of PyTorch, was released in October 2018. fastai v2 and a new course followed in August 2020. In February 2020, Howard and his co-authors published a paper describing fastai as a <em>layered</em> API: one-line functions at the top for people who just want the result, and every layer below available to anyone who wants to go deeper. That idea — a single stack with reachable layers — turned out to be one of the most influential design arguments of the decade. It is also, and this is the awkward part, exactly where the next fight started.</p>
+</section>
+<section id="kaggle" class="level2">
+<h2 class="anchored" data-anchor-id="kaggle">What fast.ai’s students did with it</h2>
+<p>Testing a teaching method needs a scoreboard. In machine learning that scoreboard is <strong><a href="https://www.kaggle.com/competitions" target="_blank" rel="noopener">Kaggle</a></strong>: one dataset, thousands of teams, one private leaderboard, one number. fast.ai students arrived early and in volume. The library’s defaults — learning-rate finder, progressive resizing, one-cycle training, test-time augmentation — bundled known good practice into one afternoon on one GPU. <strong><a href="https://www.kaggle.com/iafoss" target="_blank" rel="noopener">iafoss</a></strong>, a Kaggle Grandmaster, published fastai notebooks that became the templates other people started from. Cassava Leaf Disease Classification, 2020–21: 21,000 photographs of a crop that feeds hundreds of millions of people in Africa, split into four diseases and healthy; 3,900 teams. fastai notebooks were common on the boards. <strong>Zach Mueller</strong>’s scored 83.5% with an EfficientNet-B3 and the Ranger optimiser. <em>Source: Zach Mueller’s public notebook for that competition — <a href="https://www.kaggle.com/code/muellerzr/fastai-efficientnet-b3-with-ranger-83-5" target="_blank" rel="noopener">kaggle.com/code/muellerzr/fastai-efficientnet-b3-with-ranger-83-5</a>.</em> What won was an ensemble of four models — ResNeXt50, a vision transformer, EfficientNet-B4, MobileNet — whose decisive ingredient was <strong>CropNet</strong>, a <strong><a href="https://www.tensorflow.org/hub" target="_blank" rel="noopener">TensorFlow Hub</a></strong> checkpoint pretrained on cassava leaves. Public score 91.36%, private 91.32%. By the winning team’s own account, CropNet mattered for the diversity it added to the ensemble rather than for its standalone accuracy. TensorFlow supplied the winning ingredient in a competition run on PyTorch tooling. <em>Source: Cassava Leaf Disease Classification, 1st place solution write-up, 25 February 2021 — <a href="https://www.kaggle.com/competitions/cassava-leaf-disease-classification/discussion/221957" target="_blank" rel="noopener">competition write-up and winning notebooks</a>.</em> The method has not expired. CSIRO Image2Biomass, January 2026: 54th place, built on <a href="https://github.com/huggingface/pytorch-image-models" target="_blank" rel="noopener">timm</a> backbones and <a href="https://github.com/facebookresearch/dinov3" target="_blank" rel="noopener">DINOv3</a> weights, with fastai 2.8.4 running the training and three-fold grouped cross-validation keeping it honest. <em>Source: “All I Need Is fastai, timm, and DINOv3”, CSIRO — Image2Biomass Prediction, 30 January 2026 — <a href="https://www.kaggle.com/competitions/csiro-biomass/writeups/54th-place-solution-all-i-need-is-fastai-timm-a" target="_blank" rel="noopener">competition write-up</a>.</em> Three limits are worth stating plainly. A leaderboard measures one dataset, not general ability. What travelled between ecosystems was a checkpoint, not an interface. And framework preference predicted little of the outcome here; data, validation splits and ensembling predicted most of it.</p>
+</section>
+<section id="keraswhy" class="level2">
+<h2 class="anchored" data-anchor-id="keraswhy">Why anyone would still learn Keras</h2>
+<p>One number settles the “who still uses Keras?” question better than any argument. In Stack Overflow’s 2021 developer survey — 59,921 respondents, asked which frameworks they had done serious work in that year — <strong>Keras was named by more developers (10.14%) than PyTorch was (9.89%)</strong>, with TensorFlow further ahead at 16.53%. Outside the research bubble, the wrapper was at least as big as the engine. <em>Source: <a href="https://survey.stackoverflow.co/2021/" target="_blank" rel="noopener">Stack Overflow Developer Survey 2021</a>, “other frameworks and libraries”.</em> If fastai is the shortcut for researchers, Keras is the shortcut for everyone else — and in competitions, that shortcut is a strategy rather than a beginner’s crutch. Start with the shelf. Keras Applications and TensorFlow Hub together are a library of hundreds of pretrained models with one-line loading: every EfficientNet, every Vision Transformer, every detection and segmentation model, many with weights trained on data far more specific than ImageNet. CropNet, the cassava model that decided a competition, lived on that shelf. When you are choosing a starting point under time pressure, the width of the shelf matters more than the elegance of the API — and the Keras/TF path to training on TPUs is one of the best-documented routes on Kaggle. Then there is the plain reason Keras survived three framework wars: it was designed to shrink the distance between an idea and a running model. <em>Model.fit</em> is four words. A beginner can be training a real network ten minutes after installing it, and that is not a toy virtue — it is the same virtue that made fast.ai’s first lesson work. And it travels. Keras 3 runs on three engines — TensorFlow, JAX and PyTorch — so what you learn is the interface, not a bet on one company. My favourite way to think about it is the spice mix at a <em>suya</em> stand — the spiced, grilled meat skewers that began in northern Nigeria and are now roasted in almost every state in the country, across the borders into neighbouring countries, and wherever Nigerians have settled abroad. The seller’s skill is the mix, not the grill: the same blend works on beef, chicken, or <em>kpomo</em> — cow skin, simmered for hours until it is soft, and a particular favourite in the south-west. Keras is that mix. Change the grill underneath — TensorFlow, JAX, PyTorch — and the recipe still works. Which leaves the honest question: if PyTorch is where the field is, why spend a weekend on Keras at all? Because a great deal of the world runs on it, and somebody has to maintain that world. TensorFlow and Keras are inside phones, cameras, cars and televisions through <a href="https://ai.google.dev/edge/litert" target="_blank" rel="noopener">LiteRT</a>, the on-device runtime; they are in factories, banks and hospitals through TF Serving; they are in the notebooks of every data scientist who learned the field between 2016 and 2022. Millions of developers have used Keras. Code bases that large do not get rewritten because the research fashion changed — they get maintained, extended and migrated slowly, by people who can read them. That is a job, and it is a real one. There is also the teaching reason, which matters more to me than either of the above. Keras is where the vocabulary of modern deep learning was standardised: layers, compile, fit, predict, callbacks, checkpoints. When you meet <a href="https://lightning.ai/pytorch-lightning" target="_blank" rel="noopener">PyTorch Lightning</a>’s <em>Trainer</em>, or fastai’s <em>Learner</em>, or Hugging Face’s <em>Trainer</em>, you are meeting the same grammar in a different accent. Learn the grammar once, in the simplest version of it, and every other library on the top floor becomes readable. Keras is also the reason the wrapper war ended the way it did. Chollet built it as a wrapper so people would not have to care which engine was underneath — and by 2023 that idea had won so completely that Keras 3 lets you pick the engine on the way in. The wrapper outlived the war it was conscripted into.</p>
+</section>
+<section id="ankara" class="level2">
+<h2 class="anchored" data-anchor-id="ankara">Two stalls, one <em>Ankara</em> print</h2>
+<p>If you have ever bought fabric in a Nigerian market, you know the scene. <em>Ankara</em> — the bright wax-print cloth that turns up at every wedding, naming ceremony and <em>owambe</em> — is sold from dozens of stalls, and two stalls are often holding the exact same print. One trader insists she designed it. The other says it is simply what customers ask for, and always has been. Neither one backs down, and both are holding the same cloth. For that same argument to reach software, it needs two ingredients: a genuinely good idea, and two projects that both need it. In early 2021, the top floor of the PyTorch world had exactly that. The idea was the <em>layered API</em>: short one-line functions for the common case, and full control reachable underneath, without switching libraries. fast.ai had published a paper about it in February 2020 and built its whole library that way. The second project was <strong>PyTorch Lightning</strong>, created by <strong><a href="https://www.williamfalcon.com/" target="_blank" rel="noopener">William Falcon</a></strong> — whose first public release went up on 31 March 2019 — to fix a specific, boring problem: every PyTorch user rewrites the same training loop, and most of them write it slightly wrong. Lightning organised that loop, and it became popular quickly. On 2 February 2021, the Lightning team released <strong>Lightning Flash</strong>: a new top floor of ready-made “tasks” for common problems. Two days later, on 4 February, Jeremy Howard made his view public:</p>
+<blockquote class="blockquote">
+<p>“I’m hearing comments that Grid AI (Lightning) seem to have copied fastai’s API without credit, and claimed to have invented it.” <em>Source: Jeremy Howard on X, 4 February 2021, 23:39 UTC — <a href="https://x.com/jeremyphoward/status/1357473938167664644" target="_blank" rel="noopener">x.com/jeremyphoward/status/1357473938167664644</a>. The full wording, in his own post, is: “I’m hearing comments that Grid AI (Lightning) seem to have copied fastai’s API without credit, and claimed to have invented it.”</em> The next day he went further, in a follow-up post that named nobody but left no doubt: <em>“Wow. The PyTorch Lightning founder publicly used baseless patent threats to try to stop new competitors from creating open source software.”</em> He went further still, warning Lightning’s own users that aggressive patent use could leave them exposed to fees if the project were ever re-licensed. That week, the fight spilled onto the machine learning forums, where a long, heated thread argued about whether the layered design had been taken from fastai’s published work without acknowledgement. <em>Source: Jeremy Howard on X, 5 February 2021, 19:21 UTC — <a href="https://x.com/jeremyphoward/status/1357771368406876164" target="_blank" rel="noopener">x.com/jeremyphoward/status/1357771368406876164</a> (445 likes, 66 reposts at the time of writing). Ongoing community argument the same week: <a href="https://www.reddit.com/r/MachineLearning/comments/lcvz1f/" target="_blank" rel="noopener">r/MachineLearning, “PyTorch Lightning Flash appears to be copying fastai (without any credit)”</a>.</em> Now the honest part, the part that most write-ups skip. <strong>This dispute has never been settled, and it probably cannot be.</strong> Nobody can see influence in a diff. By 2021 the layered idea was genuinely in the air: Keras had been offering one-line model building since 2015, scikit-learn had normalised the <code>fit</code> / <code>predict</code> convention across all of data science, and Lightning itself existed to delete boilerplate. Two people can arrive at the same good design from different directions and both be telling the truth about where they got it. What is on the public record is an accusation, made by a founder, in writing, on a specific date — and no retraction, settlement or court case that I could find in the five years since. What is also on the record is that both projects kept working, and both mattered. PyTorch Lightning (at version 2.6.6 today) is one of the standard ways teams organise training code, and it grew into a company, with Falcon as its CEO. fastai kept teaching — Howard went on to found Answer.AI in 2023 — and the layered-API argument it made is now so widely accepted that it no longer reads as an argument. You can see it in Hugging Face’s two-line model loaders, in Lightning’s own tasks, and in every modern library that offers a one-line shortcut with a door underneath. That is the pattern worth remembering about the top floor: the ideas circulate, the credit does not. The <em>Ankara</em> print is on both stalls, and the customers went home happy. The other half of that account deserves the same space. Whatever the argument over where the ideas came from, <strong>what Lightning actually removed was the least glamorous and most repeated code in the field</strong>: the training loop. Checkpointing, learning-rate schedules, logging, mixed precision, restarting from the last good epoch, running across several GPUs without hand-writing distributed code — Lightning turned all of it into a configuration choice. Teams adopted it because a training script that one person can rerun six months later is worth more than a clever one nobody can reproduce. The project grew into <a href="https://lightning.ai/about" target="_blank" rel="noopener">Lightning AI</a>, which now sells a platform for training and deployment end to end (“from GPU to endpoint”, in their words), with Falcon as CEO. But there is a tension in that convenience that sits right on top of the argument I made about teaching a few screens up, so let me say it plainly. fastai, Lightning and Keras all make the training loop disappear. For someone learning, that is the difference between seeing a result today and giving up next week — and it is also how you end up with a model that will not train and no idea which line to look at, because you have never written the loop you are debugging. My own view, and it is the view I would teach: <strong>write the loop by hand once</strong>, all of it, on a small dataset, until you can say what every line does. It is a few hours of work. After that, let the libraries carry it forever, and you will be the person on the team who can tell the difference between a model problem and a plumbing problem.</p>
+</blockquote>
+</section>
+<section id="jax" class="level2">
+<h2 class="anchored" data-anchor-id="jax">Why Google left its own framework</h2>
+<p>The circulating version of this story — PyTorch beat TensorFlow, so Google gave up — is wrong. Google moved its research onto a framework it wrote itself. <a href="https://jax.readthedocs.io/" target="_blank" rel="noopener">JAX</a> was open-sourced in December 2018: a NumPy-style library from Google Research with a compiler, XLA, underneath. It kept the graph thinking of the original TensorFlow and discarded the clumsiness. DeepMind <a href="https://deepmind.google/discover/blog/using-jax-to-accelerate-our-research/" target="_blank" rel="noopener">announced</a> its move to JAX in 2020; by 2022, reporting had both Brain and DeepMind largely off TensorFlow. Gemini runs on Google-designed TPUs, where JAX is the natural fit. Three reasons, none of them sentiment. <strong>One:</strong> the matched set — Google makes the TPUs, JAX compiles for them, so compiler and chip are owned together. <strong>Two:</strong> the researcher’s loop was already lost to PyTorch, so optimising TensorFlow for it bought nothing. <strong>Three:</strong> JAX transforms whole functions in parallel, which is what tuning and architecture search look like at Google’s scale. A record label that owns studio, band and stadium, then hands the studio to an in-house artist whose sound works only on its own instruments. The band it let go headlines every other stage in the world. That is TPU-and-JAX; the band is TensorFlow. TensorFlow was not dropped. Version 2.21.0 shipped on <strong>6 March 2026</strong>, described by Google as security fixes, bug fixes and dependency updates — a statement of ambition, not a funeral. Production machine learning still runs on it in volume. The accurate sentence is this: <strong>TensorFlow lost the argument about how to write code and kept an empire nobody else built.</strong> That empire is not on the server. It is in the device in your hand — phones, cameras, cars, televisions, sensors — where <a href="https://ai.google.dev/edge/litert" target="_blank" rel="noopener">LiteRT</a>, TensorFlow Lite’s successor, does the inference, running models converted from PyTorch and JAX as well as its own. The framework that lost the war sits inside more physical objects than the ones that won it. PyTorch answered the ownership problem JAX raises. In September 2022 it was handed to the Linux Foundation as the <a href="https://pytorch.org/foundation" target="_blank" rel="noopener">PyTorch Foundation</a>, with AMD, AWS, Google Cloud, Meta, Microsoft and NVIDIA at the table. A framework owned by one company is a business relationship; a framework owned by a foundation is a shared road, which is why rival chip makers build for it.</p>
+</section>
+<section id="academia" class="level2">
+<h2 class="anchored" data-anchor-id="academia">Why academia picked PyTorch</h2>
+<p>People often frame this as a mystery, or a matter of taste. It was neither. It was a set of very ordinary incentives pointing in one direction at the same time. <strong>One: the loop was shorter.</strong> Research is not a single submission. It is hundreds of small guesses a day, and a framework that shortens each guess gets used more. Everything in Figure 1 lands here. <strong>Two: a model was just Python.</strong> In PyTorch, a neural network is an object you can print, inspect, step through in a debugger and reason about like any other Python code. In early TensorFlow, you were writing a description of a computation for something else to run, and when it went wrong, the error surfaced far away from the cause. Graduate students do not have the patience of large engineering teams. They do have deadlines. <strong>Three: the code travelled with the paper.</strong> When a paper claims a result, reviewers and readers want the code, and what they find is a repository. When that repository is PyTorch, the next researcher starts from PyTorch. When they write their own paper, they publish PyTorch. Research code did not just reflect the choice — it reproduced it. <strong>Four: the teachers switched first.</strong> fast.ai was the loudest example, but the pattern repeated in university courses: whoever writes the assignment sheet decides what the next generation knows. A whole cohort learns the tool it is taught, then defends the tool it knows. <strong>Five: the jobs followed.</strong> Once research labs and then startups hired researchers trained on PyTorch, the hiring pool and the tool became the same thing. At that point it stops being a technical decision at all. You can call all of this network effects, but the everyday version is simpler: the party moves to wherever the DJ everyone likes is playing, and then the crowd makes the party. PyTorch did not win because it was announced better than TensorFlow. It won because the crowd arrived first and never left.</p>
+<section id="what-the-numbers-actually-measure" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-numbers-actually-measure">What the numbers actually measure</h3>
+<p>Framework statistics are quoted constantly and almost never explained, which is why the “who won” argument goes round in circles. Here is the same decade, counted five different ways.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>What was counted</th>
+<th>What it shows</th>
+<th>What it actually measures</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Papers at the major conferences, 2018</td>
+<td>TensorFlow ahead everywhere — by more than two to one at ICLR (54 to 24) and NAACL (34 to 12)</td>
+<td>Research culture in the years TensorFlow was the default workshop tool</td>
+</tr>
+<tr class="even">
+<td>The same count by 2023</td>
+<td>PyTorch in almost 80% of the papers that used <em>either</em> framework, up from about 7% in 2017 — and 55% of the authors who published with TensorFlow in 2018 had moved to PyTorch by 2019</td>
+<td>Where research code lives now — the clearest single signal of the switch</td>
+</tr>
+<tr class="odd">
+<td>Computer vision conference submissions, 2018 to 2019</td>
+<td>PyTorch papers at CVPR grew from 82 to 280 in a single year; TensorFlow papers went from 116 to 125</td>
+<td>How fast a generation of students can switch once a tool becomes the norm</td>
+</tr>
+<tr class="even">
+<td>Developer surveys covering every industry, 2021 → 2024</td>
+<td>TensorFlow still well ahead in 2021 (16.5% against 9.9%); PyTorch only drew level in 2024 (10.6% against 10.1%)</td>
+<td>What is running in companies, where old systems keep working and nobody rewrites what is not broken</td>
+</tr>
+<tr class="odd">
+<td>Google’s own research, since about 2022</td>
+<td>JAX</td>
+<td>One company’s internal needs — not the field’s</td>
+</tr>
+<tr class="even">
+<td>On-device inference in phones, cars and cameras</td>
+<td>TensorFlow’s descendant stack</td>
+<td>The quiet empire: hardware where “latest framework” is the last thing anyone cares about</td>
+</tr>
+</tbody>
+</table>
+<p><em>Sources, in table order: the conference counts for 2018 and the CVPR 82 → 280 figures come from </em>The State of Machine Learning Frameworks in 2019* in <a href="https://thegradient.pub/state-of-ml-frameworks-2019-pytorch-dominates-research-tensorflow-dominates-industry/" target="_blank" rel="noopener">The Gradient</a>. The 7%-to-almost-80% trajectory and the 55% switch of 2018’s TensorFlow authors come from <a href="https://www.assemblyai.com/blog/pytorch-vs-tensorflow-in-2023" target="_blank" rel="noopener">AssemblyAI’s 2023 analysis</a>, which drew on Papers with Code’s framework tracker — that tracker no longer exists as a separate site, having been folded into Hugging Face, so the trajectory is cited through the writing that recorded it rather than from the tracker itself. The developer-survey figures are the “other frameworks and libraries” question in the Stack Overflow Developer Surveys of <a href="https://survey.stackoverflow.co/2021/" target="_blank" rel="noopener">2021</a> and <a href="https://survey.stackoverflow.co/2024/technology" target="_blank" rel="noopener">2024</a>. Google’s own use of JAX is from <a href="https://deepmind.google/discover/blog/using-jax-to-accelerate-our-research/" target="_blank" rel="noopener">DeepMind’s own account</a>, and the on-device stack is <a href="https://ai.google.dev/edge/litert" target="_blank" rel="noopener">LiteRT</a>.* Read down that table and the contradiction dissolves. Academia chose the shortest loop. Companies kept what was deployed. Google chose what matched its chips. Phones got whatever was smallest and most reliable. Four different questions, four different answers — and the only reason it looks like a contradiction is that we insist on one winner.</p>
+</section>
+</section>
+<section id="now" class="level2">
+<h2 class="anchored" data-anchor-id="now">Where all of them are now: September 2026</h2>
+<p><strong>PyTorch</strong> is the default of the field and no longer has a single owner in the old sense: version 2.14.0 shipped on 2 September 2026, the project is governed through the PyTorch Foundation, and the person at the front of the technical line changed this year. Soumith Chintala — one of the original authors, who led the project for almost eight years — left Meta in November 2025 and is now chief technology officer at Thinking Machines Lab. In May 2026 the core maintainers passed the lead maintainer role to <strong>Alban Desmaison</strong>, an engineer who has worked on PyTorch for years. Chintala’s own summary of what he handed over was that the project went from nothing to more than 90% adoption in AI. Treat that as the departing leader’s number, not a neutral survey — but as departing-leader numbers go, it is a remarkable sentence. <strong>TensorFlow</strong> is in a different business now. Version 2.21.0 arrived on 6 March 2026, and Google’s announcement says the focus is squarely on security fixes, bug fixes and dependency updates. It remains enormously deployed. Its descendant stack for devices, <strong>LiteRT</strong>, is Google’s on-device inference engine, and it accepts models converted from PyTorch and JAX as well as its own. TensorFlow stopped being where new research happens, and stayed where the world’s existing systems run. <strong>Keras</strong>, the friendly layer that survived all of it, is at version 3.15.1 and runs happily on TensorFlow, JAX or PyTorch. Its creator François Chollet left Google in November 2024; Keras is used by something like two million developers, including inside Waymo, YouTube, Netflix and Spotify. <strong>JAX</strong> is Google’s house style: it powers DeepMind research and Google’s flagship models, and it has a real following in scientific computing, where its functional design suits simulation and physics-shaped problems. It is not competing for the general developer’s afternoon. <strong><a href="https://github.com/fastai/fastai" target="_blank" rel="noopener">fastai</a></strong> keeps teaching. Its most recent course went out in October 2025, and the layered API it argued for in 2020 is now simply how good libraries are built. <strong>PyTorch Lightning</strong> grew into Lightning AI, a company building training infrastructure, with its framework still actively released. The February 2021 argument changed nothing about either project’s direction. And the war has moved. Nobody argues about <code>model.fit</code> versus a training loop any more, because the interesting top floor now wraps <em>models</em> rather than training code: Hugging Face’s loaders, inference servers, agent frameworks. Below that, the fight that replaced the framework war is a chip fight — TPUs with JAX, GPUs with PyTorch, and Apple quietly shipping its own framework for its own silicon. The pattern from 2016 is repeating one floor down: the engine matters less than who owns the whole stack.</p>
+</section>
+<section id="close" class="level2">
+<h2 class="anchored" data-anchor-id="close">What the fight was really about</h2>
+<p>Two frameworks, one psychology. TensorFlow was built by people whose job was to make machine learning survive contact with production: frozen graphs, predictable execution, deployment to millions. PyTorch was built by people whose job was to make research less annoying. Google’s tool was more ambitious. The other tool was better at the thing that decides everything else: being pleasant to use while you are still unsure. Five things are worth carrying out of this story. <strong>The loop beats the benchmark.</strong> In 2016, TensorFlow had the better story about scale. PyTorch had the shorter loop between a guess and an answer, and the loop is what gets used a hundred times a day. <strong>Adoption is decided one floor above the technology.</strong> Nobody chose a graph design. They chose the typing experience — and that is why the biggest fight of the decade was between wrappers, and why Keras, an interface, outlived both engines’ dominance in its own quiet way. <strong>Ideas on the top floor travel without their labels.</strong> The layered API is now standard practice, and the argument over who invented it was never resolved. That is the normal outcome, not a scandal: good design ideas escape their authors. <strong>There is more than one way to win.</strong> PyTorch owns the papers. TensorFlow owns a billion devices with code that nobody has touched in years and nobody needs to. Losing the argument about how to write code did not cost Google an empire; it just moved it into hardware. <strong>Who owns the tool decides how long it lives.</strong> Google moved its own researchers to a framework it controls end to end. PyTorch’s creator walked away, and the project was handed to a foundation with its competitors at the table — which is precisely why the competitors keep building for it. So the party analogy holds all the way to the end. The <em>owambe</em> was judged by the food the guests ate, not by the kitchen that cooked it. The kitchen that lost the argument is still the one feeding the estate, quietly, one device at a time — and the kitchen that won is cooking almost every paper you will read this year. Nobody lost the party. The guests just chose a pot they could taste from.</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources and further reading</h2>
+<p>Everything in this article that can be pinned to a document is pinned below, grouped by what it is. Every link opens in a new tab, so you can check a claim without losing your place here. All of them were checked and returning a page at the time of writing.</p>
+<section id="the-quotes-in-their-own-words" class="level3">
+<h3 class="anchored" data-anchor-id="the-quotes-in-their-own-words">The quotes, in their own words</h3>
+<ul>
+<li><a href="https://x.com/jeremyphoward/status/1357473938167664644" target="_blank" rel="noopener">Jeremy Howard on X, 4 February 2021 — the accusation</a></li>
+<li><a href="https://x.com/jeremyphoward/status/1357771368406876164" target="_blank" rel="noopener">Jeremy Howard on X, 5 February 2021 — the patent-threat post</a></li>
+<li><a href="https://www.reddit.com/r/MachineLearning/comments/lcvz1f/" target="_blank" rel="noopener">r/MachineLearning, February 2021 — “PyTorch Lightning Flash appears to be copying fastai (without any credit)”</a></li>
+<li><a href="https://news.ycombinator.com/item?id=42133844" target="_blank" rel="noopener">François Chollet on Keras being merged into TensorFlow (Hacker News, 14 November 2024)</a></li>
+<li><a href="https://www.fast.ai/posts/2018-01-26-v2-launch.html" target="_blank" rel="noopener">fast.ai, January 2018 — the launch note that compares the same task in Keras and TensorFlow</a></li>
+</ul>
+</section>
+<section id="primary-sources-the-frameworks" class="level3">
+<h3 class="anchored" data-anchor-id="primary-sources-the-frameworks">Primary sources: the frameworks</h3>
+<ul>
+<li><a href="https://pytorch.org/" target="_blank" rel="noopener">PyTorch</a></li>
+<li><a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow</a></li>
+<li><a href="https://github.com/tensorflow/tensorflow/releases" target="_blank" rel="noopener">TensorFlow release notes (including 2.21, March 2026)</a></li>
+<li><a href="https://keras.io/" target="_blank" rel="noopener">Keras</a></li>
+<li><a href="https://keras.io/keras_3/" target="_blank" rel="noopener">Keras 3 — one API, three backends</a></li>
+<li><a href="https://jax.readthedocs.io/" target="_blank" rel="noopener">JAX</a></li>
+<li><a href="https://deepmind.google/discover/blog/using-jax-to-accelerate-our-research/" target="_blank" rel="noopener">DeepMind, 2020 — “Using JAX to accelerate our research”</a></li>
+<li><a href="https://lightning.ai/pytorch-lightning" target="_blank" rel="noopener">PyTorch Lightning</a></li>
+<li><a href="https://www.williamfalcon.com/" target="_blank" rel="noopener">William Falcon</a></li>
+<li><a href="https://lightning.ai/about" target="_blank" rel="noopener">Lightning AI, the company</a></li>
+<li><a href="https://www.fast.ai/" target="_blank" rel="noopener">fast.ai</a></li>
+<li><a href="https://github.com/fastai/fastai" target="_blank" rel="noopener">the fastai library</a></li>
+<li><a href="https://github.com/fastai/fastai/releases" target="_blank" rel="noopener">fastai releases (2.8.x through 2026)</a></li>
+<li><a href="https://pytorch.org/foundation" target="_blank" rel="noopener">The PyTorch Foundation</a></li>
+<li><a href="https://arxiv.org/abs/1912.01703" target="_blank" rel="noopener">PyTorch: An Imperative Style, High-Performance Deep Learning Library (arXiv 1912.01703)</a></li>
+<li><a href="https://arxiv.org/abs/2002.04688" target="_blank" rel="noopener">fastai: A Layered API for Deep Learning (arXiv 2002.04688)</a></li>
+<li><a href="https://www.tensorflow.org/hub" target="_blank" rel="noopener">TensorFlow Hub — where CropNet lives</a></li>
+<li><a href="https://keras.io/api/applications/" target="_blank" rel="noopener">Keras Applications — the pretrained-model shelf</a></li>
+<li><a href="https://ai.google.dev/edge/litert" target="_blank" rel="noopener">LiteRT — TensorFlow on phones, cameras and cars</a></li>
+<li><a href="https://github.com/huggingface/pytorch-image-models" target="_blank" rel="noopener">timm</a></li>
+<li><a href="https://github.com/facebookresearch/dinov3" target="_blank" rel="noopener">DINOv3</a></li>
+</ul>
+</section>
+<section id="fast.ai-still-teaching" class="level3">
+<h3 class="anchored" data-anchor-id="fast.ai-still-teaching">fast.ai, still teaching</h3>
+<ul>
+<li><a href="https://forums.fast.ai/t/welcome-to-the-2022-fast-ai-course/95295" target="_blank" rel="noopener">the 2022 fast.ai course opening — 6pm Brisbane time</a></li>
+<li><a href="https://course.fast.ai/" target="_blank" rel="noopener">Practical Deep Learning for Coders (free course)</a></li>
+<li><a href="https://github.com/fastai/fastbook" target="_blank" rel="noopener">the fastai book, as free notebooks</a></li>
+</ul>
+</section>
+<section id="competitions" class="level3">
+<h3 class="anchored" data-anchor-id="competitions">Competitions</h3>
+<ul>
+<li><a href="https://www.kaggle.com/competitions/cassava-leaf-disease-classification" target="_blank" rel="noopener">Cassava Leaf Disease Classification</a></li>
+<li><a href="https://www.kaggle.com/competitions/cassava-leaf-disease-classification/discussion/221957" target="_blank" rel="noopener">its first-place solution write-up, February 2021</a></li>
+<li><a href="https://www.kaggle.com/code/muellerzr/fastai-efficientnet-b3-with-ranger-83-5" target="_blank" rel="noopener">Zach Mueller’s Cassava notebook (EfficientNet-B3 + Ranger, 83.5%)</a></li>
+<li><a href="https://www.kaggle.com/competitions/csiro-biomass/writeups/54th-place-solution-all-i-need-is-fastai-timm-a" target="_blank" rel="noopener">CSIRO Image2Biomass, January 2026 — “All I Need Is fastai, timm, and DINOv3”</a></li>
+<li><a href="https://www.kaggle.com/competitions" target="_blank" rel="noopener">Kaggle competitions, if you want to try this yourself</a></li>
+</ul>
+</section>
+<section id="where-the-numbers-come-from" class="level3">
+<h3 class="anchored" data-anchor-id="where-the-numbers-come-from">Where the numbers come from</h3>
+<ul>
+<li><a href="https://thegradient.pub/state-of-ml-frameworks-2019-pytorch-dominates-research-tensorflow-dominates-industry/" target="_blank" rel="noopener">The State of Machine Learning Frameworks in 2019</a> — conference-by-conference paper counts for 2018 and 2019 (The Gradient)</li>
+<li><a href="https://www.assemblyai.com/blog/pytorch-vs-tensorflow-in-2023" target="_blank" rel="noopener">PyTorch vs TensorFlow in 2023</a> — the 7%-to-80% trajectory and the 55% author switch (AssemblyAI, using Papers with Code’s tracker)</li>
+<li><a href="https://survey.stackoverflow.co/2021/" target="_blank" rel="noopener">Stack Overflow Developer Survey 2021</a> · <a href="https://survey.stackoverflow.co/2023/" target="_blank" rel="noopener">2023</a> · <a href="https://survey.stackoverflow.co/2024/technology" target="_blank" rel="noopener">2024</a> — what developers outside research actually used</li>
+<li><a href="https://deepmind.google/discover/blog/using-jax-to-accelerate-our-research/" target="_blank" rel="noopener">DeepMind on moving its research to JAX</a></li>
+<li><a href="https://ai.google.dev/edge/litert" target="_blank" rel="noopener">LiteRT</a> — TensorFlow’s descendant stack on devices Which of the two did you learn on — and did you ever switch, or did the tool you learned simply stick? I am curious how many people here changed frameworks because they wanted to, and how many changed because a job made them. Let me know in the comments — and if this cleared something up for you, pass it to someone who is still arguing about it.</li>
+</ul>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<!-- SisengAI Chatbot widget — freemium demo -->
+<script>
+  window.__SISENG_API__ = "https://bot.sisengai.com";
+</script>
+<script src="https://bot.sisengai.com/widget/sisengai-demo.js" async=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "theAfricanQuant/theAfricanQuant.github.io";
+    script.dataset.repoId = "R_kgDOK8Zc8Q";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOK8Zc8c4Cfc4R";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-18-PyTorch-vs-TensorFlow/pytorch_vs_tensorflow.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-18-PyTorch-vs-TensorFlow/pytorch_vs_tensorflow.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
