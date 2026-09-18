@@ -4,7 +4,7 @@ author: "Ricky Macharm"
 date: "17 September 2026"
 image: "torch_to_pytorch.png"
 description: "The framework that trains most of the world's AI runs on a language nobody designed for mathematics — and it replaced another one exactly like it. The story of two bets, fourteen years apart."
-categories: [PyTorch, Lua, Python, Deep Learning, "Language History"]
+categories: [PyTorch, Lua, Python, Rust, C, "C++", Deep Learning, "Language History"]
 format:
     html:
         fig-cap-location: bottom
