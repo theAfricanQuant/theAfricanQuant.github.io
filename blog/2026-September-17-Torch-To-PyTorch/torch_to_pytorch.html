@@ -450,6 +450,28 @@ Figure&nbsp;1: The two-layer idea
 <p>But Lua was missing something that would matter enormously fourteen years later. It had no <strong>ecosystem</strong>. No NumPy. No pandas. Almost nobody outside game scripting was using Lua for numbers, so nobody built those libraries for it.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Six candidates, one unusually narrow job">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Six candidates, one unusually narrow job
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Losing the race for <em>this</em> job said nothing about any of these languages. Every one of them went on to dominate somewhere else:</p>
+<ul>
+<li><strong>Python</strong> — the default language of data, science, and now AI.</li>
+<li><strong>Java</strong> — still one of the most widely used languages on earth: Android apps, large enterprise systems, and the whole JVM data stack of Hadoop and Spark.</li>
+<li><strong>Ruby</strong> — web applications, through Ruby on Rails.</li>
+<li><strong>Perl</strong> — bioinformatics and system administration.</li>
+<li><strong>Tcl</strong> — chip design.</li>
+<li><strong>Lua</strong> — game scripting, and the insides of other programs.</li>
+</ul>
+<p>Torch was looking for a front end to sit on a C engine. That is a remarkably narrow job, and a language can be genuinely world-class without being right for it.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="where-lua-came-from-and-why-that-mattered" class="level2 page-columns page-full">
@@ -463,6 +485,20 @@ Figure&nbsp;1: The two-layer idea
 <p>The language underneath 2002’s most advanced machine-learning library was a workaround for an import ban.</p>
 </blockquote>
 <p>And nobody owns Lua. There is no company behind it and no foundation holding the keys. It is free, open-source, MIT-licensed software, still cared for at the same Brazilian university by essentially the same team — Ierusalimschy has led its design for over thirty years.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Where Lua still wins">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where Lua still wins
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Lua lost nothing by not becoming the language of AI. It became something arguably more permanent: the language <em>inside</em> other programs. World of Warcraft addons, Roblox, Neovim, Redis and Nginx (through OpenResty) all embed it, and Cloudflare runs it across an enormous share of its edge traffic. It was designed for machines with very little memory, which is why it keeps showing up in embedded devices.</p>
+<p>Lua was never trying to be the language you write a whole application in. It was built to live inside somebody else’s program — which is exactly why Torch picked it in the first place, and exactly why it is still working today.</p>
+</div>
+</div>
 <div id="fig-lua-timeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
 <figure class="quarto-float quarto-float-fig figure page-columns page-full">
 <div aria-describedby="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -499,13 +535,57 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 <h3 class="anchored" data-anchor-id="you-could-see-your-code-actually-run">3. You could see your code actually run</h3>
 <p>This one is subtle but it changed everything. Python made it natural to build the computation step by step <em>as the code ran</em>, instead of defining the whole calculation up front as a separate static graph — which is the approach TensorFlow launched with on 9 November 2015. The practical result: fixing a PyTorch model felt like fixing ordinary Python code, because that is exactly what it was.</p>
 <blockquote class="blockquote">
-<p>Torch picked the fastest front end available. PyTorch picked the one every researcher already had on their laptop.</p>
+<p>Torch picked the fastest front end. PyTorch picked the one every researcher already had on their laptop.</p>
 </blockquote>
+</section>
+</section>
+<section id="the-same-switch-is-happening-again-right-now" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-switch-is-happening-again-right-now">The same switch is happening again right now</h2>
+<p>If that feels like old history, here is the part that should not. The exact same manoeuvre — keep the idea, swap the language underneath — is being repeated in 2026, by people who would probably be surprised to hear they are re-running the Torch decision.</p>
+<section id="bun-from-zig-to-rust" class="level3">
+<h3 class="anchored" data-anchor-id="bun-from-zig-to-rust">Bun: from Zig to Rust</h3>
+<p><strong>Bun</strong> is a good example to start with because most people meet it without knowing what it is. Bun is a <em>JavaScript runtime</em> — the engine that executes JavaScript outside a browser, doing the job Node.js does. It also folds in a package manager, a bundler and a test runner, all in one fast binary. It is a drop-in replacement for Node.js, and its CLI gets over 22 million downloads a month. If you have used Claude Code or OpenCode, you have run Bun.</p>
+<p>Bun was written in <strong>Zig</strong>, a small modern language designed as a better C. Its creator, Jarred Sumner, wrote the first version alone in a cramped Oakland apartment in about a year, with no AI help at all.</p>
+<p>Then two things happened. In <strong>December 2025, Anthropic acquired Bun</strong> — its first acquisition. The reason was blunt and practical: Claude Code ships to millions of users as a Bun executable. As Sumner put it, <em>if Bun breaks, Claude Code breaks</em>.</p>
+<p>And in <strong>2026, Bun was rewritten in Rust</strong>. Bun 1.4, the first stable release running the new code, shipped on <strong>20 August 2026</strong>.</p>
+<p>The reasoning matters far more than the event, because it was not a verdict on Zig. Bun’s bug list was long and full of crashes — memory problems from running a garbage-collected language inside manually-managed memory, which is an unusual thing for software to need and something no language is really designed for. In Sumner’s words:</p>
+<blockquote class="blockquote">
+<p>Our bugfix list felt bad and I was tired of going to sleep worrying about crashes in Bun. I don’t blame Zig for that… We wouldn’t have gotten this far if not for Zig, and I’ll always be grateful.</p>
+</blockquote>
+<p>Zig did not suddenly become a bad language. The project’s constraints changed — it went from a solo experiment to infrastructure that a billion-dollar product depended on — and a different language fitted the new constraints better.</p>
+<p>The rewrite itself is a sign of the times: Claude was pointed at <strong>1,448 Zig files</strong> and told to produce Rust, with each file handled by one implementation agent and two adversarial review agents. What made it possible was not raw speed but the confidence that a rewrite could now be attempted at all.</p>
+</section>
+<section id="typescript-the-same-language-a-new-one-underneath" class="level3">
+<h3 class="anchored" data-anchor-id="typescript-the-same-language-a-new-one-underneath">TypeScript: the same language, a new one underneath</h3>
+<p>The second example is stranger, because from the outside nothing changed at all. TypeScript still looks and behaves exactly the same. What moved was the language its <em>compiler</em> is written in.</p>
+<p>In March 2025, Anders Hejlsberg and the TypeScript team announced they were porting the compiler to <strong>Go</strong>. TypeScript 7.0 shipped on <strong>8 July 2026</strong>, and the numbers were not marketing: command-line builds got about <strong>10x faster</strong> (VS Code’s 1.5 million lines went from 77.8 seconds to 7.5), editor project load went from 9.6 seconds to <strong>1.2</strong>, and memory use roughly halved.</p>
+<p>Why bother? Because TypeScript’s compiler had stopped scaling to the largest codebases — and because AI coding tools need huge amounts of semantic information available at very low latency. The bottleneck was no longer the language people write; it was the speed of the machinery underneath it.</p>
+<p>And why Go rather than Rust, which is the more fashionable answer? Because of the shape of the existing code. TypeScript’s compiler is built from heavily interconnected, cyclic data structures sharing mutable state. Go handles that naturally and has the shared-memory concurrency to parallelise it; Rust’s ownership rules would have forced a redesign of the compiler before a single line could be ported. <strong>They picked the language that fitted the structure, not the language that topped the popularity poll.</strong></p>
+<div class="callout callout-style-default callout-important callout-titled" title="Notice what changed, and what did not">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Notice what changed, and what did not
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Three switches, fourteen years apart:</p>
+<ul>
+<li><strong>2016 — Torch:</strong> keep the C engine, swap the scripting layer from Lua to Python.</li>
+<li><strong>2026 — Bun:</strong> keep the JavaScript runtime, swap the implementation from Zig to Rust.</li>
+<li><strong>2025–26 — TypeScript:</strong> keep the language users write, swap the compiler from TypeScript to Go.</li>
+</ul>
+<p>In all three cases, what users type either stayed the same or got closer to what they already knew. In all three, the swap was forced by a specific practical constraint — an absent ecosystem, a crash list, a scaling wall. And in none of them did anybody say “this other language is simply better.”</p>
+<p>The pattern is the point. Languages do not get replaced for being bad. They get replaced when a project’s needs change and a different language fits the new shape better.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="why-python-and-not-r-matlab-or-julia" class="level2">
 <h2 class="anchored" data-anchor-id="why-python-and-not-r-matlab-or-julia">Why Python, and not R, MATLAB or Julia</h2>
-<p>Python did not win by being the best language at mathematics. It won because each rival had one specific, structural reason it could not do this particular job.</p>
+<p>Back to 2016, then. Python did not win by being the best language at mathematics. It won because each rival had one specific, structural reason it could not do this particular job.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -536,6 +616,25 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-tip callout-titled" title="Losing this race was not the same as losing">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Losing this race was not the same as losing
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Read that table as a list of misfits for one specific job, not a ranking. Being ruled out of deep learning is not the same as being ruled out of everything else.</p>
+<ul>
+<li><strong>R</strong> is still the language of statistics, with one of the most respected research ecosystems anywhere — CRAN, a curated library of tens of thousands of packages, acts as its gatekeeper. In medicine its position is close to untouchable: CRAN maintains a task view for clinical trial design, monitoring and reporting, and regulated pharmaceutical work is increasingly built on R.</li>
+<li><strong>MATLAB</strong> is still the standard in control engineering and signal processing, and Simulink is where automotive and aerospace teams have built and tested embedded software for roughly two decades. Code modelled there gets generated straight into production vehicles. A toolchain that carries that kind of safety certification does not get swapped out casually.</li>
+<li><strong>Julia</strong> is the centre of scientific machine learning through SciML, its ecosystem for solving differential equations, and it does serious work on high-performance computing at national laboratories. Fittingly, its own community describes it as solving the two-language problem — <em>for scientific computing</em>.</li>
+</ul>
+<p>Nobody is going to dethrone these three. They simply stopped being the fastest route to a trained neural network.</p>
+</div>
+</div>
 <p>Two more things then let Python actually <em>win</em> instead of merely qualify.</p>
 <section id="the-spare-parts-rule" class="level3">
 <h3 class="anchored" data-anchor-id="the-spare-parts-rule">The spare-parts rule</h3>
@@ -556,25 +655,29 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 <p><strong>CUDA</strong> is not quite a language in the same sense, but a platform and programming model for running code on NVIDIA graphics cards. NVIDIA released it in 2006–2007 so that ordinary software could use hardware that had previously only drawn pictures on screen. Unlike everything else here, CUDA is proprietary NVIDIA technology and only runs on NVIDIA hardware. It is the layer every framework in this story ultimately calls down to.</p>
 <p>So the full stack, from top to bottom, looks like this: <strong>researcher’s idea → Python (or Lua) → C++ engine → C → CUDA → silicon.</strong> Every layer earned its place by being the best available option for one narrow job. And not one of them was designed with the others in mind.</p>
 </section>
-<section id="the-popular-languages-that-missed-the-boat" class="level2">
-<h2 class="anchored" data-anchor-id="the-popular-languages-that-missed-the-boat">The popular languages that missed the boat</h2>
-<p>Three languages from the 1980s and 90s are worth mentioning, because together they prove the whole point. All three were widely used, well designed, and completely absent from the AI story.</p>
+<section id="famous-everywhere-except-here" class="level2">
+<h2 class="anchored" data-anchor-id="famous-everywhere-except-here">Famous everywhere except here</h2>
+<p>Three languages from the 1980s and 90s are worth mentioning, because together they prove the whole point. All three were widely used, beautifully designed, and completely absent from the AI story — not because they were weaker languages, but because they were built for other jobs and were already busy winning them.</p>
 <p><strong>Tcl</strong> — 1988, John Ousterhout, UC Berkeley. He created it while building tools for designing computer chips, so that every tool would not need its own custom scripting language. That is <em>exactly</em> the problem Lua solved better, and Tcl is one of the languages Lua’s creators openly judged too slow and too awkward to connect to C. Tcl did not die, though. It is the scripting layer underneath almost every major chip-design tool in the world, including Synopsys Design Compiler and Cadence Innovus. Chip designers still learn it today.</p>
 <p><strong>Perl</strong> — 1987, Larry Wall. Built as a practical scripting language for Unix, mainly to make report processing easier. Wall is a linguist by training, which is why the design motto is “there is more than one way to do it” — the thinking of a natural language, not a machine. It was another of the alternatives Lua’s creators rejected. Perl survives in older system administration work and in bioinformatics pipelines, and its intended successor, Perl 6, split off to become a separate language called Raku.</p>
 <p><strong>Ruby</strong> — 1995, Yukihiro “Matz” Matsumoto, Japan. Built deliberately for programmer happiness, borrowing ideas from Perl, Smalltalk, Eiffel, Ada and Lisp. Of the three, Ruby came closest to this story: it was a genuine contender for Torch’s front end in 2002 and lost on speed. Ruby on Rails is still a serious web framework. The language did not fail. It just won a different race.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="The punchline">
+<div class="callout callout-style-default callout-tip callout-titled" title="Where each of them still rules">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>The punchline
+<span class="screen-reader-only">Tip</span>Where each of them still rules
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Tcl runs chip design. Perl runs bioinformatics pipelines. Ruby runs web applications.</p>
-<p>It is like three very good traders in the market — known, respected, busy all day — who simply never stocked the one item the whole market came to buy.</p>
-<p><strong>None of them run tensors.</strong> Being popular was never the advantage. Having a numerical ecosystem was — and that is the one thing none of the three ever built.</p>
+<ul>
+<li><strong>Tcl</strong> owns chip design. Synopsys, Cadence and Siemens flows all drive their tools through Tcl, and every script in a semiconductor company’s regression suite is written in it. Replacing it would mean rewriting every script in every design flow on earth at the same time. Nobody is planning that.</li>
+<li><strong>Perl</strong> still runs an enormous amount of the world’s system administration, and much of the older bioinformatics pipeline code. For years its regular-expression engine was the best in any language, which is exactly why so much text-processing infrastructure was built on it — and still is.</li>
+<li><strong>Ruby</strong> runs major production web applications. Shopify handles over 80,000 requests per second on Rails, and GitHub, Basecamp, Zendesk and Instacart all still run it. For building a serious web product quickly, it remains one of the best tools in existence.</li>
+</ul>
+<p>So this is not a list of failures. It is a list of languages that were winning other fights.</p>
+<p>It is like three very good traders in the market — known, respected, busy all day — who simply never stocked the one item this whole market came to buy. <strong>None of them run tensors</strong>, and being popular has never been something that transfers from one job to another.</p>
 </div>
 </div>
 </section>
@@ -651,6 +754,7 @@ Figure&nbsp;3: Different teams, the same compiler layer underneath
 <li><strong>Ecosystems beat languages.</strong> Lua lost to Python not because it was slow — LuaJIT fixed that — but because nobody ever built a NumPy for it. The library you can import matters more than the syntax you type.</li>
 <li><strong>The right design at the wrong time loses to an adequate design at the right time.</strong> Julia is the cleanest example in this entire history.</li>
 <li><strong>And the core problem was never solved.</strong> Torch’s 2002 division of labour is still the shape of PyTorch in 2026. We have simply stopped noticing that we write two languages to do one job.</li>
+<li><strong>Language choices are no longer one-way doors.</strong> For most of this history, picking a language for a serious project was effectively permanent. Bun’s creator said it best after swapping Zig for Rust in 2026: <em>“Until very recently, programming language choice was a one-way decision for a project like Bun.”</em> That is quietly ceasing to be true. When a 1,448-file rewrite becomes a project someone can actually attempt, the cost of changing your mind drops — and a decision that used to be permanent starts to look like a decision you can revisit.</li>
 </ol>
 <blockquote class="blockquote">
 <p>No single language had to win everything. That was never the requirement.</p>
