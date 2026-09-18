@@ -167,9 +167,19 @@ If that feels like old history, here is the part that should not. The exact same
 
 **Bun** is a good example to start with because most people meet it without knowing what it is. Bun is a *JavaScript runtime* — the engine that executes JavaScript outside a browser, doing the job Node.js does. It also folds in a package manager, a bundler and a test runner, all in one fast binary. It is a drop-in replacement for Node.js, and its CLI gets over 22 million downloads a month. If you have used Claude Code or OpenCode, you have run Bun.
 
+::: {.callout-tip title="If you write Python, here is the shortcut"}
+Think of **uv**. uv is the single very fast binary that swallowed pip, pip-tools, pipx, poetry, pyenv, twine and virtualenv — six or seven tools replaced by one, written in Rust, and advertised at 10 to 100 times the speed of pip. Bun made the same move for JavaScript: one binary replacing node, npm, npx, Jest and the bundler.
+
+There is one difference that matters. **uv manages your Python; it is not your Python** — you still need an interpreter to actually run the code. **Bun is the engine that runs the code.** The closest Python equivalent would be uv plus CPython plus pytest fused into one binary, and nothing like that exists in Python. That is why Bun is a bigger thing than a package manager.
+
+The comparison cuts both ways, too: if you have already moved your Python projects onto uv, you have felt exactly the improvement Bun is selling to JavaScript developers.
+:::
+
 Bun was written in **Zig**, a small modern language designed as a better C. Its creator, Jarred Sumner, wrote the first version alone in a cramped Oakland apartment in about a year, with no AI help at all.
 
 Then two things happened. In **December 2025, Anthropic acquired Bun** — its first acquisition. The reason was blunt and practical: Claude Code ships to millions of users as a Bun executable. As Sumner put it, *if Bun breaks, Claude Code breaks*.
+
+Three months later, in **March 2026, OpenAI announced it was acquiring Astral** — the company behind uv, Ruff and ty — with the team joining the Codex effort. Same reasoning, different lab: when your AI coding product depends on a toolchain, you buy the toolchain. Both companies reached for the fastest unified tool of a language ecosystem. Anthropic took Bun, for JavaScript. OpenAI took uv's maker, for Python. If you are a Python developer, they bought your tooling too.
 
 And in **2026, Bun was rewritten in Rust**. Bun 1.4, the first stable release running the new code, shipped on **20 August 2026**.
 
@@ -294,6 +304,10 @@ That is not automatically a bad thing. Lua is still free, still maintained, stil
 Lua never reached that point, because the ecosystem around it never reached the point of mattering to an industry.
 
 > A language becomes infrastructure when people stop asking who owns it.
+
+One recent twist runs against everything above. Those languages were *handed* to foundations. **Toolchains are now being bought outright.** Anthropic acquired Bun in December 2025, and OpenAI acquired Astral — the maker of uv, Ruff and ty — in March 2026. Neither was a foundation taking custody of a language. Both were AI companies buying the fastest unified tool of an ecosystem, because their own coding products depend on it.
+
+That is a different kind of ownership, over a layer that everything else sits on, and it is far too early to say whether it becomes good custody or plain capture. But it does sharpen the same lesson: whoever owns the tooling owns the front door.
 
 ## 2026: the problem nobody has solved
 
