@@ -151,7 +151,7 @@ By 2016, Python had already become the default language of scientific computing,
 
 ### 2. Nobody had to learn a new language
 
-Making every new researcher learn a second language before they could touch the framework was pure friction. Wrapping the same C++ engine in Python meant new users could start with tools they already knew. You do not ask a new staff member to learn your village dialect before they are allowed to use the photocopier.
+Making every new researcher learn a second language before they could touch the framework was pure friction. Wrapping the same C++ engine in Python meant new users could start with tools they already knew. You do not make a new staff member learn a different filing system before you allow them to use the photocopier.
 
 ### 3. You could see your code actually run
 
@@ -315,7 +315,9 @@ Here is where the story gets honest, because the problem Torch spotted in 2002 i
 
 Remember the shape: a fast compiled core, with a friendly scripting layer on top. That means you still write two languages to do one job. Python for the model, C++ or CUDA for anything that must be fast. Every serious PyTorch user eventually hits this wall — you drop into a custom kernel, or write your own CUDA extension, and suddenly you are maintaining two codebases, in two languages, with two sets of tools.
 
-It is like working in a Nigerian office. The memo goes out in English, but the moment you need someone to really understand the numbers, you switch to your own language. You need both. And every switch costs you something.
+It is like a court case. You explain your side of the story to your lawyer in the plainest words you have. But the court will not accept plain words — it accepts only filings written in a strict, formal format. So the same story gets written twice: once the way you can say it, and again the way the court can receive it.
+
+The court is far faster and more powerful than you are on your own, but it runs on a language you were never trained to write. Nobody is shut out on purpose — the format exists so that nothing is left ambiguous. That is the trade exactly: you get speed and power, and you pay with a second language, a second set of tools, and a handover point where mistakes love to hide.
 
 This is called the **two-language problem**, and as of 2026 three different groups are attacking it from three different directions.
 
