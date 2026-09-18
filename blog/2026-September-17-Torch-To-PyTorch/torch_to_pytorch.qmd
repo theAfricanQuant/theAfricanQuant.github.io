@@ -360,15 +360,4 @@ Look back across more than fifty years and the lesson is not the simple one. It 
 
 Seen that way, the future looks less like a race to replace Python and more like a slow widening: one language for exploring ideas, several for running them fast, and the line between them always moving. Which is exactly what Mojo, Rust and Zig are arguing about — without agreeing on the answer.
 
-::: {.callout-note title="Coming next in this series"}
-This article is the trunk of the story. Each language below gets its own deep dive, published over the coming weeks:
-
-1. **Lua** — the import ban, Tecgraf, and the language chosen to carry Torch
-2. **Python** — Christmas 1989, ABC, and the climb to becoming the default
-3. **R, MATLAB & Julia** — three rivals, three structural reasons
-4. **C, C++ & CUDA** — the invisible layer everything runs on
-5. **Tcl, Perl & Ruby** — popular, and nowhere near the tensors
-6. **Rust, Mojo & Zig** — three answers to the two-language problem
-:::
-
 Which language did you start with, and how did you end up in Python? I am curious whether people here came to Python through science, or came to science through Python. Let me know in the comments below — and if you found this useful, share it with someone who is starting out.
