@@ -311,7 +311,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
+    <div class="quarto-title column-page">
       <h1 class="title">From Torch to PyTorch: How AI Ended Up Speaking the “Wrong” Language Twice</h1>
                   <div>
         <div class="description">
@@ -329,7 +329,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       <div>
       <div class="quarto-title-meta-heading">Author</div>
@@ -352,16 +352,83 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-    </div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
 
+<style>
+/* Mobile readability for this post (phone widths only) */
+@media (max-width: 768px) {
+  /* Figures: full width, caption directly underneath instead of in the margin */
+  figure.quarto-float,
+  figure.quarto-float > div,
+  figure.quarto-float img.img-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  figure.quarto-float figcaption,
+  figcaption.quarto-float-caption,
+  .margin-caption {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0.6rem 0 0 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Long words, links and code must never push the page sideways */
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+  #quarto-document-content pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.82rem;
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+  #quarto-document-content thead { display: none; }
+  #quarto-document-content tbody,
+  #quarto-document-content tr,
+  #quarto-document-content td { display: block; width: 100%; }
+  #quarto-document-content tr {
+    background: #FFFFFF;
+    border: 1px solid #F2EBD8;
+    border-radius: 0.75rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+  }
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+  #quarto-document-content td:first-child {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #321208;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+  .callout { margin: 1.1rem 0 !important; }
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+}
+</style>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Imagine you own a car. To change the radio station, you must take the engine apart, put it back together, and only then can you hear the new station.</p>
@@ -390,16 +457,16 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="torch-2002-two-layers-one-idea" class="level2 page-columns page-full">
+<section id="torch-2002-two-layers-one-idea" class="level2">
 <h2 class="anchored" data-anchor-id="torch-2002-two-layers-one-idea">Torch, 2002: two layers, one idea</h2>
 <p>In 2002, three researchers at the Idiap Research Institute in Martigny, Switzerland — <strong>Ronan Collobert</strong>, <strong>Samy Bengio</strong> and <strong>Johnny Mariéthoz</strong> — decided to fix this. They released <em>Torch: a modular machine learning software library</em>, a free, BSD-licensed library that collected most of the best machine-learning algorithms of the day into one framework.</p>
 <p>The important part of their solution was not a language. It was a <strong>division of labour</strong>.</p>
-<div id="fig-two-layer" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div id="fig-two-layer" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-two-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="fig1-two-layer-idea.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-two-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-layer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: The two-layer idea
 </figcaption>
 </figure>
@@ -474,7 +541,7 @@ Figure&nbsp;1: The two-layer idea
 </div>
 </section>
 </section>
-<section id="where-lua-came-from-and-why-that-mattered" class="level2 page-columns page-full">
+<section id="where-lua-came-from-and-why-that-mattered" class="level2">
 <h2 class="anchored" data-anchor-id="where-lua-came-from-and-why-that-mattered">Where Lua came from, and why that mattered</h2>
 <p>Lua’s own story has nothing to do with machine learning. It is nearly a decade older than Torch, and it starts with a trade policy.</p>
 <p>In 1993, three researchers at <strong>Tecgraf</strong>, the Computer Graphics Technology Group at the Pontifical Catholic University of Rio de Janeiro, created Lua: <strong>Roberto Ierusalimschy</strong>, <strong>Luiz Henrique de Figueiredo</strong> and <strong>Waldemar Celes</strong>.</p>
@@ -499,12 +566,12 @@ Figure&nbsp;1: The two-layer idea
 <p>Lua was never trying to be the language you write a whole application in. It was built to live inside somebody else’s program — which is exactly why Torch picked it in the first place, and exactly why it is still working today.</p>
 </div>
 </div>
-<div id="fig-lua-timeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div id="fig-lua-timeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="fig2-lua-timeline.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lua-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Lua predates the framework that made it briefly famous
 </figcaption>
 </figure>
@@ -718,7 +785,7 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 <p>One recent twist runs against everything above. Those languages were <em>handed</em> to foundations. <strong>Toolchains are now being bought outright.</strong> Anthropic acquired Bun in December 2025, and OpenAI acquired Astral — the maker of uv, Ruff and ty — in March 2026. Neither was a foundation taking custody of a language. Both were AI companies buying the fastest unified tool of an ecosystem, because their own coding products depend on it.</p>
 <p>That is a different kind of ownership, over a layer that everything else sits on, and it is far too early to say whether it becomes good custody or plain capture. But it does sharpen the same lesson: whoever owns the tooling owns the front door.</p>
 </section>
-<section id="the-problem-nobody-has-solved" class="level2 page-columns page-full">
+<section id="the-problem-nobody-has-solved" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem-nobody-has-solved">2026: the problem nobody has solved</h2>
 <p>Here is where the story gets honest, because the problem Torch spotted in 2002 is <strong>still unsolved</strong>.</p>
 <p>Remember the shape: a fast compiled core, with a friendly scripting layer on top. That means you still write two languages to do one job. Python for the model, C++ or CUDA for anything that must be fast. Every serious PyTorch user eventually hits this wall — you drop into a custom kernel, or write your own CUDA extension, and suddenly you are maintaining two codebases, in two languages, with two sets of tools.</p>
@@ -733,7 +800,7 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 <h3 class="anchored" data-anchor-id="mojo-collapse-the-two-layers-into-one">Mojo — collapse the two layers into one</h3>
 <p>Announced by Modular in May 2023 and led by Chris Lattner, the creator of LLVM and Swift, Mojo is the most direct attack on the problem. The goal is one language that is as easy to write as Python but can also write hardware-level code — a single language for the whole stack. Technically it is built on <strong>MLIR</strong>, a compiler framework that grew out of LLVM. Adoption is still early and it is not compatible with the whole Python ecosystem, but Modular open-sourced Mojo’s standard library in March 2024 under the Apache 2.0 licence. The intention is unmistakable: this is Torch’s 2002 idea, except the ambition is to eventually not need two languages at all.</p>
 </section>
-<section id="zig-an-honest-c-replacement-with-mlir-underneath" class="level3 page-columns page-full">
+<section id="zig-an-honest-c-replacement-with-mlir-underneath" class="level3">
 <h3 class="anchored" data-anchor-id="zig-an-honest-c-replacement-with-mlir-underneath">Zig — an honest C replacement, with MLIR underneath</h3>
 <p>Announced by Andrew Kelley in February 2016, and aiming to replace <strong>C</strong> rather than C++ — a different job from Rust’s. Its priorities are full compatibility with C, no hidden control flow, no hidden memory allocations, and excellent cross-compilation. It is governed by the Zig Software Foundation, a non-profit, and as of 2026 it still has not reached version 1.0.</p>
 <p>Its entry into the AI story is <strong>ZML</strong>, a machine-learning framework for Zig that — like Mojo — is built on <strong>MLIR</strong>, alongside XLA. It focuses on inference rather than training, and targets NVIDIA, AMD and Google TPU hardware.</p>
@@ -751,12 +818,12 @@ Figure&nbsp;2: Lua predates the framework that made it briefly famous
 <p>Two separate teams betting on one piece of technology is usually a sign that the problem is real, and that nobody has found the answer yet.</p>
 </div>
 </div>
-<div id="fig-mlir" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div id="fig-mlir" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mlir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="fig3-mlir-convergence.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-mlir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mlir-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Different teams, the same compiler layer underneath
 </figcaption>
 </figure>
