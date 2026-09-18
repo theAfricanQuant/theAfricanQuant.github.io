@@ -95,7 +95,7 @@ Think of the difference between writing a letter and making a phone call. With a
 
 **Research is a conversation, not a letter.** It is a loop: try something, look at the answer, change one thing, try again. Change the learning rate. Add a layer. Swap a function. Every one of those small changes meant a full rebuild — minutes of waiting, hundreds of times a day.
 
-Go to Balogun Market in Lagos and watch a tailor work. Measure, cut, sew, try it on, adjust the sleeve — all in one afternoon. That is what research needs. A tailor who takes two weeks per fitting would lose the customer. And a compiler that takes minutes per change loses the thinking.
+Go to *Balogun Market* — one of Lagos's biggest markets, and the one people go to for fabric — and watch a tailor work. Measure, cut, sew, try it on, adjust the sleeve — all in one afternoon. That is what research needs. A tailor who takes two weeks per fitting would lose the customer. And a compiler that takes minutes per change loses the thinking.
 
 > The loop you work in shapes the science you can do inside it.
 
@@ -129,7 +129,7 @@ That reframing is the whole trick. And more than twenty years later, Mojo would 
 
 The bottom layer was never really a debate. For pure speed, C — and later CUDA — was the only serious answer. The open question was the top layer, and in 2002 several existing languages were genuinely in the running.
 
-Think about how we move around Lagos or Abuja. A staff bus is fast and cheap, but it follows one fixed route and it will not turn because you asked it to. A *keke napep* — a three-wheeled motor tricycle used as a taxi, known as a tuk-tuk in South and Southeast Asia — is slower, but you can stop it anywhere and turn at any corner.
+Think about how we move around Lagos or Abuja. A staff bus is fast and cheap, but it follows one fixed route and it will not turn because you asked it to. A *keke napep* — a three-wheeled motor tricycle used as a taxi, known as a *tuk-tuk* in South and Southeast Asia — is slower, but you can stop it anywhere and turn at any corner.
 
 That is the trade-off between compiled and scripting languages. In 2002, the ideal would have been a *keke* that moved at bus speed. These were the *keke* on offer:
 
