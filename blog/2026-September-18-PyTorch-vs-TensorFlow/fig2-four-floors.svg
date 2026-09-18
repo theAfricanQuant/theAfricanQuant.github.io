@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 400" role="img" aria-label="Four stacked floors: hardware, kernels, engine frameworks, and the friendly wrapper layer on top">
+  <rect x="4" y="4" width="356" height="76" rx="10" fill="#FFF8EC" stroke="#FFDDA0"></rect>
+  <text x="22" y="34" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#321208">4 · The friendly layer</text>
+  <text x="22" y="62" font-family="Inter,sans-serif" font-size="17" fill="#57534E">Keras · fastai · Lightning</text>
+
+  <rect x="4" y="94" width="356" height="76" rx="10" fill="#FDFBF7" stroke="#E8DCC4"></rect>
+  <text x="22" y="124" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#321208">3 · The engines</text>
+  <text x="22" y="152" font-family="Inter,sans-serif" font-size="17" fill="#57534E">PyTorch · TensorFlow · JAX</text>
+
+  <rect x="4" y="184" width="356" height="76" rx="10" fill="#FDFBF7" stroke="#E8DCC4"></rect>
+  <text x="22" y="214" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#321208">2 · The kernels</text>
+  <text x="22" y="242" font-family="Inter,sans-serif" font-size="17" fill="#57534E">CUDA · XLA · C++</text>
+
+  <rect x="4" y="274" width="356" height="76" rx="10" fill="#FDFBF7" stroke="#E8DCC4"></rect>
+  <text x="22" y="304" font-family="Inter,sans-serif" font-size="19" font-weight="600" fill="#321208">1 · The hardware</text>
+  <text x="22" y="332" font-family="Inter,sans-serif" font-size="17" fill="#57534E">GPUs · TPUs · NPUs</text>
+
+  <path d="M368,16 L378,16 L378,68 L368,68" fill="none" stroke="#D4720A" stroke-width="2"></path>
+  <text x="388" y="36" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#D4720A">the</text>
+  <text x="388" y="56" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#D4720A">arguments</text>
+
+  <path d="M368,286 L378,286 L378,338 L368,338" fill="none" stroke="#5C2D1E" stroke-width="2"></path>
+  <text x="388" y="306" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#5C2D1E">the</text>
+  <text x="388" y="326" font-family="Inter,sans-serif" font-size="16" font-weight="600" fill="#5C2D1E">lock-in</text>
+</svg>
