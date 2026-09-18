@@ -151,7 +151,7 @@ By 2016, Python had already become the default language of scientific computing,
 
 ### 2. Nobody had to learn a new language
 
-Making every new researcher learn a second language before they could touch the framework was pure friction. Wrapping the same C++ engine in Python meant new users could start with tools they already knew. You do not make a new staff member learn a different filing system before you allow them to use the photocopier.
+Making every new researcher learn a second language before they could touch the framework was pure friction. Wrapping the same C++ engine in Python meant new users could start with tools they already knew. You do not ask a new staff member to learn your village dialect before they are allowed to use the photocopier.
 
 ### 3. You could see your code actually run
 
