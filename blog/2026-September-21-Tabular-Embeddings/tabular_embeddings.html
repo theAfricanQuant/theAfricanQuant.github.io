@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2026-09-21">
+<meta name="description" content="Entity embeddings gave a category a place in space and won a Kaggle competition in 2016. I rebuilt the trick in PyTorch and measured where it actually pays: fifty shops, five hundred, five thousand.">
+
+<title>The Column That Learned to Draw a Map – SisengAI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6f71449e07096edb43a4dcb7fb4b5b7e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e5bd078df75af2f50510d0da46a908ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2ca9c797292e179fc376f1c49a251817.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-e5bd078df75af2f50510d0da46a908ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../freebies.html"> 
+<span class="menu-text">Freebies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Book a call</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">The Column That Learned to Draw a Map</h1>
+                  <div>
+        <div class="description">
+          Entity embeddings gave a category a place in space and won a Kaggle competition in 2016. I rebuilt the trick in PyTorch and measured where it actually pays: fifty shops, five hundred, five thousand.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">PyTorch</div>
+                <div class="quarto-category">Embeddings</div>
+                <div class="quarto-category">Tabular Data</div>
+                <div class="quarto-category">Categorical Variables</div>
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Kaggle</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 21, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+<style>
+
+/* Mobile readability for this post (phone widths only) */
+
+@media (max-width: 768px) {
+
+  /* Figures: full width, caption directly underneath instead of in the margin */
+
+  figure.quarto-float,
+
+  figure.quarto-float > div,
+
+  figure.quarto-float img.img-fluid {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+
+  }
+
+  figure.quarto-float figcaption,
+
+  figcaption.quarto-float-caption,
+
+  .margin-caption {
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    margin: 0.6rem 0 0 0 !important;
+
+    padding: 0 !important;
+
+    text-align: left !important;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+  }
+
+  /* Long words, links and code must never push the page sideways */
+
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+
+  #quarto-document-content pre {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    font-size: 0.82rem;
+
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+
+  #quarto-document-content thead { display: none; }
+
+  #quarto-document-content tbody,
+
+  #quarto-document-content tr,
+
+  #quarto-document-content td { display: block; width: 100%; }
+
+  #quarto-document-content tr {
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2EBD8;
+
+    border-radius: 0.75rem;
+
+    padding: 0.9rem 1rem;
+
+    margin-bottom: 0.85rem;
+
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+
+  }
+
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+
+  #quarto-document-content td:first-child {
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    color: #321208;
+
+    margin-bottom: 0.25rem;
+
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+
+  .callout { margin: 1.1rem 0 !important; }
+
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+
+}
+
+</style>
+<div class="callout callout-style-default callout-note callout-titled" title="The short version">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The short version
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A shop column with 1,115 values is a category, not a quantity. One-hot encoding says every shop is equally unlike every other shop. Labelling them 1 to 1,115 invents an ordering that does not exist and then lets the network believe shop 812 is further from 406 than 407 is.</p>
+<p><strong>Entity embeddings</strong> give each value a small vector that the network itself moves while training, so shops that affect sales the same way end up near each other. It came out of the Rossmann sales competition in 2016, fast.ai taught it to a generation of practitioners, and the code is roughly forty lines of PyTorch.</p>
+<p>Then there is the part the diagrams leave out. I ran the three encodings head to head on the same network and the same data at fifty, two hundred, five hundred and five thousand shops. At fifty they are indistinguishable. By five hundred the embeddings are six times better, and at five thousand one-hot has stopped working altogether — worse than predicting the average, at three times the parameters.</p>
+</div>
+</div>
+<section id="column" class="level2">
+<h2 class="anchored" data-anchor-id="column">One column, one thousand values</h2>
+<p>In 2016 Kaggle ran a competition that 3,738 people entered. The job was to forecast six weeks of daily sales for 1,115 stores, a chain that in reality was Rossmann, a German drugstore company. The forum filled up with gradient boosting, as it always does, because boosted trees win on tables.</p>
+<p><em>Source: Cheng Guo, third-place interview, Rossmann Store Sales, Kaggle blog, 22 January 2016 — read via the Internet Archive, <a href="http://web.archive.org/web/20191020194732/http://blog.kaggle.com/2016/01/22/rossmann-store-sales-winners-interview-3rd-place-cheng-gui/" target="_blank">web.archive.org</a>.</em></p>
+<p>Now look at what one of those columns looks like to a model. A row is a shop on a day. The shop is written as <code>store_id</code>: 1, 2, 3, up to 1,115. The network is arithmetic, so it will happily treat that number as a quantity. It will average shop 812 with shop 406 and get shop 609, and it will believe that shop 812 is exactly twice shop 406.</p>
+<p>None of that is true. Shops are not quantities. The one thing you want the model to know about a shop is which other shops it behaves like, and the column as written cannot say that to it.</p>
+<p>Think of a big market with 1,115 lock-up shops and no map. The register lists every shop on its own page. That is one-hot encoding, and it is honest: every shop is equally unlike every other shop, and to compare two of them you flip through the whole register. The alternative some pipelines use is to number the shops 1 to 1,115 in alphabetical order and hand that number over as a measurement. The machinery now carries an order that nobody put there.</p>
+<p>The idea in this post gives the market a layout instead: a map where each shop sits somewhere, and shops whose customers overlap end up in the same aisle. The map starts as noise and redraws itself while the network trains, because the only thing that matters is where a shop sits in relation to the others.</p>
+</section>
+<section id="month" class="level2">
+<h2 class="anchored" data-anchor-id="month">The month that broke the median</h2>
+<p>Cheng Guo, who entered that competition as part of a team called Neokami, was not a typical competitor. He had done a PhD in theoretical physics, and the month he spent on Rossmann was one of his first serious machine-learning projects. His first submission used the historical median of four features: shop, day of week, promotion, and year.</p>
+<p>That scored 0.133 on his own validation split. Then he added <em>month</em> to the same median and the score got worse, because now every combination of shop and month had too few rows behind it to take a median of. Sparsity, in one move, had eaten the feature.</p>
+<p><em>Source: Cheng Guo, Rossmann Store Sales third-place interview, Kaggle blog, 22 January 2016 (archive link above).</em></p>
+<p>His fix is the whole of this post. Instead of letting each category sit in its own empty column, he mapped the categories into a small continuous space where distance means similarity, and trained the network on those coordinates. “In this way one can interpolate or use nearby data points to approximate missing data points,” he wrote. The paper he and Felix Berkhahn published two weeks before the competition closed calls it an <strong>entity embedding</strong>.</p>
+<p><em>Source: Cheng Guo and Felix Berkhahn, </em>Entity Embeddings of Categorical Variables<em>, arXiv:1604.06737, 22 April 2016, <a href="https://arxiv.org/abs/1604.06737" target="_blank">arxiv.org/abs/1604.06737</a>.</em></p>
+<p>What makes the result memorable is not the ranking. It is the geography. They took the learned vectors for German states — 12 categories, no latitude, no longitude, no map — and drew them with t-SNE. “Though the algorithm does not know anything about German geography and society, the relative positions of the learned embeddings of German states resemble that on the map surprisingly well,” the paper says. Places near each other in the data ended up near each other in the vector space.</p>
+<p>Guo finished third. His submission was a plain average of ten networks, each trained in about twenty minutes on a GTX 980, for roughly three and a half hours of total compute. His dropout after the input layer was 0.02, absurdly small by the standards of the day, because he wanted the embeddings to keep their detail. He used Keras, scikit-learn, numpy and pandas, and he wrote the whole thing in a month.</p>
+<p><em>Source: Cheng Guo interview (archive link above): dropout, training time per network, the ten-network average, and the tooling are all stated there.</em></p>
+<p>And he chose a neural network on purpose. “When reading the Rossmann competition forum I was surprised that most top teams used tree based methods like xgboost rather than neural network,” he said. “I decided to use only neural network and see how it compares.” The first and second places used complicated ensembles with hand-built domain features. Third place used one model type and no domain-specific feature engineering.</p>
+<p><em>Source: Cheng Guo interview; the comparison of first, second and third place approaches is also noted by Rachel Thomas, <a href="https://rachel.fast.ai/posts/2018-04-29-categorical-embeddings/" target="_blank">fast.ai, 29 April 2018</a>.</em></p>
+</section>
+<section id="size" class="level2">
+<h2 class="anchored" data-anchor-id="size">How big should the vector be?</h2>
+<p>Every practitioner asks this next, and the honest answer is that nobody settled it. Guo and Berkhahn treated the dimension as a hyperparameter, bounded between 1 and one less than the number of categories, and said plainly that when they had no better idea they started at that upper bound and tuned down by hand. What they actually shipped rarely matched the rule.</p>
+<p>The paper’s own table gives the store column 1,115 values and <strong>10</strong> dimensions. Month and state, at 12 values each, got 6. Day of week got 6 as well, one dimension short of its own maximum. Promotion, with two values, got 1. The team with no formula ended up choosing smaller vectors than either rule that came later.</p>
+<p><em>Source: Guo and Berkhahn, arXiv:1604.06737, Table I, and the surrounding discussion of equation (1).</em></p>
+<p>fast.ai turned it into a formula, and it is the one most people have seen: the minimum of 600 and 1.6 times the cardinality raised to 0.56. The documentation is candid that this came out of trial and error rather than theory — “through trial and error, this general rule takes the lower of two values: a dimension space of 600; a dimension space equal to 1.6 times the cardinality of the variable to 0.56” — and adds that you should tweak it at your discretion.</p>
+<p><em>Source: fast.ai documentation, <code>emb_sz_rule</code>, <a href="https://docs.fast.ai/tabular.model.html" target="_blank">docs.fast.ai/tabular.model.html</a>; implementation in <a href="https://github.com/fastai/fastai/blob/master/fastai/tabular/model.py" target="_blank">fastai/tabular/model.py</a>.</em></p>
+<p>PyTorch Tabular uses a third rule. If you leave the embedding dimensions empty it infers them from the column’s cardinality as the minimum of 50 and half of cardinality plus one, and that cap of 50 is the difference that matters. It is the rule most quoted around the internet today, and it is not fast.ai’s.</p>
+<p><em>Source: PyTorch Tabular documentation, <a href="https://pytorch-tabular.readthedocs.io/en/latest/models/" target="_blank">pytorch-tabular.readthedocs.io</a>: “If left empty, will infer using the cardinality of the categorical column using the rule <code>min(50, (x + 1) // 2)</code>.”</em></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Values</th>
+<th>Guo, 2016</th>
+<th>fast.ai</th>
+<th>PyTorch Tabular</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Column</td>
+<td>Values</td>
+<td>Guo, 2016</td>
+<td>fast.ai</td>
+<td>PyTorch Tabular</td>
+</tr>
+<tr class="even">
+<td>store</td>
+<td>1,115</td>
+<td><strong>10</strong></td>
+<td>81</td>
+<td>50</td>
+</tr>
+<tr class="odd">
+<td>state</td>
+<td>12</td>
+<td><strong>6</strong></td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>month</td>
+<td>12</td>
+<td><strong>6</strong></td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>day of week</td>
+<td>7</td>
+<td><strong>6</strong></td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>promotion</td>
+<td>2</td>
+<td><strong>1</strong></td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><em>The two rules agree with Guo’s choices on the small columns and disagree wildly on the big one: a store vector of 10 dimensions, or 50, or 81, all defensible. My own runs use 50 unless stated otherwise, which is the PyTorch Tabular rule.</em></p>
+<p>Read down that column of numbers and the lesson is unglamorous. The dimension is a knob. The paper that invented the technique tuned it by hand, fast.ai ships a formula capped at 600, PyTorch Tabular ships one capped at 50, and all three are in production use. If a rule of thumb is being sold to you as theory, it is not theory.</p>
+</section>
+<section id="fastai" class="level2">
+<h2 class="anchored" data-anchor-id="fastai">What fast.ai actually does</h2>
+<p>The architecture has been stable since 2018, and it is short enough to describe in a paragraph. Each categorical column gets its own embedding table, plus dropout. The continuous columns get normalised through a batch-norm layer. Everything is concatenated into one vector per row, and that vector goes through a stack of fully connected layers with batch norm and dropout, ending in a single number.</p>
+<p>The defaults in fast.ai’s documentation are worth reading because they are unremarkable: two hidden layers of 200 and 100 units, batch norm on, continuous columns batch-normed, embedding dropout at zero, no output range clamp. The examples pass columns as pairs of cardinality and dimension, like a 4-value column asking for 2 dimensions.</p>
+<p><em>Source: fast.ai documentation for <code>TabularModel</code>: <code>emb_szs</code>, <code>layers=[200,100]</code>, <code>use_bn=True</code>, <code>bn_cont=True</code>, <code>embed_p=0.0</code>, <a href="https://docs.fast.ai/tabular.model.html" target="_blank">docs.fast.ai/tabular.model.html</a>.</em></p>
+<div id="fig-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig1-architecture.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The whole architecture. Categorical columns are looked up in their own small tables; continuous columns are normalised; then it is an ordinary MLP that ends in one number.
+</figcaption>
+</figure>
+</div>
+<p>If you would rather not hand-roll that, PyTorch Tabular wraps it: one configuration class per architecture, ten of them at the time of writing, including the plain category-embedding model, TabNet, TabTransformer, FT-Transformer, NODE, AutoInt, DANet, GANDALF, a mixture-density network, and a gated additive tree ensemble. It is MIT licensed and still getting commits — the last one I checked landed on 17 September 2026.</p>
+<p><em>Source: <a href="https://github.com/pytorch-tabular/pytorch_tabular" target="_blank">github.com/pytorch-tabular/pytorch_tabular</a> and its documentation (the available model configurations are listed under <code>available_models()</code>); the package was introduced in Manu Joseph, arXiv:2104.13638, 2021.</em></p>
+</section>
+<section id="build" class="level2">
+<h2 class="anchored" data-anchor-id="build">Building it in raw PyTorch</h2>
+<p>The dataset below is synthetic on purpose: 5,000 rows shaped like the Rossmann problem, with 50 shops instead of 1,115 so it trains in seconds. The shop column is linear in the target, which I will come back to, because that small decision turns out to matter more than it looks.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd, torch, torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"store_id"</span>:    rng.integers(<span class="dv">0</span>, <span class="dv">50</span>, n),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"day_of_week"</span>: rng.integers(<span class="dv">0</span>, <span class="dv">7</span>, n),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"promo"</span>:       rng.integers(<span class="dv">0</span>, <span class="dv">2</span>, n),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"temperature"</span>: rng.normal(<span class="dv">15</span>, <span class="dv">8</span>, n),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"promo_spend"</span>: rng.exponential(<span class="dv">200</span>, n),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"sales"</span>] <span class="op">=</span> (<span class="dv">50</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> df.store_id <span class="op">*</span> <span class="fl">1.3</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> np.where(df.day_of_week.isin([<span class="dv">5</span>, <span class="dv">6</span>]), <span class="dv">40</span>, <span class="dv">0</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> df.promo <span class="op">*</span> <span class="dv">25</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> df.temperature <span class="op">*</span> <span class="fl">0.8</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> df.promo_spend <span class="op">*</span> <span class="fl">0.05</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="dv">10</span>, n))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> (<span class="st">"temperature"</span>, <span class="st">"promo_spend"</span>):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    df[c] <span class="op">=</span> (df[c] <span class="op">-</span> df[c].mean()) <span class="op">/</span> df[c].std()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>cat_cols  <span class="op">=</span> [<span class="st">"store_id"</span>, <span class="st">"day_of_week"</span>, <span class="st">"promo"</span>]</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>cont_cols <span class="op">=</span> [<span class="st">"temperature"</span>, <span class="st">"promo_spend"</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>cardinalities <span class="op">=</span> [<span class="bu">int</span>(df[c].<span class="bu">max</span>()) <span class="op">+</span> <span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> cat_cols]   <span class="co"># not nunique()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Every categorical column has to be a contiguous block of integers starting at zero, because an embedding table is an array and the column is an index into it. Category code 1,500 with a table of 50 rows is not a rounding error; it is an index out of range. Taking the cardinality as the maximum plus one, rather than the number of distinct values, keeps the table big enough for whatever codes are present.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> Dataset, DataLoader</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TabularDataset(Dataset):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, df):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.cats <span class="op">=</span> [torch.as_tensor(df[c].to_numpy(np.int64)) <span class="cf">for</span> c <span class="kw">in</span> cat_cols]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.cont <span class="op">=</span> torch.as_tensor(df[cont_cols].to_numpy(np.float32))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.y    <span class="op">=</span> torch.as_tensor(df[<span class="st">"sales"</span>].to_numpy(np.float32))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.y)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, i):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [c[i] <span class="cf">for</span> c <span class="kw">in</span> <span class="va">self</span>.cats], <span class="va">self</span>.cont[i], <span class="va">self</span>.y[i]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The model is the diagram, written out. One embedding table per categorical column, batch norm on the continuous columns, everything concatenated, then a plain multilayer perceptron. The embedding dimension here follows fast.ai’s formula; swapping in 50, the PyTorch Tabular cap, changes the results by very little.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TabularModel(nn.Module):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, cards, emb_dims, n_cont, hidden<span class="op">=</span>(<span class="dv">200</span>, <span class="dv">100</span>), dropout<span class="op">=</span><span class="fl">0.2</span>):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.embeddings <span class="op">=</span> nn.ModuleList(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            [nn.Embedding(c, d) <span class="cf">for</span> c, d <span class="kw">in</span> <span class="bu">zip</span>(cards, emb_dims)])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.bn_cont <span class="op">=</span> nn.BatchNorm1d(n_cont)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.emb_dropout <span class="op">=</span> nn.Dropout(dropout)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> <span class="bu">sum</span>(emb_dims) <span class="op">+</span> n_cont</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        layers <span class="op">=</span> []</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> h <span class="kw">in</span> hidden:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            layers <span class="op">+=</span> [nn.Linear(d, h), nn.ReLU(), nn.BatchNorm1d(h), nn.Dropout(dropout)]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            d <span class="op">=</span> h</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mlp <span class="op">=</span> nn.Sequential(<span class="op">*</span>layers, nn.Linear(d, <span class="dv">1</span>))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, cats, cont):</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        e <span class="op">=</span> torch.cat([emb(c) <span class="cf">for</span> emb, c <span class="kw">in</span> <span class="bu">zip</span>(<span class="va">self</span>.embeddings, cats)], dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.mlp(torch.cat([<span class="va">self</span>.emb_dropout(e), <span class="va">self</span>.bn_cont(cont)], dim<span class="op">=</span><span class="dv">1</span>)).squeeze(<span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>emb_dims <span class="op">=</span> [<span class="bu">min</span>(<span class="dv">600</span>, <span class="bu">round</span>(<span class="fl">1.6</span> <span class="op">*</span> c <span class="op">**</span> <span class="fl">0.56</span>)) <span class="cf">for</span> c <span class="kw">in</span> cardinalities]   <span class="co"># [14, 5, 2]</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> TabularModel(cardinalities, emb_dims, <span class="bu">len</span>(cont_cols))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two details in the training loop matter more than they look, and I got both wrong on the first attempt. Feed it mini-batches rather than the whole table at once, and standardise the target on the training split. The generator’s target has a mean of 128 and a standard deviation of 33, while a fresh output layer starts near zero, so without standardisation the layer has to walk 128 units before it starts earning its keep. Adam takes about one step of size <code>lr</code> to do that.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ym, ys <span class="op">=</span> train.sales.mean(), train.sales.std()      <span class="co"># standardise the target</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">1e-3</span>, weight_decay<span class="op">=</span><span class="fl">1e-5</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">40</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    model.train()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> cats, cont, y <span class="kw">in</span> DataLoader(TabularDataset(train), batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> loss_fn(model(cats, cont), (y <span class="op">-</span> ym) <span class="op">/</span> ys)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        opt.zero_grad()<span class="op">;</span> loss.backward()<span class="op">;</span> opt.step()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That is the whole build: thirty-odd lines, no library beyond PyTorch. Everything after this point is measurement, and the first thing worth measuring is what the loss does when you actually let it finish.</p>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">What the training actually looks like</h2>
+<p>Here is the first result, and it is not the one the post was going to report. Run the three encodings through the identical network on that toy data, forty epochs, and nothing separates them: ordinal codes 108.3, embeddings 118.0, one-hot 124.5. The noise floor is 100 and predicting the mean scores 1,129.2, so all three have solved the problem.</p>
+<p>Worse for the story I wanted to tell: the integer codes <em>win</em>. The reason is in the generator. Its target is <code>50 + store_id × 1.3 + …</code>, and the correlation between that target and the raw store code is 0.579. The toy hands the integer encoding free information and then asks it to prove a point about encodings.</p>
+<p>I had two other things to fix before any of this could be trusted. My first harness trained on the whole table in one batch, which gives Adam one step per epoch; over sixty epochs it reached a validation error of 16,812, which is worse than guessing the average. Standardising the target alone — the mean is 128 and the standard deviation 33, while a fresh output layer starts near zero — got the same setup to 603. Doing both, mini-batches of 128 and a standardised target, is what produces the numbers in this post.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Encoding</th>
+<th>Val MSE</th>
+<th>Input width</th>
+<th>Verdict on the toy data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Encoding</td>
+<td>Val MSE</td>
+<td>Input width</td>
+<td>Verdict on the toy data</td>
+</tr>
+<tr class="even">
+<td>Integer code</td>
+<td><strong>108.3</strong></td>
+<td>12</td>
+<td>Wins, because the target is linear in the code</td>
+</tr>
+<tr class="odd">
+<td>Embeddings</td>
+<td>118.0</td>
+<td>25</td>
+<td>Within noise of the winner</td>
+</tr>
+<tr class="even">
+<td>One-hot</td>
+<td>124.5</td>
+<td>61</td>
+<td>Within noise of the winner</td>
+</tr>
+<tr class="odd">
+<td>Predict the mean</td>
+<td>1,129.2</td>
+<td>—</td>
+<td>The baseline everything must beat</td>
+</tr>
+<tr class="even">
+<td>Theoretical floor</td>
+<td>100</td>
+<td>—</td>
+<td>The generator’s own noise, sd 10</td>
+</tr>
+</tbody>
+</table>
+<p><em>Forty epochs, mini-batches of 128, target standardised on the training split, identical architecture for all three. The toy data cannot tell the encodings apart.</em></p>
+<p>So the rest of this post uses a second dataset where the shop’s effect on the target is drawn from one of ten latent clusters and mixed in through a curve, with no relationship at all between the effect and the shape of the code. It is still synthetic, still my own, and it is built to be able to fail: if embeddings were a shortcut rather than a trade, this data would show it.</p>
+</section>
+<section id="geometry" class="level2">
+<h2 class="anchored" data-anchor-id="geometry">Does the map appear? Two tests</h2>
+<p>The claim is that categories with similar effects end up with similar vectors. That is testable, so I tested it twice, once with seven values and once with two hundred.</p>
+<p>The seven days of the week are the easy case, because the only structure in the data is one weekend bump. Train for ten epochs and the weekends have already collapsed onto each other: Saturday and Sunday reach a cosine of 0.97, while Saturday and Tuesday sit at −0.78. Give it forty epochs and the split is almost perfectly clean — Saturday and Sunday at 0.998, Saturday and Tuesday at −0.984.</p>
+<div id="fig-daymap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-daymap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig2-days-map.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-daymap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The map, forty epochs in. Saturday and Sunday are the same point; all five weekdays are the same point; the two camps are opposed. Values from the 50-shop toy run, embedding dimension 4 for the day column.
+</figcaption>
+</figure>
+</div>
+<p>Look closer and the interesting part is what the map refuses to do. Inside the weekday camp the arrangement is arbitrary: Monday’s nearest neighbour came out as Friday in one setting, Monday in another, and Wednesday in a third. That is not a failure. Monday to Friday all have <em>identical</em> effects on the target, so the loss has no opinion about where they sit, and gradient descent leaves them wherever it happened to put them.</p>
+<p>That is the rule this whole idea obeys: <strong>the geometry only records differences the target pays for.</strong> Structure the data does not contain cannot appear in the vectors. This is also why the t-SNE page in the 2016 paper is impressive and why it is dangerous to generalise from: German states really do differ from each other in ways that show up in sales, so there was something to find.</p>
+<p>The second test is the one that matters, because 200 shops with ten real clusters is closer to a practitioner’s problem than seven days of the week. Same embeddings, same network, all shops present in training. Shops in the same latent cluster came out with a mean cosine of 0.144 against each other, and shops in different clusters at −0.016. The nearest neighbour of a shop sat in its own cluster 52 times out of 200, where chance would give 20.</p>
+<p>Two and a half times better than chance is a real signal, and it is smaller than the pictures suggest. The same measurement on random vectors gives a mean absolute cosine of 0.113. The learned geometry beats that, but not by much, and the honest description of the result is that the ranking carries the information rather than the distances. Do not promise your client clean islands in a scatter plot.</p>
+</section>
+<section id="fight" class="level2">
+<h2 class="anchored" data-anchor-id="fight">The fair fight: three encodings, one network</h2>
+<p>Now the comparison the toy data could not make. Same 200 shops, same ten clusters, the same network three times, changing only how the shop column enters. Sixteen thousand rows for training, four thousand held back.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>How the shop column enters</th>
+<th>Val MSE</th>
+<th>vs predicting the mean</th>
+<th>Input width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>How the shop column enters</td>
+<td>Val MSE</td>
+<td>vs predicting the mean</td>
+<td>Input width</td>
+</tr>
+<tr class="even">
+<td>Embedding vectors</td>
+<td><strong>78.3</strong></td>
+<td>20.4× better</td>
+<td>61</td>
+</tr>
+<tr class="odd">
+<td>One-hot columns</td>
+<td>97.9</td>
+<td>16.3× better</td>
+<td>211</td>
+</tr>
+<tr class="even">
+<td>Integer code</td>
+<td>1,117.2</td>
+<td>1.4× better</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<td>Predict the mean</td>
+<td>1,593.4</td>
+<td>the baseline</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><em>200 shops from ten latent clusters, twenty epochs, mini-batches of 128. The embedding model is 20% better than one-hot while using a third of the input width.</em></p>
+<p>The number that should stop you is the integer code. When the effect has no relationship to the code, a bare integer is worth 1.4 times the mean — essentially nothing. Two hundred consumers of that column and the model has learned only that shops differ, with no idea which ones differ in the same direction.</p>
+<p>But the code deserves its defence, because it won the previous experiment honestly. If the thing you are encoding really is ordered — a rating scale, a size band, a risk grade, a house number on one street — then the integer is not a lie, it is the feature, and no embedding will beat it for less. The failure mode is not that integer codes are always wrong. It is that they are wrong silently, and they keep working just well enough on the ordinal features that you stop checking the rest.</p>
+</section>
+<section id="cliff" class="level2">
+<h2 class="anchored" data-anchor-id="cliff">The cliff at five thousand</h2>
+<p>Everything so far says embeddings are respectable. The reason they are not merely respectable is what happens to one-hot encoding when the column gets wide. Same experiment, same ten-cluster data, same sixteen thousand rows, four cardinalities, all three encodings each time.</p>
+<div id="fig-cliff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cliff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig3-cardinality-cliff.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cliff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: One-hot does not decay, it collapses. Validation error, log scale, identical network and data across all three encodings. The dashed line is what you score by predicting the average.
+</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Shops</th>
+<th>Rows per shop</th>
+<th>One-hot</th>
+<th>Embedding</th>
+<th>Integer code</th>
+<th>Mean predictor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Shops</td>
+<td>Rows per shop</td>
+<td>One-hot</td>
+<td>Embedding</td>
+<td>Integer code</td>
+<td>Mean predictor</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>320</td>
+<td>69.3</td>
+<td><strong>67.9</strong></td>
+<td>1,206</td>
+<td>1,685</td>
+</tr>
+<tr class="odd">
+<td>200</td>
+<td>80</td>
+<td>92.5</td>
+<td><strong>73.5</strong></td>
+<td>1,067</td>
+<td>1,530</td>
+</tr>
+<tr class="even">
+<td>500</td>
+<td>32</td>
+<td>447.9</td>
+<td><strong>80.7</strong></td>
+<td>1,143</td>
+<td>1,613</td>
+</tr>
+<tr class="odd">
+<td>5,000</td>
+<td>3.2</td>
+<td>90,103</td>
+<td><strong>169.7</strong></td>
+<td>1,158</td>
+<td>1,594</td>
+</tr>
+</tbody>
+</table>
+<p><em>Twenty epochs each, 16,000 training rows, ten latent clusters of shop behaviour throughout. Lower is better.</em></p>
+<p>At fifty shops, one-hot and embeddings are the same model for practical purposes: 69.3 against 67.9, a difference of two percent, on data that took thirteen seconds either way. At two hundred the embeddings pull ahead. At five hundred, one-hot is six times worse than it was fifty shops earlier. At five thousand it has stopped being a model: 90,103 against 1,594 for predicting the average, and it cost 52 seconds a run against the embedding’s 21, with 1,033,223 parameters against 283,323.</p>
+<p>The mechanism is not mysterious. One-hot gives every shop its own private weight, so it needs rows per shop to spend. My data has 320 rows per shop at the low end and 3.2 at the high end. An embedding also gives every shop its own row in a table, but it constrains those rows to a shared space of a few dozen numbers per row, and the thousand shops that behave alike are allowed to use the same region of it.</p>
+<p>That constraint is the whole trick, and it is why the embedding’s input width in that table never moves: 61 features whether there are 50 shops or 5,000. One-hot went from 61 to 5,011. When you see a practitioner say embeddings <em>scale</em>, this is what they mean, and it is a statement about rows per category and the width of your input, not about accuracy in general.</p>
+</section>
+<section id="bites" class="level2">
+<h2 class="anchored" data-anchor-id="bites">What bites you in practice</h2>
+<p>Three failures I hit while building this, with the exact errors, because each one is a five-minute fix and an afternoon of confusion if you meet it at speed.</p>
+<p><strong>Your category codes are not a contiguous block starting at zero.</strong> Real shop IDs are 1001, 1002, 1008. Feed one of those to a table with four rows and PyTorch says <code>IndexError: index out of range in self</code>. The fix is to map codes to 0 to n−1 when you build the table and keep that mapping beside the model, because at prediction time you will need it again.</p>
+<p><strong>A category appears at validation that never appeared in training.</strong> A new shop opens in week six. The same error arrives, one call later in the pipeline. Reserve an index for unknown and let the network learn what that row means, or accept that you cannot serve that shop yet. There is no third option: the table has no row to look up.</p>
+<p><strong>Your last batch has a single row.</strong> Batch norm needs more than one value per channel while training, and a batch of one produces <code>ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1, 5])</code>. Set <code>drop_last=True</code> on the loader, or drop the batch-norm layer from the continuous block, or pad the batch.</p>
+<p>And the assumption worth killing: embeddings do <em>not</em> solve cold start. Hold twenty shops out of training entirely and the best of the three encodings scores 1,443 against 1,804 for the mean predictor, with the embedding at 1,472 — between the two, and closer to the useless end. The embedding’s nearest known shop landed in the correct latent cluster once in twenty attempts, which is worse than the one-in-ten you would get by guessing. A shop with no history has no position on the map, and no encoding can invent one for it.</p>
+<p><em>Source: all figures in this section are from my own runs, <code>run_final.py</code> and <code>run_experiments.py</code>, on the datasets described above.</em></p>
+</section>
+<section id="field" class="level2">
+<h2 class="anchored" data-anchor-id="field">Where the field went next</h2>
+<p>Ten years on, the trick is still in the toolbox, but the toolbox moved. Three developments are worth knowing, and none of them is a replacement for the idea in this post.</p>
+<p>The first is that transformers came for tables too. <strong>FT-Transformer</strong>, from Yandex’s Gorishniy and colleagues at NeurIPS 2021, treats each feature as a token and lets attention mix them, with categorical columns still entering through embeddings. It is a strong baseline, and the paper’s own conclusion is refreshingly unexcited: after comparing architectures carefully, “we conclude that there is still no universally superior solution.” Trees are not beaten by default.</p>
+<p><em>Source: Gorishniy, Rubachev, Khrulkov, Babenko, </em>Revisiting Deep Learning Models for Tabular Data<em>, arXiv:2106.11959, NeurIPS 2021 camera-ready, <a href="https://arxiv.org/abs/2106.11959" target="_blank">arxiv.org/abs/2106.11959</a>.</em></p>
+<p>The second is <strong>TabNet</strong>, from Google Cloud in 2019, which uses attention to choose which columns to look at in each decision step, and pretrains on the table itself before it ever sees a label. That is the same instinct as an embedding, one level up: learn a representation from the data you have, then spend the labels you have sparingly.</p>
+<p><em>Source: Arik and Pfister, </em>TabNet: Attentive Interpretable Tabular Learning<em>, arXiv:1908.07442, first posted 20 August 2019, <a href="https://arxiv.org/abs/1908.07442" target="_blank">arxiv.org/abs/1908.07442</a>.</em></p>
+<p>The third is the most useful, because it explains why embeddings never quite took over. Grinsztajn, Oyallon and Varoquaux tested tree models against deep networks on 45 datasets of medium size, roughly ten thousand rows, and the trees won even before you count their speed advantage. Their study spent 20,000 compute hours on hyperparameter search per learner. Their conclusion names three challenges any tabular network must overcome to compete: be robust to uninformative features, preserve the orientation of the data, and learn irregular functions easily.</p>
+<p><em>Source: Grinsztajn, Oyallon, Varoquaux, </em>Why do tree-based models still outperform deep learning on typical tabular data?<em>, arXiv:2207.08815, <a href="https://arxiv.org/abs/2207.08815" target="_blank">arxiv.org/abs/2207.08815</a>.</em></p>
+<p>That list is a precise description of what a rough-edged table does to a network. One-hot columns with a single 1 in them are mostly zeros and mostly uninformative. Batch norm and standardisation are attempts at orientation, and they are why my training loop had a batch-norm layer bolted to the front. And jagged effects are exactly the case where an embedding’s smoothness hurts you and a tree’s staircase helps.</p>
+<p>Meanwhile the embedding tooling kept improving. Yandex’s tabular research line moved on from the package that FT-Transformer shipped in — the original <code>rtdl</code> is deprecated and the models now live in <code>rtdl_revisiting_models</code> — and produced TabR, which retrieves neighbours from the training set at prediction time, TabDDPM for generating synthetic tables, and <strong>TabM</strong>, an ensemble-in-one-model that won its way into Kaggle solutions and handles tables far larger than the ones in this post.</p>
+<p><em>Source: the RTDL repository and its successors, <a href="https://github.com/yandex-research/rtdl" target="_blank">github.com/yandex-research/rtdl</a> and <a href="https://github.com/yandex-research/tabm" target="_blank">github.com/yandex-research/tabm</a>; TabM was published at ICLR 2025.</em></p>
+<p><em>Source: PyTorch Frame, <a href="https://github.com/pyg-team/pytorch-frame" target="_blank">github.com/pyg-team/pytorch-frame</a>; the framework is described in Hu et al., arXiv:2404.00776, and handles categorical, numerical, text and timestamp columns in one model.</em></p>
+<p>Where embeddings keep an edge that trees cannot match is <em>reuse</em>. A trained embedding table is a portable set of features: you can feed the shop vectors to a second model, cluster shops with them, or look up the nearest neighbour of a shop you have never seen. This is the part of the Rossmann story that outlived the competition — the idea that a category can have a learned <em>location</em>, and that the location is worth keeping.</p>
+<p>In Nigeria we would call that a trader’s <em>esusu</em> record. The savings collector keeps a book, page per contributor, and after a year that page is worth more than the money: a second collector will accept it, because it says something about the person that transfers. An embedding is the same kind of document. You train it once on the shops you have, and then it travels to the next model, the next quarter, the next problem.</p>
+<p><em>Source: for the reuse argument in its original form, Rachel Thomas, </em>An Introduction to Deep Learning for Tabular Data<em>, fast.ai, 29 April 2018 — Pinterest’s 128-dimension Pin2Vec vectors and Instacart’s product and store embeddings are both discussed there: <a href="https://rachel.fast.ai/posts/2018-04-29-categorical-embeddings/" target="_blank">rachel.fast.ai</a>.</em></p>
+</section>
+<section id="foundation" class="level2">
+<h2 class="anchored" data-anchor-id="foundation">The foundation models, and the licence line</h2>
+<p>The last five years produced something genuinely different: models that never see your table during training, because they were pretrained on thousands of synthetic tables and then read yours in context. <strong>TabPFN</strong> was the first of them, in 2022, and its pitch was that a classification problem under a thousand rows and a hundred numeric features can be solved in under a second with no hyperparameter tuning at all.</p>
+<p><em>Source: Hollmann, Müller, Eggensperger, Hutter, </em>TabPFN: A Transformer That Solves Small Tabular Classification Problems in a Second<em>, arXiv:2207.01848, published at ICLR 2023, <a href="https://arxiv.org/abs/2207.01848" target="_blank">arxiv.org/abs/2207.01848</a>.</em></p>
+<p>The second version made the field take notice, and it is worth stating its numbers plainly because they are the reason the phrase <em>tabular foundation model</em> exists. It handles up to 10,000 samples and 500 features, and the authors report that in 2.8 seconds it outperforms an ensemble of the strongest baselines tuned for four hours — a speed advantage they measure at 5,140 times for classification and 3,000 times for regression. Most real tables are in its range: the paper notes that 76% of datasets on OpenML have fewer than 10,000 rows.</p>
+<p><em>Source: Hollmann et al., </em>Accurate predictions on small data with a tabular foundation model<em>, Nature 637, 319–326, 8 January 2025, doi:10.1038/s41586-024-08328-6, <a href="https://doi.org/10.1038/s41586-024-08328-6" target="_blank">doi.org/10.1038/s41586-024-08328-6</a>. The quoted speed-ups and limits are from that paper’s abstract.</em></p>
+<p>By 2026 there is a small zoo, and AutoGluon’s documentation keeps the table that matters: which model, when it appeared, how much data it accepts, and what its licence says. TabPFN-1 arrived in July 2022 under Apache-2.0, TabDPT in October 2024, TabPFNv2 in January 2025, TabICL in February 2025, Mitra in July 2025, then a run of updates through 2026 — RealTabPFN-2.5, TabICLv2, TabPFN-2.6, TabPFN-3 in May, TabDPT-Turbo and Nori in June.</p>
+<p><em>Source: AutoGluon documentation, </em>Tabular Foundation Models* tutorial, version 1.6.1, <a href="https://auto.gluon.ai/stable/tutorials/tabular/tabular-foundational-models.html" target="_blank">auto.gluon.ai</a>; the release dates and data limits quoted above are from that page’s overview table.*</p>
+<p>Read the licence column before you read the accuracy column. The TabPFN models from 2.5 onward are free for research and internal experimentation, but the documentation states that any commercial use — production, client work, or even benchmarking that informs a business decision — requires a licence or an API agreement from Prior Labs. TabPFNv2, TabICL, TabDPT, Mitra and Nori are the ones listed as free for commercial use. AutoGluon ships presets so you do not have to hold all of that in your head: one that restricts itself to models you are allowed to ship, and one for non-commercial work.</p>
+<p><em>Source: AutoGluon, </em>Tabular Foundation Models* tutorial, 1.6.1 — the licensing paragraph and the accompanying presets.*</p>
+<p>For a consultant, that paragraph is the most important one in this post. A model that is four times more accurate and not licensed for your client’s production system is worth exactly nothing to your client, and it is a genuinely easy mistake to make in a week where every benchmark table looks the same.</p>
+<p>So the column’s map stopped being drawn by hand. In 2016 a physicist guessed ten dimensions for 1,115 shops and tuned them by watching a score. In 2026 a model that has already read thousands of other tables reads yours and produces a prediction before your coffee lands. The idea underneath is unchanged — give each category a place, let the data decide where — and the thing that changed is who does the drawing, and who owns the drawing when it is time to ship.</p>
+</section>
+<section id="limits" class="level2">
+<h2 class="anchored" data-anchor-id="limits">What I would tell you on Monday</h2>
+<p>If you are facing a table with a wide categorical column this week, the order of operations is short. Fit a boosted-tree baseline first, because on medium tables it is still the thing to beat, and CatBoost handles categorical columns natively without you writing anything. Reach for embeddings when the column is genuinely wide, when you need the vectors as features for something else, when the model is part of a larger deep-learning system, or when the table has columns of different kinds — text, timestamps — that one model has to absorb.</p>
+<p>Before you blame the architecture for a poor score, count your rows per category. Three rows per category is not a modelling problem, it is a data problem, and no embedding dimension fixes it. Then check the three failure modes above, because the errors are unhelpful and the fixes are small. And if you are tempted by a tabular foundation model, read its licence before you read its accuracy, because the strongest ones in 2026 are not all free to ship.</p>
+<p>Then the limits of what I have shown you, stated plainly, since this is my data and not yours. Four cardinalities, one architecture, one seed for the sweep, sixteen thousand training rows, and a target I designed. The shape of the result — one-hot fine at small cardinality, unreliable past a few hundred categories, embeddings degrading gracefully — is the part I would defend. The exact numbers are a controlled illustration and nothing more, and the one thing I would not carry over from this post is a claim about <em>your</em> table.</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources and further reading</h2>
+<section id="the-origin" class="level3">
+<h3 class="anchored" data-anchor-id="the-origin">The origin</h3>
+<ul>
+<li>Cheng Guo and Felix Berkhahn, <em>Entity Embeddings of Categorical Variables</em>, arXiv:1604.06737, 22 April 2016 — <a href="https://arxiv.org/abs/1604.06737" target="_blank">arxiv.org/abs/1604.06737</a>. The paper’s Table I is where the Rossmann embedding dimensions come from, and the t-SNE discussion of German states is in the results section.</li>
+<li>Cheng Guo, third-place interview, Rossmann Store Sales, Kaggle blog, 22 January 2016 — read through the Internet Archive: <a href="http://web.archive.org/web/20191020194732/http://blog.kaggle.com/2016/01/22/rossmann-store-sales-winners-interview-3rd-place-cheng-gui/" target="_blank">web.archive.org</a>. The original Kaggle blog address now redirects to Medium and the article is gone.</li>
+<li>The first-place solution to the Kaggle Taxi Trajectory competition, cited by Rachel Thomas as the clearest early example of neural networks winning a tabular Kaggle contest: <a href="https://arxiv.org/abs/1508.00021" target="_blank">arXiv:1508.00021</a>.</li>
+</ul>
+</section>
+<section id="the-teaching-canon" class="level3">
+<h3 class="anchored" data-anchor-id="the-teaching-canon">The teaching canon</h3>
+<ul>
+<li>Rachel Thomas, <em>An Introduction to Deep Learning for Tabular Data</em>, fast.ai, 29 April 2018 — <a href="https://rachel.fast.ai/posts/2018-04-29-categorical-embeddings/" target="_blank">rachel.fast.ai</a>. The post this whole generation of practitioners learned from, including the Pinterest and Instacart reuse examples.</li>
+<li>fast.ai documentation, <code>TabularModel</code> and <code>emb_sz_rule</code> — <a href="https://docs.fast.ai/tabular.model.html" target="_blank">docs.fast.ai/tabular.model.html</a>, with the implementation in <a href="https://github.com/fastai/fastai/blob/master/fastai/tabular/model.py" target="_blank">fastai/tabular/model.py</a>.</li>
+<li>PyTorch Tabular documentation and repository — <a href="https://pytorch-tabular.readthedocs.io/en/latest/models/" target="_blank">pytorch-tabular.readthedocs.io</a> and <a href="https://github.com/pytorch-tabular/pytorch_tabular" target="_blank">github.com/pytorch-tabular/pytorch_tabular</a>. The <code>min(50, (x + 1) // 2)</code> rule and the list of available model configurations are both documented there.</li>
+</ul>
+</section>
+<section id="the-scoreboard" class="level3">
+<h3 class="anchored" data-anchor-id="the-scoreboard">The scoreboard</h3>
+<ul>
+<li>Grinsztajn, Oyallon and Varoquaux, <em>Why do tree-based models still outperform deep learning on typical tabular data?</em> — <a href="https://arxiv.org/abs/2207.08815" target="_blank">arXiv:2207.08815</a>. Forty-five datasets, and the three challenges for tabular networks.</li>
+<li>Gorishniy, Rubachev, Khrulkov and Babenko, <em>Revisiting Deep Learning Models for Tabular Data</em> (FT-Transformer), NeurIPS 2021 — <a href="https://arxiv.org/abs/2106.11959" target="_blank">arXiv:2106.11959</a>.</li>
+<li>Arik and Pfister, <em>TabNet: Attentive Interpretable Tabular Learning</em> — <a href="https://arxiv.org/abs/1908.07442" target="_blank">arXiv:1908.07442</a>.</li>
+<li>PyTorch Frame (PyTorch Geometric), including the benchmark note about parity with boosted trees at 5 to 100 times the training cost — <a href="https://github.com/pyg-team/pytorch-frame" target="_blank">github.com/pyg-team/pytorch-frame</a>, described in <a href="https://arxiv.org/abs/2404.00776" target="_blank">arXiv:2404.00776</a>.</li>
+<li>The RTDL line of work, where the original package is now deprecated in favour of <code>rtdl_revisiting_models</code>, plus TabR, TabDDPM and TabM — <a href="https://github.com/yandex-research/rtdl" target="_blank">github.com/yandex-research/rtdl</a> and <a href="https://github.com/yandex-research/tabm" target="_blank">github.com/yandex-research/tabm</a>.</li>
+</ul>
+</section>
+<section id="foundation-models" class="level3">
+<h3 class="anchored" data-anchor-id="foundation-models">Foundation models</h3>
+<ul>
+<li>Hollmann, Müller, Eggensperger and Hutter, <em>TabPFN: A Transformer That Solves Small Tabular Classification Problems in a Second</em>, ICLR 2023 — <a href="https://arxiv.org/abs/2207.01848" target="_blank">arXiv:2207.01848</a>.</li>
+<li>Hollmann and colleagues, <em>Accurate predictions on small data with a tabular foundation model</em>, <em>Nature</em> 637, 319–326, 8 January 2025 — <a href="https://doi.org/10.1038/s41586-024-08328-6" target="_blank">doi:10.1038/s41586-024-08328-6</a>.</li>
+<li>AutoGluon 1.6.1 documentation: the <a href="https://auto.gluon.ai/stable/tutorials/tabular/index.html" target="_blank">tabular tutorials</a>, and the <a href="https://auto.gluon.ai/stable/tutorials/tabular/tabular-foundational-models.html" target="_blank">tabular foundation models</a> page that supplied the model table, the data limits and the licensing paragraph.</li>
+</ul>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<!-- SisengAI Chatbot widget — freemium demo -->
+<script>
+  window.__SISENG_API__ = "https://bot.sisengai.com";
+</script>
+<script src="https://bot.sisengai.com/widget/sisengai-demo.js" async=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "theAfricanQuant/theAfricanQuant.github.io";
+    script.dataset.repoId = "R_kgDOK8Zc8Q";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOK8Zc8c4Cfc4R";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-21-Tabular-Embeddings/tabular_embeddings.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-21-Tabular-Embeddings/tabular_embeddings.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
