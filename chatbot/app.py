@@ -204,6 +204,12 @@ def init_db():
         text TEXT NOT NULL,
         PRIMARY KEY (bot_id, chunk_id)
     );
+    CREATE TABLE IF NOT EXISTS bot_meta (
+        bot_id TEXT NOT NULL,
+        key TEXT NOT NULL,
+        value TEXT NOT NULL,
+        PRIMARY KEY (bot_id, key)
+    );
     CREATE TABLE IF NOT EXISTS leads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         bot_id TEXT NOT NULL,
@@ -248,6 +254,7 @@ def scrape(url: str) -> list[dict]:
 
 def ingest(bot_id: str, urls: list[str]) -> int:
     c = db()
+    before = c.execute("SELECT COUNT(*) AS n FROM chunks WHERE bot_id=?", (bot_id,)).fetchone()["n"]
     c.execute("DELETE FROM chunks WHERE bot_id=?", (bot_id,))
     n = 0
     for url in urls:
@@ -258,9 +265,205 @@ def ingest(bot_id: str, urls: list[str]) -> int:
                 n += 1
         except Exception as e:
             print(f"[ingest skip] {url}: {e}")
+    if n == 0 and before:
+        # A failed crawl must never empty a working index.
+        c.rollback()
+        c.close()
+        print("[ingest] nothing scraped — keeping the existing index")
+        return before
     c.commit()
     c.close()
     return n
+
+
+# ---- discovery & refresh ----------------------------------------------
+
+REFRESH_MIN_SECONDS = int(os.environ.get("CHATBOT_REFRESH_MIN_SECONDS", "60"))
+REFRESH_PER_IP_PER_HOUR = int(os.environ.get("CHATBOT_REFRESH_PER_IP_PER_HOUR", "90"))
+_SKIP_EXT = (".xml", ".pdf", ".zip", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp",
+             ".css", ".js", ".ico", ".mp4", ".mp3", ".woff", ".woff2")
+
+
+def _norm_url(u: str) -> str:
+    """Strip the fragment and surrounding whitespace from a URL."""
+    return (u or "").split("#")[0].strip()
+
+
+def _page_title(url: str) -> str:
+    """A readable label for a URL, derived from its slug.
+
+    The blog's directory slug keeps the author's own capitalisation
+    (2026-September-18-PyTorch-vs-TensorFlow -> "PyTorch vs TensorFlow").
+    """
+    parts = [p for p in urllib.parse.urlparse(url).path.split("/") if p]
+    seg = parts[-2] if len(parts) >= 2 else (parts[-1] if parts else "")
+    seg = re.sub(r"^\d{4}-[A-Za-z]+-\d{1,2}-", "", seg)
+    seg = re.sub(r"\.html?$", "", seg).replace("-", " ").replace("_", " ").strip()
+    return seg or "home"
+
+
+def _sitemap_entries(seed: str) -> list[tuple[str, str]]:
+    """[(url, lastmod)] from the site's sitemap — used for the site-index chunk."""
+    parsed = urllib.parse.urlparse(seed)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    out = []
+    try:
+        r = requests.get(origin + "/sitemap.xml", headers=UA, timeout=20)
+        if r.status_code == 200:
+            for block in re.findall(r"<url>(.*?)</url>", r.text, flags=re.S):
+                loc = _norm_url((re.search(r"<loc>\s*([^<\s]+)\s*</loc>", block) or [None, ""])[1])
+                mod = (re.search(r"<lastmod>([^<]+)</lastmod>", block) or [None, ""])[1][:10]
+                if loc.startswith(origin) and not loc.lower().endswith(_SKIP_EXT):
+                    out.append((loc, mod))
+    except Exception as exc:
+        print(f"[sitemap entries skip] {origin}: {exc}")
+    return out
+
+
+def write_site_index(bot_id: str, entries: list[tuple[str, str]], fallback_urls: list[str]) -> int:
+    """One extra chunk that lists the site's pages with their last-updated dates.
+
+    Listing pages are made of links, and a link list survives scraping as nothing
+    at all — so without this chunk the bot cannot answer "what is the newest
+    post?" even though every post is indexed. Written newest-first.
+    """
+    if not entries:
+        entries = [(u, "") for u in fallback_urls]
+    entries = sorted(entries, key=lambda e: e[1] or "0000-00-00", reverse=True)[:40]
+    lines = []
+    for url, mod in entries:
+        stamp = f"{mod} — " if mod else ""
+        lines.append(f"{stamp}{_page_title(url)} — {url}")
+    if not lines:
+        return 0
+    text = ("Site index. Every page in this site's index, most recently updated first: "
+            + "; ".join(lines))
+    anchor = fallback_urls[0] if fallback_urls else ""
+    c = db()
+    c.execute("DELETE FROM chunks WHERE bot_id=? AND chunk_id='site-index'", (bot_id,))
+    c.execute("INSERT INTO chunks VALUES (?,?,?,?)",
+              (bot_id, "site-index", anchor, text[:20000]))
+    c.commit()
+    n = c.execute("SELECT COUNT(*) AS n FROM chunks WHERE bot_id=?", (bot_id,)).fetchone()["n"]
+    c.close()
+    return n
+
+
+def _sitemap_urls(seed: str) -> list[str]:
+    """Page list from the site's sitemap (Quarto emits one). Same host only."""
+    parsed = urllib.parse.urlparse(seed)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
+    found = []
+    for path in ("/sitemap.xml", "/blog/sitemap.xml", "/sitemap_index.xml"):
+        try:
+            r = requests.get(origin + path, headers=UA, timeout=20)
+            if r.status_code != 200:
+                continue
+            for loc in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", r.text):
+                loc = _norm_url(loc)
+                if loc.startswith(origin) and not loc.lower().endswith(_SKIP_EXT):
+                    found.append(loc)
+        except Exception as exc:
+            print(f"[sitemap skip] {origin + path}: {exc}")
+    return found
+
+
+def discover_urls(seed_urls: list[str], max_pages: int = 120) -> list[str]:
+    """Every page a bot should know about: the registered seeds plus whatever the
+    site's sitemap lists. Falls back to a one-level same-host link crawl when there
+    is no sitemap — so a brand-new blog post is indexed without touching the bot."""
+    seeds = [_norm_url(u) for u in seed_urls if u]
+    found = list(seeds)
+    for u in seeds:
+        found.extend(_sitemap_urls(u))
+    if len(found) <= len(seeds):
+        for base_url in seeds:
+            try:
+                soup = BeautifulSoup(requests.get(base_url, headers=UA, timeout=25).text, "lxml")
+                for a in soup.find_all("a", href=True):
+                    link = _norm_url(urllib.parse.urljoin(base_url, a["href"]))
+                    if urllib.parse.urlparse(link).netloc == urllib.parse.urlparse(base_url).netloc:
+                        found.append(link)
+            except Exception as exc:
+                print(f"[crawl skip] {base_url}: {exc}")
+    out, seen = [], set()
+    for u in found:
+        if u and u not in seen and not u.lower().endswith(_SKIP_EXT):
+            seen.add(u)
+            out.append(u)
+    return out[:max_pages]
+
+
+def meta_get(c, bot_id: str, key: str) -> str | None:
+    row = c.execute("SELECT value FROM bot_meta WHERE bot_id=? AND key=?", (bot_id, key)).fetchone()
+    return row["value"] if row else None
+
+
+def meta_set(c, bot_id: str, key: str, value: str) -> None:
+    c.execute(
+        "INSERT INTO bot_meta(bot_id,key,value) VALUES(?,?,?) "
+        "ON CONFLICT(bot_id,key) DO UPDATE SET value=excluded.value",
+        (bot_id, key, value),
+    )
+
+
+def refresh_bot(bot_id: str, force: bool = False) -> dict:
+    """Re-crawl a bot's site and rebuild its index if that is worth doing.
+
+    Called at the start of every widget session (and on Reset), so a visitor's
+    first answer is grounded in the site as it is now, not as it was the day the
+    bot was created. Throttled per bot so a crowd cannot turn the widget into a
+    crawler: a crawl is only redone when the last one is older than
+    CHATBOT_REFRESH_MIN_SECONDS (default 60).
+    """
+    c = db()
+    row = c.execute("SELECT urls FROM bots WHERE bot_id=?", (bot_id,)).fetchone()
+    if row is None:
+        c.close()
+        raise KeyError(bot_id)
+    seeds = json.loads(row["urls"] or "[]")
+    indexed = json.loads(meta_get(c, bot_id, "urls") or "[]")
+    last = float(meta_get(c, bot_id, "refreshed_at") or 0)
+    now = time.time()
+    has_index_chunk = c.execute(
+        "SELECT 1 FROM chunks WHERE bot_id=? AND chunk_id='site-index'", (bot_id,)).fetchone() is not None
+    if not force and indexed and has_index_chunk and (now - last) < REFRESH_MIN_SECONDS:
+        n = c.execute("SELECT COUNT(*) AS n FROM chunks WHERE bot_id=?", (bot_id,)).fetchone()["n"]
+        c.close()
+        return {"ok": True, "bot_id": bot_id, "refreshed": False, "reason": "fresh",
+                "chunks": n, "urls": len(indexed), "new_urls": [],
+                "checked_seconds_ago": round(now - last, 1)}
+    targets = discover_urls(seeds)
+    new_urls = [u for u in targets if u not in indexed]
+    c.close()
+    ingest(bot_id, targets)
+    n = write_site_index(bot_id, _sitemap_entries(targets[0] if targets else ""), targets)
+    c = db()
+    meta_set(c, bot_id, "urls", json.dumps(targets))
+    meta_set(c, bot_id, "refreshed_at", str(now))
+    meta_set(c, bot_id, "seeded_urls", json.dumps(seeds))
+    c.commit()
+    c.close()
+    print(f"[refresh] {bot_id}: {len(targets)} pages, {n} chunks, {len(new_urls)} new")
+    return {"ok": True, "bot_id": bot_id, "refreshed": True, "reason": "rebuilt",
+            "chunks": n, "urls": len(targets), "new_urls": new_urls,
+            "checked_seconds_ago": 0.0}
+
+
+_REFRESH_HITS: dict[str, list[float]] = defaultdict(list)
+
+
+def _refresh_allowed(ip: str) -> bool:
+    """Per-IP ceiling on refresh calls, so the widget cannot be used as a
+    crawler amplifier against a client's site."""
+    now = time.time()
+    hits = [t for t in _REFRESH_HITS[ip] if now - t < 3600]
+    if len(hits) >= REFRESH_PER_IP_PER_HOUR:
+        _REFRESH_HITS[ip] = hits
+        return False
+    hits.append(now)
+    _REFRESH_HITS[ip] = hits
+    return True
 
 
 # ---- retrieval ---------------------------------------------------------
@@ -628,6 +831,11 @@ class IngestReq(BaseModel):
     aliases: dict = {}
 
 
+class RefreshReq(BaseModel):
+    bot_id: str
+    force: bool = False
+
+
 class ChatReq(BaseModel):
     bot_id: str
     message: str
@@ -680,6 +888,17 @@ def create_app() -> FastAPI:
         c.commit()
         c.close()
         return {"ok": True, "bot_id": req.bot_id, "chunks": n}
+
+    @app.post("/refresh")
+    def refresh_api(req: RefreshReq, request: Request):
+        """Re-index the bot's site before it answers. Called by the widgets at the
+        start of a session and on Reset; throttled per bot and per IP."""
+        if not _refresh_allowed(_client_ip(request)):
+            raise HTTPException(429, "Too many refresh requests. Try again later.")
+        try:
+            return refresh_bot(req.bot_id, force=bool(req.force))
+        except KeyError:
+            raise HTTPException(404, "unknown bot_id")
 
     @app.post("/chat")
     def chat_api(req: ChatReq):
@@ -855,10 +1074,27 @@ WIDGET_JS = r"""
   var msgs = box.querySelector(".s-msgs");
   var input = box.querySelector(".s-in");
   var sendBtn = box.querySelector(".s-send");
+  // Ground every answer in the site as it is NOW: on a new session (and on
+  // Reset) the widget asks the backend to re-index the site. The crawl runs in
+  // the background and the first question waits for it — capped at 20s so a slow
+  // crawl can never freeze the widget.
+  var priming = null;
+  function prime() {
+    if (priming) return priming;
+    var p = fetch(API + "/refresh", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bot_id: BOT_ID })
+    }).then(function (r) { return r.json(); }).catch(function () { return null; });
+    priming = Promise.race([p, new Promise(function (res) { setTimeout(res, 20000); })]);
+    return priming;
+  }
+
   var resetBtn = box.querySelector(".s-reset");
   resetBtn.addEventListener("click", function () {
     msgs.innerHTML = "";
     try { localStorage.removeItem(KEY); } catch (e) {}
+    priming = null;
+    prime();
     input.focus();
   });
 
@@ -887,7 +1123,10 @@ WIDGET_JS = r"""
     t.className = "s-typing";
     t.textContent = "…";
     msgs.appendChild(t);
-    fetch(API + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ bot_id: BOT_ID, message: q }) })
+    setTimeout(function () { if (t.parentNode && t.textContent === "…") t.textContent = "Checking the site for new content…"; }, 700);
+    prime().then(function () {
+      return fetch(API + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ bot_id: BOT_ID, message: q }) });
+    })
       .then(function (r) { return r.json(); })
       .then(function (j) { if (t.parentNode) t.remove(); add("a", j.answer || "Sorry, try again.", j.answer_html); })
       .catch(function () { if (t.parentNode) t.remove(); add("a", "Error reaching assistant."); });
@@ -905,10 +1144,12 @@ WIDGET_JS = r"""
   // Restore the previous chat (survives page navigations) and re-open it if
   // the visitor left it open — e.g. after clicking a link the bot shared.
   var state = loadChat();
-  if (state && state.items) {
+  if (state && state.items && state.items.length) {
     for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
     if (state.open) { box.style.display = "flex"; msgs.scrollTop = msgs.scrollHeight; }
     saveChat();
+  } else {
+    prime();   // new session: index the site before the visitor asks anything
   }
 })();
 """
@@ -930,7 +1171,7 @@ UNIVERSAL_WIDGET_JS = r"""
         items.push(el.className.indexOf("s-msg u") !== -1 ? { w: "u", h: el.innerHTML } : { w: "a", h: el.innerHTML });
       }
       if (items.length > 60) items = items.slice(items.length - 60);
-      localStorage.setItem(KEY, JSON.stringify({ items: items, open: box.style.display === "flex", session: session }));
+      localStorage.setItem(KEY, JSON.stringify({ items: items, open: box.style.display === "flex", session: session, url: lastUrl, ts: ts }));
     } catch (e) {}
   }
 
@@ -996,15 +1237,21 @@ UNIVERSAL_WIDGET_JS = r"""
 
   var session = null;
   var busy = false;
+  var lastUrl = null;   // the page this chat is grounded in
+  var ts = 0;           // when that page was last read
 
   var resetBtn = box.querySelector(".s-reset");
   resetBtn.addEventListener("click", function () {
-    session = null;
+    // Reset = a new session: clear the chat and re-read the page, so the next
+    // answer comes from the site as it stands, not from a stale brief.
+    var prev = lastUrl;
+    session = null; lastUrl = null; ts = 0;
     msgs.innerHTML = "";
     input.placeholder = "Paste a website URL…";
     input.setAttribute("aria-label", "Website URL");
     try { localStorage.removeItem(KEY); } catch (e) {}
     input.focus();
+    if (prev) { busy = true; add("u", prev); analyse(prev, null); }
   });
 
   function esc(s) {
@@ -1067,67 +1314,84 @@ UNIVERSAL_WIDGET_JS = r"""
     }
   }
 
+  // Re-read a page and open a fresh research session for it.
+  function analyse(target, onDone) {
+    var t = note("Reading that website… this can take up to a minute.");
+    fetch(API + "/research/analyse", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: target })
+    }).then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (t.parentNode) t.remove();
+        busy = false;
+        if (j.session_id) {
+          session = j.session_id; lastUrl = target; ts = Date.now();
+          var title = j.title || "this website";
+          add("a", "", '<p class="s-conn">✅ Connected to <strong>' + esc(title) + "</strong>. Ask me anything about the site!</p>");
+          confetti();
+          input.placeholder = "Ask about " + title + "…";
+          input.setAttribute("aria-label", "Your question");
+          input.focus();
+          saveChat();
+          if (onDone) onDone();
+        } else {
+          add("a", errMsg(j));
+          input.placeholder = "Paste a website URL…";
+        }
+      })
+      .catch(function () {
+        if (t.parentNode) t.remove();
+        busy = false;
+        add("a", "Could not reach the research service. Please try again.");
+      });
+  }
+
+  function chat(q) {
+    var t = note("…");
+    fetch(API + "/research/chat", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: session, message: q })
+    }).then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (t.parentNode) t.remove();
+        busy = false;
+        if (j.answer) {
+          add("a", "", j.answer_html || md(j.answer));
+        } else if (j.detail && /expired/i.test(JSON.stringify(j.detail))) {
+          session = null;
+          if (lastUrl) {                       // session died: re-read and retry
+            add("a", "That session expired — re-reading the site…");
+            busy = true;
+            analyse(lastUrl, function () { busy = true; chat(q); });
+          } else {
+            add("a", "That session expired — paste the website URL again to start a new chat.");
+            input.placeholder = "Paste a website URL…";
+          }
+        } else {
+          add("a", errMsg(j));
+        }
+        saveChat();
+      })
+      .catch(function () {
+        if (t.parentNode) t.remove();
+        busy = false;
+        add("a", "Could not reach the research service. Please try again.");
+      });
+  }
+
   function send() {
     var q = input.value.trim();
     if (!q || busy) return;
     busy = true;
     add("u", q);
     input.value = "";
-    var t;
-    if (!session) {
-      t = note("Reading that website… this can take up to a minute.");
-      fetch(API + "/research/analyse", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: q })
-      }).then(function (r) { return r.json(); })
-        .then(function (j) {
-          if (t.parentNode) t.remove();
-          busy = false;
-          if (j.session_id) {
-            session = j.session_id;
-            var title = j.title || "this website";
-            add("a", "", '<p class="s-conn">✅ Connected to <strong>' + esc(title) + "</strong>. Ask me anything about the site!</p>");
-            confetti();
-            input.placeholder = "Ask about " + title + "…";
-            input.setAttribute("aria-label", "Your question");
-            input.focus();
-          } else {
-            add("a", errMsg(j));
-            input.placeholder = "Paste a website URL…";
-          }
-        })
-        .catch(function () {
-          if (t.parentNode) t.remove();
-          busy = false;
-          add("a", "Could not reach the research service. Please try again.");
-        });
-    } else {
-      t = note("…");
-      fetch(API + "/research/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: session, message: q })
-      }).then(function (r) { return r.json(); })
-        .then(function (j) {
-          if (t.parentNode) t.remove();
-          busy = false;
-          if (j.answer) {
-            add("a", "", j.answer_html || md(j.answer));
-          } else if (j.detail && /expired/i.test(JSON.stringify(j.detail))) {
-            session = null;
-            add("a", "That session expired — paste the website URL again to start a new chat.");
-            input.placeholder = "Paste a website URL…";
-          } else {
-            add("a", errMsg(j));
-          }
-        })
-        .catch(function () {
-          if (t.parentNode) t.remove();
-          busy = false;
-          add("a", "Could not reach the research service. Please try again.");
-        });
+    var looksLikeUrl = /^https?:\/\//i.test(q) || /^[\w-]+(\.[\w-]+)+([\/?#]|$)/.test(q);
+    if (session) { chat(q); return; }
+    if (!looksLikeUrl && lastUrl) {          // a question about the page already read
+      analyse(lastUrl, function () { busy = true; chat(q); });
+      return;
     }
+    analyse(q, null);
   }
 
   sendBtn.addEventListener("click", send);
@@ -1141,8 +1405,13 @@ UNIVERSAL_WIDGET_JS = r"""
   var state = loadChat();
   if (state && state.items) {
     for (var i = 0; i < state.items.length; i++) add(state.items[i].w, "", state.items[i].h);
+    lastUrl = state.url || null;
+    ts = state.ts || 0;
     session = state.session || null;
-    if (session) { input.placeholder = "Ask about this site…"; }
+    // A session left sitting for half an hour is re-read on the next question,
+    // so answers keep reflecting the live page.
+    if (session && ts && (Date.now() - ts) > 30 * 60 * 1000) { session = null; }
+    if (session || lastUrl) { input.placeholder = "Ask about this site…"; }
     if (state.open) { box.style.display = "flex"; msgs.scrollTop = msgs.scrollHeight; }
     saveChat();
   }
