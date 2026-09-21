@@ -1043,7 +1043,7 @@ WIDGET_JS = r"""
     ".s-msg.a pre code{background:none;border:none;padding:0;font-size:12.5px;display:block}" +
     ".s-msg.a a{color:" + BRAND + ";text-decoration:underline}" +
     ".s-msg.a h1,.s-msg.a h2,.s-msg.a h3,.s-msg.a h4{margin:8px 0 4px;font-weight:700;font-size:1.05em}" +
-    ".s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
+    ".s-msg.a .s-src{font-size:11px;opacity:.75;margin:8px 0 0}.s-msg.a .s-src a{color:inherit;text-decoration:underline}.s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
     ".s-msg.a hr{border:none;border-top:1px solid " + LINE + ";margin:8px 0}" +
     ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
     ".s-bar{display:flex;flex:0 0 auto;border-top:1px solid " + LINE + ";background:#fff}" +
@@ -1202,7 +1202,7 @@ UNIVERSAL_WIDGET_JS = r"""
     ".s-msg.a pre{background:" + MSG_BG + ";border:1px solid " + LINE + ";border-radius:8px;padding:10px 12px;margin:8px 0;overflow-x:auto;white-space:pre}" +
     ".s-msg.a pre code{background:none;border:none;padding:0;font-size:12.5px;display:block}" +
     ".s-msg.a h1,.s-msg.a h2,.s-msg.a h3,.s-msg.a h4{margin:8px 0 4px;font-weight:700;font-size:1.05em}" +
-    ".s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
+    ".s-msg.a .s-src{font-size:11px;opacity:.75;margin:8px 0 0}.s-msg.a .s-src a{color:inherit;text-decoration:underline}.s-msg.a blockquote{border-left:3px solid " + LINE + ";margin:6px 0;padding:2px 0 2px 10px;color:" + MUTED + "}" +
     ".s-msg.a hr{border:none;border-top:1px solid " + LINE + ";margin:8px 0}" +
     ".s-msg.a a{color:" + BRAND + ";text-decoration:underline}" +
     ".s-typing{color:" + MUTED + ";font-size:12px;margin:6px 0}" +
@@ -1316,7 +1316,7 @@ UNIVERSAL_WIDGET_JS = r"""
 
   // Re-read a page and open a fresh research session for it.
   function analyse(target, onDone) {
-    var t = note("Reading that website… this can take up to a minute.");
+    var t = note("Reading that website — every page I can reach. This can take up to a minute.");
     fetch(API + "/research/analyse", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: target })
@@ -1327,7 +1327,9 @@ UNIVERSAL_WIDGET_JS = r"""
         if (j.session_id) {
           session = j.session_id; lastUrl = target; ts = Date.now();
           var title = j.title || "this website";
-          add("a", "", '<p class="s-conn">✅ Connected to <strong>' + esc(title) + "</strong>. Ask me anything about the site!</p>");
+          var pages = j.pages || 1;
+          add("a", "", '<p class="s-conn">✅ Connected to <strong>' + esc(title) + "</strong> — " + pages
+            + " page" + (pages === 1 ? "" : "s") + " indexed. Ask me anything about the site!</p>");
           confetti();
           input.placeholder = "Ask about " + title + "…";
           input.setAttribute("aria-label", "Your question");
@@ -1356,7 +1358,14 @@ UNIVERSAL_WIDGET_JS = r"""
         if (t.parentNode) t.remove();
         busy = false;
         if (j.answer) {
-          add("a", "", j.answer_html || md(j.answer));
+          var body = j.answer_html || md(j.answer);
+          if (j.sources && j.sources.length) {
+            body += '<p class="s-src">Read from: ' + j.sources.map(function (u) {
+              var slash = u.indexOf("//");
+              var short = slash > 0 ? u.slice(slash + 2) : u;              return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(short) + "</a>";
+            }).join(" · ") + "</p>";
+          }
+          add("a", "", body);
         } else if (j.detail && /expired/i.test(JSON.stringify(j.detail))) {
           session = null;
           if (lastUrl) {                       // session died: re-read and retry
