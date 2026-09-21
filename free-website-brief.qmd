@@ -115,17 +115,17 @@ toc: false
     sessionId = null;
     messages.innerHTML = "";
     history.replaceState(null, "", window.location.pathname + window.location.search);
-    if (url) { runAnalyse(url); } else { chat.hidden = true; setStatus(""); urlInput.focus(); }
+    if (url) { runAnalyse(url, true); } else { chat.hidden = true; setStatus(""); urlInput.focus(); }
   };
   document.querySelector("#brief-reset").addEventListener("click", resetChat);
 
-  const runAnalyse = async (url) => {
+  const runAnalyse = async (url, force) => {
     const button = form.querySelector("button");
     button.disabled = true;
     form.setAttribute("aria-busy", "true");
     setStatus("Reading your site — every public page I can reach. This can take up to a minute.");
     try {
-      const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})});
+      const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(force ? {url: url, force: true} : {url: url})});
       if (!response.ok) throw new Error(await readError(response));
       showChat(await response.json());
       setStatus("Connected.", "success");

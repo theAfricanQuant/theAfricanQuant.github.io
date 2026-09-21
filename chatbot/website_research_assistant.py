@@ -439,6 +439,7 @@ Avoid hype, private-data suggestions, guarantees, and claims about unseen pages.
 
 class AnalyseRequest(BaseModel):
     url: str = Field(max_length=2048)
+    force: bool = False  # skip the site cache and re-read every page (Reset / explicit re-index)
 
 class ChatRequest(BaseModel):
     session_id: str = Field(min_length=16, max_length=80)
@@ -467,7 +468,7 @@ def create_app():
         origin = origin_of(normalise_url(payload.url))
         conn = db()
         cached = conn.execute("SELECT pages_json, fetched_at FROM site_cache WHERE origin=?", (origin,)).fetchone()
-        if cached and now - cached["fetched_at"] < SITE_CACHE_SECONDS:
+        if cached and not payload.force and now - cached["fetched_at"] < SITE_CACHE_SECONDS:
             pages = json.loads(cached["pages_json"])
             print(f"[analyse] {origin}: reusing a {len(pages)}-page index ({now - cached['fetched_at']}s old)")
         else:
