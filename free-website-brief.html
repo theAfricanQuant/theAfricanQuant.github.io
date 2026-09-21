@@ -338,10 +338,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="see-your-website-through-a-fresh-pair-of-eyes." class="level1">
 <h1>See your website through a fresh pair of eyes.</h1>
 <p class="hero-subtitle">
-Drop in a public website address. The chatbot reads that page, then answers your questions from the site’s own content — no sign-up, nothing to install.
+Drop in a public website address. The chatbot reads your site’s public pages, then answers your questions from the site’s own content — no sign-up, nothing to install.
 </p>
 <div class="brief-boundary">
-<span>Reads one public page</span><span>•</span><span>No login areas</span><span>•</span><span>Session clears after 24 hours</span>
+<span>Reads the whole site</span><span>•</span><span>No login areas</span><span>•</span><span>Session clears after 24 hours</span>
 </div>
 </section>
 </div>
@@ -365,7 +365,7 @@ Try a homepage or service page you own or are permitted to review.
 Ask about this website
 </h2>
 <p>
-Answers are grounded in the page you provided.
+Answers are grounded in the pages it read on your site.
 </p>
 </div>
 <button type="button" id="brief-reset" class="btn btn-outline-primary brief-reset" title="Clear this conversation and start over">
@@ -455,29 +455,27 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
   const showChat = (data) => {
     sessionId = data.session_id;
     chat.hidden = false;
-    addMessage("assistant", "**✅ Connected to " + (data.title || data.source_url || "this website") + ".** Ask me anything about the site!");
+    addMessage("assistant", "**✅ Connected to " + (data.title || data.source_url || "this website") + " — "
+      + (data.pages || 1) + " page" + ((data.pages || 1) === 1 ? "" : "s") + " indexed.** Ask me anything about the site!");
     confetti();
     document.querySelector("#brief-question").focus();
   };
   const resetChat = () => {
+    // Reset = a new session. If a site was connected, re-index it now so the next
+    // answer comes from the site as it stands, not from a stale reading.
+    const url = urlInput.value.trim();
     sessionId = null;
     messages.innerHTML = "";
-    chat.hidden = true;
-    urlInput.value = "";
-    setStatus("");
     history.replaceState(null, "", window.location.pathname + window.location.search);
-    urlInput.focus();
+    if (url) { runAnalyse(url); } else { chat.hidden = true; setStatus(""); urlInput.focus(); }
   };
   document.querySelector("#brief-reset").addEventListener("click", resetChat);
 
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const url = urlInput.value.trim();
-    if (!url) return;
+  const runAnalyse = async (url) => {
     const button = form.querySelector("button");
     button.disabled = true;
     form.setAttribute("aria-busy", "true");
-    setStatus("Reading that website… this can take up to a minute.");
+    setStatus("Reading your site — every public page I can reach. This can take up to a minute.");
     try {
       const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({url: url})});
       if (!response.ok) throw new Error(await readError(response));
@@ -493,13 +491,27 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
       button.disabled = false;
       form.removeAttribute("aria-busy");
     }
+  };
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const url = urlInput.value.trim();
+    if (!url) return;
+    await runAnalyse(url);
   });
 
   document.querySelector("#website-brief-chat-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const input = document.querySelector("#brief-question");
     const message = input.value.trim();
-    if (!message || !sessionId) return;
+    if (!message) return;
+    if (!sessionId) {
+      // Session gone (expired or reset): index the site again before answering.
+      const url = urlInput.value.trim();
+      if (!url) { setStatus("Connect to a website first.", "error"); return; }
+      await runAnalyse(url);
+      if (!sessionId) return;
+    }
     const button = event.currentTarget.querySelector("button");
     addMessage("visitor", message);
     input.value = "";
@@ -509,7 +521,18 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
       const response = await fetch(API + "/chat", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({session_id: sessionId, message: message})});
       if (!response.ok) throw new Error(await readError(response));
       messages.querySelector(".pending")?.remove();
-      addMessage("assistant", (await response.json()).answer);
+      const data = await response.json();
+      addMessage("assistant", data.answer);
+      if (data.sources && data.sources.length) {
+        const from = document.createElement("div");
+        from.style.cssText = "font-size:11px;opacity:.75;margin-top:6px";
+        from.innerHTML = "Read from: " + data.sources.map((u) => {
+          const short = u.indexOf("//") > 0 ? u.slice(u.indexOf("//") + 2) : u;
+          return '<a href="' + u + '" target="_blank" rel="noopener">' + short + "</a>";
+        }).join(" · ");
+        messages.append(from);
+        messages.scrollTop = messages.scrollHeight;
+      }
     } catch (error) {
       messages.querySelector(".pending")?.remove();
       addMessage("assistant error", error.message || "Try that question again shortly.");
