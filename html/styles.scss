@@ -609,3 +609,39 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
 
 /* Direct-contact request feedback */
 .contact-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}.contact-form-action .btn:disabled{opacity:.72;cursor:wait}.contact-form-action p.success{color:$sage-700;font-weight:600}.contact-form-action p.error{color:$danger;font-weight:600}
+
+/* --- Mobile menu panel ----------------------------------------------------
+   The navbar is pinned at a fixed 4rem with a translucent, blurred surface,
+   so on phones the expanded menu rendered straight onto the page and its
+   links were hard to read over the hero. Below the lg breakpoint the bar is
+   allowed to grow and the menu gets a solid panel of its own. */
+@media (max-width: 991.98px) {
+  #quarto-header .navbar {
+    height: auto;
+  }
+
+  #quarto-header .navbar-collapse {
+    background: $white;
+    margin: 0.5rem -0.25rem 0.35rem;
+    padding: 0.35rem 0.75rem 0.75rem;
+    border: 1px solid $cream-200;
+    border-radius: 0.85rem;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.16);
+  }
+
+  #quarto-header .navbar-nav .nav-item {
+    border-bottom: 1px solid $cream-200;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  #quarto-header .navbar .nav-link {
+    padding: 0.8rem 0.5rem !important;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  #quarto-header .navbar .nav-link:hover {
+    background: $cream-100;
+  }
+}
