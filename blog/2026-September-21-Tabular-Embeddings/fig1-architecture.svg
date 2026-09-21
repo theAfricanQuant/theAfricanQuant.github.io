@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 560" role="img" aria-label="The whole architecture: categorical columns are looked up in their own small tables, continuous columns are normalised, then an MLP ends in one number">
+  <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#D4720A"></path></marker></defs>
+
+  <rect x="4" y="4" width="422" height="134" rx="12" fill="#ffffff" stroke="#E8DCC4"></rect>
+  <text x="24" y="40" font-family="Inter,sans-serif" font-size="21" font-weight="600" fill="#321208">Categorical columns</text>
+  <text x="24" y="74" font-family="Inter,sans-serif" font-size="17" fill="#57534E">shop_id, day_of_week</text>
+  <text x="24" y="100" font-family="Inter,sans-serif" font-size="17" fill="#57534E">each gets its own small table</text>
+  <text x="24" y="126" font-family="Inter,sans-serif" font-size="17" font-weight="600" fill="#D4720A">the numbers in it are learned</text>
+
+  <line x1="215" y1="142" x2="215" y2="170" stroke="#D4720A" stroke-width="2" marker-end="url(#a1)"></line>
+
+  <rect x="4" y="176" width="422" height="134" rx="12" fill="#ffffff" stroke="#E8DCC4"></rect>
+  <text x="24" y="212" font-family="Inter,sans-serif" font-size="21" font-weight="600" fill="#321208">Continuous columns</text>
+  <text x="24" y="246" font-family="Inter,sans-serif" font-size="17" fill="#57534E">temperature, promo_spend</text>
+  <text x="24" y="272" font-family="Inter,sans-serif" font-size="17" fill="#57534E">scaled to mean 0, sd 1</text>
+  <text x="24" y="298" font-family="Inter,sans-serif" font-size="17" font-weight="600" fill="#2D5C3C">nothing is learned here</text>
+
+  <line x1="215" y1="314" x2="215" y2="342" stroke="#D4720A" stroke-width="2" marker-end="url(#a1)"></line>
+
+  <rect x="4" y="348" width="422" height="92" rx="12" fill="#F5EFE1" stroke="#E8DCC4"></rect>
+  <text x="24" y="384" font-family="Inter,sans-serif" font-size="20" font-weight="600" fill="#321208">Everything is concatenated</text>
+  <text x="24" y="414" font-family="Inter,sans-serif" font-size="17" fill="#57534E">one row of numbers per customer</text>
+
+  <line x1="215" y1="444" x2="215" y2="472" stroke="#D4720A" stroke-width="2" marker-end="url(#a1)"></line>
+
+  <rect x="4" y="478" width="422" height="78" rx="12" fill="#ffffff" stroke="#E8DCC4"></rect>
+  <text x="24" y="512" font-family="Inter,sans-serif" font-size="20" font-weight="600" fill="#321208">An ordinary MLP: 200, 100</text>
+  <text x="24" y="540" font-family="Inter,sans-serif" font-size="17" fill="#57534E">and one number out</text>
+</svg>
