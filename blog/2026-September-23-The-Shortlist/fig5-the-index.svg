@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 452" role="img" aria-label="Bar chart of the TIOBE index for September 2026: Python 17.76 per cent down to Zig 0.43 per cent, with Rust, Go, TypeScript and Zig highlighted.">
+<rect x="0" y="0" width="430" height="452" rx="12" fill="#ffffff" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="32" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#321208">The index that counts searches</text>
+<text x="24" y="52" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">TIOBE, September 2026 — share of search results</text>
+<rect x="300" y="24" width="10" height="10" rx="2" fill="#D4720A"/>
+<text x="316" y="33" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#78716C">our five</text>
+<text x="24" y="89" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">Python</text>
+<rect x="118" y="78" width="239.8" height="15" rx="4" fill="#E8DCC4"/>
+<text x="365" y="90" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">17.76%</text>
+<text x="24" y="119" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">C</text>
+<rect x="118" y="108" width="138.8" height="15" rx="4" fill="#E8DCC4"/>
+<text x="264" y="120" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">10.28%</text>
+<text x="24" y="149" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">C++</text>
+<rect x="118" y="138" width="117.0" height="15" rx="4" fill="#E8DCC4"/>
+<text x="242" y="150" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">8.67%</text>
+<text x="24" y="179" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">Java</text>
+<rect x="118" y="168" width="101.8" height="15" rx="4" fill="#E8DCC4"/>
+<text x="227" y="180" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">7.54%</text>
+<text x="24" y="209" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">C#</text>
+<rect x="118" y="198" width="57.0" height="15" rx="4" fill="#E8DCC4"/>
+<text x="182" y="210" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">4.22%</text>
+<text x="24" y="239" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="500" fill="#78716C">JavaScript</text>
+<rect x="118" y="228" width="37.3" height="15" rx="4" fill="#E8DCC4"/>
+<text x="162" y="240" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#78716C">2.76%</text>
+<text x="24" y="269" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#321208">Rust</text>
+<rect x="118" y="258" width="18.1" height="15" rx="4" fill="#D4720A"/>
+<text x="143" y="270" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#321208">1.34%</text>
+<text x="24" y="299" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#321208">Go</text>
+<rect x="118" y="288" width="14.9" height="15" rx="4" fill="#D4720A"/>
+<text x="140" y="300" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#321208">1.10%</text>
+<text x="24" y="329" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#321208">TypeScript</text>
+<rect x="118" y="318" width="5.8" height="15" rx="4" fill="#D4720A"/>
+<text x="131" y="330" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#321208">0.43%</text>
+<text x="24" y="359" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#321208">Zig</text>
+<rect x="118" y="348" width="5.8" height="15" rx="4" fill="#D4720A"/>
+<text x="131" y="360" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#321208">0.43%</text>
+<text x="24" y="390" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#57534E">Python leads and fell 8.22 points in a year. Rust is</text>
+<text x="24" y="408" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#57534E">tenth at 1.34%. TypeScript and Zig sit around fortieth,</text>
+<text x="24" y="426" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#57534E">because a search index reads it as JavaScript.</text>
+</svg>

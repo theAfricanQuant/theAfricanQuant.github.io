@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 372" role="img" aria-label="Bar chart of build times: TypeScript 6 is about eight to twelve times slower than TypeScript 7 on five open-source codebases.">
+<rect x="0" y="0" width="430" height="372" rx="12" fill="#ffffff" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="32" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#321208">The same projects, one year apart</text>
+<rect x="24" y="48" width="10" height="10" rx="2" fill="#E8DCC4"/>
+<text x="40" y="57" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">TypeScript 6</text>
+<rect x="120" y="48" width="10" height="10" rx="2" fill="#D4720A"/>
+<text x="136" y="57" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">TypeScript 7</text>
+<text x="236" y="57" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">full build, seconds</text>
+<text x="24" y="78" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">vscode</text>
+<text x="386" y="78" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">11.9x</text>
+<rect x="24" y="86" width="295.4" height="14" rx="4" fill="#E8DCC4"/>
+<text x="325" y="97" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">125.7s</text>
+<rect x="24" y="104" width="24.9" height="14" rx="4" fill="#D4720A"/>
+<text x="55" y="115" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#321208">10.6s</text>
+<text x="24" y="128" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">sentry</text>
+<text x="386" y="128" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">8.9x</text>
+<rect x="24" y="136" width="328.5" height="14" rx="4" fill="#E8DCC4"/>
+<text x="359" y="147" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">139.8s</text>
+<rect x="24" y="154" width="36.9" height="14" rx="4" fill="#D4720A"/>
+<text x="67" y="165" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#321208">15.7s</text>
+<text x="24" y="178" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">bluesky</text>
+<text x="386" y="178" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">8.7x</text>
+<rect x="24" y="186" width="57.1" height="14" rx="4" fill="#E8DCC4"/>
+<text x="87" y="197" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">24.3s</text>
+<rect x="24" y="204" width="6.6" height="14" rx="4" fill="#D4720A"/>
+<text x="37" y="215" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#321208">2.8s</text>
+<text x="24" y="228" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">playwright</text>
+<text x="386" y="228" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">8.7x</text>
+<rect x="24" y="236" width="30.1" height="14" rx="4" fill="#E8DCC4"/>
+<text x="60" y="247" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">12.8s</text>
+<rect x="24" y="254" width="3.5" height="14" rx="4" fill="#D4720A"/>
+<text x="33" y="265" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#321208">1.47s</text>
+<text x="24" y="278" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">tldraw</text>
+<text x="386" y="278" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">7.7x</text>
+<rect x="24" y="286" width="26.3" height="14" rx="4" fill="#E8DCC4"/>
+<text x="56" y="297" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">11.2s</text>
+<rect x="24" y="304" width="3.4" height="14" rx="4" fill="#D4720A"/>
+<text x="33" y="315" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#321208">1.46s</text>
+<text x="24" y="334" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#57534E">A native compiler, written in Go, replacing</text>
+<text x="24" y="352" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#57534E">one written in JavaScript.</text>
+</svg>
