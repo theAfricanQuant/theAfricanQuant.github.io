@@ -2,6 +2,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2026-September-23-The-Shortlist/the_shortlist.html",
       "/blog/2026-September-21-Tabular-Embeddings/tabular_embeddings.html",
       "/blog/2026-September-18-PyTorch-vs-TensorFlow/pytorch_vs_tensorflow.html",
       "/blog/2026-September-17-Torch-To-PyTorch/torch_to_pytorch.html",

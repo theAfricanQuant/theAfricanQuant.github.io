@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 456" role="img" aria-label="Timeline from July 2019 to 2026 showing Microsoft, the NSA, CISA, the White House, and three language releases.">
+<rect x="0" y="0" width="430" height="456" rx="12" fill="#ffffff" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="34" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#321208">Seven years, one direction</text>
+<line x1="40" y1="62" x2="40" y2="368" stroke="#E8DCC4" stroke-width="2"/>
+<circle cx="40" cy="73" r="6" fill="#D4720A"/>
+<text x="60" y="78" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">Jul 2019</text>
+<text x="60" y="98" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">Microsoft measures its own bugs</text>
+<text x="60" y="117" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">70% are memory-safety issues.</text>
+<circle cx="40" cy="127" r="6" fill="#D4720A"/>
+<text x="60" y="132" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">Sep 2022</text>
+<text x="60" y="152" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">Azure CTO: stop starting new C/C++</text>
+<text x="60" y="171" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">Mark Russinovich, publicly.</text>
+<circle cx="40" cy="181" r="6" fill="#D4720A"/>
+<text x="60" y="186" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">Nov 2022</text>
+<text x="60" y="206" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">NSA: shift when possible</text>
+<text x="60" y="225" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">C/C++ and assembly named as weak.</text>
+<circle cx="40" cy="235" r="6" fill="#D4720A"/>
+<text x="60" y="240" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">Dec 2023</text>
+<text x="60" y="260" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">CISA: publish a memory-safety roadmap</text>
+<text x="60" y="279" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">With international partners.</text>
+<circle cx="40" cy="289" r="6" fill="#D4720A"/>
+<text x="60" y="294" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#D4720A">Feb 2024</text>
+<text x="60" y="314" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">White House: secure by design</text>
+<text x="60" y="333" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">Memory-safe languages at the outset.</text>
+<circle cx="40" cy="343" r="6" fill="#2D5C3C"/>
+<text x="60" y="348" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#2D5C3C">2026</text>
+<text x="60" y="368" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#321208">Three engines replaced</text>
+<text x="60" y="387" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#78716C">Go, TypeScript, and Mojo ships 1.0.</text>
+<text x="24" y="418" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#78716C">CISA — US Cybersecurity and Infrastructure Security Agency.</text>
+<text x="24" y="434" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#78716C">NSA — National Security Agency. CTO — chief technology officer.</text>
+</svg>

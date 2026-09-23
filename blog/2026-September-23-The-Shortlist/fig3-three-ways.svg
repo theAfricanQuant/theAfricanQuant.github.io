@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 344" role="img" aria-label="Three approaches to memory: manual freeing, a garbage collector, or ownership settled at compile time.">
+<rect x="0" y="0" width="430" height="344" rx="12" fill="#ffffff" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="32" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#321208">Three ways to take out the rubbish</text>
+<rect x="20" y="56" width="390" height="80" rx="10" fill="#FFF8EC" stroke="#E8DCC4"/>
+<rect x="20" y="56" width="5" height="80" rx="2.5" fill="#57534E"/>
+<text x="36" y="80" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#321208">You take it out</text>
+<text x="410" y="80" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#57534E">C and Zig</text>
+<text x="36" y="104" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#57534E">You free every allocation by hand.</text>
+<text x="36" y="122" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">Forget, and it leaks. Free early, and it crashes.</text>
+<rect x="20" y="144" width="390" height="80" rx="10" fill="#FFF8EC" stroke="#E8DCC4"/>
+<rect x="20" y="144" width="5" height="80" rx="2.5" fill="#D4720A"/>
+<text x="36" y="168" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#321208">A crew takes it out</text>
+<text x="410" y="168" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#D4720A">Go, Java, JavaScript, Python</text>
+<text x="36" y="192" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#57534E">A crew marks what is still reachable, then clears the rest.</text>
+<text x="36" y="210" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">Costs about 25% of CPU while marking, with brief pauses.</text>
+<rect x="20" y="232" width="390" height="80" rx="10" fill="#FFF8EC" stroke="#E8DCC4"/>
+<rect x="20" y="232" width="5" height="80" rx="2.5" fill="#2D5C3C"/>
+<text x="36" y="256" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#321208">Nobody has to</text>
+<text x="410" y="256" text-anchor="end" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#2D5C3C">Rust</text>
+<text x="36" y="280" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#57534E">The compiler decides when each allocation ends.</text>
+<text x="36" y="298" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#78716C">Nothing runs at runtime, and the bug will not compile.</text>
+<text x="24" y="328" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#57534E">Memory is a warehouse. The language decides who empties it.</text>
+</svg>

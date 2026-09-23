@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2026-09-23">
+<meta name="description" content="Mojo, Rust, Go, Zig and TypeScript in one place: what each one is for, where it is gaining ground, and how to decide whether to watch it, learn it, or both.">
+
+<title>The Shortlist: five languages to watch, learn, or both – SisengAI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6f71449e07096edb43a4dcb7fb4b5b7e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e5bd078df75af2f50510d0da46a908ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2ca9c797292e179fc376f1c49a251817.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-e5bd078df75af2f50510d0da46a908ad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../freebies.html"> 
+<span class="menu-text">Freebies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Book a call</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">The Shortlist: five languages to watch, learn, or both</h1>
+                  <div>
+        <div class="description">
+          Mojo, Rust, Go, Zig and TypeScript in one place: what each one is for, where it is gaining ground, and how to decide whether to watch it, learn it, or both.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Rust</div>
+                <div class="quarto-category">Go</div>
+                <div class="quarto-category">TypeScript</div>
+                <div class="quarto-category">Zig</div>
+                <div class="quarto-category">Mojo</div>
+                <div class="quarto-category">Programming Languages</div>
+                <div class="quarto-category">AI</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 23, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+<style>
+
+/* Mobile readability for this post (phone widths only) */
+
+@media (max-width: 768px) {
+
+  /* Figures: full width, caption directly underneath instead of in the margin */
+
+  figure.quarto-float,
+
+  figure.quarto-float > div,
+
+  figure.quarto-float img.img-fluid {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+
+  }
+
+  figure.quarto-float figcaption,
+
+  figcaption.quarto-float-caption,
+
+  .margin-caption {
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    margin: 0.6rem 0 0 0 !important;
+
+    padding: 0 !important;
+
+    text-align: left !important;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+  }
+
+  /* Long words, links and code must never push the page sideways */
+
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+
+  #quarto-document-content pre {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    font-size: 0.82rem;
+
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+
+  #quarto-document-content thead { display: none; }
+
+  #quarto-document-content tbody,
+
+  #quarto-document-content tr,
+
+  #quarto-document-content td { display: block; width: 100%; }
+
+  #quarto-document-content tr {
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2EBD8;
+
+    border-radius: 0.75rem;
+
+    padding: 0.9rem 1rem;
+
+    margin-bottom: 0.85rem;
+
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+
+  }
+
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+
+  #quarto-document-content td:first-child {
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    color: #321208;
+
+    margin-bottom: 0.25rem;
+
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+
+  .callout { margin: 1.1rem 0 !important; }
+
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+
+}
+
+.strip { display: flex; gap: 10px; align-items: stretch; margin: 1.5rem 0 0.4rem; }
+.strip-card { flex: 1 1 0; min-width: 0; background: #FFFFFF; border: 1.5px solid #E8DCC4; border-radius: 12px; padding: 13px 11px 12px; }
+.strip-card .lang { display: block; font-size: 15px; font-weight: 700; color: #321208; letter-spacing: .2px; }
+.strip-card .tag { display: block; font-size: 13px; line-height: 1.35; color: #57534E; margin: 7px 0 10px; }
+.strip-card .when { display: block; font-size: 11.5px; font-weight: 600; color: #D4720A; line-height: 1.3; }
+.strip-note { font-size: 13px; color: #78716C; margin: 0 0 1.4rem; text-align: center; }
+.tagline { font-family: "Playfair Display", Georgia, serif; font-size: 20px; line-height: 1.3; color: #D4720A; margin: -0.2rem 0 1.1rem; }
+@media (max-width: 640px) {
+  .strip { flex-wrap: wrap; gap: 8px; }
+  .strip-card { flex: 1 1 100%; }
+  .strip-card .tag { font-size: 14px; }
+  .strip-card .when { font-size: 12.5px; }
+  .tagline { font-size: 18px; margin-top: -0.1rem; }
+}
+
+</style>
+<div class="strip">
+<div class="strip-card">
+<span class="lang">Rust</span><span class="tag">The compiler never forgets.</span><span class="when">2026 · ships in Android,<br>Amazon, Meta</span>
+</div>
+<div class="strip-card">
+<span class="lang">Go</span><span class="tag">Boring on purpose.</span><span class="when">10 Feb 2026<br>Go 1.26</span>
+</div>
+<div class="strip-card">
+<span class="lang">TypeScript</span><span class="tag">Same types, twelve times faster.</span><span class="when">8 Jul 2026<br>TypeScript 7.0</span>
+</div>
+<div class="strip-card">
+<span class="lang">Zig</span><span class="tag">Every allocation in plain sight.</span><span class="when">14 Apr 2026<br>Zig 0.16.0</span>
+</div>
+<div class="strip-card">
+<span class="lang">Mojo</span><span class="tag">Reads like Python, runs like C.</span><span class="when">11 Aug 2026<br>Mojo 1.0</span>
+</div>
+</div>
+<p class="strip-note">
+Five different doors, one direction of travel: safety the compiler enforces, speed from the metal, behaviour you can read.
+</p>
+<p>Every programming language carries the fingerprints of the machine it was designed for. C arrived in 1972 to write an operating system on hardware that measured memory in kilobytes. Kernighan and Ritchie made a pragmatic trade: the language would trust the programmer, and the programmer would be responsible for keeping every array access inside its bounds.</p>
+<p>That trade worked for five decades of software. It also produced a category of bug that no amount of care fixes, because the mistake and its consequence can sit thousands of lines apart in time and space. Read past the end of an array and the program may do something harmless today, corrupt its own state next week, and hand an attacker control of the machine next year.</p>
+<p>In 2026, three of the most conservative engineering organisations in the industry stopped treating that as an acceptable price. Not by arguing about it, but by rebuilding their own engines.</p>
+<p>This shortlist covers the five, one at a time, with the primary source attached to every number. Each section ends with the same practical question: watch it, learn it, or both.</p>
+<section id="measured" class="level2">
+<h2 class="anchored" data-anchor-id="measured">The measurement that started the argument</h2>
+<p>The argument about memory safety is usually conducted as a matter of taste. It becomes much less interesting once somebody counts.</p>
+<p>In July 2019, Microsoft’s Security Response Center published the number that reframed the discussion. Of the CVE issues assigned to Microsoft over the period they examined — CVE stands for Common Vulnerabilities and Exposures, the public catalogue of known security flaws — roughly 70 per cent were memory-safety issues. Not logic errors, not design flaws, not configuration mistakes. Out-of-bounds reads, use-after-free, uninitialised memory: bugs whose existence depends on the language permitting them.</p>
+<p><em>Source: Microsoft Security Response Center, Why Rust for safe systems programming, 22 July 2019 — <a href="https://www.microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming" target="_blank">microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming</a>.</em></p>
+<div id="fig1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fig1-seventy-per-cent.svg" class="img-fluid figure-img"></p>
+<figcaption>Seven in ten. At that scale the problem stops being a coding discipline and becomes an accounting entry. Microsoft said so in the same post, and named Rust as the best currently available option for safe systems programming.</figcaption>
+</figure>
+</div>
+<p>Read that number again with the cost attached. Each of those issues is a security advisory, a patch, a distribution round, an update cycle, and a support tail that runs for years. A language that refuses to compile the bug is, from the finance side of the building, a cheaper language.</p>
+</section>
+<section id="cost" class="level2">
+<h2 class="anchored" data-anchor-id="cost">The entry in the accounts</h2>
+<p>There is a version of this argument that never mentions security at all. A memory-safety bug is a defect whose fix escapes the team that wrote it. The patch has to be shipped, the release cut, the customers notified, and the older versions supported long after the engineers have moved on to something else.</p>
+<p>Multiply that by the number of issues a large vendor assigns to itself in a year, and the choice of language stops being a matter of taste. It becomes a line in a budget.</p>
+<p>That is the unglamorous reason memory safety moved from engineering folklore into policy. It acquired an invoice.</p>
+</section>
+<section id="agencies" class="level2">
+<h2 class="anchored" data-anchor-id="agencies">Then the governments said the same thing</h2>
+<p>What makes the following sequence more than a vendor position is that independent agencies reached it separately, on their own timetables, with their own threat data.</p>
+<p>The National Security Agency published its software memory-safety guidance in November 2022, revised the following April. Its recommendation is precise and worth quoting in full, because the wording matters as much as the direction.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="On the record">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>On the record
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“NSA advises organizations to consider making a strategic shift from programming languages that provide little or no inherent memory protection, such as C/C++ and assembly, to a memory safe language when possible.” National Security Agency, <em>Software Memory Safety</em>, Cybersecurity Information Sheet, November 2022, revised April 2023 — <a href="https://media.defense.gov/2022/Nov/10/2003112742/-1/-1/0/CSI_SOFTWARE_MEMORY_SAFETY.PDF" target="_blank">media.defense.gov/2022/Nov/10/2003112742/-1/-1/0/CSI_SOFTWARE_MEMORY_SAFETY.PDF</a></p>
+</div>
+</div>
+<p>Two words in that sentence carry the entire policy: when possible. It is a recommendation, not a prohibition, and every document in this sequence uses the same register.</p>
+<p>The Cybersecurity and Infrastructure Security Agency (CISA), the US federal body for civilian cyber defence, and its international partners went further in December 2023, asking manufacturers not merely to prefer safe languages but to publish roadmaps showing how they would get there. The White House Office of the National Cyber Director made memory-safe languages part of its secure-by-design argument in February 2024.</p>
+<p>At no point did any of them ban C or C++. That distinction survives most retellings badly, and it is the difference between describing a direction of travel and inventing a deadline.</p>
+<div id="fig2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fig2-seven-years.svg" class="img-fluid figure-img"></p>
+<figcaption>Seven years, one direction. A vendor measures its own bugs, three agencies move the same way, and then the languages themselves change. No single step is decisive; the sequence is.</figcaption>
+</figure>
+</div>
+<p>Meanwhile the loudest version of this argument came from a practitioner rather than a policy document. In September 2022, Mark Russinovich, the chief technology officer of Microsoft Azure, posted a one-line call to stop starting new projects in C and C++ where a non-garbage-collected language would do, and to treat the old languages as deprecated.</p>
+<p>His post is a personal engineering opinion, reproduced in full by the technology press at the time. This matters because it is regularly quoted as a Microsoft corporate position, which it is not, and because it makes the comparison sharper: a company can employ people who say this and still not have adopted it everywhere.</p>
+<p><em>Source: Mark Russinovich, 19 September 2022, as reproduced by The Register — <a href="https://twitter.com/markrussinovich/status/1571995117233504257" target="_blank">twitter.com/markrussinovich/status/1571995117233504257</a>.</em></p>
+</section>
+<section id="collection" class="level2">
+<h2 class="anchored" data-anchor-id="collection">Why a language needs a collector</h2>
+<p>Memory is a warehouse, and every program fills it as it runs. A request body is parsed, a string is built, a session object is created for a user who has since gone home. All of it stays until something decides to clear it, and the language has to answer one question: who takes the rubbish out?</p>
+<p>In C, and in Zig, you do. You allocate, you free, and nothing happens that you did not write. The advantage is total control with nothing running behind you. The cost is that every error path, every early return and every callback has to remember to release exactly what it took.</p>
+<p>Two failures follow, and they are predictable enough to have names. Forget to free, and the warehouse fills with rubbish nobody can reach until the process dies: a memory leak. Free too early, while something still points at it, and the next reader picks up somebody else’s rubbish: a use-after-free, which is among the most exploited defects in software.</p>
+<p>A garbage collector is the other answer. The language does the work. The collector starts from the places a program can still reach — the stack, the registers, the globals — walks every reference it finds, and marks what is alive. Whatever it cannot reach from those roots cannot be reached by the program either, so it can be cleared. That is tracing, and it is what Go, Java, C#, JavaScript and Python all run.</p>
+<div id="fig3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fig3-three-ways.svg" class="img-fluid figure-img"></p>
+<figcaption>Three ways to empty the warehouse. Manual freeing, a collection crew, or ownership rules settled at compile time. Every language on the shortlist picks one, and the choice decides which bill arrives later.</figcaption>
+</figure>
+</div>
+<p>The trade becomes obvious the moment you picture a municipal service. A crew walks the streets, marks which houses are still occupied, and hauls away what is left. The crew costs money: Go’s own documentation is admirably direct that collection consumes two resources, physical memory and CPU time, and that the collector takes about 25 per cent of available CPU while it is marking.</p>
+<p>The crew also blocks the street. Go’s guide lists the four places where that shows up as latency: brief stop-the-world pauses as the collector moves between marking and sweeping, scheduling delays caused by its share of the CPU, your own goroutines being drafted to help when allocation runs hot, and extra work on pointer writes while marking is under way.</p>
+<p><em>Source: A Guide to the Go Garbage Collector, the four sources of garbage-collection latency — <a href="https://go.dev/doc/gc-guide" target="_blank">go.dev/doc/gc-guide</a>.</em></p>
+<p>Green Tea, which became Go’s default collector in February 2026, was a change to the route rather than the crew. Instead of visiting objects one at a time, the collector scans them in bulk, using wide vector instructions on modern processors. Picture the same truck arriving with bigger bins and a route that covers a street per stop, rather than a house.</p>
+<p>The result is measured rather than asserted: 10 to 40 per cent less collection overhead in programs that lean on it, with roughly 10 per cent more available on newer AMD64 processors — the ordinary 64-bit PC chip — using vector scanning. Nobody asked for a new syntax, and nobody had to learn one. The default simply became cheaper.</p>
+<p>Rust takes the third road, and it is why it sits at the top of this shortlist. There is no crew at all. Ownership rules decide at compile time exactly when each allocation ends, and the borrow checker refuses to compile code that would touch memory after it has been released. Nothing to schedule. Nothing to pause.</p>
+<p>The cost moves to the developer, who negotiates with the compiler about who owns what before the program ever runs. What comes back is a whole category of bug turned into a compile error, and a runtime with no background service competing for the processor — which is exactly what a kernel driver, a game loop or a low-latency service wants.</p>
+</section>
+<section id="rust" class="level2">
+<h2 class="anchored" data-anchor-id="rust">Rust: the answer where the problem started</h2>
+<p class="tagline">
+The compiler never forgets.
+</p>
+<p>Rust is the clearest case because it was designed to remove the trade rather than balance it. Borrow checking happens before the program runs, so the class of mistake Microsoft counted in 2019 becomes a compile error, not an advisory.</p>
+<p>The mechanism is the borrow checker, which tracks who owns each value in a program and refuses to compile code that reaches for memory after it has been released, or that lets two parts of a program write to the same place at once. The cost is a learning curve that new Rust developers describe in remarkably similar terms. The benefit is that a whole category of defect never reaches production.</p>
+<p><em>Source: Microsoft Security Response Center on the unsafe escape hatch — <a href="https://www.microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming" target="_blank">microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming</a>.</em></p>
+<p>Microsoft stated the exception as carefully as the rule: Rust is completely memory safe unless code explicitly opts out through the unsafe keyword. That escape hatch is the reason Rust can be used for kernels and drivers at all, and the reason a careful team still reviews whatever sits inside it.</p>
+<p>The same 2019 post is worth reading for its restraint. It argued the case for Rust while noting that adoption at Microsoft had not yet been demonstrated at company scale. Six years later the Android numbers and the AWS (Amazon Web Services) component list are the answer to that caveat, and stating it plainly at the time is what made the position credible.</p>
+<p>The adoption evidence is now large enough to stop being anecdotal. Google reported in November 2025 that first-party Android code was adding Rust at volumes comparable to C++, and cited memory-safety vulnerability density roughly a thousand times lower in the Rust components.</p>
+<p>The list continues across the largest infrastructure operators. Amazon Web Services (AWS) ships Rust components in Firecracker, S3 for storage, EC2 for virtual machines, CloudFront, Bottlerocket and its Nitro work. Meta replaced a media library written in 160,000 lines of C++ with 90,000 lines of Rust, and ships it monthly to billions of devices. Cloudflare built its core-network system in Rust, and the Linux kernel maintains official documentation for Rust support.</p>
+<p><em>Source: Rust in Android, Google Security Blog, 13 November 2025 — <a href="https://blog.google/security/rust-in-android-move-fast-fix-things/" target="_blank">blog.google/security/rust-in-android-move-fast-fix-things</a>.</em></p>
+<p><em>Source: Sustainability with Rust, AWS Open Source Blog — <a href="https://aws.amazon.com/blogs/opensource/sustainability-with-rust/" target="_blank">aws.amazon.com/blogs/opensource/sustainability-with-rust</a>.</em></p>
+<p>The Linux kernel deserves its own sentence. Rust support is documented officially by a project whose maintainers spent three decades declining to add a second language to the tree, which makes the documentation a threshold rather than a curiosity.</p>
+<p><em>Source: Linux kernel Rust documentation — <a href="https://docs.kernel.org/rust/index.html" target="_blank">docs.kernel.org/rust/index.html</a>.</em></p>
+<p><em>Source: Rust at scale, Meta Engineering, 27 January 2026 — <a href="https://engineering.fb.com/2026/01/27/security/rust-at-scale-security-whatsapp/" target="_blank">engineering.fb.com/2026/01/27/security/rust-at-scale-security-whatsapp</a>.</em></p>
+<p><em>Source: 20% of the Internet, Cloudflare Blog — <a href="https://blog.cloudflare.com/20-percent-internet-upgrade/" target="_blank">blog.cloudflare.com/20-percent-internet-upgrade</a>.</em></p>
+<p>One piece of vocabulary is worth fixing here, because it circulates constantly and inverts the meaning. In the Rust project, tier 1 describes platform targets that are guaranteed to build and pass the test suite, with official binaries and continuous integration. It is a support guarantee for a processor and operating system combination. No company, language, or framework can be tier 1, and calling one that way is confusion rather than emphasis.</p>
+<p><em>Source: Rust compiler team, Target Tier Policy — <a href="https://doc.rust-lang.org/rustc/target-tier-policy.html" target="_blank">doc.rust-lang.org/rustc/target-tier-policy.html</a>.</em></p>
+<p>Where Rust is gaining ground fastest in 2026 is not in new projects. It is in migrations away from languages that already shipped, and the clearest case is the most surprising one.</p>
+<p>Bun is a JavaScript runtime: the program that executes your JavaScript and TypeScript, in the position Node.js occupied for a decade. It was written in Zig, 535,496 lines of it, and in 2026 it became a Rust codebase. The port was done in eleven days by one engineer working with an AI agent, with the existing test suite as the referee.</p>
+<p>The motivation was precisely the class of bug described in the last section. Bun’s author was direct about it: a large share of the outstanding bugs were use-after-free, double-free and forgotten frees on error paths, and mixing a garbage-collected JavaScript engine with manually managed memory is a combination almost no language is designed for.</p>
+<p><em>Source: Bun, Rewriting Bun in Rust — <a href="https://bun.com/blog/bun-in-rust" target="_blank">bun.com/blog/bun-in-rust</a>.</em></p>
+<p>He was equally clear that Zig was not at fault, and that it made Bun possible in the first place: the language gave him the low-level control to build a runtime in a year. The difficulty was the combination, not the language, and his conclusion was that compiler errors are a better feedback loop than a style guide.</p>
+<p>The switch shipped quietly, which is the point. Bun 1.3.14 was the last Zig version. Bun 1.4.0 is the first Rust one. Claude Code has run on the Rust port since version 2.1.181 in June, with startup about 10 per cent faster on Linux, and in the author’s words, barely anyone noticed.</p>
+<p>For this shortlist the Bun story earns its place twice. It is the strongest production evidence Rust has, and it arrived as a port rather than a rewrite: same architecture, same behaviour, same performance, with one whole category of bug made impossible by the compiler. It is also evidence of something new about 2026, that one engineer plus an agent moved half a million lines of systems code in under a fortnight.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Watch it, learn it, or both">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch it, learn it, or both
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both, and learn it first. It is the only one of the five that removes the memory-safety category by construction, the production evidence is now broad, and the learning curve is the entry fee rather than a warning sign.</p>
+</div>
+</div>
+</section>
+<section id="go" class="level2">
+<h2 class="anchored" data-anchor-id="go">Go: the discipline of concurrency, with a cheaper collector</h2>
+<p class="tagline">
+Boring on purpose.
+</p>
+<p>Go comes from the opposite direction. Its creators were not trying to prove a thesis about safety; they were trying to make a large codebase of networked services tolerable to build and operate. Robert Griesemer, Rob Pike and Ken Thompson sketched the goals in September 2007, and the project became public in November 2009.</p>
+<p><em>Source: Go FAQ, origins and history — <a href="https://go.dev/doc/faq" target="_blank">go.dev/doc/faq</a>.</em></p>
+<p>The design bet was concurrency as a language property rather than a library. A goroutine starts with a few kilobytes of stack that grows and shrinks as needed, and the language’s own documentation states that it is practical to create hundreds of thousands of them in the same address space. That is the sentence behind a generation of server software, and it explains why Kubernetes, the Docker engine and Terraform are all principally written in Go.</p>
+<p>What changed in 2026 is plumbing rather than syntax, and it is the most measurable thing in this post. Go 1.26, released on 10 February 2026, made the Green Tea garbage collector the default. Green Tea had been experimental in Go 1.25. The release notes give the expected payoff directly: a reduction of somewhere between 10 and 40 per cent in garbage collection overhead for real-world programs that lean heavily on the collector, with roughly another 10 per cent available on newer AMD64 processors using vector scanning.</p>
+<p><em>Source: Go 1.26 Release Notes, Green Tea collector — <a href="https://go.dev/doc/go1.26" target="_blank">go.dev/doc/go1.26</a>.</em></p>
+<p>Two details in those notes deserve more attention than they usually get. The release maintains the Go 1 promise of compatibility, so the collector change arrives without a migration guide or a rewrite. And the published improvement is a range attached to a workload: 10 to 40 per cent, in programs that lean heavily on the collector. That is the honest way to publish a performance number.</p>
+<blockquote class="blockquote">
+<p>A quarter of the runtime overhead that nobody asked for, removed by changing a default.</p>
+</blockquote>
+<p>The concurrency model has one nuance that catches newcomers. GOMAXPROCS limits how many goroutines execute at the same moment on the processor. It does not limit how many can be waiting on input or output. Hundreds of thousands of blocked connections are not hundreds of thousands of running tasks, and confusing the two produces capacity estimates that fail under load.</p>
+<p><em>Source: Go FAQ, goroutines and GOMAXPROCS — <a href="https://go.dev/doc/faq" target="_blank">go.dev/doc/faq</a>.</em></p>
+<p>Why infrastructure tooling settled on Go has a practical answer. The tools had to compile quickly, ship as a single static binary with no runtime to install, and handle network concurrency without ceremony. A language that makes distributed coordination boring is exactly what software for managing thousands of machines needs.</p>
+<p>Notice the shape of that change. No new syntax, no migration guide, no rewrite. The team replaced the engine underneath an existing contract and kept the compatibility promise. That is how a maturing language improves: quietly, in the parts users never see.</p>
+<p>Its footprint in production is unusually concentrated for a language that sits sixteenth on the usage tables. Kubernetes, the system that schedules most of the world’s containerised software, is written in Go. So are the Docker engine, Terraform, Prometheus and etcd. When a company rebuilds its internal platform today, Go is the default language for the control plane.</p>
+<p>That is a professional-vocabulary fact rather than a benchmark result, and it explains the shape of the appeal. The problems Go solves are the ones that appear when a system has many moving parts and a team has to keep it running at three in the morning.</p>
+<p><em>Source: Go case studies — <a href="https://go.dev/solutions/case-studies" target="_blank">go.dev/solutions/case-studies</a>.</em></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Watch it, learn it, or both">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch it, learn it, or both
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Learn it if you run services. The language stays small, the toolchain is quick, and the 2026 collector work lowered what it costs to operate. Watch the release notes rather than the syntax, because the changes now arrive underneath.</p>
+</div>
+</div>
+</section>
+<section id="typescript" class="level2">
+<h2 class="anchored" data-anchor-id="typescript">TypeScript: when the tooling becomes the excuse</h2>
+<p class="tagline">
+Same types, twelve times faster.
+</p>
+<p>TypeScript is the useful counterweight to everything above, because it makes no claim to memory safety at all. It is a static type checker for JavaScript programs, running before your code runs. Its types are a design-time discipline over an existing runtime, and ordinary annotations and assertions are removed during compilation.</p>
+<p>One correction to the tidy version of that sentence: not every feature is erased. Enums emit real JavaScript and exist at runtime. The accurate claim is that there is no TypeScript virtual machine, and that type-only constructs disappear. Say it precisely and the point survives; overstate it and a reader who uses enums will stop trusting the rest.</p>
+<p><em>Source: TypeScript Handbook, the type checker and enums — <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#enums" target="_blank">typescriptlang.org/docs/handbook/2/everyday-types.html</a>.</em></p>
+<p>The 2026 news is that Microsoft replaced the engine, and the numbers are public. TypeScript 7 reached general availability on 8 July 2026 with the compiler and language service rewritten as a native implementation in Go, replacing the original JavaScript codebase. The company’s own wording for the result: speedups typically between 8 and 12 times on full builds.</p>
+<p><em>Source: Announcing TypeScript 7.0, Microsoft TypeScript team, 8 July 2026 — <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/" target="_blank">devblogs.microsoft.com/typescript/announcing-typescript-7-0</a>.</em></p>
+<div id="fig4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fig4-full-builds.svg" class="img-fluid figure-img"></p>
+<figcaption>Full builds, five codebases. The largest reduction is about twelve times, the smallest about eight. Memory use also fell, most sharply on the smallest codebases.</figcaption>
+</figure>
+</div>
+<p>The vendor table is worth reading in full because it is unusually honest about spread. Visual Studio Code goes from 125.7 seconds to 10.6, an 11.9 times improvement. Sentry goes from 139.8 to 15.7. Bluesky, Playwright and tldraw improve by roughly eight times each. Aggregate memory falls too: 5.2 gigabytes to 4.2 on the largest project, and 1.8 to 1.3 on Bluesky.</p>
+<p>Alongside it sits the number that speaks to daily work rather than benchmarks. Canva reported that the time to see the first error in their editors fell from about 58 seconds to about 4.8 seconds.</p>
+<p>That is the part worth pausing on. TypeScript was never slow because types are expensive; it was slow because the tooling ran on one core of a JavaScript engine. Microsoft did not make typing cheaper. They changed the engine, added multithreading, and kept the semantics.</p>
+<p>Editor support moved with the compiler. TypeScript 7 speaks the language server protocol, and Microsoft ships a dedicated extension for Visual Studio Code, so the speedup lands in completions, reference searches and diagnostics rather than only in build times. That distinction matters more than the headline multiple, because a full build is the part of a developer’s day that happens least often.</p>
+<p>The migration is not entirely free. The announcement directs readers to their editor’s own documentation for support status, which is a polite way of saying the surrounding tooling has to keep up. Your typed code does not change. The tools around it do.</p>
+<p>What stays true is the architecture. TypeScript compiles to JavaScript, JavaScript runs on a JavaScript engine, and no TypeScript runtime is installed anywhere. Version 7 is a faster compiler, not a new platform.</p>
+<p>Native, in this context, means compiled to machine code rather than executed through another interpreter. It is the same distinction that separates Go from Python and Rust from JavaScript. The pattern in 2026 is that the interpreters doing valuable work are being replaced by compilers, wherever the language permits it.</p>
+<p>The strongest evidence that TypeScript is gaining ground is not the compiler speed. It is GitHub’s own annual report: in August 2025, TypeScript overtook both Python and JavaScript to become the most used language on the platform, which Octoverse called the most significant language shift in more than a decade.</p>
+<p><em>Source: GitHub, Octoverse 2025 — <a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank">github.blog</a>.</em></p>
+<p>The report ties the change to typed languages and agent-assisted coding. Types make machine-generated edits easier to review and safer to accept, because the compiler catches what a tired reviewer would miss, and TypeScript is where most of that agent-written code lands.</p>
+<p>Usage numbers agree with the repository data. In Stack Overflow’s 2025 survey, 43.6 per cent of respondents had done extensive work in TypeScript over the past year, against 27.8 per cent for C#, 16.4 per cent for Go and 14.8 per cent for Rust.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Watch it, learn it, or both">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch it, learn it, or both
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both, and it is the cheapest of the five to adopt. If you already write JavaScript, this is a version bump with an eight to twelve times build speedup attached, and there is nothing to unlearn.</p>
+</div>
+</div>
+</section>
+<section id="zig" class="level2">
+<h2 class="anchored" data-anchor-id="zig">Zig: control without hidden behaviour</h2>
+<p class="tagline">
+Every allocation in plain sight.
+</p>
+<p>Zig sits at the opposite end of the spectrum from TypeScript. Its appeal is not safety by default but legibility: nothing happens that the source does not say. The language’s own overview puts it bluntly. There is no hidden control flow, no hidden memory allocations, no preprocessor and no macros.</p>
+<p><em>Source: Zig, Overview — <a href="https://ziglang.org/learn/overview/" target="_blank">ziglang.org/learn/overview</a>.</em></p>
+<p>It also has no exception system in the throw-and-catch sense. Failure is expressed as error unions with explicit handling, and the documentation is firm that errors are values which may not be ignored. Panics and runtime safety checks remain, so the honest summary is that Zig replaces implicit unwinding with explicit returns rather than eliminating failure.</p>
+<p><em>Source: Zig, Language Reference, errors — <a href="https://ziglang.org/documentation/master/" target="_blank">ziglang.org/documentation/master</a>.</em></p>
+<p>The reason to care is interoperability. Zig imports C headers directly through its own compiler interface, translates C headers into Zig with a dedicated tool, compiles C and C++ source, and treats cross-compilation as a first-class use case rather than a specialist ritual. For teams with decades of C in production, that is the difference between an option and a curiosity.</p>
+<p>That interoperability has two doors. One imports C declarations directly, including types, variables, functions and simple macros, so an existing library can be called without hand-written bindings. The other converts C headers into Zig source, which suits a project that wants to move away from C gradually rather than all at once.</p>
+<p>For a team with a large body of C, the question is rarely whether to rewrite. It is whether the new component can live beside the old one without a bridge that costs more than it saves. Zig is designed around that question.</p>
+<p>The version story is a reminder that this ecosystem is young. Zig 0.16.0 was released on 14 April 2026 and remained the stable release as September ended, which means the language is still pre-1.0 by its own numbering.</p>
+<p><em>Source: Zig, release announcement and download page — <a href="https://ziglang.org/download/" target="_blank">ziglang.org/download</a>.</em></p>
+<p>Zig’s presence in production is small and serious. TigerBeetle, a financial transactions database built for high-volume accounting, is written in Zig, and in October 2025 it pledged 512,000 dollars to the Zig Software Foundation alongside Synadia, payable over two years. Ghostty, a terminal emulator released in late 2024, is also written in Zig.</p>
+<p><em>Source: TigerBeetle, Synadia and TigerBeetle pledge $512k to the Zig Software Foundation — <a href="https://tigerbeetle.com/blog/2025-10-25-synadia-and-tigerbeetle-pledge-512k-to-the-zig-software-foundation/" target="_blank">tigerbeetle.com/blog</a> · <a href="https://ghostty.org" target="_blank">ghostty.org</a>.</em></p>
+<p>Admiration runs well ahead of adoption, and unusually far ahead. Zig was the fourth most admired language in Stack Overflow’s 2025 survey at 64 per cent, behind Rust, Gleam and Elixir, while its usage sat below two per cent of respondents. It is a language its users defend loudly, and one most developers have never written a line of.</p>
+<p>Then the largest Zig codebase in the world left. Bun’s port to Rust is the correction to any claim that Zig is quietly taking over systems work, and the honest reading is narrower: Zig is excellent at what it was designed for, and it is still pre-1.0 in a decade when the languages around it are shipping their version numbers.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Watch it, learn it, or both">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch it, learn it, or both
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Watch it, and learn it only if you have C to live with. Pre-1.0 is not a technicality: the language still changes between releases, so the cost of following it is a real one.</p>
+</div>
+</div>
+</section>
+<section id="mojo" class="level2">
+<h2 class="anchored" data-anchor-id="mojo">Mojo: Python’s syntax at systems speed</h2>
+<p class="tagline">
+Reads like Python, runs like C.
+</p>
+<p>Mojo is the newest of the five and the one whose story changed most this year. Its pitch is a language that reads like Python and performs like a systems language, aimed squarely at machine-learning workloads where the Python layer has become the slow part of an otherwise fast machine.</p>
+<p>For most of its life it was a language you could use but not inspect. That ended in August 2026. Mojo 1.0 shipped on 11 August, and the compiler plus the surrounding toolchain were released under the Apache 2.0 licence: compiler, runtime, language server, debugger, formatter, and the full commit history of the project.</p>
+<p><em>Source: Modular, Mojo 1.0 is here, 11 August 2026 — <a href="https://www.modular.com/" target="_blank">modular.com</a>.</em></p>
+<p>Nine days later, Qualcomm completed its acquisition of Modular, the company behind the language. The deal had been announced in June at a reported value of about four billion dollars, in stock. Qualcomm’s own announcement frames it as a bet on developer-friendly platforms that run across diverse compute environments.</p>
+<p><em>Source: Qualcomm, Qualcomm Completes Acquisition of Modular, 20 August 2026 — <a href="https://www.qualcomm.com/news/releases/2026/07/qualcomm-completes-acquisition-of-modular" target="_blank">qualcomm.com/news/releases/2026/07/qualcomm-completes-acquisition-of-modular</a>.</em></p>
+<p>The promise to Python developers rests on interoperation rather than translation. Mojo is designed to import Python packages and call into existing Python code, so the parts of a system that already work keep working while the parts that need speed are rewritten one file at a time.</p>
+<p>Ownership in Mojo is explicit: the compiler tracks where values live and who may use them. That is how a language that reads like Python can compile to something that runs like C. It is the same trade Rust made, aimed at a different audience, and it is the reason the two languages keep appearing in the same conversations.</p>
+<p>Put those two facts side by side and a reasonable question appears. A language whose toolchain is now open source, owned by a chipmaker that has just spent billions acquiring it, raises a governance question that openness alone does not answer. The source is available. The direction is corporate. Both can be true.</p>
+<p>Where Mojo is gaining ground is the machine-learning stack, and the reason is mundane. The Python layer wrapped around fast accelerators has become the slow part of the pipeline: the code that moves tensors, checks shapes and dispatches kernels runs at a fraction of the speed of the hardware underneath it. A language that reads like Python and compiles closer to the metal makes that glue cheaper, which is the pitch Modular has been making since 2023.</p>
+<p>Where it is not yet gaining ground is breadth. There is no large body of Mojo in production, the package ecosystem is thin, and the toolchain was closed until August 2026. On a shortlist of five, it is the one where the honest advice is to read the roadmap before writing the code.</p>
+<p><em>Source: Modular, Mojo documentation and release notes — <a href="https://docs.modular.com/mojo/" target="_blank">docs.modular.com/mojo</a>.</em></p>
+<div class="callout callout-style-default callout-note callout-titled" title="Watch it, learn it, or both">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch it, learn it, or both
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Watch it first. Version 1.0 and an open toolchain make it credible for the first time, but the ecosystem is young and the company that owns it now reports to a chipmaker.</p>
+</div>
+</div>
+</section>
+<section id="pattern" class="level2">
+<h2 class="anchored" data-anchor-id="pattern">The pattern, rather than the list</h2>
+<p>Five languages, five different origins, and one shared movement. Each of them is pushing the same three things: safety that the compiler enforces rather than the programmer remembers, speed that comes from the hardware underneath rather than cleverness above it, and behaviour that can be read in the source.</p>
+<p>Line them up and the convergence is difficult to unsee.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Language</th>
+<th>What it stands for in 2026</th>
+<th>The receipt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rust</td>
+<td>Memory safety as a compile-time obligation</td>
+<td>Android reports roughly a thousand times lower vulnerability density in Rust components</td>
+</tr>
+<tr class="even">
+<td>Go</td>
+<td>Concurrency as a language property, now with cheaper runtime overhead</td>
+<td>Green Tea collector default in 1.26, a 10 to 40 per cent cut in collection overhead</td>
+</tr>
+<tr class="odd">
+<td>TypeScript</td>
+<td>Types as design-time discipline, with tooling finally fast enough not to matter</td>
+<td>Native Go compiler; Visual Studio Code builds fell from 125.7 seconds to 10.6</td>
+</tr>
+<tr class="even">
+<td>Zig</td>
+<td>Explicit control with nothing hidden, and C interop as the bridge</td>
+<td>No hidden allocations, no preprocessor, no macros; cross-compilation first-class</td>
+</tr>
+<tr class="odd">
+<td>Mojo</td>
+<td>Python’s ergonomics at systems performance, aimed at AI hardware</td>
+<td>1.0 shipped on 11 August 2026, toolchain released under Apache 2.0</td>
+</tr>
+</tbody>
+</table>
+<p>There are three pressures behind that, and they are worth separating because they explain why the movement is happening now rather than in 2015.</p>
+<p>The first is money. Memory-safety bugs have become an operating expense with a long tail, and the 2019 measurement gave finance teams a number to attach to it. The second is hardware. Accelerators and specialised silicon are evolving faster than the abstractions built to command them, which punishes any layer that adds overhead without adding capability. The third is scale. A service that runs across continents and thousands of machines turns a rare fault into a routine one, and routines get budgeted for.</p>
+<p>None of that requires anyone to abandon C. Most of the world’s critical software will run on C for decades, and that is a reasonable engineering decision rather than a lapse. What shifted in 2026 is the default, and defaults decide where new work goes.</p>
+</section>
+<section id="layers" class="level2">
+<h2 class="anchored" data-anchor-id="layers">The layer each one is claiming</h2>
+<p>There is a second way to read this shortlist, and it is the one that explains why these five arrived together rather than five others. Line them up against the AI stack and every one of them sits in a different layer.</p>
+<p>Start with the layer none of them is contesting. The models, and the training around them, belong to Python: Hugging Face’s production inference server is 79 per cent Python, and so is nearly everything that treats a GPU cluster as a research instrument. No language on this list is trying to take that ground.</p>
+<p>What they are competing for is everything wrapped around it. The figures in this section come from GitHub’s own language statistics for each repository, read on 23 September 2026. They describe the code inside a repository rather than what that code runs, which is worth remembering before anyone quotes them as adoption.</p>
+<p>TypeScript holds the layer that talks to the models. Google’s Gemini CLI is 97 per cent TypeScript. The official Model Context Protocol SDK, the library most agent tools are built on, is 100 per cent TypeScript. Claude Code runs on Bun, and Anthropic bought Bun to keep it that way.</p>
+<p>It could win because it already is the interface. Agent loops, tool calls, editor integrations and chat surfaces are where models meet people, and typed JavaScript is where that code lands. GitHub’s own annual report puts TypeScript first among all languages on the platform and attributes the rise to typed code plus AI-assisted editing — a builder that checks types catches more of what a machine writes than one that does not.</p>
+<p><em>Source: MCP TypeScript SDK — <a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank">github.com/modelcontextprotocol/typescript-sdk</a> · <a href="https://github.com/google-gemini/gemini-cli" target="_blank">github.com/google-gemini/gemini-cli</a> · Anthropic, <a href="https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone" target="_blank">acquiring Bun</a>.</em></p>
+<p>Rust holds two layers at once, and one of them is new. Below, in the runtime: Hugging Face’s tokenizers are 95 per cent Rust, and the router in its inference server is Rust too. Above, in the harness: OpenAI rewrote its Codex command-line agent out of TypeScript and into Rust, and that repository is now 97 per cent Rust. Bun, after the port, is 67 per cent Rust.</p>
+<p>It could win because it is where the AI wave keeps arriving. Where a machine writes the code, a compiler that refuses to let memory be freed twice is the cheapest reviewer available, and where a service holds thousands of open model connections, predictable latency is the entire product. Both pressures push the same way.</p>
+<p><em>Source: Hugging Face tokenizers — <a href="https://github.com/huggingface/tokenizers" target="_blank">github.com/huggingface/tokenizers</a> · <a href="https://huggingface.co/docs/text-generation-inference/en/architecture" target="_blank">TGI architecture, the router in Rust</a> · <a href="https://github.com/openai/codex" target="_blank">github.com/openai/codex</a>.</em></p>
+<p>Go holds the serving and operations layer, which is the least glamorous and most load-bearing part of any AI deployment. Ollama, the tool most people use to run a model on their own machine, is 69 per cent Go. The systems that schedule and package everything else — Kubernetes, Docker, Terraform — are Go as well.</p>
+<p>It could win by being unremarkable. When the interesting part of a system is the model, everything wrapped around it should be boring enough to forget, and that is the property Go was designed to have.</p>
+<p><em>Source: Ollama, repository language statistics — <a href="https://github.com/ollama/ollama" target="_blank">github.com/ollama/ollama</a>.</em></p>
+<p>Mojo is aiming at the silicon. The repository holding Modular’s engine is 47 per cent Mojo and 33 per cent Python, the largest concentration of the language anywhere, and a fair measure of what it is for: kernels that read like Python and run like the hardware underneath.</p>
+<p>It could win if reaching the hardware keeps requiring a language of its own rather than a library. The risk is the same fact seen from the other side: the largest concentration of Mojo in the world is one company’s repository, and that company now belongs to a chipmaker.</p>
+<p><em>Source: Modular, engine repository — <a href="https://github.com/modular/modular" target="_blank">github.com/modular/modular</a>.</em></p>
+<p>Zig holds the layer underneath all of them, and it is the one with no AI story yet. Its two flagship users are a terminal emulator, at 77 per cent Zig, and a financial database, at 79 per cent. The AI-adjacent bet is narrower and older than the hype: Ollama’s repository is 22 per cent plain C, and C is the layer Zig was built to replace without rewriting.</p>
+<p>It could win if the engines stay in C and somebody eventually has to modernise that layer in place. Against it: no flagship AI user, still pre-1.0, and the largest Zig codebase in the world having just left for Rust.</p>
+<p>Put the layers together and the picture is cleaner than any single language. Python trains the models. TypeScript talks to them. Rust runs them, and is increasingly what they are written in. Go serves them. Mojo is trying to reach the chips underneath. Zig is still waiting under the floor. The AI wave did not invent these languages, and it did not rescue them either: it made the layers beneath the model valuable, and each of these five is standing in one.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Language</th>
+<th>The code share, read 23 September 2026</th>
+<th>Could win if</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The models and training</td>
+<td>Python, not on this shortlist</td>
+<td>Inference server 79 per cent Python</td>
+<td>Not contested here</td>
+</tr>
+<tr class="even">
+<td>Talking to models: harnesses, tool calls, editors</td>
+<td>TypeScript</td>
+<td>Gemini CLI 97 per cent; MCP TypeScript SDK 100 per cent</td>
+<td>Agent tooling keeps being written where the SDKs are</td>
+</tr>
+<tr class="odd">
+<td>Runtimes, and the code agents rewrite</td>
+<td>Rust</td>
+<td>Codex CLI 97 per cent; tokenizers 95 per cent; Bun 67 per cent</td>
+<td>The compiler stays the cheapest reviewer of machine-written code</td>
+</tr>
+<tr class="even">
+<td>Serving and scheduling</td>
+<td>Go</td>
+<td>Ollama 69 per cent Go</td>
+<td>Serving stays unglamorous and the fleets keep growing</td>
+</tr>
+<tr class="odd">
+<td>Kernels and accelerators</td>
+<td>Mojo</td>
+<td>Engine repository 47 per cent Mojo</td>
+<td>Reaching the hardware keeps needing its own language</td>
+</tr>
+<tr class="even">
+<td>Underneath the engines</td>
+<td>Zig</td>
+<td>Ghostty 77 per cent; TigerBeetle 79 per cent; Ollama 22 per cent C</td>
+<td>C finally needs replacing inside the AI engines</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rankings" class="level2">
+<h2 class="anchored" data-anchor-id="rankings">What the rankings actually say</h2>
+<p>There is no single ranking of programming languages, because each index measures something different. Four of them are worth knowing in 2026, and the disagreements between them are more useful than any one position.</p>
+<p>TIOBE counts how often languages are searched for across the web. The index is published by a Dutch company of the same name, whose initials come from Oscar Wilde’s play <em>The Importance of Being Earnest</em>. Its September 2026 edition puts Python first at 17.76 per cent, down 8.22 points in a year, with C second at 10.28 and C++ third at 8.67. Search share measures curiosity and troubleshooting, and it moves slowly.</p>
+<p><em>Source: TIOBE Index, September 2026 — <a href="https://www.tiobe.com/tiobe-index/" target="_blank">tiobe.com/tiobe-index</a>.</em></p>
+<p>Our five sit far down that table. Rust is tenth at 1.34 per cent and rising, Go is twelfth at 1.10 and falling, and TypeScript and Zig both sit at 0.43 per cent, around fortieth. One caveat is fair to TIOBE because it explains most of the surprise: a search-based index reads TypeScript queries as JavaScript ones, so a language used by 43.6 per cent of survey respondents registers as a rounding error.</p>
+<p>RedMonk ranks usage in code against discussion, weighing GitHub against Stack Overflow. Its January 2026 edition has JavaScript first, Python second and Java third, with TypeScript sixth ahead of C++ and C, Go twelfth and Rust twentieth. TypeScript’s climb up this index is the clearest trend in it.</p>
+<p><em>Source: RedMonk, Programming Language Rankings, January 2026 — <a href="https://redmonk.com/sogrady/2026/04/14/language-rankings-1-26/" target="_blank">redmonk.com</a>.</em></p>
+<p>Stack Overflow asks the opposite question, and it is the one that speaks to this shortlist. Rust was the most admired language in its 2025 survey at 72 per cent, ahead of Gleam at 70, Elixir at 66 and Zig at 64. Admiration is the share of people who have used a language and want to keep using it.</p>
+<p><em>Source: Stack Overflow Developer Survey 2025, technology section — <a href="https://survey.stackoverflow.co/2025/technology" target="_blank">survey.stackoverflow.co/2025/technology</a>.</em></p>
+<p>The two columns part company sharply. TypeScript was used by 43.6 per cent of respondents, Go by 16.4, Rust by 14.8 and Zig below two, while the admiration order runs almost exactly in reverse. The most admired language on the list is one that about one developer in seven touched last year.</p>
+<p>GitHub’s Octoverse measures what new code is actually written in. TypeScript took first place from Python and JavaScript in August 2025, the largest language shift the platform has recorded in a decade, and the report attributes the move to typed languages and AI-assisted coding.</p>
+<div id="fig5" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fig5-the-index.svg" class="img-fluid figure-img"></p>
+<figcaption>The index that counts searches, not sentiment. TIOBE, September 2026. Python leads at 17.76 per cent and fell 8.22 points in a year; Rust is tenth at 1.34 per cent. Four of the five languages here sit below 1.5 per cent of a search-based index.</figcaption>
+</figure>
+</div>
+<p>Read together, the four say something no single index says. Usage belongs to JavaScript and Python. Search interest belongs to Python and C. Admiration belongs to Rust and Zig. The newest code on the largest code host belongs to TypeScript. All four are true at once, which is why one ranking number is a poor basis for a decision.</p>
+<p>There is one more caveat, and it is the kind that keeps a post honest. The 2026 Stack Overflow survey was still collecting responses while this was written, so the admiration figures above are last year’s. When the results land, these numbers should be re-checked rather than assumed to have held.</p>
+<p>What no ranking can tell you is what you intend to build. Every index here measures other people’s behaviour, and other people are not writing your service, your driver or your data pipeline. The ranking is context. The decision is still yours.</p>
+</section>
+<section id="readcarefully" class="level2">
+<h2 class="anchored" data-anchor-id="readcarefully">How to read a language claim</h2>
+<p>The same evidence that makes this story legible also makes it easy to misuse, so three habits are worth keeping.</p>
+<p>The first is to separate a release date from adoption. A version number tells you what the maintainers shipped. It tells you nothing about who runs it in production, which is a different question with different evidence.</p>
+<p>The second is to treat benchmark rankings as controlled comparisons rather than verdicts. The long-running TechEmpower suite, for example, is genuinely useful and genuinely limited: its methodology permits raw database access, allows framework-specific optimisations, and its maintainers describe the results as a test of specific implementations. Practitioners including Axum’s own maintainers have warned that benchmark code can diverge substantially from ordinary application code. A rank measures the harbour, not the sea.</p>
+<p><em>Source: TechEmpower, Framework Benchmarks, methodology and results — <a href="https://www.techempower.com/benchmarks/" target="_blank">techempower.com/benchmarks</a>.</em></p>
+<p>It also helps to keep two kinds of safety apart, because they are constantly confused. Rust’s guarantee is about memory: it prevents a program from reading or writing where it should not. TypeScript’s guarantee is about shape: it checks that the values moving through a program match the types described for them. The second catches a great many mistakes and cannot prevent a single buffer overflow.</p>
+<p>The third is to notice the difference between a recommendation and a mandate, because the two get flattened in retelling. Every government document in this post recommends, advises, or strongly encourages. None of them prohibits. Direction of travel is a real and reportable thing; a deadline is a claim about law, and it needs a legal source.</p>
+</section>
+<section id="practical" class="level2">
+<h2 class="anchored" data-anchor-id="practical">Choosing from the shortlist</h2>
+<p>If you are choosing a language this year, the useful question is not which one wins. It is which constraint is binding for you.</p>
+<p>If your problem is a body of existing C or C++ that cannot be rewritten, Zig is the low-friction option, because interoperability is its design centre rather than an afterthought.</p>
+<p>If it is a service that must absorb enormous concurrency on modest hardware, Go’s model and its 2026 collector work pay off in operational cost rather than elegance.</p>
+<p>If it is a codebase where a memory-safety bug would end the company, Rust is the only one of the five that removes the category by construction.</p>
+<p>If it is a large JavaScript codebase, and your developers spend their mornings waiting for an editor, TypeScript 7 changed that this year for free. The upgrade is closer to a version bump than a migration.</p>
+<p>That list is deliberately boring, and it is the honest answer. The interesting claim in 2026 is not that five languages will change everything. It is that the industry spent the year replacing the engines underneath languages it had already chosen, rather than asking developers to learn new ones.</p>
+<blockquote class="blockquote">
+<p>A list of predictions ages. A direction with receipts does not.</p>
+</blockquote>
+<p>Go kept its syntax and changed its collector. TypeScript kept its syntax and changed its compiler. Mojo gave away its toolchain. Rust kept being Rust, and quietly became what the largest engineering organisations build their safety-critical parts with. None of them asked for a rewrite, and all of them removed overhead that had been tolerated for years.</p>
+<p>Those are the five, and none of them asks for a leap of faith. Each made a measurable change this year, or arrived with production evidence attached. That is the only reason any of them is on a shortlist rather than in a forecast.</p>
+<p>It is also worth saying what would count as evidence next, so the claim stays checkable rather than becoming a mood. Adoption of TypeScript 7 across large published codebases, rather than benchmark tables. Whether the memory-safety share of advisories falls at the organisations that have been migrating for years. Whether Go’s next release keeps the compatibility promise while moving more overhead out of the runtime.</p>
+<p>Those are measurable, dated, and falsifiable. Anyone repeating this story in a year can check them, which is the difference between a direction of travel and a forecast dressed up as one.</p>
+<p>If there is a single sentence to take from the year, it is that the interesting work happened in the parts of a language nobody types. Collectors, compilers and toolchains were replaced by teams who understood that asking a million developers to change their habits is the expensive option, and changing a default is the cheap one.</p>
+<p>The shortlist will look different in two years, and it should. What will not change is the test: a language earns attention when something measurable moves, and keeps its place while it keeps moving.</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources and further reading</h2>
+<ul>
+<li>Grouped by what each source settles. Every link opens in a new tab.</li>
+</ul>
+<section id="where-the-bugs-come-from" class="level3">
+<h3 class="anchored" data-anchor-id="where-the-bugs-come-from">Where the bugs come from</h3>
+<ul>
+<li><p>Microsoft Security Response Center, <em>Why Rust for safe systems programming</em>, 22 July 2019 — <a href="https://www.microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming" target="_blank">microsoft.com/en-us/msrc/blog/2019/07/why-rust-for-safe-systems-programming</a></p></li>
+<li><p>Rust target tier policy, for what “tier 1” actually means — <a href="https://doc.rust-lang.org/rustc/target-tier-policy.html" target="_blank">doc.rust-lang.org/rustc/target-tier-policy.html</a></p></li>
+</ul>
+</section>
+<section id="the-policy-sequence" class="level3">
+<h3 class="anchored" data-anchor-id="the-policy-sequence">The policy sequence</h3>
+<ul>
+<li><p>National Security Agency, <em>Software Memory Safety</em>, November 2022, revised April 2023 — <a href="https://media.defense.gov/2022/Nov/10/2003112742/-1/-1/0/CSI_SOFTWARE_MEMORY_SAFETY.PDF" target="_blank">media.defense.gov/2022/Nov/10/2003112742/-1/-1/0/CSI_SOFTWARE_MEMORY_SAFETY.PDF</a></p></li>
+<li><p>CISA, <em>The Urgent Need for Memory Safety in Software Products</em>, 6 December 2023 — <a href="https://www.cisa.gov/news-events/news/urgent-need-memory-safety-software-products" target="_blank">cisa.gov/news-events/news/urgent-need-memory-safety-software-products</a></p></li>
+<li><p>Office of the National Cyber Director, <em>Back to the Building Blocks</em>, February 2024 — <a href="https://bidenwhitehouse.archives.gov/wp-content/uploads/2024/02/Final-ONCD-Technical-Report.pdf" target="_blank">bidenwhitehouse.archives.gov/wp-content/uploads/2024/02/Final-ONCD-Technical-Report.pdf</a></p></li>
+<li><p>Mark Russinovich on C and C++, 19 September 2022, as reproduced by <em>The Register</em> — <a href="https://twitter.com/markrussinovich/status/1571995117233504257" target="_blank">twitter.com/markrussinovich/status/1571995117233504257</a></p></li>
+</ul>
+</section>
+<section id="production-use" class="level3">
+<h3 class="anchored" data-anchor-id="production-use">Production use</h3>
+<ul>
+<li><p>Bun, <em>Rewriting Bun in Rust</em> — <a href="https://bun.com/blog/bun-in-rust" target="_blank">bun.com/blog/bun-in-rust</a></p></li>
+<li><p>TigerBeetle, <em>Synadia and TigerBeetle pledge $512k to the Zig Software Foundation</em>, 25 October 2025 — <a href="https://tigerbeetle.com/blog/2025-10-25-synadia-and-tigerbeetle-pledge-512k-to-the-zig-software-foundation/" target="_blank">tigerbeetle.com/blog</a></p></li>
+<li><p>Ghostty, a terminal emulator written in Zig — <a href="https://ghostty.org" target="_blank">ghostty.org</a></p></li>
+<li><p>Go, <em>Case Studies</em>, companies solving problems with Go — <a href="https://go.dev/solutions/case-studies" target="_blank">go.dev/solutions/case-studies</a></p></li>
+<li><p>Modular, Mojo documentation — <a href="https://docs.modular.com/mojo/" target="_blank">docs.modular.com/mojo</a></p></li>
+<li><p>Google Security Blog, <em>Rust in Android</em>, 13 November 2025 — <a href="https://blog.google/security/rust-in-android-move-fast-fix-things/" target="_blank">blog.google/security/rust-in-android-move-fast-fix-things</a></p></li>
+<li><p>AWS Open Source Blog, <em>Sustainability with Rust</em> — <a href="https://aws.amazon.com/blogs/opensource/sustainability-with-rust/" target="_blank">aws.amazon.com/blogs/opensource/sustainability-with-rust</a></p></li>
+<li><p>Meta Engineering, <em>Rust at scale</em>, 27 January 2026 — <a href="https://engineering.fb.com/2026/01/27/security/rust-at-scale-security-whatsapp/" target="_blank">engineering.fb.com/2026/01/27/security/rust-at-scale-security-whatsapp</a></p></li>
+<li><p>Cloudflare Blog, <em>20% of the Internet</em> — <a href="https://blog.cloudflare.com/20-percent-internet-upgrade/" target="_blank">blog.cloudflare.com/20-percent-internet-upgrade</a></p></li>
+<li><p>Linux kernel Rust documentation — <a href="https://docs.kernel.org/rust/index.html" target="_blank">docs.kernel.org/rust/index.html</a></p></li>
+<li><p>Kubernetes — <a href="https://github.com/kubernetes/kubernetes" target="_blank">github.com/kubernetes/kubernetes</a> · Moby, the Docker engine — <a href="https://github.com/moby/moby" target="_blank">github.com/moby/moby</a> · Terraform — <a href="https://github.com/hashicorp/terraform" target="_blank">github.com/hashicorp/terraform</a></p></li>
+</ul>
+</section>
+<section id="the-2026-releases" class="level3">
+<h3 class="anchored" data-anchor-id="the-2026-releases">The 2026 releases</h3>
+<ul>
+<li><p>Go 1.26 release notes, including the Green Tea collector, released 10 February 2026 — <a href="https://go.dev/doc/go1.26" target="_blank">go.dev/doc/go1.26</a></p></li>
+<li><p>Go FAQ, for goroutines and origins — <a href="https://go.dev/doc/faq" target="_blank">go.dev/doc/faq</a></p></li>
+<li><p>Microsoft TypeScript team, <em>Announcing TypeScript 7.0</em>, 8 July 2026 — <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/" target="_blank">devblogs.microsoft.com/typescript/announcing-typescript-7-0</a></p></li>
+<li><p>TypeScript Handbook, on enums and runtime behaviour — <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#enums" target="_blank">typescriptlang.org/docs/handbook/2/everyday-types.html</a></p></li>
+<li><p>Zig download page and release announcement for 0.16.0, 14 April 2026 — <a href="https://ziglang.org/download/" target="_blank">ziglang.org/download</a></p></li>
+<li><p>Zig overview and language reference — <a href="https://ziglang.org/learn/overview/" target="_blank">ziglang.org/learn/overview</a></p></li>
+<li><p>Modular, Mojo 1.0, 11 August 2026 — <a href="https://www.modular.com/" target="_blank">modular.com</a></p></li>
+<li><p>Qualcomm, acquisition of Modular completed 20 August 2026 — <a href="https://www.qualcomm.com/news/releases/2026/07/qualcomm-completes-acquisition-of-modular" target="_blank">qualcomm.com/news/releases/2026/07/qualcomm-completes-acquisition-of-modular</a></p></li>
+</ul>
+</section>
+<section id="where-the-code-sits-read-23-september-2026" class="level3">
+<h3 class="anchored" data-anchor-id="where-the-code-sits-read-23-september-2026">Where the code sits (read 23 September 2026)</h3>
+<ul>
+<li><p>Shares are GitHub’s own repository language statistics for each project, read on 23 September 2026. They describe the code in the repository, not what the software runs on.</p></li>
+<li><p>Model Context Protocol TypeScript SDK — <a href="https://github.com/modelcontextprotocol/typescript-sdk" target="_blank">github.com/modelcontextprotocol/typescript-sdk</a></p></li>
+<li><p>Google, Gemini CLI — <a href="https://github.com/google-gemini/gemini-cli" target="_blank">github.com/google-gemini/gemini-cli</a></p></li>
+<li><p>OpenAI, Codex CLI — <a href="https://github.com/openai/codex" target="_blank">github.com/openai/codex</a></p></li>
+<li><p>Anthropic, <em>Anthropic acquires Bun</em> — <a href="https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone" target="_blank">anthropic.com/news</a></p></li>
+<li><p>Ollama — <a href="https://github.com/ollama/ollama" target="_blank">github.com/ollama/ollama</a></p></li>
+<li><p>Hugging Face tokenizers and the Text Generation Inference architecture, where the router is Rust — <a href="https://github.com/huggingface/tokenizers" target="_blank">github.com/huggingface/tokenizers</a> · <a href="https://huggingface.co/docs/text-generation-inference/en/architecture" target="_blank">huggingface.co/docs/text-generation-inference</a></p></li>
+<li><p>Modular, engine repository — <a href="https://github.com/modular/modular" target="_blank">github.com/modular/modular</a></p></li>
+</ul>
+</section>
+<section id="memory-and-collection" class="level3">
+<h3 class="anchored" data-anchor-id="memory-and-collection">Memory and collection</h3>
+<ul>
+<li>Go, <em>A Guide to the Go Garbage Collector</em>, on tracing, mark-sweep, the 25% CPU share and the sources of garbage-collection latency — <a href="https://go.dev/doc/gc-guide" target="_blank">go.dev/doc/gc-guide</a></li>
+</ul>
+</section>
+<section id="rankings-and-sentiment" class="level3">
+<h3 class="anchored" data-anchor-id="rankings-and-sentiment">Rankings and sentiment</h3>
+<ul>
+<li><p>TIOBE Index, September 2026 edition — <a href="https://www.tiobe.com/tiobe-index/" target="_blank">tiobe.com/tiobe-index</a></p></li>
+<li><p>RedMonk, <em>Programming Language Rankings, January 2026</em>, 14 April 2026 — <a href="https://redmonk.com/sogrady/2026/04/14/language-rankings-1-26/" target="_blank">redmonk.com/sogrady/2026/04/14/language-rankings-1-26</a></p></li>
+<li><p>Stack Overflow Developer Survey 2025, programming languages — <a href="https://survey.stackoverflow.co/2025/technology" target="_blank">survey.stackoverflow.co/2025/technology</a></p></li>
+<li><p>GitHub, <em>Octoverse 2025</em>, TypeScript as the most used language on GitHub from August 2025 — <a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank">github.blog/news-insights/octoverse</a></p></li>
+<li><p>TechEmpower framework benchmarks and methodology — <a href="https://www.techempower.com/benchmarks/" target="_blank">techempower.com/benchmarks</a></p></li>
+</ul>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<!-- SisengAI Chatbot widget — freemium demo -->
+<script>
+  window.__SISENG_API__ = "https://bot.sisengai.com";
+</script>
+<script src="https://bot.sisengai.com/widget/sisengai-demo.js" async=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "theAfricanQuant/theAfricanQuant.github.io";
+    script.dataset.repoId = "R_kgDOK8Zc8Q";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOK8Zc8c4Cfc4R";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-23-The-Shortlist/the_shortlist.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-23-The-Shortlist/the_shortlist.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
