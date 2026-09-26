@@ -7,9 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ricky Macharm">
-<meta name="dcterms.date" content="2024-06-19">
+<meta name="dcterms.date" content="2026-09-25">
+<meta name="description" content="Three snippets from this blog’s own posts, run again on pandas 3 — and the shorter way to do the same job with pd.col().">
 
-<title>Understanding The Assignment Expression aka Walrus Operator – SisengAI</title>
+<title>The lambda you no longer need – SisengAI</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -345,19 +346,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Understanding The Assignment Expression aka Walrus Operator</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">Python</div>
-                <div class="quarto-category">walrus operator</div>
-                <div class="quarto-category">assignment expression</div>
-                <div class="quarto-category">PEP 572</div>
+    <div class="quarto-title column-page">
+      <h1 class="title">The lambda you no longer need</h1>
+                  <div>
+        <div class="description">
+          Three snippets from this blog’s own posts, run again on pandas 3 — and the shorter way to do the same job with pd.col().
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">pandas</div>
+                <div class="quarto-category">Method Chaining</div>
+                <div class="quarto-category">Lambda Functions</div>
+                <div class="quarto-category">Data Wrangling</div>
               </div>
                   </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       <div>
       <div class="quarto-title-meta-heading">Author</div>
@@ -369,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">June 19, 2024</p>
+        <p class="date">September 25, 2026</p>
       </div>
     </div>
     
@@ -380,158 +386,265 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-    </div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
 
 
 
-<section id="introduction-the-evolution-of-decision-making-in-python" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-the-evolution-of-decision-making-in-python">Introduction: The Evolution of Decision-Making in Python</h2>
-<p>One of the world’s most widely-used programming languages is undoubtedly Python. Created by Guido van Rossum in 1991, Python’s inevitable growth necessitated a robust framework for governance to manage its expanding ecosystem.</p>
-<p>Initially, Python’s governance was straightforward. Guido van Rossum served as the Benevolent Dictator For Life (BDFL), a title that conferred both ultimate authority and the expectation of benevolence in decision-making. This model allowed for swift, unilateral decisions, essential during the nascent stages of Python’s development. However, as the language gained traction and its user base expanded, the limitations of a single-point decision-maker became evident.</p>
-<p>In response to the growing complexity, the Python Enhancement Proposal (PEP) system was instituted. PEPs function as formalized proposals for changes to Python, analogous to legislative amendments in political systems. Each PEP undergoes a rigorous process of drafting, review, and acceptance. This system democratized the decision-making process, allowing for community input and expert evaluation.</p>
-<p>Guido van Rossum appointed BDFL Delegates who are entrusted with decision-making power in specific areas, thus decentralizing authority while maintaining overall coherence in the language’s evolution.</p>
-<p>On October 14, 2019, Python 3.8 introduced the assignment expression or the walrus operator (<code>:=</code>) via PEP 572, allowing in-line assignment within expressions to enhance code efficiency and readability. Despite its benefits, the operator sparked significant controversy, highlighting the intrinsic tension between innovation and stability in programming language development. This debate led to Guido van Rossum’s resignation as BDFL, illustrating the personal toll of leadership and prompting a reevaluation of Python’s governance structure to create more sustainable, distributed decision-making models.</p>
-</section>
-<section id="understanding-the-walrus-operator" class="level2">
-<h2 class="anchored" data-anchor-id="understanding-the-walrus-operator">Understanding the Walrus Operator</h2>
-<p>The walrus operator is a syntactic innovation that allows for assignment expressions. This operator can streamline code by reducing redundancy and improving readability, particularly when dealing with computationally expensive operations. To elucidate its utility, let us examine various examples.</p>
-<p>Imagine you have a value you want to use multiple times in a single line of code. Normally, you would have to do this in two steps:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> compute_value()  <span class="co"># Step 1: Assign the value to a variable</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="op">&gt;</span> <span class="dv">10</span>:           <span class="co"># Step 2: Use the variable in an expression</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>In the first line of code, we are performing an <em>assignment operation</em>. The function <code>compute_value()</code> is called, and it executes its defined task, which could involve computationally expensive calculations, data processing, or fetching information. The result of this function call is then stored in a variable named <code>x</code>.</p>
-<ul>
-<li>Function Call: <code>compute_value()</code> is invoked, and it produces an output based on its implementation.</li>
-<li>Assignment: The <code>=</code> symbol assigns the output of <code>compute_value()</code> to the variable <code>x</code>.</li>
-</ul>
-<p>This step is fundamental because it captures and stores the result of the function, making it available for future use within the program. By <em>assigning</em> this value to <code>x</code>, we ensure that we can reference and utilize the computed result in subsequent code.</p>
-<p>In the second line, we evaluate a conditional <em>expression</em> and perform an action based on the result.</p>
-<ul>
-<li>The <code>if</code> statement <code>if x &gt; 10 : print(x)</code> checks if the <em>expression</em> is true then prints the value of <code>x</code></li>
-</ul>
-<p>Notice how any time either of the words <em>assignment</em> or <em>expression</em> is used, I italicized it. The <em>assignment expression</em> (or walrus operator because the symbol <code>:=</code> looks like the teeth of a walrus lying down) performs the two operations of assignment and expresssion in one go. The Code above can be shortened to:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (x <span class="op">:=</span> compute_value()) <span class="op">&gt;</span> <span class="dv">10</span>: <span class="co"># Assign the value to a variable and use it in an expression</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li><code>x := compute_value()</code>: This part does two things at once. It calls the <code>compute_value()</code> function and assigns its result to the variable <code>x</code>.</li>
-<li><code>if (x := compute_value()) &gt; 10:</code>: This is an <code>if</code> statement that checks if the result of <code>compute_value()</code> (which is now stored in <code>x</code>) is greater than 10. If it is, it executes the code inside the <code>if</code> block (in this case, <code>print(x)</code>).</li>
-</ul>
-<p>This has made our code shorter by reducing the need to write the same expression twice and also kept related logic in one place, making the code hopefully easier to understand at a glance. in a nutshell, the walrus operator (<code>:=</code>) allows us to assign values within expressions, making our code shorter and often easier to read. It’s especially useful when we need to use the result of an expression multiple times in a single line of code.</p>
-<section id="reducing-redundancy-in-code" class="level3">
-<h3 class="anchored" data-anchor-id="reducing-redundancy-in-code">Reducing Redundancy in Code</h3>
-<p>Consider the scenario where we process sensor data and filter out invalid entries. Using traditional methods, the code appears verbose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> []</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> value <span class="kw">in</span> sensor_data:</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> compute_expensive_value(value)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> result <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Whenever you have a block of code that has an empty list sitting above a <code>for loop</code>, it usually implies that a list comprehension could be employed to do the exact same thing.</p>
-<pre class="python."><code>
-  valid_data = [compute_expensive_value(value) for value in sensor_data 
-  if compute_expensive_value(value) is not None]
-
-  # Compute statistics on valid_data
-  average = sum(valid_data) / len(valid_data)</code></pre>
-<p>This is a lot cleaner than the previous one; however, it is also quite inefficient. We can see that we are calling the computationally expensive function twice instead of once.</p>
-<p>With the walrus operator, we can condense this logic into a more efficient list comprehension:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> [result <span class="cf">for</span> value <span class="kw">in</span> sensor_data <span class="cf">if</span> (result <span class="op">:=</span> compute_expensive_value(value))]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="example-handling-regular-expressions" class="level4">
-<h4 class="anchored" data-anchor-id="example-handling-regular-expressions">Example: Handling Regular Expressions</h4>
-<p>A common pattern involves checking for matches and then acting upon them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>match <span class="op">=</span> pattern.search(data)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> match <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Do something with match</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The walrus operator allows us to streamline this operation:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (match <span class="op">:=</span> pattern.search(data)) <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Do something with match</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This approach reduces the scope of the <code>match</code> variable, enhancing code readability and maintainability.</p>
-</section>
-</section>
-</section>
-<section id="computational-efficiency-a-case-study" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="computational-efficiency-a-case-study">Computational Efficiency: A Case Study</h2>
-<p>Let us define a computationally expensive function called <code>mega_transform</code> that serves to illustrate the efficiency gains provided by the walrus operator:</p>
-<div id="b94cc963-db26-40e3-b115-4d6f69126846" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mega_transform(x):</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.9</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="op">-</span><span class="dv">1</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sign <span class="op">*</span> x <span class="op">**</span> <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Given a list of numbers, we can measure the time taken to filter and transform these numbers without using the walrus operator:</p>
-<div id="179f3eea-af84-44c5-8b7b-ece104e5d888" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nu_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.perf_counter()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> [mega_transform(x) <span class="cf">for</span> x <span class="kw">in</span> nu_list <span class="cf">if</span> mega_transform(x) <span class="op">&gt;</span> <span class="dv">0</span>]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> time.perf_counter()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"total time: </span><span class="sc">{</span>end <span class="op">-</span> start<span class="sc">:.2f}</span><span class="ss"> secs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A few of the posts on this blog lean on the same small trick: a function written inside a pandas chain, so that one step can see what the step before it just built. It works, it is short, and reading it does not tell you why it is there.</p>
+<p>pandas 3 has a shorter way to write it. This post takes three snippets I published here, runs them again exactly as they were written, and then does the same jobs with <code>pd.col()</code> so the two can be put side by side. Every code block below runs when this page is built, and the output under it is what the code printed.</p>
+<section id="first-what-a-lambda-is" class="level2">
+<h2 class="anchored" data-anchor-id="first-what-a-lambda-is">First, what a lambda is</h2>
+<p>A lambda is a function written where it is used, without a name:</p>
+<div id="e249e286" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>double <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_named(x):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">21</span>), double_named(<span class="dv">21</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[4, 16, 36, 64, 100, 144, 196, 256, 324]
-total time: 25.35 secs</code></pre>
+<pre><code>42 42</code></pre>
 </div>
 </div>
-<p>We repeat the process using the walrus operator to demonstrate its efficiency:</p>
-<div id="2834a391-2ae4-43cf-8b8e-2bc9acbcaddb" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.perf_counter()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> [result <span class="cf">for</span> x <span class="kw">in</span> nu_list <span class="cf">if</span> (result <span class="op">:=</span> mega_transform(x)) <span class="op">&gt;</span> <span class="dv">0</span>]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> time.perf_counter()</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"total time: </span><span class="sc">{</span>end <span class="op">-</span> start<span class="sc">:.2f}</span><span class="ss"> secs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same job, two spellings. The only reason to reach for the first is that it fits inside another call, which is somewhere a <code>def</code> statement cannot go. That is the whole idea.</p>
+<p>In pandas it turns up for a less obvious reason. When pandas runs a method, it works out the arguments first and then runs the method. Inside a chain, the frame that a step is about to produce does not exist yet at that moment. A lambda puts the calculation off until the step is actually running, when the frame does exist.</p>
+</section>
+<section id="the-trick-from-the-2024-post" class="level2">
+<h2 class="anchored" data-anchor-id="the-trick-from-the-2024-post">The trick, from the 2024 post</h2>
+<p>This is the one I wrote about in <a href="https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html">Lambda Functions: How I tend to use them</a>, using the same CSV that post used. Here it is again, unchanged:</p>
+<div id="b62abf01" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data(url):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (pd.read_csv(url)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            .assign(Date<span class="op">=</span><span class="kw">lambda</span> x: pd.to_datetime(x[<span class="st">'Date'</span>]),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                    Month<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'Date'</span>].dt.month_name()))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> tweak_data(<span class="st">'synthetic_stock_data.csv'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data.head(<span class="dv">3</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data.dtypes.to_string())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[4, 16, 36, 64, 100, 144, 196, 256, 324]
-total time: 17.19 secs</code></pre>
+<pre><code>      Date       Close   Month
+2023-01-02 3773.956049 January
+2023-01-03 3438.878440 January
+2023-01-04 3858.597920 January
+
+Date     datetime64[us]
+Close           float64
+Month               str</code></pre>
 </div>
 </div>
-<p>The results clearly indicate that the walrus operator reduces the computational overhead by avoiding redundant function calls.</p>
-<section id="try-this-yourself" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="try-this-yourself">Try this yourself</h3>
-<p>You can try this in your IDE like vscode, sublime or whatever you find fun:</p>
-<p>You are to create a simple command-line interface in Python that allows you to execute shell commands until the user types “exit”.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>command <span class="op">=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> command <span class="op">!=</span> <span class="st">"exit"</span>:</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    subprocess.run(command, shell<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    command <span class="op">=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full">
-<p><img src="no_walrus_19.06.2024.gif" class="img-fluid figure-img"></p>
-<figcaption class="margin-caption">without the walrus operator</figcaption>
-</figure>
+<p>Look at the second line. <code>Month</code> reads the <code>Date</code> column, and that column only becomes a date on the line above — inside the same <code>assign</code> call. Both lines are the same call, so nothing is committed until the call runs. Writing it without the lambda, as most people first try, does not work:</p>
+<div id="e4d7dd20" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the same lines without a lambda, the way most people first write it</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">'synthetic_stock_data.csv'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    raw.assign(Date<span class="op">=</span>pd.to_datetime(raw[<span class="st">'Date'</span>]),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>               Month<span class="op">=</span>raw[<span class="st">'Date'</span>].dt.month_name())</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">AttributeError</span> <span class="im">as</span> exc:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">type</span>(exc).<span class="va">__name__</span>, <span class="st">"-"</span>, exc)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AttributeError - Can only use .dt accessor with datetimelike values</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (command <span class="op">:=</span> <span class="bu">input</span>(<span class="st">"$ "</span>)) <span class="op">!=</span> <span class="st">"exit"</span>:</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    subprocess.run(command, shell<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="quarto-figure quarto-figure-center page-columns page-full">
-<figure class="figure page-columns page-full">
-<p><img src="walrus19.06.2024.gif" class="img-fluid figure-img"></p>
-<figcaption class="margin-caption">with the walrus operator</figcaption>
-</figure>
+</div>
+<p>The same post used a second pattern, a lambda handed to <code>agg</code> so that each group is reduced by my own calculation:</p>
+<div id="2a94f092" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> .groupby(<span class="st">'Month'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a> [<span class="st">'Close'</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a> .agg(<span class="kw">lambda</span> x: np.percentile(x, <span class="dv">25</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a> .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> .to_string())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Month
+April        3245.80
+August       3268.60
+December     3247.84
+February     3226.91
+January      3165.53
+July         3331.57
+June         3183.17
+March        3323.71
+May          3269.06
+November     3290.07
+October      3183.56
+September    3240.97</code></pre>
+</div>
 </div>
 </section>
+<section id="the-same-trick-in-two-other-posts" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-trick-in-two-other-posts">The same trick in two other posts</h2>
+<p>Lambdas show up in the <a href="https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html">Karachi property prices post</a> too, where they clean column names and split a price into a number and a currency. That post read a CSV of its own, so here is the same code on three rows in the same shape:</p>
+<div id="17ec37ce" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>karachi <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"property type"</span>: [<span class="st">"Flat"</span>, <span class="st">"House"</span>, <span class="st">"Plot"</span>],</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"price"</span>: [<span class="st">"2.5 Crore PKR"</span>, <span class="st">"4 Crore PKR"</span>, <span class="st">"75 Lakh PKR"</span>],</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(karachi</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span><span class="kw">lambda</span> x: x.replace(<span class="st">" "</span>, <span class="st">"_"</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> .assign(price_<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"price"</span>].<span class="bu">str</span>.split(<span class="st">" "</span>, expand<span class="op">=</span><span class="va">True</span>)[<span class="dv">0</span>],</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>         currency_name<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"price"</span>].<span class="bu">str</span>.split(<span class="st">" "</span>, expand<span class="op">=</span><span class="va">True</span>)[<span class="dv">1</span>])</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a> .astype({<span class="st">"price_"</span>: <span class="bu">float</span>})</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> .to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>property_type         price  price_ currency_name
+         Flat 2.5 Crore PKR     2.5         Crore
+        House   4 Crore PKR     4.0         Crore
+         Plot   75 Lakh PKR    75.0          Lakh</code></pre>
+</div>
+</div>
+<p>And in the <a href="https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html">weather data wrangling post</a>, the same <code>assign</code> shape appears one more time — a date column converted, then a month number taken from the column that conversion just made:</p>
+<div id="9dd3f419" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dteday"</span>: [<span class="st">"2011-01-01"</span>, <span class="st">"2011-02-14"</span>, <span class="st">"2011-03-09"</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hum"</span>: [<span class="fl">0.81</span>, <span class="fl">0.80</span>, <span class="fl">0.63</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(bikes</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> .assign(dteday<span class="op">=</span>pd.to_datetime(bikes[<span class="st">'dteday'</span>]),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>         mnth<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'dteday'</span>].dt.month)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a> .to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    dteday  hum  mnth
+2011-01-01 0.81     1
+2011-02-14 0.80     2
+2011-03-09 0.63     3</code></pre>
+</div>
+</div>
+<p>Three posts, one pattern: convert something, then use the result of the conversion in the same call. The lambda is what makes the second half possible.</p>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In conclusion, the walrus operator is a powerful tool for optimizing Python code, particularly in scenarios involving computationally expensive operations. By allowing in-line assignments, it reduces redundancy, improves readability, and enhances overall efficiency. For developers dealing with complex data processing tasks, the walrus operator is a valuable addition to Python’s rich set of features.</p>
-<p>These examples are but a few instances demonstrating the utility of the walrus operator. For further exploration and practical use-cases, the references below provide additional insights.</p>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">References</h3>
+<section id="what-was-going-on" class="level2">
+<h2 class="anchored" data-anchor-id="what-was-going-on">What was going on</h2>
+<p>The lambda is not a loop, and that matters. It is called <strong>once</strong>, with the whole frame as its argument, and inside that call <code>x['Date']</code> is a full column — the arithmetic runs on the column, at pandas speed. A lambda handed to <code>.apply()</code> row by row is a different animal entirely: that one is Python running per row and it is slow. The chain lambdas in these posts are the fast kind.</p>
+<p>The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying <em>calculate this later, when the frame is ready</em>.</p>
+</section>
+<section id="the-same-three-jobs-with-pd.col" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-three-jobs-with-pd.col">The same three jobs with pd.col</h2>
+<p>pandas 3 adds a second way to say exactly that. <code>pd.col("name")</code> is not the column; it is a stand-in for a column — the documentation calls it “a deferred object representing a column of a DataFrame”, and anywhere that accepts <code>lambda df: df[col_name]</code> will also accept <code>pd.col(col_name)</code>.</p>
+<p>Here are the three snippets again, written that way:</p>
+<div id="3c222137" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data_v3(url):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (pd.read_csv(url, parse_dates<span class="op">=</span>[<span class="st">"Date"</span>])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>            .assign(Month<span class="op">=</span>pd.col(<span class="st">"Date"</span>).dt.month_name()))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> tweak_data_v3(<span class="st">'synthetic_stock_data.csv'</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(new.head(<span class="dv">3</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"same result as the lambda version:"</span>, new.equals(data))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Date       Close   Month
+2023-01-02 3773.956049 January
+2023-01-03 3438.878440 January
+2023-01-04 3858.597920 January
+
+same result as the lambda version: True</code></pre>
+</div>
+</div>
+<p>The column is named once — <code>pd.col("Date")</code> — instead of being named once for the frame and again inside the function body.</p>
+<p>The second snippet needs a correction, and it is a useful one. That <code>agg(lambda ...)</code> was never doing the deferral job at all. <code>agg</code> hands each group to the function one at a time, so a lambda there is just a small function, and <code>np.percentile</code> with its own keyword does the same work. What the two lines below check is that the numbers are identical either way:</p>
+<div id="562c989f" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>old_months <span class="op">=</span> (data.groupby(<span class="st">'Month'</span>)[<span class="st">'Close'</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>              .agg(<span class="kw">lambda</span> x: np.percentile(x, <span class="dv">25</span>)).<span class="bu">round</span>(<span class="dv">2</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>new_months <span class="op">=</span> (data.groupby(<span class="st">'Month'</span>)[<span class="st">'Close'</span>]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>              .agg(np.percentile, q<span class="op">=</span><span class="dv">25</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"quarterly percentiles identical:"</span>, old_months.equals(new_months))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(new_months.to_string())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>quarterly percentiles identical: True
+Month
+April        3245.80
+August       3268.60
+December     3247.84
+February     3226.91
+January      3165.53
+July         3331.57
+June         3183.17
+March        3323.71
+May          3269.06
+November     3290.07
+October      3183.56
+September    3240.97</code></pre>
+</div>
+</div>
+<div id="4a8d95e7" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>v3_bikes <span class="op">=</span> (bikes</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>            .assign(dteday<span class="op">=</span>pd.to_datetime(bikes[<span class="st">'dteday'</span>]))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>            .assign(mnth<span class="op">=</span>pd.col(<span class="st">"dteday"</span>).dt.month))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>with_lambda <span class="op">=</span> (bikes</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>               .assign(dteday<span class="op">=</span>pd.to_datetime(bikes[<span class="st">'dteday'</span>]),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                       mnth<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">'dteday'</span>].dt.month))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"month column identical:"</span>, v3_bikes[<span class="st">"mnth"</span>].tolist() <span class="op">==</span> with_lambda[<span class="st">"mnth"</span>].tolist())</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"both month columns:"</span>, with_lambda[<span class="st">"mnth"</span>].tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>month column identical: True
+both month columns: [1, 2, 3]</code></pre>
+</div>
+</div>
+<p>The third snippet is where <code>pd.col()</code> earns its place, because there the lambda really was postponing the calculation. Nothing is delayed with <code>pd.col("dteday")</code>, so the line reads in the order it runs, and the conversion is separated from the step that uses its result — which is what makes the failure in the earlier section impossible to write by accident.</p>
+</section>
+<section id="where-pd.col-does-not-help" class="level2">
+<h2 class="anchored" data-anchor-id="where-pd.col-does-not-help">Where pd.col does not help</h2>
+<p>It is not a replacement for every lambda in those posts. The <code>rename(columns=...)</code> lambda has no equivalent, because <code>rename</code> is not working on a frame’s contents — it is working on the labels:</p>
+<div id="8e891e5f" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    karachi.rename(columns<span class="op">=</span>pd.col(<span class="st">"property type"</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TypeError</span> <span class="im">as</span> exc:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">type</span>(exc).<span class="va">__name__</span>, <span class="st">"-"</span>, <span class="st">" "</span>.join(<span class="bu">str</span>(exc).split()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TypeError - boolean value of an expression is ambiguous</code></pre>
+</div>
+</div>
+<p>The rule of thumb: if the argument is about a <strong>column of the frame</strong>, <code>pd.col()</code> can probably write it. If it is about the <strong>column labels</strong>, or about rows one at a time, it cannot, and the lambda stays. The release notes for 3.0 call this “initial support” and name three places it works — <code>assign</code>, <code>loc</code>, and setting by column — so it is early.</p>
+</section>
+<section id="what-else-changed-in-pandas-3" class="level2">
+<h2 class="anchored" data-anchor-id="what-else-changed-in-pandas-3">What else changed in pandas 3</h2>
+<p>Two things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:</p>
+<div id="cac2eac3" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a string column now reports:"</span>, pd.Series([<span class="st">"a"</span>, <span class="st">"b"</span>]).dtype)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the old default was:"</span>, pd.Series([<span class="st">"a"</span>, <span class="st">"b"</span>], dtype<span class="op">=</span><span class="bu">object</span>).dtype)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a string column now reports: str
+the old default was: object</code></pre>
+</div>
+</div>
+<div id="5318c30d" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"b"</span>: [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]})</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> warnings.catch_warnings(record<span class="op">=</span><span class="va">True</span>) <span class="im">as</span> caught:</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    warnings.simplefilter(<span class="st">"always"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"a"</span>][df[<span class="st">"b"</span>] <span class="op">&gt;</span> <span class="dv">15</span>] <span class="op">=</span> <span class="dv">99</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"warning:"</span>, caught[<span class="dv">0</span>].category.<span class="va">__name__</span> <span class="cf">if</span> caught <span class="cf">else</span> <span class="st">"none"</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the write did not land:"</span>, df.to_dict(<span class="st">"records"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>warning: ChainedAssignmentError
+the write did not land: [{'a': 1, 'b': 10}, {'a': 2, 'b': 20}, {'a': 3, 'b': 30}]</code></pre>
+</div>
+</div>
+<p>Text columns no longer report as <code>object</code> — they report as <code>str</code>. And a two-step write, <code>df["a"][df["b"] &gt; 15] = 99</code>, no longer writes anything: pandas warns and the frame is left alone. The single-step <code>df.loc[df["b"] &gt; 15, "a"] = 99</code> is what works now.</p>
+</section>
+<section id="where-to-read-more" class="level2">
+<h2 class="anchored" data-anchor-id="where-to-read-more">Where to read more</h2>
 <ul>
-<li><a href="https://peps.python.org/pep-0572/">PEP 572 – Assignment Expressions</a></li>
-<li><a href="https://youtu.be/mHOgGuALfNc">Dustin Ingram’s Talk on the Walrus Operator</a></li>
+<li>The three posts this one borrows from: <a href="https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html">Lambda Functions</a>, <a href="https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html">Karachi Property Prices</a>, <a href="https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html">Data Wrangling</a></li>
+<li><a href="https://pandas.pydata.org/docs/whatsnew/v3.0.0.html">What’s new in pandas 3.0</a> — the <code>pd.col()</code> entry is under <em>Other enhancements</em></li>
+<li><a href="https://pandas.pydata.org/docs/reference/api/pandas.col.html"><code>pandas.col</code> in the API reference</a></li>
+<li><a href="https://pandas.pydata.org/docs/user_guide/copy_on_write.html">Copy-on-Write user guide</a> — the chained-assignment section</li>
 </ul>
 
 
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
@@ -993,7 +1106,7 @@ total time: 17.19 secs</code></pre>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.dev/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2024-June-19-Walrus-Operator/theWalrusOperator.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2024-June-19-Walrus-Operator/theWalrusOperator.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-25-Lambdas-And-pd-col/lambdas_and_pd_col.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-25-Lambdas-And-pd-col/lambdas_and_pd_col.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
 </div>
