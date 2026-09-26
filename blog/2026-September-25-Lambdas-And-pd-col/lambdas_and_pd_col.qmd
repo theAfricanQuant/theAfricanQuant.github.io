@@ -304,6 +304,45 @@ except TypeError as exc:
 
 The rule of thumb: if the argument is about a **column of the frame**, `pd.col()` can probably write it. If it is about the **column labels**, or about rows one at a time, it cannot, and the lambda stays. The release notes for 3.0 call this "initial support" and name three places it works — `assign`, `loc`, and setting by column — so it is early.
 
+## What the book says
+
+Most of what this post shows was written down first in a book published two weeks before it: Matt Harrison, *Effective Pandas 3*, whose subject is exactly the method chain this post keeps rebuilding. He reaches `pd.col` while debugging long chains, and introduces it the way the release notes do:
+
+> "This example used a new feature in pandas 3.0 that allows you to reference columns using `pd.col('column_name')` inside `.assign`. ... In the past, you would have had to use a lambda function inside `.assign`."
+
+He prints a note beside it, and it is a limitation rather than a preference:
+
+> "There are cases where `pd.col` doesn't work. (For example, calling a NumPy function or using the `pd.cut` function.) You will see that many of my examples use lambda functions."
+
+Half of that note holds on 3.0.6. Which half is worth running rather than repeating:
+
+```{python}
+import numpy as np
+
+frame = pd.DataFrame({"a": [1, 4, 9, 16], "b": [10, 20, 30, 40]})
+
+try:
+    frame.assign(band=pd.cut(pd.col("a"), bins=2))
+except TypeError as exc:
+    print("pd.cut with pd.col:", type(exc).__name__, "-", " ".join(str(exc).split()))
+
+print(frame.assign(log_a=np.round(np.log(pd.col("a")), 3))[["a", "log_a"]].to_string(index=False))
+```
+
+`pd.cut` refuses, exactly as the book says. A NumPy function does not — `np.log` and `np.round` compose with an expression and return the column asked for. So the useful version of the rule is narrower than the note: anything that has to ask *is this true* about the expression while the chain is being built will refuse, and that is what `pd.cut` and `rename` have in common.
+
+On the lambda itself he supplies, in one sentence, the reason this post took a section to reach:
+
+> "This function will accept the current state of the DataFrame. If you have done any filtering or manipulation in the chain before calling `.assign`, it will be represented in this DataFrame."
+
+That is the deferral: the callable is handed the frame as the chain has built it so far. It is why a chain that renames columns first still needs a lambda to reach the new names, and why the book keeps both tools.
+
+He is blunt about the write that no longer lands, in the Copy-on-Write chapter — it "is the only data-copying behavior in pandas 3" and "does not make chained assignment useful". He describes the same `ChainedAssignmentError` **warning** this post ran, and adds that a defensive `.copy()` is now unnecessary when its only purpose was to silence the old warning.
+
+The book covers the strings change in a chapter called *Strings and Objects*, and it already writes the new period aliases (`QE-DEC`, `QE-JUN`) throughout without flagging that the old letters were renamed. A reader who learned `M` and `Q` gets no warning from it.
+
+Two pandas 3 changes it does not reach: the new anti-join keyword, since its own anti-join chapter still uses `outer` with `indicator=True`, and the Apache Iceberg readers and Arrow interface. Its closing checklist, though, is this post's subject in list form: chaining, `.assign`, `.pipe`, avoiding `.apply`, and relying on Copy-on-Write.
+
 ## What else changed in pandas 3
 
 Two things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:
@@ -324,6 +363,17 @@ with warnings.catch_warnings(record=True) as caught:
 print("warning:", caught[0].category.__name__ if caught else "none")
 print("the write did not land:", df.to_dict("records"))
 ```
+
+There is a second half to the strings change. The default `str` dtype reports missing values as `NaN`, and a comparison against a value treats them as unequal; the nullable dtype keeps the answer missing instead:
+
+```{python}
+dogs = pd.Series(["dog", None])
+print("default str dtype:", list(dogs == "dog"))
+print("nullable dtype   :", list(pd.Series(["dog", None], dtype="string") == "dog"))
+print("both find it     :", list(dogs.isna()))
+```
+
+The book's phrasing is that the nullable comparison "stays missing: we do not know whether that entry was 'dog'". For a reader counting rows that match a value, that is a changed result rather than a style tip.
 
 Text columns no longer report as `object` — they report as `str`. And a two-step write, `df["a"][df["b"] > 15] = 99`, no longer writes anything: pandas warns and the frame is left alone. The single-step `df.loc[df["b"] > 15, "a"] = 99` is what works now.
 
