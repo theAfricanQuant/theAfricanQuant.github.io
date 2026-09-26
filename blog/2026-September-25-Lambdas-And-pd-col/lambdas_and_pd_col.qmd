@@ -319,7 +319,7 @@ So the rule is narrower than "it does not work everywhere". `pd.col()` is an exp
 
 ## What else changed in pandas 3
 
-Two things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:
+Three things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:
 
 ```{python}
 print("a string column now reports:", pd.Series(["a", "b"]).dtype)
@@ -351,10 +351,27 @@ In the nullable dtype the comparison stays missing instead — pandas is saying 
 
 Text columns no longer report as `object` — they report as `str`. And a two-step write, `df["a"][df["b"] > 15] = 99`, no longer writes anything: pandas warns and the frame is left alone. The single-step `df.loc[df["b"] > 15, "a"] = 99` is what works now. A defensive `.copy()` is no longer needed when its only purpose was to quiet that warning, though it still earns its place when the intent is a genuinely independent frame.
 
+One more change belongs in that list, because it is the only one here that stops the notebook rather than warning it. The period codes were renamed: month-end `"M"` is now `"ME"`, quarter-end `"Q"` is `"QE"`, year-end `"Y"` is `"YE"`, and the business variants follow — `"BM"` → `"BME"`, `"BQ"` → `"BQE"`, `"BY"` → `"BYE"`. The minute and hour codes are `"min"` and `"h"` now:
+
+```{python}
+series = pd.Series(range(10), index=pd.date_range("2024-01-01", periods=10, freq="D"))
+
+for code in ["M", "ME", "W", "T", "min"]:
+    try:
+        out = series.resample(code).sum()
+        print("resample('" + code + "') ->", len(out), "bucket(s), first value:", out.iloc[0])
+    except ValueError as exc:
+        print("resample('" + code + "') ->", type(exc).__name__ + ":", str(exc).split(". ")[0])
+```
+
+An old monthly `resample("M")` raises `ValueError` and the cell stops; `"ME"` gives the same answer the old code used to. Weekly and daily codes were not touched — `"W"` and `"D"` work as before — and the error message names the alias it will not accept.
+
+
 ## Where to read more
 
 - The three posts this one borrows from: [Lambda Functions](https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html), [Karachi Property Prices](https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html), [Data Wrangling](https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html)
 - [What's new in pandas 3.0](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html) — the `pd.col()` entry is under *Other enhancements*
 - [`pandas.col` in the API reference](https://pandas.pydata.org/docs/reference/api/pandas.col.html)
 - [Copy-on-Write user guide](https://pandas.pydata.org/docs/user_guide/copy_on_write.html) — the chained-assignment section
+- [Offset aliases](https://pandas.pydata.org/docs/user_guide/timeseries.html#offset-aliases) — the current spelling of the period codes; the rename itself sits in the *Removal of prior version deprecations* section of the 3.0 release notes
 - Matt Harrison, *Effective Pandas 3* (2026) — the pandas 3 edition of the chaining book this post borrows its style from; the `pd.col` idiom above is the one it teaches
