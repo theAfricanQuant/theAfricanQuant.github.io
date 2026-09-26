@@ -244,7 +244,7 @@ Three posts, one pattern: convert something, then use the result of the conversi
 
 The lambda is not a loop, and that matters. It is called **once**, with the whole frame as its argument, and inside that call `x['Date']` is a full column — the arithmetic runs on the column, at pandas speed. A lambda handed to `.apply()` row by row is a different animal entirely: that one is Python running per row and it is slow. The chain lambdas in these posts are the fast kind.
 
-The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying *calculate this later, when the frame is ready*.
+The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying *calculate this later, when the frame is ready*. It is handed the frame as the chain has built it so far, which is why a chain that renames columns first has to reach the new names through a lambda.
 
 ## The same three jobs with pd.col
 
@@ -302,46 +302,20 @@ except TypeError as exc:
     print(type(exc).__name__, "-", " ".join(str(exc).split()))
 ```
 
-The rule of thumb: if the argument is about a **column of the frame**, `pd.col()` can probably write it. If it is about the **column labels**, or about rows one at a time, it cannot, and the lambda stays. The release notes for 3.0 call this "initial support" and name three places it works — `assign`, `loc`, and setting by column — so it is early.
-
-## What the book says
-
-Most of what this post shows was written down first in a book published two weeks before it: Matt Harrison, *Effective Pandas 3*, whose subject is exactly the method chain this post keeps rebuilding. He reaches `pd.col` while debugging long chains, and introduces it the way the release notes do:
-
-> "This example used a new feature in pandas 3.0 that allows you to reference columns using `pd.col('column_name')` inside `.assign`. ... In the past, you would have had to use a lambda function inside `.assign`."
-
-He prints a note beside it, and it is a limitation rather than a preference:
-
-> "There are cases where `pd.col` doesn't work. (For example, calling a NumPy function or using the `pd.cut` function.) You will see that many of my examples use lambda functions."
-
-Half of that note holds on 3.0.6. Which half is worth running rather than repeating:
+The same wall shows up with functions rather than labels. A NumPy function composes with an expression and hands back the column asked for; anything that has to inspect the expression while the chain is still being built refuses:
 
 ```{python}
-import numpy as np
-
-frame = pd.DataFrame({"a": [1, 4, 9, 16], "b": [10, 20, 30, 40]})
+frame = pd.DataFrame({"a": [1, 4, 9, 16]})
 
 try:
     frame.assign(band=pd.cut(pd.col("a"), bins=2))
 except TypeError as exc:
     print("pd.cut with pd.col:", type(exc).__name__, "-", " ".join(str(exc).split()))
 
-print(frame.assign(log_a=np.round(np.log(pd.col("a")), 3))[["a", "log_a"]].to_string(index=False))
+print(frame.assign(log_a=np.round(np.log(pd.col("a")), 3)).to_string(index=False))
 ```
 
-`pd.cut` refuses, exactly as the book says. A NumPy function does not — `np.log` and `np.round` compose with an expression and return the column asked for. So the useful version of the rule is narrower than the note: anything that has to ask *is this true* about the expression while the chain is being built will refuse, and that is what `pd.cut` and `rename` have in common.
-
-On the lambda itself he supplies, in one sentence, the reason this post took a section to reach:
-
-> "This function will accept the current state of the DataFrame. If you have done any filtering or manipulation in the chain before calling `.assign`, it will be represented in this DataFrame."
-
-That is the deferral: the callable is handed the frame as the chain has built it so far. It is why a chain that renames columns first still needs a lambda to reach the new names, and why the book keeps both tools.
-
-He is blunt about the write that no longer lands, in the Copy-on-Write chapter — it "is the only data-copying behavior in pandas 3" and "does not make chained assignment useful". He describes the same `ChainedAssignmentError` **warning** this post ran, and adds that a defensive `.copy()` is now unnecessary when its only purpose was to silence the old warning.
-
-The book covers the strings change in a chapter called *Strings and Objects*, and it already writes the new period aliases (`QE-DEC`, `QE-JUN`) throughout without flagging that the old letters were renamed. A reader who learned `M` and `Q` gets no warning from it.
-
-Two pandas 3 changes it does not reach: the new anti-join keyword, since its own anti-join chapter still uses `outer` with `indicator=True`, and the Apache Iceberg readers and Arrow interface. Its closing checklist, though, is this post's subject in list form: chaining, `.assign`, `.pipe`, avoiding `.apply`, and relying on Copy-on-Write.
+So the rule is narrower than "it does not work everywhere". `pd.col()` is an expression that has not been evaluated yet: anything that only needs the column's **values** can write it — arithmetic, NumPy, the `.str` and `.dt` accessors — and anything that needs a yes-or-no answer about the expression while the chain is being built cannot, which is exactly what `pd.cut` and `rename` have in common. The release notes for 3.0 call this "initial support" and name three places it works — `assign`, `loc`, and setting by column — so it is early.
 
 ## What else changed in pandas 3
 
@@ -373,9 +347,9 @@ print("nullable dtype   :", list(pd.Series(["dog", None], dtype="string") == "do
 print("both find it     :", list(dogs.isna()))
 ```
 
-The book's phrasing is that the nullable comparison "stays missing: we do not know whether that entry was 'dog'". For a reader counting rows that match a value, that is a changed result rather than a style tip.
+In the nullable dtype the comparison stays missing instead — pandas is saying it does not know whether that entry was `dog`. For code that counts rows matching a value, that is a changed answer rather than a style note.
 
-Text columns no longer report as `object` — they report as `str`. And a two-step write, `df["a"][df["b"] > 15] = 99`, no longer writes anything: pandas warns and the frame is left alone. The single-step `df.loc[df["b"] > 15, "a"] = 99` is what works now.
+Text columns no longer report as `object` — they report as `str`. And a two-step write, `df["a"][df["b"] > 15] = 99`, no longer writes anything: pandas warns and the frame is left alone. The single-step `df.loc[df["b"] > 15, "a"] = 99` is what works now. A defensive `.copy()` is no longer needed when its only purpose was to quiet that warning, though it still earns its place when the intent is a genuinely independent frame.
 
 ## Where to read more
 
@@ -383,3 +357,4 @@ Text columns no longer report as `object` — they report as `str`. And a two-st
 - [What's new in pandas 3.0](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html) — the `pd.col()` entry is under *Other enhancements*
 - [`pandas.col` in the API reference](https://pandas.pydata.org/docs/reference/api/pandas.col.html)
 - [Copy-on-Write user guide](https://pandas.pydata.org/docs/user_guide/copy_on_write.html) — the chained-assignment section
+- Matt Harrison, [*Effective Pandas 3*](https://store.metasnake.com/effective-pandas-3-digital-book) (2026) — the pandas 3 edition of the chaining book this post borrows its style from; the `pd.col` idiom above is the one it teaches
