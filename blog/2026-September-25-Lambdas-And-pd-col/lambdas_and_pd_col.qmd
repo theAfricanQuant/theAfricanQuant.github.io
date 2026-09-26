@@ -357,4 +357,4 @@ Text columns no longer report as `object` — they report as `str`. And a two-st
 - [What's new in pandas 3.0](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html) — the `pd.col()` entry is under *Other enhancements*
 - [`pandas.col` in the API reference](https://pandas.pydata.org/docs/reference/api/pandas.col.html)
 - [Copy-on-Write user guide](https://pandas.pydata.org/docs/user_guide/copy_on_write.html) — the chained-assignment section
-- Matt Harrison, [*Effective Pandas 3*](https://store.metasnake.com/effective-pandas-3-digital-book) (2026) — the pandas 3 edition of the chaining book this post borrows its style from; the `pd.col` idiom above is the one it teaches
+- Matt Harrison, *Effective Pandas 3* (2026) — the pandas 3 edition of the chaining book this post borrows its style from; the `pd.col` idiom above is the one it teaches
