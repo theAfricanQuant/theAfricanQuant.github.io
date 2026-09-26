@@ -527,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="first-what-a-lambda-is" class="level2">
 <h2 class="anchored" data-anchor-id="first-what-a-lambda-is">First, what a lambda is</h2>
 <p>A lambda is a function written where it is used, without a name:</p>
-<div id="2b3c159a" class="cell" data-execution_count="1">
+<div id="87ec399f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>double <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span> <span class="dv">2</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_named(x):</span>
@@ -544,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-trick-from-the-2024-post" class="level2">
 <h2 class="anchored" data-anchor-id="the-trick-from-the-2024-post">The trick, from the 2024 post</h2>
 <p>This is the one I wrote about in <a href="https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html">Lambda Functions: How I tend to use them</a>, using the same CSV that post used. Here it is again, unchanged:</p>
-<div id="72dd12bb" class="cell" data-execution_count="2">
+<div id="3ccc4b04" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data(url):</span>
@@ -568,7 +568,7 @@ Month               str</code></pre>
 </div>
 </div>
 <p>Look at the second line. <code>Month</code> reads the <code>Date</code> column, and that column only becomes a date on the line above — inside the same <code>assign</code> call. Both lines are the same call, so nothing is committed until the call runs. Writing it without the lambda, as most people first try, does not work:</p>
-<div id="f27bf141" class="cell" data-execution_count="3">
+<div id="827cfee7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the same lines without a lambda, the way most people first write it</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">'synthetic_stock_data.csv'</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
@@ -581,7 +581,7 @@ Month               str</code></pre>
 </div>
 </div>
 <p>The same post used a second pattern, a lambda handed to <code>agg</code> so that each group is reduced by my own calculation:</p>
-<div id="3b529c1b" class="cell" data-execution_count="4">
+<div id="7ff780bf" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data</span>
@@ -610,7 +610,7 @@ September    3240.97</code></pre>
 <section id="the-same-trick-in-two-other-posts" class="level2">
 <h2 class="anchored" data-anchor-id="the-same-trick-in-two-other-posts">The same trick in two other posts</h2>
 <p>Lambdas show up in the <a href="https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html">Karachi property prices post</a> too, where they clean column names and split a price into a number and a currency. That post read a CSV of its own, so here is the same code on three rows in the same shape:</p>
-<div id="16313f7b" class="cell" data-execution_count="5">
+<div id="174c27fe" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>karachi <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"property type"</span>: [<span class="st">"Flat"</span>, <span class="st">"House"</span>, <span class="st">"Plot"</span>],</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"price"</span>: [<span class="st">"2.5 Crore PKR"</span>, <span class="st">"4 Crore PKR"</span>, <span class="st">"75 Lakh PKR"</span>],</span>
@@ -630,7 +630,7 @@ September    3240.97</code></pre>
 </div>
 </div>
 <p>And in the <a href="https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html">weather data wrangling post</a>, the same <code>assign</code> shape appears one more time — a date column converted, then a month number taken from the column that conversion just made:</p>
-<div id="34f76a79" class="cell" data-execution_count="6">
+<div id="edcc9052" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dteday"</span>: [<span class="st">"2011-01-01"</span>, <span class="st">"2011-02-14"</span>, <span class="st">"2011-03-09"</span>],</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hum"</span>: [<span class="fl">0.81</span>, <span class="fl">0.80</span>, <span class="fl">0.63</span>],</span>
@@ -652,13 +652,13 @@ September    3240.97</code></pre>
 <section id="what-was-going-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-was-going-on">What was going on</h2>
 <p>The lambda is not a loop, and that matters. It is called <strong>once</strong>, with the whole frame as its argument, and inside that call <code>x['Date']</code> is a full column — the arithmetic runs on the column, at pandas speed. A lambda handed to <code>.apply()</code> row by row is a different animal entirely: that one is Python running per row and it is slow. The chain lambdas in these posts are the fast kind.</p>
-<p>The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying <em>calculate this later, when the frame is ready</em>.</p>
+<p>The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying <em>calculate this later, when the frame is ready</em>. It is handed the frame as the chain has built it so far, which is why a chain that renames columns first has to reach the new names through a lambda.</p>
 </section>
 <section id="the-same-three-jobs-with-pd.col" class="level2">
 <h2 class="anchored" data-anchor-id="the-same-three-jobs-with-pd.col">The same three jobs with pd.col</h2>
 <p>pandas 3 adds a second way to say exactly that. <code>pd.col("name")</code> is not the column; it is a stand-in for a column — the documentation calls it “a deferred object representing a column of a DataFrame”, and anywhere that accepts <code>lambda df: df[col_name]</code> will also accept <code>pd.col(col_name)</code>.</p>
 <p>Here are the three snippets again, written that way:</p>
-<div id="519cbf25" class="cell" data-execution_count="7">
+<div id="dde6f0a3" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_data_v3(url):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (pd.read_csv(url, parse_dates<span class="op">=</span>[<span class="st">"Date"</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>            .assign(Month<span class="op">=</span>pd.col(<span class="st">"Date"</span>).dt.month_name()))</span>
@@ -678,7 +678,7 @@ same result as the lambda version: True</code></pre>
 </div>
 <p>The column is named once — <code>pd.col("Date")</code> — instead of being named once for the frame and again inside the function body.</p>
 <p>The second snippet needs a correction, and it is a useful one. That <code>agg(lambda ...)</code> was never doing the deferral job at all. <code>agg</code> hands each group to the function one at a time, so a lambda there is just a small function, and <code>np.percentile</code> with its own keyword does the same work. What the two lines below check is that the numbers are identical either way:</p>
-<div id="996d3c47" class="cell" data-execution_count="8">
+<div id="9ef7696f" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>old_months <span class="op">=</span> (data.groupby(<span class="st">'Month'</span>)[<span class="st">'Close'</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>              .agg(<span class="kw">lambda</span> x: np.percentile(x, <span class="dv">25</span>)).<span class="bu">round</span>(<span class="dv">2</span>))</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>new_months <span class="op">=</span> (data.groupby(<span class="st">'Month'</span>)[<span class="st">'Close'</span>]</span>
@@ -702,7 +702,7 @@ October      3183.56
 September    3240.97</code></pre>
 </div>
 </div>
-<div id="fcfbf4e9" class="cell" data-execution_count="9">
+<div id="33301612" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>v3_bikes <span class="op">=</span> (bikes</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>            .assign(dteday<span class="op">=</span>pd.to_datetime(bikes[<span class="st">'dteday'</span>]))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>            .assign(mnth<span class="op">=</span>pd.col(<span class="st">"dteday"</span>).dt.month))</span>
@@ -723,7 +723,7 @@ both month columns: [1, 2, 3]</code></pre>
 <section id="where-pd.col-does-not-help" class="level2">
 <h2 class="anchored" data-anchor-id="where-pd.col-does-not-help">Where pd.col does not help</h2>
 <p>It is not a replacement for every lambda in those posts. The <code>rename(columns=...)</code> lambda has no equivalent, because <code>rename</code> is not working on a frame’s contents — it is working on the labels:</p>
-<div id="ad4f5d2c" class="cell" data-execution_count="10">
+<div id="6a620e8d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    karachi.rename(columns<span class="op">=</span>pd.col(<span class="st">"property type"</span>))</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TypeError</span> <span class="im">as</span> exc:</span>
@@ -732,30 +732,16 @@ both month columns: [1, 2, 3]</code></pre>
 <pre><code>TypeError - boolean value of an expression is ambiguous</code></pre>
 </div>
 </div>
-<p>The rule of thumb: if the argument is about a <strong>column of the frame</strong>, <code>pd.col()</code> can probably write it. If it is about the <strong>column labels</strong>, or about rows one at a time, it cannot, and the lambda stays. The release notes for 3.0 call this “initial support” and name three places it works — <code>assign</code>, <code>loc</code>, and setting by column — so it is early.</p>
-</section>
-<section id="what-the-book-says" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-book-says">What the book says</h2>
-<p>Most of what this post shows was written down first in a book published two weeks before it: Matt Harrison, <em>Effective Pandas 3</em>, whose subject is exactly the method chain this post keeps rebuilding. He reaches <code>pd.col</code> while debugging long chains, and introduces it the way the release notes do:</p>
-<blockquote class="blockquote">
-<p>“This example used a new feature in pandas 3.0 that allows you to reference columns using <code>pd.col('column_name')</code> inside <code>.assign</code>. … In the past, you would have had to use a lambda function inside <code>.assign</code>.”</p>
-</blockquote>
-<p>He prints a note beside it, and it is a limitation rather than a preference:</p>
-<blockquote class="blockquote">
-<p>“There are cases where <code>pd.col</code> doesn’t work. (For example, calling a NumPy function or using the <code>pd.cut</code> function.) You will see that many of my examples use lambda functions.”</p>
-</blockquote>
-<p>Half of that note holds on 3.0.6. Which half is worth running rather than repeating:</p>
-<div id="616f2d73" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<p>The same wall shows up with functions rather than labels. A NumPy function composes with an expression and hands back the column asked for; anything that has to inspect the expression while the chain is still being built refuses:</p>
+<div id="65e63a5d" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>frame <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">9</span>, <span class="dv">16</span>]})</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>frame <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">9</span>, <span class="dv">16</span>], <span class="st">"b"</span>: [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>]})</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    frame.assign(band<span class="op">=</span>pd.cut(pd.col(<span class="st">"a"</span>), bins<span class="op">=</span><span class="dv">2</span>))</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TypeError</span> <span class="im">as</span> exc:</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"pd.cut with pd.col:"</span>, <span class="bu">type</span>(exc).<span class="va">__name__</span>, <span class="st">"-"</span>, <span class="st">" "</span>.join(<span class="bu">str</span>(exc).split()))</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame.assign(log_a<span class="op">=</span>np.<span class="bu">round</span>(np.log(pd.col(<span class="st">"a"</span>)), <span class="dv">3</span>))[[<span class="st">"a"</span>, <span class="st">"log_a"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    frame.assign(band<span class="op">=</span>pd.cut(pd.col(<span class="st">"a"</span>), bins<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">TypeError</span> <span class="im">as</span> exc:</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"pd.cut with pd.col:"</span>, <span class="bu">type</span>(exc).<span class="va">__name__</span>, <span class="st">"-"</span>, <span class="st">" "</span>.join(<span class="bu">str</span>(exc).split()))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frame.assign(log_a<span class="op">=</span>np.<span class="bu">round</span>(np.log(pd.col(<span class="st">"a"</span>)), <span class="dv">3</span>)).to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>pd.cut with pd.col: TypeError - boolean value of an expression is ambiguous
  a  log_a
@@ -765,20 +751,12 @@ both month columns: [1, 2, 3]</code></pre>
 16  2.773</code></pre>
 </div>
 </div>
-<p><code>pd.cut</code> refuses, exactly as the book says. A NumPy function does not — <code>np.log</code> and <code>np.round</code> compose with an expression and return the column asked for. So the useful version of the rule is narrower than the note: anything that has to ask <em>is this true</em> about the expression while the chain is being built will refuse, and that is what <code>pd.cut</code> and <code>rename</code> have in common.</p>
-<p>On the lambda itself he supplies, in one sentence, the reason this post took a section to reach:</p>
-<blockquote class="blockquote">
-<p>“This function will accept the current state of the DataFrame. If you have done any filtering or manipulation in the chain before calling <code>.assign</code>, it will be represented in this DataFrame.”</p>
-</blockquote>
-<p>That is the deferral: the callable is handed the frame as the chain has built it so far. It is why a chain that renames columns first still needs a lambda to reach the new names, and why the book keeps both tools.</p>
-<p>He is blunt about the write that no longer lands, in the Copy-on-Write chapter — it “is the only data-copying behavior in pandas 3” and “does not make chained assignment useful”. He describes the same <code>ChainedAssignmentError</code> <strong>warning</strong> this post ran, and adds that a defensive <code>.copy()</code> is now unnecessary when its only purpose was to silence the old warning.</p>
-<p>The book covers the strings change in a chapter called <em>Strings and Objects</em>, and it already writes the new period aliases (<code>QE-DEC</code>, <code>QE-JUN</code>) throughout without flagging that the old letters were renamed. A reader who learned <code>M</code> and <code>Q</code> gets no warning from it.</p>
-<p>Two pandas 3 changes it does not reach: the new anti-join keyword, since its own anti-join chapter still uses <code>outer</code> with <code>indicator=True</code>, and the Apache Iceberg readers and Arrow interface. Its closing checklist, though, is this post’s subject in list form: chaining, <code>.assign</code>, <code>.pipe</code>, avoiding <code>.apply</code>, and relying on Copy-on-Write.</p>
+<p>So the rule is narrower than “it does not work everywhere”. <code>pd.col()</code> is an expression that has not been evaluated yet: anything that only needs the column’s <strong>values</strong> can write it — arithmetic, NumPy, the <code>.str</code> and <code>.dt</code> accessors — and anything that needs a yes-or-no answer about the expression while the chain is being built cannot, which is exactly what <code>pd.cut</code> and <code>rename</code> have in common. The release notes for 3.0 call this “initial support” and name three places it works — <code>assign</code>, <code>loc</code>, and setting by column — so it is early.</p>
 </section>
 <section id="what-else-changed-in-pandas-3" class="level2">
 <h2 class="anchored" data-anchor-id="what-else-changed-in-pandas-3">What else changed in pandas 3</h2>
 <p>Two things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:</p>
-<div id="864dc1e0" class="cell" data-execution_count="12">
+<div id="bfc34694" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a string column now reports:"</span>, pd.Series([<span class="st">"a"</span>, <span class="st">"b"</span>]).dtype)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the old default was:"</span>, pd.Series([<span class="st">"a"</span>, <span class="st">"b"</span>], dtype<span class="op">=</span><span class="bu">object</span>).dtype)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -786,7 +764,7 @@ both month columns: [1, 2, 3]</code></pre>
 the old default was: object</code></pre>
 </div>
 </div>
-<div id="24ab8bae" class="cell" data-execution_count="13">
+<div id="9ca02a84" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"b"</span>: [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]})</span>
@@ -802,7 +780,7 @@ the write did not land: [{'a': 1, 'b': 10}, {'a': 2, 'b': 20}, {'a': 3, 'b': 30}
 </div>
 </div>
 <p>There is a second half to the strings change. The default <code>str</code> dtype reports missing values as <code>NaN</code>, and a comparison against a value treats them as unequal; the nullable dtype keeps the answer missing instead:</p>
-<div id="34793c8b" class="cell" data-execution_count="14">
+<div id="c5c5da91" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dogs <span class="op">=</span> pd.Series([<span class="st">"dog"</span>, <span class="va">None</span>])</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"default str dtype:"</span>, <span class="bu">list</span>(dogs <span class="op">==</span> <span class="st">"dog"</span>))</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"nullable dtype   :"</span>, <span class="bu">list</span>(pd.Series([<span class="st">"dog"</span>, <span class="va">None</span>], dtype<span class="op">=</span><span class="st">"string"</span>) <span class="op">==</span> <span class="st">"dog"</span>))</span>
@@ -813,8 +791,8 @@ nullable dtype   : [np.True_, &lt;NA&gt;]
 both find it     : [False, True]</code></pre>
 </div>
 </div>
-<p>The book’s phrasing is that the nullable comparison “stays missing: we do not know whether that entry was ‘dog’”. For a reader counting rows that match a value, that is a changed result rather than a style tip.</p>
-<p>Text columns no longer report as <code>object</code> — they report as <code>str</code>. And a two-step write, <code>df["a"][df["b"] &gt; 15] = 99</code>, no longer writes anything: pandas warns and the frame is left alone. The single-step <code>df.loc[df["b"] &gt; 15, "a"] = 99</code> is what works now.</p>
+<p>In the nullable dtype the comparison stays missing instead — pandas is saying it does not know whether that entry was <code>dog</code>. For code that counts rows matching a value, that is a changed answer rather than a style note.</p>
+<p>Text columns no longer report as <code>object</code> — they report as <code>str</code>. And a two-step write, <code>df["a"][df["b"] &gt; 15] = 99</code>, no longer writes anything: pandas warns and the frame is left alone. The single-step <code>df.loc[df["b"] &gt; 15, "a"] = 99</code> is what works now. A defensive <code>.copy()</code> is no longer needed when its only purpose was to quiet that warning, though it still earns its place when the intent is a genuinely independent frame.</p>
 </section>
 <section id="where-to-read-more" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-read-more">Where to read more</h2>
@@ -823,6 +801,7 @@ both find it     : [False, True]</code></pre>
 <li><a href="https://pandas.pydata.org/docs/whatsnew/v3.0.0.html">What’s new in pandas 3.0</a> — the <code>pd.col()</code> entry is under <em>Other enhancements</em></li>
 <li><a href="https://pandas.pydata.org/docs/reference/api/pandas.col.html"><code>pandas.col</code> in the API reference</a></li>
 <li><a href="https://pandas.pydata.org/docs/user_guide/copy_on_write.html">Copy-on-Write user guide</a> — the chained-assignment section</li>
+<li>Matt Harrison, <a href="https://store.metasnake.com/effective-pandas-3-digital-book"><em>Effective Pandas 3</em></a> (2026) — the pandas 3 edition of the chaining book this post borrows its style from; the <code>pd.col</code> idiom above is the one it teaches</li>
 </ul>
 
 
