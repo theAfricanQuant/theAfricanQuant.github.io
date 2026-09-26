@@ -1,0 +1,335 @@
+---
+title: "The lambda you no longer need"
+author: "Ricky Macharm"
+date: "25 September 2026"
+image: "lambdas_and_pd_col.png"
+description: "Three snippets from this blog's own posts, run again on pandas 3 — and the shorter way to do the same job with pd.col()."
+categories: [pandas, Method Chaining, Lambda Functions, Data Wrangling]
+format:
+    html:
+        fig-cap-location: bottom
+jupyter: python3
+execute:
+    echo: true
+    eval: true
+---
+
+<style>
+
+/* Mobile readability for this post (phone widths only) */
+
+@media (max-width: 768px) {
+
+  /* Figures: full width, caption directly underneath instead of in the margin */
+
+  figure.quarto-float,
+
+  figure.quarto-float > div,
+
+  figure.quarto-float img.img-fluid {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+
+  }
+
+  figure.quarto-float figcaption,
+
+  figcaption.quarto-float-caption,
+
+  .margin-caption {
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    margin: 0.6rem 0 0 0 !important;
+
+    padding: 0 !important;
+
+    text-align: left !important;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+  }
+
+  /* Long words, links and code must never push the page sideways */
+
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+
+  #quarto-document-content pre {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    font-size: 0.82rem;
+
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+
+  #quarto-document-content thead { display: none; }
+
+  #quarto-document-content tbody,
+
+  #quarto-document-content tr,
+
+  #quarto-document-content td { display: block; width: 100%; }
+
+  #quarto-document-content tr {
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2EBD8;
+
+    border-radius: 0.75rem;
+
+    padding: 0.9rem 1rem;
+
+    margin-bottom: 0.85rem;
+
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+
+  }
+
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+
+  #quarto-document-content td:first-child {
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    color: #321208;
+
+    margin-bottom: 0.25rem;
+
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+
+  .callout { margin: 1.1rem 0 !important; }
+
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+
+}
+
+</style>
+
+A few of the posts on this blog lean on the same small trick: a function written inside a pandas chain, so that one step can see what the step before it just built. It works, it is short, and reading it does not tell you why it is there.
+
+pandas 3 has a shorter way to write it. This post takes three snippets I published here, runs them again exactly as they were written, and then does the same jobs with `pd.col()` so the two can be put side by side. Every code block below runs when this page is built, and the output under it is what the code printed.
+
+## First, what a lambda is
+
+A lambda is a function written where it is used, without a name:
+
+```{python}
+double = lambda x: x * 2
+
+def double_named(x):
+    return x * 2
+
+print(double(21), double_named(21))
+```
+
+Same job, two spellings. The only reason to reach for the first is that it fits inside another call, which is somewhere a `def` statement cannot go. That is the whole idea.
+
+In pandas it turns up for a less obvious reason. When pandas runs a method, it works out the arguments first and then runs the method. Inside a chain, the frame that a step is about to produce does not exist yet at that moment. A lambda puts the calculation off until the step is actually running, when the frame does exist.
+
+## The trick, from the 2024 post
+
+This is the one I wrote about in [Lambda Functions: How I tend to use them](https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html), using the same CSV that post used. Here it is again, unchanged:
+
+```{python}
+import pandas as pd
+
+def tweak_data(url):
+    return (pd.read_csv(url)
+            .assign(Date=lambda x: pd.to_datetime(x['Date']),
+                    Month=lambda x: x['Date'].dt.month_name()))
+
+data = tweak_data('synthetic_stock_data.csv')
+print(data.head(3).to_string(index=False))
+print()
+print(data.dtypes.to_string())
+```
+
+Look at the second line. `Month` reads the `Date` column, and that column only becomes a date on the line above — inside the same `assign` call. Both lines are the same call, so nothing is committed until the call runs. Writing it without the lambda, as most people first try, does not work:
+
+```{python}
+# the same lines without a lambda, the way most people first write it
+raw = pd.read_csv('synthetic_stock_data.csv')
+try:
+    raw.assign(Date=pd.to_datetime(raw['Date']),
+               Month=raw['Date'].dt.month_name())
+except AttributeError as exc:
+    print(type(exc).__name__, "-", exc)
+```
+
+The same post used a second pattern, a lambda handed to `agg` so that each group is reduced by my own calculation:
+
+```{python}
+import numpy as np
+
+print(data
+ .groupby('Month')
+ ['Close']
+ .agg(lambda x: np.percentile(x, 25))
+ .round(2)
+ .to_string())
+```
+
+## The same trick in two other posts
+
+Lambdas show up in the [Karachi property prices post](https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html) too, where they clean column names and split a price into a number and a currency. That post read a CSV of its own, so here is the same code on three rows in the same shape:
+
+```{python}
+karachi = pd.DataFrame({
+    "property type": ["Flat", "House", "Plot"],
+    "price": ["2.5 Crore PKR", "4 Crore PKR", "75 Lakh PKR"],
+})
+
+print(karachi
+ .rename(columns=lambda x: x.replace(" ", "_"))
+ .assign(price_=lambda x: x["price"].str.split(" ", expand=True)[0],
+         currency_name=lambda x: x["price"].str.split(" ", expand=True)[1])
+ .astype({"price_": float})
+ .to_string(index=False))
+```
+
+And in the [weather data wrangling post](https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html), the same `assign` shape appears one more time — a date column converted, then a month number taken from the column that conversion just made:
+
+```{python}
+bikes = pd.DataFrame({
+    "dteday": ["2011-01-01", "2011-02-14", "2011-03-09"],
+    "hum": [0.81, 0.80, 0.63],
+})
+
+print(bikes
+ .assign(dteday=pd.to_datetime(bikes['dteday']),
+         mnth=lambda x: x['dteday'].dt.month)
+ .to_string(index=False))
+```
+
+Three posts, one pattern: convert something, then use the result of the conversion in the same call. The lambda is what makes the second half possible.
+
+## What was going on
+
+The lambda is not a loop, and that matters. It is called **once**, with the whole frame as its argument, and inside that call `x['Date']` is a full column — the arithmetic runs on the column, at pandas speed. A lambda handed to `.apply()` row by row is a different animal entirely: that one is Python running per row and it is slow. The chain lambdas in these posts are the fast kind.
+
+The reason they are needed at all is ordering. pandas evaluates the arguments of a method before it runs that method. In a chain, the value being built is not available to its own arguments yet. So the lambda is a way of saying *calculate this later, when the frame is ready*.
+
+## The same three jobs with pd.col
+
+pandas 3 adds a second way to say exactly that. `pd.col("name")` is not the column; it is a stand-in for a column — the documentation calls it "a deferred object representing a column of a DataFrame", and anywhere that accepts `lambda df: df[col_name]` will also accept `pd.col(col_name)`.
+
+Here are the three snippets again, written that way:
+
+```{python}
+def tweak_data_v3(url):
+    return (pd.read_csv(url, parse_dates=["Date"])
+            .assign(Month=pd.col("Date").dt.month_name()))
+
+new = tweak_data_v3('synthetic_stock_data.csv')
+print(new.head(3).to_string(index=False))
+print()
+print("same result as the lambda version:", new.equals(data))
+```
+
+The column is named once — `pd.col("Date")` — instead of being named once for the frame and again inside the function body.
+
+The second snippet needs a correction, and it is a useful one. That `agg(lambda ...)` was never doing the deferral job at all. `agg` hands each group to the function one at a time, so a lambda there is just a small function, and `np.percentile` with its own keyword does the same work. What the two lines below check is that the numbers are identical either way:
+
+```{python}
+old_months = (data.groupby('Month')['Close']
+              .agg(lambda x: np.percentile(x, 25)).round(2))
+new_months = (data.groupby('Month')['Close']
+              .agg(np.percentile, q=25).round(2))
+print("quarterly percentiles identical:", old_months.equals(new_months))
+print(new_months.to_string())
+```
+
+```{python}
+v3_bikes = (bikes
+            .assign(dteday=pd.to_datetime(bikes['dteday']))
+            .assign(mnth=pd.col("dteday").dt.month))
+
+with_lambda = (bikes
+               .assign(dteday=pd.to_datetime(bikes['dteday']),
+                       mnth=lambda x: x['dteday'].dt.month))
+
+print("month column identical:", v3_bikes["mnth"].tolist() == with_lambda["mnth"].tolist())
+print("both month columns:", with_lambda["mnth"].tolist())
+```
+
+The third snippet is where `pd.col()` earns its place, because there the lambda really was postponing the calculation. Nothing is delayed with `pd.col("dteday")`, so the line reads in the order it runs, and the conversion is separated from the step that uses its result — which is what makes the failure in the earlier section impossible to write by accident.
+
+## Where pd.col does not help
+
+It is not a replacement for every lambda in those posts. The `rename(columns=...)` lambda has no equivalent, because `rename` is not working on a frame's contents — it is working on the labels:
+
+```{python}
+try:
+    karachi.rename(columns=pd.col("property type"))
+except TypeError as exc:
+    print(type(exc).__name__, "-", " ".join(str(exc).split()))
+```
+
+The rule of thumb: if the argument is about a **column of the frame**, `pd.col()` can probably write it. If it is about the **column labels**, or about rows one at a time, it cannot, and the lambda stays. The release notes for 3.0 call this "initial support" and name three places it works — `assign`, `loc`, and setting by column — so it is early.
+
+## What else changed in pandas 3
+
+Two things worth knowing before the next run of an old notebook, in case the reader hits them at the same time:
+
+```{python}
+print("a string column now reports:", pd.Series(["a", "b"]).dtype)
+print("the old default was:", pd.Series(["a", "b"], dtype=object).dtype)
+```
+
+```{python}
+import warnings
+
+df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+with warnings.catch_warnings(record=True) as caught:
+    warnings.simplefilter("always")
+    df["a"][df["b"] > 15] = 99
+
+print("warning:", caught[0].category.__name__ if caught else "none")
+print("the write did not land:", df.to_dict("records"))
+```
+
+Text columns no longer report as `object` — they report as `str`. And a two-step write, `df["a"][df["b"] > 15] = 99`, no longer writes anything: pandas warns and the frame is left alone. The single-step `df.loc[df["b"] > 15, "a"] = 99` is what works now.
+
+## Where to read more
+
+- The three posts this one borrows from: [Lambda Functions](https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html), [Karachi Property Prices](https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html), [Data Wrangling](https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html)
+- [What's new in pandas 3.0](https://pandas.pydata.org/docs/whatsnew/v3.0.0.html) — the `pd.col()` entry is under *Other enhancements*
+- [`pandas.col` in the API reference](https://pandas.pydata.org/docs/reference/api/pandas.col.html)
+- [Copy-on-Write user guide](https://pandas.pydata.org/docs/user_guide/copy_on_write.html) — the chained-assignment section
