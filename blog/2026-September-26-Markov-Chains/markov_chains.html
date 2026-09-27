@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricky Macharm">
+<meta name="dcterms.date" content="2026-09-26">
+<meta name="description" content="One 1906 idea, run four ways on this machine: the letters of Eugene Onegin, the neutrons at Los Alamos, the whole web, and a model writing its own text back to itself.">
+
+<title>The chain behind Monte Carlo, PageRank and the next word – SisengAI</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-6f71449e07096edb43a4dcb7fb4b5b7e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-1c2f87cba4e4cf4f71295e95f914aade.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f4331dfb0b1ca6f9636075c56c695ec2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-1c2f87cba4e4cf4f71295e95f914aade.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo light-content">
+    <img src="../../img/SisengAI_Logo.png" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">SisengAI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../services.html"> 
+<span class="menu-text">Services</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../freebies.html"> 
+<span class="menu-text">Freebies</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume/index.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Book a call</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/theafricanquant/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/theAfricanQuant"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/theAfricanQuant"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">The chain behind Monte Carlo, PageRank and the next word</h1>
+                  <div>
+        <div class="description">
+          One 1906 idea, run four ways on this machine: the letters of Eugene Onegin, the neutrons at Los Alamos, the whole web, and a model writing its own text back to itself.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Probability</div>
+                <div class="quarto-category">Markov Chains</div>
+                <div class="quarto-category">Monte Carlo</div>
+                <div class="quarto-category">PageRank</div>
+                <div class="quarto-category">Python</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Ricky Macharm </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 26, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+
+
+
+
+
+
+<style>
+
+/* Mobile readability for this post (phone widths only) */
+
+@media (max-width: 768px) {
+
+  /* Figures: full width, caption directly underneath instead of in the margin */
+
+  figure.quarto-float,
+
+  figure.quarto-float > div,
+
+  figure.quarto-float img.img-fluid {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    float: none !important;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+
+  }
+
+  figure.quarto-float figcaption,
+
+  figcaption.quarto-float-caption,
+
+  .margin-caption {
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    margin: 0.6rem 0 0 0 !important;
+
+    padding: 0 !important;
+
+    text-align: left !important;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+  }
+
+  /* Long words, links and code must never push the page sideways */
+
+  #quarto-document-content { overflow-wrap: break-word; word-wrap: break-word; }
+
+  #quarto-document-content pre {
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    font-size: 0.82rem;
+
+  }
+
+  /* The comparison table becomes a stack of cards instead of a squeezed grid */
+
+  #quarto-document-content table { display: block; width: 100%; border: 0; }
+
+  #quarto-document-content thead { display: none; }
+
+  #quarto-document-content tbody,
+
+  #quarto-document-content tr,
+
+  #quarto-document-content td { display: block; width: 100%; }
+
+  #quarto-document-content tr {
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2EBD8;
+
+    border-radius: 0.75rem;
+
+    padding: 0.9rem 1rem;
+
+    margin-bottom: 0.85rem;
+
+    box-shadow: 0 2px 10px rgba(92, 45, 30, 0.06);
+
+  }
+
+  #quarto-document-content td { border: 0 !important; padding: 0.2rem 0; }
+
+  #quarto-document-content td:first-child {
+
+    font-size: 1.05rem;
+
+    font-weight: 700;
+
+    color: #321208;
+
+    margin-bottom: 0.25rem;
+
+  }
+
+  /* Tighter callouts so text is not cramped in a narrow column */
+
+  .callout { margin: 1.1rem 0 !important; }
+
+  .callout .callout-body-container { padding: 0.85rem 1rem !important; font-size: 1rem; }
+
+  .callout .callout-header { padding: 0.7rem 1rem !important; }
+
+  blockquote { padding-left: 0.9rem; font-size: 1rem; }
+
+  /* Headings scale down a notch */
+
+  #quarto-document-content h2 { font-size: 1.5rem; line-height: 1.25; }
+
+  #quarto-document-content h3 { font-size: 1.2rem; line-height: 1.3; }
+
+}
+
+</style>
+<p>Three things you have almost certainly used this week run on one idea. One decided whether a wartime reactor would stay lit or run away. One decided which of the billions of pages on the web you were shown first. One decided the next word your phone offered you. The idea is a chain, and it is old enough to have been used on a poem.</p>
+<p>A chain is a way of describing something that moves between states. A coin is heads or tails. A page is one of the pages on the web. A letter is a vowel or a consonant. What makes it a <em>chain</em> rather than a list of states is one restriction: where it goes next depends only on where it is now, and not on how it got there.</p>
+<p>That sounds like a small restriction. It is the whole trick.</p>
+<p>Put the states in a row, write down the chance of moving from each one to each other, and the future becomes arithmetic. You can draw a sample from it, average over it, or multiply a vector by it until the numbers stop moving. There is no need to remember history, because there is no history to remember.</p>
+<p>The idea went into the literature through an argument about free will, and it reached the world’s computers through a card game played during a slow recovery from illness. Between those two points sits a counting exercise on a Russian poem that a mathematician did to win a fight. This post follows the whole line, and every number in it was produced by the code you will see, on this machine, a few minutes ago.</p>
+<section id="a-fight-about-whether-independence-was-necessary" class="level2">
+<h2 class="anchored" data-anchor-id="a-fight-about-whether-independence-was-necessary">A fight about whether independence was necessary</h2>
+<p>The story starts with a theorem that had been standing for nearly two centuries. Jacob Bernoulli’s <em>Ars Conjectandi</em> was published in 1713, eight years after his death, and it contained the first serious proof of what we now call the law of large numbers: as you take more observations, the average of what you see closes in on the underlying probability.</p>
+<p>Bernoulli’s proof assumed the observations were independent of each other. That assumption sat quietly under the result for two hundred years, the way a foundation sits under a house.</p>
+<p>In the Russia of the early 1900s, one mathematician decided to make the assumption do political work. Pavel Nekrasov argued from statistical regularities in social data to a conclusion about human freedom: if births, marriages and crimes settle into steady averages, he reasoned, then individual human acts must be independent of one another, and that independence pointed to something beyond material cause.</p>
+<p>The historian of probability Eugene Seneta has traced this argument in detail. What Nekrasov was doing, in effect, was reading a theorem backwards. The law of large numbers says that independence produces steady averages. Nekrasov wanted it to say that steady averages prove independence.</p>
+<p>Andrey Markov would not let it stand. He called this use of probability an abuse of mathematics, and rather than argue the philosophy he went after the implication itself: if steady averages require independence, then he would produce steady averages from something that was plainly not independent.</p>
+<p>He chose the letters of a poem.</p>
+</section>
+<section id="twenty-thousand-letters-of-eugene-onegin" class="level2">
+<h2 class="anchored" data-anchor-id="twenty-thousand-letters-of-eugene-onegin">Twenty thousand letters of Eugene Onegin</h2>
+<p>Markov took the first chapter of Pushkin’s <em>Eugene Onegin</em>, sixteen stanzas of the second chapter, and stripped it to bare letters — no punctuation, no spaces, and none of the Russian hard and soft signs. That left him 20,000 characters to work with.</p>
+<p>He sorted the letters into two kinds, vowels and consonants, and counted. The result, published in 1913 in the <em>Bulletin of the Imperial Academy of Sciences of St Petersburg</em>, was <strong>43.19%</strong> vowels. If letters were independent of one another, then a vowel would be followed by a vowel about 0.4319 squared of the time, which is <strong>18.65%</strong>. Markov counted 1,104 vowel-vowel pairs among his 20,000 letters, or <strong>5.52%</strong>.</p>
+<p>That gap is the argument. Letters are not independent — Russian vowels and consonants alternate far more than chance would allow — and yet the average still settled down. Independence was not required.</p>
+<p>Here is that count, redone on a public-domain text of the poem. The code reads the letters, drops the hard and soft signs, and takes the first 20,000.</p>
+<div id="onegin-count" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Markov's count, redone: the letters of Eugene Onegin."""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="bu">open</span>(<span class="st">"onegin_markov_scope.txt"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Markov counted letters only: no punctuation, no spaces, and he left out the</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Russian hard and soft signs. Everything here is lowercase Cyrillic.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> letters(s, drop<span class="op">=</span><span class="st">"ъь"</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">""</span>.join(c <span class="cf">for</span> c <span class="kw">in</span> s.lower() <span class="cf">if</span> <span class="st">"а"</span> <span class="op">&lt;=</span> c <span class="op">&lt;=</span> <span class="st">"я"</span> <span class="kw">and</span> c <span class="kw">not</span> <span class="kw">in</span> drop)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>VOWELS <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> {<span class="st">"й"</span>}   <span class="co"># as it turns out, he counted й as a vowel</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> letters(text)[:<span class="dv">20000</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>n_v <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L <span class="cf">if</span> c <span class="kw">in</span> VOWELS)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>vv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L, L[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> VOWELS <span class="kw">and</span> b <span class="kw">in</span> VOWELS)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> n_v <span class="op">/</span> <span class="bu">len</span>(L)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"letters counted             </span><span class="sc">{</span><span class="bu">len</span>(L)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowels                      </span><span class="sc">{</span>n_v<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>p<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowel after vowel           </span><span class="sc">{</span>vv<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>vv <span class="op">/</span> (<span class="bu">len</span>(L) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"if letters were independent </span><span class="sc">{</span>p <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2%}</span><span class="ss">  &lt;- what independence predicts"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"p(vowel | vowel)            </span><span class="sc">{</span>vv <span class="op">/</span> n_v<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>letters counted             20,000
+vowels                      8,640  (43.20%)
+vowel after vowel           1,110  (5.55%)
+if letters were independent 18.66%  &lt;- what independence predicts
+p(vowel | vowel)            0.1285
+
+Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128</code></pre>
+</div>
+</div>
+<p>That “as it turns out” in the code is doing real work, so it is worth stopping on. Markov’s paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.</p>
+<div id="onegin-conventions" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Which letters did he call vowels? Only one convention reproduces his three figures."""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'variant'</span><span class="sc">:&lt;44}{</span><span class="st">'vowels'</span><span class="sc">:&gt;9}{</span><span class="st">'vowel-vowel'</span><span class="sc">:&gt;13}{</span><span class="st">'p(v|v)'</span><span class="sc">:&gt;9}</span><span class="ss">"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, drop, extra <span class="kw">in</span> [</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"everything kept"</span>, <span class="st">""</span>, <span class="bu">set</span>()),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"hard and soft signs dropped (ъ, ь)"</span>, <span class="st">"ъь"</span>, <span class="bu">set</span>()),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"that, and й counted as a vowel"</span>, <span class="st">"ъь"</span>, {<span class="st">"й"</span>}),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    L2 <span class="op">=</span> letters(text, drop)[:<span class="dv">20000</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> extra</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    nv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L2 <span class="cf">if</span> c <span class="kw">in</span> V)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    vv2 <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L2, L2[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> V <span class="kw">and</span> b <span class="kw">in</span> V)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">:&lt;44}{</span>nv <span class="op">/</span> <span class="bu">len</span>(L2)<span class="sc">:&gt;8.2%}{</span>vv2 <span class="op">/</span> (<span class="bu">len</span>(L2) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:&gt;12.2%}{</span>vv2 <span class="op">/</span> nv<span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Markov, published 1913'</span><span class="sc">:&lt;44}{</span><span class="fl">0.4319</span><span class="sc">:&gt;8.2%}{</span><span class="fl">0.0552</span><span class="sc">:&gt;12.2%}{</span><span class="fl">0.128</span><span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variant                                        vowels  vowel-vowel   p(v|v)
+everything kept                               40.28%       3.02%    0.075
+hard and soft signs dropped (ъ, ь)            41.16%       3.11%    0.075
+that, and й counted as a vowel                43.20%       5.55%    0.128
+Markov, published 1913                        43.19%       5.52%    0.128</code></pre>
+</div>
+</div>
+<p>Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them <em>and</em> count й as a vowel and the three figures land at <strong>43.20%, 5.55% and 0.1285</strong> against his published <strong>43.19%, 5.52% and 0.128</strong>.</p>
+<p>Reproducing a dead man’s arithmetic within three thousandths, on a Soviet edition of the poem printed forty-six years after his paper, is how you find out what he meant.</p>
+<p class="src">
+Source: A. A. Markov, “An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains,” 1913, English translation in <em>Science in Context</em> 19(4), 2006, 591–600; Eugene Seneta, “Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov,” <em>International Statistical Review</em> 71, 2003, 319–334.
+</p>
+<div id="fig-letter-chain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-letter-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig-letter-chain.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-letter-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel follows a vowel 12.85% of the time, a consonant follows a consonant 33.71%.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="the-chain-not-the-average" class="level2">
+<h2 class="anchored" data-anchor-id="the-chain-not-the-average">The chain, not the average</h2>
+<p>The move that survived is the one in the next block. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.</p>
+<p>Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.</p>
+<div id="onegin-chain" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same letters as a two-state chain, generating text from two numbers."""</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> [<span class="st">"v"</span> <span class="cf">if</span> c <span class="kw">in</span> VOWELS <span class="cf">else</span> <span class="st">"c"</span> <span class="cf">for</span> c <span class="kw">in</span> L]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {<span class="st">"v"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}, <span class="st">"c"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(states, states[<span class="dv">1</span>:]):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    counts[a][b] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> {s: {t: counts[s][t] <span class="op">/</span> <span class="bu">sum</span>(counts[s].values()) <span class="cf">for</span> t <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)} <span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"transition probabilities from the poem itself"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   after a </span><span class="sc">{</span><span class="st">'vowel'</span> <span class="cf">if</span> s <span class="op">==</span> <span class="st">'v'</span> <span class="cf">else</span> <span class="st">'consonant'</span><span class="sc">}</span><span class="ss">: "</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"vowel </span><span class="sc">{</span>P[s][<span class="st">'v'</span>]<span class="sc">:.4f}</span><span class="ss"> | consonant </span><span class="sc">{</span>P[s][<span class="st">'c'</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1913</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> states[<span class="dv">0</span>]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>shares <span class="op">=</span> []</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    state, out <span class="op">=</span> start, []</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20000</span>):</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> <span class="st">"v"</span> <span class="cf">if</span> rng.random() <span class="op">&lt;</span> P[state][<span class="st">"v"</span>] <span class="cf">else</span> <span class="st">"c"</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        out.append(state)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    shares.append(out.count(<span class="st">"v"</span>) <span class="op">/</span> <span class="bu">len</span>(out))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">20 runs of 20,000 letters from the chain alone: </span><span class="sc">{</span>np<span class="sc">.</span>mean(shares)<span class="sc">:.2%}</span><span class="ss"> vowels on average"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the poem itself: </span><span class="sc">{</span>states<span class="sc">.</span>count(<span class="st">'v'</span>) <span class="op">/</span> <span class="bu">len</span>(states)<span class="sc">:.2%}</span><span class="ss"> vowels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>transition probabilities from the poem itself
+   after a vowel: vowel 0.1285 | consonant 0.8715
+   after a consonant: vowel 0.6629 | consonant 0.3371
+
+20 runs of 20,000 letters from the chain alone: 43.07% vowels on average
+the poem itself: 43.20% vowels</code></pre>
+</div>
+</div>
+<p>Twenty runs of twenty thousand letters, drawn from two numbers, average 43.07% vowels. The poem itself is 43.20%. Nekrasov’s implication is dead: the regularity survives the loss of independence, and it survives it completely.</p>
+<p>Markov’s 1906 paper had already carried the theorem where he needed it. Its title translates as <em>Extension of the Law of Large Numbers to Quantities Depending on Each Other</em>, and it is the ancestor of everything that follows in this post. What he did with the poem in 1913 was demonstrate the result on something nobody could accuse of being ordered.</p>
+</section>
+<section id="what-the-restriction-buys" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-restriction-buys">What the restriction buys</h2>
+<p>A chain is memoryless, and that is the reason it is used. To predict the next letter you do not need the poem so far, only the kind of letter you are standing on. The state is the memory.</p>
+<p>That property is what makes the arithmetic cheap. A system with a thousand states needs a thousand-by-thousand table of moves, and nothing else. You can multiply a vector by that table and watch the distribution settle; you can draw paths through it; you can count how often each state is visited in the long run. All of it is multiplication and sampling.</p>
+<p>The cost is that the chain forgets on purpose. A chain cannot tell you that a long run of vowels is overdue for a consonant, or that a sentence has a subject waiting for a verb, because none of that is in the state. Everything that matters has to be squeezed into “where am I right now”.</p>
+<p>Which is exactly why the restriction is useful, and exactly why it eventually breaks. Both halves of that sentence get their turn below. First the useful half, in a desert in New Mexico. ## A solitaire game in Los Alamos</p>
+<p>In early 1946, Stanislaw Ulam was in a hospital bed in Los Alamos with encephalitis, and he was playing a great deal of solitaire. He was also meant to be thinking about how neutrons behave inside a piece of plutonium, which is a hard problem in a way that is worth stating plainly: a neutron’s life is a sequence of collisions, and each collision depends on the energy and direction the neutron arrived with.</p>
+<p>Ulam’s observation was that you did not have to solve that sequence. You could play it. Deal a neutron a random collision, then another, and follow it until it is absorbed, leaks out, or splits an atom. Do that a few thousand times and count what happened.</p>
+<p>John von Neumann, who had the computing machinery in mind, worked the idea up with him. The two of them noted that this is a chain: the neutron’s next collision depends on its current state and nothing earlier. Their 1949 paper in the <em>Journal of the American Statistical Association</em> describes cascading nuclear processes as Markoff chains and follows neutron transport as a sequence of random histories.</p>
+<p>The name came from Nicholas Metropolis, and it came from gambling. Ulam had an uncle who gambled away his money at the casino in Monte Carlo, and the method was a game of chance played out at scale.</p>
+<p>The number Ulam picked as his example of a game too large to enumerate was the number of ways to order a 52-card deck: 52 factorial, about 8.07 followed by 67 zeros. That figure is often given as the number of solitaire games, which is not quite it — it is the number of arrangements of the deck, and it is already a number no one will ever list.</p>
+<p>The problem the method was built to answer has a name. Call it <strong>k</strong>: the average number of neutrons that the next generation of fissions produces, per neutron in this one. The Nuclear Regulatory Commission states the three cases in its reactor physics manual, and they are the whole of reactor design:</p>
+<blockquote class="blockquote">
+<p>k below 1: the population shrinks and the reaction dies. k equals 1: the population holds steady and the reaction is self-sustaining. k above 1: the population grows, generation after generation.</p>
+</blockquote>
+<p>The first Monte Carlo calculations ran on ENIAC, the Electronic Numerical Integrator and Computer, in the spring of 1948. By December of that year the same machine was being used on reactor problems for Argonne National Laboratory. The method that began as a way to follow one neutron became the standard way to design a core.</p>
+<p>You can build the same thing in a few dozen lines. Each neutron travels, scatters, is absorbed, leaks out, or splits an atom; one knob sets how often it splits. Everything else is arithmetic. Here is k measured for seven settings of that knob, forty thousand neutrons each.</p>
+<div id="neutron-k" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Neutrons as a chain: the multiplication factor k, measured."""</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>STATE <span class="op">=</span> [<span class="st">"travel"</span>, <span class="st">"scatter"</span>, <span class="st">"absorbed"</span>, <span class="st">"left"</span>, <span class="st">"fission"</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> table(fission_chance, fast<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The five outcomes, scaled so the fission share is what we set."""</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> {<span class="st">"scatter"</span>: <span class="fl">0.40</span>, <span class="st">"absorbed"</span>: <span class="fl">0.10</span>, <span class="st">"left"</span>: <span class="fl">0.20</span>, <span class="st">"fission"</span>: <span class="fl">0.30</span>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> fast:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        base <span class="op">=</span> {<span class="st">"scatter"</span>: <span class="fl">0.30</span>, <span class="st">"absorbed"</span>: <span class="fl">0.20</span>, <span class="st">"left"</span>: <span class="fl">0.30</span>, <span class="st">"fission"</span>: <span class="fl">0.20</span>}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    rest <span class="op">=</span> <span class="fl">1.0</span> <span class="op">-</span> fission_chance</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> {k: v <span class="cf">for</span> k, v <span class="kw">in</span> base.items() <span class="cf">if</span> k <span class="op">!=</span> <span class="st">"fission"</span>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    scale <span class="op">=</span> rest <span class="op">/</span> <span class="bu">sum</span>(w.values())</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> np.zeros(<span class="bu">len</span>(STATE))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, v <span class="kw">in</span> w.items():</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        row[STATE.index(k)] <span class="op">=</span> v <span class="op">*</span> scale</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    row[STATE.index(<span class="st">"fission"</span>)] <span class="op">=</span> fission_chance</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> np.tile(row, (<span class="bu">len</span>(STATE), <span class="dv">1</span>))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dead <span class="kw">in</span> (<span class="st">"absorbed"</span>, <span class="st">"left"</span>):     <span class="co"># a neutron that is gone stays gone</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        t[STATE.index(dead)] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        t[STATE.index(dead), STATE.index(dead)] <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> t</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate(rng, probs, n_neutrons):</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Follow each neutron until it is absorbed, lost, or splits an atom."""</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    alive <span class="op">=</span> np.ones(n_neutrons, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> np.zeros(n_neutrons, dtype<span class="op">=</span>np.int8)      <span class="co"># all start in travel</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    released <span class="op">=</span> np.zeros(n_neutrons, dtype<span class="op">=</span>np.int8)   <span class="co"># what each neutron frees</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">400</span>):</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> np.flatnonzero(alive)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> idx.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        u <span class="op">=</span> rng.random(idx.size)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>        nxt <span class="op">=</span> (u[:, <span class="va">None</span>] <span class="op">&gt;</span> np.cumsum(probs[state[idx]], axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>        state[idx] <span class="op">=</span> nxt</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>        f <span class="op">=</span> idx[nxt <span class="op">==</span> <span class="dv">4</span>]</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>        released[f] <span class="op">+=</span> rng.integers(<span class="dv">2</span>, <span class="dv">4</span>, size<span class="op">=</span>f.size)   <span class="co"># a split frees 2 or 3</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>        state[f] <span class="op">=</span> <span class="dv">0</span>                                     <span class="co"># and the neutron walks on</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>        alive[idx[(nxt <span class="op">==</span> <span class="dv">2</span>) <span class="op">|</span> (nxt <span class="op">==</span> <span class="dv">3</span>)]] <span class="op">=</span> <span class="va">False</span>      <span class="co"># absorbed or leaked out</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> released</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1946</span>)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"one knob: the chance a neutron splits an atom instead of leaving"</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'fission chance'</span><span class="sc">:&gt;15}{</span><span class="st">'k (neutrons per neutron)'</span><span class="sc">:&gt;27}</span><span class="ss">"</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chance <span class="kw">in</span> (<span class="fl">0.05</span>, <span class="fl">0.10</span>, <span class="fl">0.145</span>, <span class="fl">0.15</span>, <span class="fl">0.20</span>, <span class="fl">0.25</span>, <span class="fl">0.30</span>):</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>chance<span class="sc">:&gt;15.3f}{</span>simulate(rng, table(chance), <span class="dv">40000</span>)<span class="sc">.</span>mean()<span class="sc">:&gt;27.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>one knob: the chance a neutron splits an atom instead of leaving
+ fission chance   k (neutrons per neutron)
+          0.050                      0.307
+          0.100                      0.657
+          0.145                      0.982
+          0.150                      1.031
+          0.200                      1.476
+          0.250                      1.983
+          0.300                      2.527</code></pre>
+</div>
+</div>
+<p>The knob moves k across the critical line: at a fission chance of 0.145 the core measures 0.982, at 0.15 it measures 1.031. Somewhere between those two settings sits the difference between a design that dies and a design that holds.</p>
+<div id="fig-k-curve" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-k-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig-k-curve.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-k-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Reactivity against the one knob. The curve crosses k = 1 between a fission chance of 0.10 and 0.15.
+</figcaption>
+</figure>
+</div>
+<p>Plot that against a population of neutrons and the three regimes stop being words and become a table. Four hundred neutrons, eight generations.</p>
+<div id="neutron-generations" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same core, three settings, run generation by generation."""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"and what that does to a population of 400 neutrons, over 8 generations"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>CORES <span class="op">=</span> (<span class="fl">0.05</span>, <span class="fl">0.145</span>, <span class="fl">0.30</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>drawn <span class="op">=</span> {c: simulate(np.random.default_rng(<span class="dv">7</span>), table(c), <span class="dv">40000</span>) <span class="cf">for</span> c <span class="kw">in</span> CORES}</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> {c: <span class="bu">float</span>(drawn[c].mean()) <span class="cf">for</span> c <span class="kw">in</span> CORES}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'generation'</span><span class="sc">:&gt;11}</span><span class="ss">"</span> <span class="op">+</span> <span class="st">""</span>.join(<span class="ss">f"</span><span class="sc">{</span><span class="st">'k = '</span> <span class="op">+</span> <span class="bu">format</span>(ks[c], <span class="st">'.2f'</span>)<span class="sc">:&gt;12}</span><span class="ss">"</span> <span class="cf">for</span> c <span class="kw">in</span> CORES))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>pop <span class="op">=</span> {c: <span class="dv">400</span> <span class="cf">for</span> c <span class="kw">in</span> CORES}</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="dv">0</span><span class="sc">:&gt;11}</span><span class="ss">"</span> <span class="op">+</span> <span class="st">""</span>.join(<span class="ss">f"</span><span class="sc">{</span>pop[c]<span class="sc">:&gt;12,}</span><span class="ss">"</span> <span class="cf">for</span> c <span class="kw">in</span> CORES))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>rngs <span class="op">=</span> {c: np.random.default_rng(<span class="bu">int</span>(c <span class="op">*</span> <span class="dv">1000</span>)) <span class="cf">for</span> c <span class="kw">in</span> CORES}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gen <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">9</span>):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> []</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> CORES:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        pop[c] <span class="op">=</span> <span class="bu">int</span>(np.<span class="bu">sum</span>(rngs[c].choice(drawn[c], size<span class="op">=</span>pop[c])))</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        row.append(pop[c])</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gen<span class="sc">:&gt;11}</span><span class="ss">"</span> <span class="op">+</span> <span class="st">""</span>.join(<span class="ss">f"</span><span class="sc">{</span>x<span class="sc">:&gt;12,}</span><span class="ss">"</span> <span class="cf">for</span> x <span class="kw">in</span> row))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>and what that does to a population of 400 neutrons, over 8 generations
+ generation    k = 0.30    k = 0.99    k = 2.52
+          0         400         400         400
+          1         118         420       1,015
+          2          41         395       2,478
+          3           7         355       6,367
+          4           5         355      16,028
+          5           0         308      40,379
+          6           0         268     101,438
+          7           0         281     256,613
+          8           0         258     646,325</code></pre>
+</div>
+</div>
+<p>Four hundred neutrons at k = 0.30 are five and then nothing. At k = 2.52 they are 646,325 in eight generations. In between, at k = 0.99, they wander — up to 420, down to 258 — and that wandering is the point of the last measurement.</p>
+<p>A core whose k sits at 1 does not behave like a core whose k is 1. Run it three hundred times and the average lands near 1 while individual runs do anything.</p>
+<div id="neutron-spread" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same core, 300 times: why one run proves nothing."""</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">99</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>runs <span class="op">=</span> np.array([simulate(rng, table(<span class="fl">0.20</span>, fast<span class="op">=</span><span class="va">True</span>), <span class="dv">300</span>).mean() <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">300</span>)])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"300 separate runs of the same core (fast neutrons):"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   mean k </span><span class="sc">{</span>runs<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss"> | smallest </span><span class="sc">{</span>runs<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.3f}</span><span class="ss"> | largest </span><span class="sc">{</span>runs<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   runs that died out (k &lt; 1): </span><span class="sc">{</span>(runs <span class="op">&lt;</span> <span class="dv">1</span>)<span class="sc">.</span>mean()<span class="sc">:.0%}</span><span class="ss"> of them"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>300 separate runs of the same core (fast neutrons):
+   mean k 0.997 | smallest 0.650 | largest 1.337
+   runs that died out (k &lt; 1): 53% of them</code></pre>
+</div>
+</div>
+<p>Three hundred runs of one core, mean k = 0.997. More than half of them — 53% — finished below 1 and died. The Los Alamos group was not building one reactor; it was sampling a distribution of them, which is precisely the thing a chain simulation is for.</p>
+<p>A note on the Trinity test, since that is where this arithmetic was first pointed. The device detonated on 16 July 1945 was a plutonium bomb, and the approximately 6 kilograms usually quoted for it refer to the plutonium content of the core, not the weight of the bomb. Published yields are lower than the roundest retelling: the Department of Energy’s history gives about 21 kilotons, and an Air Force history gives 18.6. The frequently repeated “nearly 25,000 tons of TNT” is on the high side of the official figures.</p>
+<p class="src">
+Source: Terrence R. Fehner and F. G. Gosling, <em>Origins of the Nevada Test Site</em>, U.S. Department of Energy, 2000; Beck et al., “Accounting for Unfissioned Plutonium from the Trinity Atomic Bomb Test,” <em>Health Physics</em> 119, 2020.
+</p>
+</section>
+<section id="the-web-as-a-chain" class="level2">
+<h2 class="anchored" data-anchor-id="the-web-as-a-chain">The web as a chain</h2>
+<p>By the mid-1990s the web had a search problem. Pages were being matched to queries mostly by the words on them, and the words on a page are chosen by whoever wrote the page, so a page could be pushed up the list by stuffing it with terms. Sergey Brin and Larry Page, both then doctoral candidates at Stanford, proposed in 1998 that a page’s importance should be decided by who links to it.</p>
+<p>A link was a vote, in their formulation, and a page’s vote was divided evenly among the pages it linked to. Two pages linking to you are worth more than one, and a single link from a page that everyone else links to is worth more than a hundred links from nowhere.</p>
+<p>The result is a number per page, and the way to compute it is a chain. Imagine a reader who clicks links forever at random, and ask what fraction of the time they spend on each page. That fraction is the page’s rank. Brin and Page wrote it as the principal eigenvector of the normalized link matrix and set the damping factor — the chance the reader follows a link rather than jumping to a random page — at 0.85.</p>
+<p>Here is a toy web of four pages, scored by repeatedly multiplying a vector by the table of moves.</p>
+<div id="pagerank-toy" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The web as a chain: four pages, scored by repeated multiplication."""</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rank(edges, pages, d<span class="op">=</span><span class="fl">0.85</span>, iters<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""edges: {page: [pages it links to]}. d: chance the surfer follows a link."""</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(pages)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> {p: i <span class="cf">for</span> i, p <span class="kw">in</span> <span class="bu">enumerate</span>(pages)}</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> np.zeros((n, n))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> src, outs <span class="kw">in</span> edges.items():</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outs:</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> dst <span class="kw">in</span> outs:</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                M[idx[dst], idx[src]] <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="bu">len</span>(outs)   <span class="co"># votes split evenly</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    dangling <span class="op">=</span> [idx[p] <span class="cf">for</span> p <span class="kw">in</span> pages <span class="cf">if</span> <span class="kw">not</span> edges.get(p)]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> np.ones(n) <span class="op">/</span> n</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> d:</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(iters):</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> M <span class="op">@</span> v</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v, v.<span class="bu">sum</span>()              <span class="co"># no jump: mass drains through the dead end</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d0 <span class="kw">in</span> dangling:                <span class="co"># with the jump on, a dead end sends the surfer anywhere</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        M[:, d0] <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> n</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(iters):</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> d <span class="op">*</span> (M <span class="op">@</span> v) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> d) <span class="op">/</span> n</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v, v.<span class="bu">sum</span>()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> [<span class="st">"Amy"</span>, <span class="st">"Ben"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>]</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>web <span class="op">=</span> {<span class="st">"Amy"</span>: [<span class="st">"Ben"</span>], <span class="st">"Ben"</span>: [<span class="st">"Amy"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>], <span class="st">"Chris"</span>: [<span class="st">"Amy"</span>, <span class="st">"Dan"</span>], <span class="st">"Dan"</span>: [<span class="st">"Ben"</span>]}</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>v, total <span class="op">=</span> rank(web, pages)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a toy web: Amy -&gt; Ben; Ben -&gt; Amy, Chris, Dan; Chris -&gt; Amy, Dan; Dan -&gt; Ben"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p, s <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">zip</span>(pages, v), key<span class="op">=</span><span class="kw">lambda</span> t: <span class="op">-</span>t[<span class="dv">1</span>]):</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>p<span class="sc">:&lt;6}{</span>s<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   total mass </span><span class="sc">{</span>total<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a toy web: Amy -&gt; Ben; Ben -&gt; Amy, Chris, Dan; Chris -&gt; Amy, Dan; Dan -&gt; Ben
+   Ben   0.4092
+   Amy   0.2187
+   Dan   0.2187
+   Chris 0.1534
+   total mass 1.0000</code></pre>
+</div>
+</div>
+<p>Ben takes 0.41 of the reader’s time, Amy and Dan 0.22 each, Chris 0.15. Ben wins because the links into him come from pages that are themselves linked to, while Chris’s single vote has to be split two ways.</p>
+<div id="fig-toy-web" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy-web-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig-toy-web.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy-web-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The toy web, ranked. Four pages, four scores, one random reader.
+</figcaption>
+</figure>
+</div>
+<p>Now the failure that forced the damping factor into the design. Give Dan no links at all — a page with nothing to click — and run the same arithmetic without letting the reader jump anywhere.</p>
+<div id="pagerank-leak" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A page with no links: what the random jump is actually for."""</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>broken <span class="op">=</span> {<span class="st">"Amy"</span>: [<span class="st">"Ben"</span>], <span class="st">"Ben"</span>: [<span class="st">"Amy"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>], <span class="st">"Chris"</span>: [<span class="st">"Amy"</span>, <span class="st">"Dan"</span>], <span class="st">"Dan"</span>: []}</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>v0, t0 <span class="op">=</span> rank(broken, pages, d<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>v1, t1 <span class="op">=</span> rank(broken, pages)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   follow links only        (d = 0): total mass </span><span class="sc">{</span>t0<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   with the 15% random jump (d = 0.85): total mass </span><span class="sc">{</span>t1<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   follow links only        (d = 0): total mass 0.000
+   with the 15% random jump (d = 0.85): total mass 1.000</code></pre>
+</div>
+</div>
+<p>The mass goes to zero. A reader who follows links and finds none has nowhere to go, so the walk dies and the ranking has nothing left to rank. The 15% jump is what keeps the walk alive: it teleports the reader to a random page, which is also why the rank of a page nobody links to is small but never zero.</p>
+<p>Which raises the question every site owner asked in the years after 1998: if links are votes, why not build pages that vote for you? Hide a hundred pages that link only to your page, and see what it buys.</p>
+<div id="pagerank-farm" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A hundred pages linking only to Amy."""</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> [<span class="ss">f"spam</span><span class="sc">{</span>i<span class="sc">:03d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>)]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>big <span class="op">=</span> <span class="bu">dict</span>(web)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> spam:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    big[s] <span class="op">=</span> [<span class="st">"Amy"</span>]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>bv, _ <span class="op">=</span> rank(big, pages <span class="op">+</span> spam)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Amy  </span><span class="sc">{</span>v[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss"> -&gt; </span><span class="sc">{</span>bv[pages.index(<span class="st">'Amy'</span>)]<span class="sc">:.4f}</span><span class="ss">   (Ben still </span><span class="sc">{</span>bv[pages.index(<span class="st">'Ben'</span>)]<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   the best-placed spam page: </span><span class="sc">{</span>bv[<span class="bu">len</span>(pages):]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.4f}</span><span class="ss">, and all 100 together hold "</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>bv[<span class="bu">len</span>(pages):]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss"> of the vote"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Amy  0.2187 -&gt; 0.2652   (Ben still 0.3480)
+   the best-placed spam page: 0.0014, and all 100 together hold 0.144 of the vote</code></pre>
+</div>
+</div>
+<p>Amy rises from 0.2187 to 0.2652 and Ben stays on top at 0.3480. The hundred fake pages hold 0.144 of the total between them, and the best of them is worth 0.0014 — because each one has no links pointing at it, so under this arithmetic there is nothing to inherit.</p>
+<p>That is the shape of the defence, and it is worth being honest about the shape of the attack. A link farm does move the number; it just cannot buy the top spot, and the pages doing the work stay at the bottom where nobody will find them.</p>
+<p>Google incorporated in August 1998, after a rename from BackRub. The name is a misspelling of googol, the word for ten to the hundredth power, and Brin and Page’s own paper calls Google “a common spelling of googol”. The more specific story — that a fellow student typed the misspelling while registering the domain — comes from a Stanford account written years later, so treat it as a good story rather than a document.</p>
+<p>Alphabet was worth about two trillion dollars in July 2025 and more than four trillion by early 2026. Yahoo, for the record, was founded in 1994 by Jerry Yang and David Filo, and Masayoshi Son did offer roughly 105 million dollars for a third of it the following year.</p>
+<p class="src">
+Source: Sergey Brin and Lawrence Page, “The Anatomy of a Large-Scale Hypertextual Web Search Engine,” <em>Computer Networks and ISDN Systems</em> 30, 1998, 107–117; Randall Lane, “Master of the Internet,” <em>Forbes</em>, 5 July 1999; CNBC, January 2026.
+</p>
+</section>
+<section id="shannons-approximation-and-what-happens-when-a-model-reads-itself" class="level2">
+<h2 class="anchored" data-anchor-id="shannons-approximation-and-what-happens-when-a-model-reads-itself">Shannon’s approximation, and what happens when a model reads itself</h2>
+<p>Claude Shannon’s 1948 paper <em>A Mathematical Theory of Communication</em> is where information theory starts, and it contains a demonstration that belongs in this post: he approximated English with chains and printed the results to show how much structure each order adds.</p>
+<p>At the first order, letters are drawn independently and the output is noise. At higher orders, the chain conditions on the previous few letters or words, and the text starts to look like language. Here is the same experiment on a public-domain novel, with the information content measured at each order.</p>
+<div id="shannon-orders" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Shannon's approximations to English, with bits per token measured."""</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter, defaultdict</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>book <span class="op">=</span> <span class="bu">open</span>(<span class="st">"corpus_pride_and_prejudice.txt"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> re.findall(<span class="vs">r"</span><span class="pp">[a-z']</span><span class="op">+</span><span class="vs">"</span>, book.lower())</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>chars <span class="op">=</span> re.findall(<span class="vs">r"</span><span class="pp">[a-z ]</span><span class="vs">"</span>, book.lower())</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"corpus: </span><span class="sc">{</span><span class="bu">len</span>(words)<span class="sc">:,}</span><span class="ss"> words of Pride and Prejudice (Project Gutenberg ebook 1342)"</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chain_of(tokens, order):</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> defaultdict(Counter)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(tokens) <span class="op">-</span> order):</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        c[<span class="bu">tuple</span>(tokens[i:i <span class="op">+</span> order])][tokens[i <span class="op">+</span> order]] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bits(chain):</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">sum</span>(v.values()) <span class="cf">for</span> v <span class="kw">in</span> chain.values())</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> counter <span class="kw">in</span> chain.values():</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> <span class="bu">sum</span>(counter.values())</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> np.array(<span class="bu">list</span>(counter.values())) <span class="op">/</span> n</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        h <span class="op">+=</span> n <span class="op">/</span> total <span class="op">*</span> <span class="bu">float</span>(<span class="op">-</span>(p <span class="op">*</span> np.log2(p)).<span class="bu">sum</span>())</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> h</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> speak(chain, order, rng, n, tokens):</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="bu">int</span>(rng.integers(<span class="dv">0</span>, <span class="bu">len</span>(tokens) <span class="op">-</span> order <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    state, out <span class="op">=</span> <span class="bu">tuple</span>(tokens[i:i <span class="op">+</span> order]), []</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    out.extend(state)</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="kw">not</span> <span class="kw">in</span> chain:</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        options, weights <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>chain[state].items())</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> (state <span class="op">+</span> (rng.choice(options, p<span class="op">=</span>np.array(weights) <span class="op">/</span> <span class="bu">sum</span>(weights)),))[<span class="dv">1</span>:]</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>        out.append(state[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1948</span>)</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">word by word, learning from the book:"</span>)</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> order <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>):</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> chain_of(words, order)</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">   order </span><span class="sc">{</span>order<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>bits(c)<span class="sc">:5.2f}</span><span class="ss"> bits per word, </span><span class="sc">{</span><span class="bu">len</span>(c)<span class="sc">:,}</span><span class="ss"> states)"</span>)</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="ch">\"</span><span class="sc">{</span><span class="st">' '</span><span class="sc">.</span>join(speak(c, order, rng, <span class="dv">26</span>, words))[:<span class="dv">200</span>]<span class="sc">}</span><span class="ch">\"</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>corpus: 43,352 words of Pride and Prejudice (Project Gutenberg ebook 1342)
+
+word by word, learning from the book:
+
+   order 1  ( 4.74 bits per word, 4,395 states)
+   "gave her release from the subject to contrast to judge very little unwillingness but darcy that my dear mr darcy was given her manners gave a sunday"
+
+   order 2  ( 1.36 bits per word, 24,870 states)
+   "son but this word cynical is one of humanity and especially to her daughter settled at netherfield said mrs bennet elizabeth and it is no sacrifice to join"
+
+   order 3  ( 0.21 bits per word, 39,044 states)
+   "in silence but was not convinced their behaviour at the assembly had not been gone long before it rained hard her sisters were uneasy for her but her mother"
+
+   order 4  ( 0.03 bits per word, 42,487 states)
+   "know to which of his fair cousins the excellence of its cookery was owing but here he was set right by mrs bennet who assured him with some asperity that"</code></pre>
+</div>
+</div>
+<p>The numbers fall as the order rises: 4.74 bits per word at order 1, 1.36 at order 2, 0.21 at order 3, 0.03 at order 4. That is Shannon’s point restated for words — the more context you allow the chain, the less surprise is left in each new word.</p>
+<p>Do not read the low numbers as a good model. The measure collapses because the corpus is far too small to fill the higher orders, so most states are seen once and their continuation is a single recorded word. The chain is not learning the language, it is reciting.</p>
+<p>That shows up when you ask a blunter question: of the word sequences this thing writes, how many were ever actually written, in that order, in the book?</p>
+<div id="shannon-recites" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""How much of what the chain writes was ever actually written?"""</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> order <span class="kw">in</span> (<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>):</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> chain_of(words, order)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    real <span class="op">=</span> {<span class="bu">tuple</span>(words[i:i <span class="op">+</span> order <span class="op">+</span> <span class="dv">1</span>]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(words) <span class="op">-</span> order)}</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> speak(c, order, rng, <span class="dv">300</span>, words)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    hit <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(text) <span class="op">-</span> order) <span class="cf">if</span> <span class="bu">tuple</span>(text[i:i <span class="op">+</span> order <span class="op">+</span> <span class="dv">1</span>]) <span class="kw">in</span> real)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    single <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> v <span class="kw">in</span> c.values() <span class="cf">if</span> <span class="bu">len</span>(v) <span class="op">==</span> <span class="dv">1</span>) <span class="op">/</span> <span class="bu">len</span>(c)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   order </span><span class="sc">{</span>order<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>hit<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(text) <span class="op">-</span> order<span class="sc">}</span><span class="ss"> generated </span><span class="sc">{</span>order <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">-word runs appear "</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"in the book (</span><span class="sc">{</span>hit <span class="op">/</span> (<span class="bu">len</span>(text) <span class="op">-</span> order)<span class="sc">:.1%}</span><span class="ss">); </span><span class="sc">{</span>single<span class="sc">:.1%}</span><span class="ss"> of its states have only "</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"one recorded continuation"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   order 2: 300/300 generated 3-word runs appear in the book (100.0%); 81.3% of its states have only one recorded continuation
+   order 3: 300/300 generated 4-word runs appear in the book (100.0%); 94.6% of its states have only one recorded continuation
+   order 4: 300/300 generated 5-word runs appear in the book (100.0%); 98.8% of its states have only one recorded continuation</code></pre>
+</div>
+</div>
+<p>Every one of them, at every order. With 43,000 words to learn from, 81% of the two-word states and 99% of the four-word states have exactly one continuation on record, so the chain mostly walks a path the book already contains. What looks like fluent text is a quotation engine with small steps.</p>
+<p>Shannon’s own examples make the same point more elegantly. His third-order letter approximation, printed in the 1948 paper, reads: “IN NO IST LAT WHEY CRATICT FROURE BIRS GROCID PONDENOME OF DEMONSTURES OF THE REPTAGIN IS REGOACTIONA OF CRE”.</p>
+<p>Modern language models are the same idea with two changes: the states are built from tokens rather than letters, and instead of conditioning on a fixed window of the last few, <strong>attention</strong> weighs every earlier token in the text. That last change is the whole difference between a chain and a transformer, and it is what lets a model use a noun from four paragraphs ago.</p>
+<p>Now the part that has no precedent in 1913. Take the chain trained on the book, let it write, then train a new chain on what it wrote, then a new one on that, five times over. This is what happened when the web started filling up with model output.</p>
+<div id="model-collapse" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Feed each chain its own output, five generations over, eight chains at once."""</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"feed the chain its own output, five generations over, eight chains at once:"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>runs, sample <span class="op">=</span> [], <span class="st">""</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> np.random.default_rng(<span class="dv">1000</span> <span class="op">+</span> seed)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    text, row <span class="op">=</span> words, []</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> gen <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> chain_of(text, <span class="dv">2</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> speak(c, <span class="dv">2</span>, r, <span class="dv">4000</span>, words <span class="cf">if</span> gen <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> text)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        row.append((<span class="bu">len</span>(<span class="bu">set</span>(text)), <span class="bu">len</span>(c)))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> seed <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> gen <span class="op">==</span> <span class="dv">5</span>:</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            sample <span class="op">=</span> <span class="st">" "</span>.join(text[<span class="dv">100</span>:<span class="dv">150</span>])</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    runs.append(row)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'generation'</span><span class="sc">:&gt;11}{</span><span class="st">'vocabulary'</span><span class="sc">:&gt;14}{</span><span class="st">'distinct pairs'</span><span class="sc">:&gt;16}</span><span class="ss">"</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gen <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> statistics.mean(r[gen][<span class="dv">0</span>] <span class="cf">for</span> r <span class="kw">in</span> runs)</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> statistics.mean(r[gen][<span class="dv">1</span>] <span class="cf">for</span> r <span class="kw">in</span> runs)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>gen <span class="op">+</span> <span class="dv">1</span><span class="sc">:&gt;11}{</span>v<span class="sc">:&gt;14,.0f}{</span>p<span class="sc">:&gt;16,.0f}</span><span class="ss">"</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">and what it writes by then: </span><span class="ch">\"</span><span class="sc">{</span>sample<span class="sc">}</span><span class="ch">\"</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>feed the chain its own output, five generations over, eight chains at once:
+ generation    vocabulary  distinct pairs
+          1         1,070          24,870
+          2           676           2,995
+          3           403           1,613
+          4           325             908
+          5           260             674
+
+and what it writes by then: "nor its writer were in fact very fine a young man too like you whose very countenance may vouch for the honour of her situation in life is a question which mr darcy is not possible for anyone in particular places at his gallantry but there was such a comfort"</code></pre>
+</div>
+</div>
+<p>Run that five generations deep over eight independent chains and the numbers fall in step: the average vocabulary drops from 1,070 words to 260, and the count of distinct two-word states from 24,870 to 674. What comes out stays grammatical and loses its footing slowly — one of the fifth-generation chains writes: “nor its writer were in fact very fine a young man too like you whose very countenance may vouch for the honour of her situation in life”.</p>
+<div id="fig-collapse" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-collapse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig-collapse.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-collapse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Five generations of a model trained on its own output: the vocabulary and the number of distinct two-word states both fall away.
+</figcaption>
+</figure>
+</div>
+<p>Five generations is a small demonstration of a real effect. Ilia Shumailov and colleagues showed in <em>Nature</em> in 2024 that training models recursively on their own output degrades the distribution — the rare cases thin out first, then the language narrows toward what is common — and that keeping the original human data in the mix substantially reduces the damage.</p>
+<p>The lesson is not that self-training is fatal. It is that a chain can only visit states it has been given, so a model trained on a narrowed world stays in that world.</p>
+<p class="src">
+Source: Claude E. Shannon, “A Mathematical Theory of Communication,” <em>Bell System Technical Journal</em> 27, 1948, 379–423 and 623–656; Ilia Shumailov et al., “AI models collapse when trained on recursively generated data,” <em>Nature</em> 631, 2024, 755–759.
+</p>
+</section>
+<section id="seven-shuffles" class="level2">
+<h2 class="anchored" data-anchor-id="seven-shuffles">Seven shuffles</h2>
+<p>The last stop is the one Ulam started from, because a shuffled deck is a chain too. Every arrangement of the cards is a state, and every shuffle is a step.</p>
+<p>The shuffle worth modelling is the dovetail: cut the deck at a random point, then interleave the two halves so that the order inside each half is kept. Dave Bayer and Persi Diaconis worked out its mixing time in 1992, and got the number that has been repeated ever since — seven.</p>
+<p>Seven is the point where the deck is close to random, not where it becomes random. Their table gives the total variation distance from a well-shuffled deck as 0.924 after five shuffles, 0.614 after six, <strong>0.334 after seven</strong> and 0.167 after eight. The distance is the fraction of the deck’s arrangements that would have to be re-weighted to make the shuffle exactly uniform, so 0.334 is still a noticeable gap.</p>
+<div id="fig-shuffle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shuffle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="fig-shuffle.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shuffle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Distance between the shuffled and random distributions of rising sequences, by shuffle count.
+</figcaption>
+</figure>
+</div>
+<p>You can see the same thing without their mathematics by watching one statistic: how many rising sequences the deck has. A deck in perfect order has one. A random deck has about 26.5, since the average is half of 52 plus a half. Each riffle can at most double the number.</p>
+<div id="shuffle-distance" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""How many riffle shuffles randomise a deck? Measured, not quoted."""</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>N, TRIALS <span class="op">=</span> <span class="dv">52</span>, <span class="dv">30000</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> riffle(deck, rng):</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cut at a Binomial(52, 1/2) point, then interleave, keeping each packet's order."""</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    cut <span class="op">=</span> rng.binomial(N, <span class="fl">0.5</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    left, right <span class="op">=</span> deck[:cut], deck[cut:]</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    out, i, j <span class="op">=</span> np.empty(N, dtype<span class="op">=</span>np.int8), <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> rng.random() <span class="op">&lt;</span> (left.size <span class="op">-</span> i) <span class="op">/</span> <span class="bu">max</span>(<span class="dv">1</span>, (left.size <span class="op">-</span> i) <span class="op">+</span> (right.size <span class="op">-</span> j)):</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>            out[k] <span class="op">=</span> left[i]<span class="op">;</span> i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>            out[k] <span class="op">=</span> right[j]<span class="op">;</span> j <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rising(deck):</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>((np.diff(deck) <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>()) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spread(values):</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> np.bincount(values, minlength<span class="op">=</span>N <span class="op">+</span> <span class="dv">1</span>)[<span class="dv">1</span>:N <span class="op">+</span> <span class="dv">1</span>]</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> counts <span class="op">/</span> counts.<span class="bu">sum</span>()</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1992</span>)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> spread(np.array([rising(rng.permutation(N)) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(TRIALS)]))</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'shuffles'</span><span class="sc">:&gt;9}{</span><span class="st">'top card still on top'</span><span class="sc">:&gt;23}{</span><span class="st">'rising sequences'</span><span class="sc">:&gt;18}{</span><span class="st">'distance from random'</span><span class="sc">:&gt;22}</span><span class="ss">"</span>)</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    tops, rs <span class="op">=</span> <span class="dv">0</span>, np.empty(TRIALS, dtype<span class="op">=</span>np.int16)</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> trial <span class="kw">in</span> <span class="bu">range</span>(TRIALS):</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>        deck <span class="op">=</span> np.arange(N, dtype<span class="op">=</span>np.int8)</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>            deck <span class="op">=</span> riffle(deck, rng)</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>        tops <span class="op">+=</span> <span class="bu">int</span>(deck[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>        rs[trial] <span class="op">=</span> rising(deck)</span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>    dist <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="bu">float</span>(np.<span class="bu">abs</span>(spread(rs) <span class="op">-</span> base).<span class="bu">sum</span>())</span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n<span class="sc">:&gt;9}{</span>tops <span class="op">/</span> TRIALS<span class="sc">:&gt;23.2%}{</span>rs<span class="sc">.</span>mean()<span class="sc">:&gt;18.2f}{</span>dist<span class="sc">:&gt;22.3f}</span><span class="ss">"</span>)</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">a random deck keeps the same top card </span><span class="sc">{</span><span class="dv">1</span><span class="op">/</span><span class="dv">52</span><span class="sc">:.2%}</span><span class="ss"> of the time"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> shuffles  top card still on top  rising sequences  distance from random
+        1                 50.58%             13.76                 0.999
+        2                 24.59%             20.12                 0.882
+        3                 12.54%             23.31                 0.548
+        4                  6.39%             24.91                 0.297
+        5                  3.85%             25.70                 0.147
+        6                  2.88%             26.09                 0.074
+        7                  2.34%             26.29                 0.036
+        8                  2.05%             26.41                 0.016
+        9                  1.91%             26.44                 0.015
+       10                  1.91%             26.47                 0.010
+
+a random deck keeps the same top card 1.92% of the time</code></pre>
+</div>
+</div>
+<p>The distance falls by roughly half with each shuffle — 0.999, 0.882, 0.548, 0.297, 0.147, 0.074, 0.036 — and by seven shuffles there is almost nothing left for this statistic to measure. The top card is back to being the top card about 2% of the time, which is the random rate.</p>
+<p>Two honest caveats about that table. The distance reported is between the distributions of one statistic, not between the full distributions of deck arrangements, so it is a lower bound on the true distance — which is why it reaches 0.036 at seven shuffles while Bayer and Diaconis give 0.334. And my riffle is the tidy textbook one. A real riffle, done by hands, mixes faster or slower depending on how well the packets interleave, and the common estimate that an overhand shuffle needs thousands of passes comes from a different and much slower model.</p>
+</section>
+<section id="where-the-chain-stops" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-chain-stops">Where the chain stops</h2>
+<p>Everything above works because the state is small and the rules do not change. Both of those are assumptions, and both fail somewhere useful.</p>
+<p>The first failure is memory. A chain that conditions on the last two words cannot know what the sentence is about, and one that conditions on the current temperature cannot know that the planet has been warming for a century. Where the thing being modelled feeds back into itself — water vapour rising with temperature, models trained on text that models wrote — the state is not enough, and the chain gives a confidently narrow answer.</p>
+<p>The second failure is stationarity, the assumption that the table of moves stays the same. A chain estimated on last decade’s data will keep predicting last decade’s behaviour, because nothing in it can represent a change in the rules.</p>
+<p>Those are not reasons to abandon the idea. They are the reasons it is still being extended: hidden states for the things you cannot observe, time-varying tables for the things that drift, and attention for the history a single state cannot hold. The pattern is always the same. Find the state, write down the moves, and multiply.</p>
+<p>Which is a good place to leave Markov’s feud. He won the argument he was having — independence is not required for regularity, and his two numbers from a poem prove it — and then the machinery he built to win it went further than the argument ever did.</p>
+</section>
+<section id="sources-and-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="sources-and-further-reading">Sources and further reading</h2>
+<p>The poem and the feud:</p>
+<ul>
+<li>A. A. Markov, <em>An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains</em> (1913), English translation in <em>Science in Context</em> 19(4), 2006, 591–600 — <a href="https://gwern.net/doc/statistics/probability/2006-markov.pdf" target="_blank">the translation</a>; original in the <em>Bulletin of the Imperial Academy of Sciences of St Petersburg</em> 7(3), 153–162 — <a href="https://eudml.org/doc/128778" target="_blank">record</a></li>
+<li>A. A. Markov, <em>Extension of the Law of Large Numbers to Quantities Depending on Each Other</em> (1906), Izvestiya of the Kazan Physico-Mathematical Society</li>
+<li>Eugene Seneta, <em>Markov and the Birth of Chain Dependence Theory</em>, International Statistical Review 64, 1996, 255–263 — <a href="https://www.landsburg.org/markov2.pdf" target="_blank">record</a></li>
+<li>Eugene Seneta, <em>Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov</em>, International Statistical Review 71, 2003, 319–334</li>
+<li>Jacob Bernoulli, <em>Ars Conjectandi</em>, 1713</li>
+</ul>
+<p>The poem itself:</p>
+<ul>
+<li>A. A. Pushkin, <em>Eugene Onegin</em>, Russian text of the 1959 collected works — [Wikisource](<a href="https://ru.wikisource.org/wiki/%D0%95%D0%B2%D0%B3%D0%B5%D0%BD%D0%B8%D0%B9_%D0%9E%D0%BD%D0%B5%D0%B3%D0%B8%D0%BD_(%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD)/%D0%A1%D0%A1_1959_(%D0%A1%D0%9E)" class="uri">https://ru.wikisource.org/wiki/%D0%95%D0%B2%D0%B3%D0%B5%D0%BD%D0%B8%D0%B9_%D0%9E%D0%BD%D0%B5%D0%B3%D0%B8%D0%BD_(%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD)/%D0%A1%D0%A1_1959_(%D0%A1%D0%9E)</a></li>
+</ul>
+<p>Monte Carlo and the bomb:</p>
+<ul>
+<li>Nicholas Metropolis and Stanislaw Ulam, <em>The Monte Carlo Method</em>, Journal of the American Statistical Association 44(247), 1949, 335–341 — <a href="https://web.williams.edu/Mathematics/sjmiller/public_html/105Sp10/handouts/MetropolisUlam_TheMonteCarloMethod.pdf" target="_blank">PDF</a></li>
+<li>Owen Summerscales, <em>Hitting the Jackpot: The Birth of the Monte Carlo Method</em>, Los Alamos National Laboratory, 2023 — <a href="https://www.lanl.gov/media/publications/actinide-research-quarterly/1123-hitting-the-jackpot-the-birth-of-the-monte-carlo-method" target="_blank">LANL</a></li>
+<li>Terrence R. Fehner and F. G. Gosling, <em>Origins of the Nevada Test Site</em>, U.S. Department of Energy, 2000 — <a href="https://www.energy.gov/sites/prod/files/DOENevadaTestSite.pdf" target="_blank">PDF</a></li>
+<li>U.S. Nuclear Regulatory Commission, <em>Reactor Physics</em>, GE Systems Technology Manual chapter 1.7 — <a href="https://www.nrc.gov/docs/ml1125/ml11258a296.pdf" target="_blank">PDF</a></li>
+<li>A. Sood et al., <em>Neutronics Calculation Advances at Los Alamos: Manhattan Project to Monte Carlo</em>, Nuclear Technology 207(sup1), 2021, S100–S133</li>
+</ul>
+<p>Search and text:</p>
+<ul>
+<li>Sergey Brin and Lawrence Page, <em>The Anatomy of a Large-Scale Hypertextual Web Search Engine</em>, Computer Networks and ISDN Systems 30, 1998, 107–117 — <a href="https://snap.stanford.edu/class/cs224w-readings/Brin98Anatomy.pdf" target="_blank">PDF</a></li>
+<li>Claude E. Shannon, <em>A Mathematical Theory of Communication</em>, Bell System Technical Journal 27, 1948 — <a href="https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf" target="_blank">PDF</a></li>
+<li>Ilia Shumailov et al., <em>AI models collapse when trained on recursively generated data</em>, Nature 631, 2024, 755–759 — <a href="https://www.nature.com/articles/s41586-024-07566-y" target="_blank">paper</a></li>
+<li>CNBC, <em>Alphabet hits $4 trillion market capitalization</em>, 12 January 2026 — <a href="https://www.cnbc.com/2026/01/12/alphabet-4-trillion-market-cap.html" target="_blank">report</a></li>
+</ul>
+<p>Shuffling:</p>
+<ul>
+<li>Dave Bayer and Persi Diaconis, <em>Trailing the Dovetail Shuffle to its Lair</em>, The Annals of Applied Probability 2(2), 1992, 294–313 — <a href="https://www.stat.berkeley.edu/~aldous/157/Papers/bayer_diaconis.pdf" target="_blank">PDF</a></li>
+<li>Robin Pemantle, <em>Randomization Time for the Overhand Shuffle</em>, 2007</li>
+</ul>
+<p>The data:</p>
+<ul>
+<li>Jane Austen, <em>Pride and Prejudice</em>, 1813, Project Gutenberg ebook 1342 — <a href="https://www.gutenberg.org/ebooks/1342" target="_blank">Gutenberg</a></li>
+</ul>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<!-- SisengAI Chatbot widget — freemium demo -->
+<script>
+  window.__SISENG_API__ = "https://bot.sisengai.com";
+</script>
+<script src="https://bot.sisengai.com/widget/sisengai-demo.js" async=""></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/www\.sisengai\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="noborder_light">
+<input type="hidden" id="giscus-alt-theme" value="noborder_light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "theAfricanQuant/theAfricanQuant.github.io";
+    script.dataset.repoId = "R_kgDOK8Zc8Q";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOK8Zc8c4Cfc4R";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><span class="faux-block">© 2023–2026 SisengAI</span></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/edit/main/blog/2026-September-26-Markov-Chains/markov_chains.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/theAfricanQuant/theAfricanQuant.github.io/blob/main/blog/2026-September-26-Markov-Chains/markov_chains.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

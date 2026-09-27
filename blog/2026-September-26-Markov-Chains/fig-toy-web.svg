@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 290" width="430" height="290" font-family="Inter, Helvetica, Arial, sans-serif">
+<rect x="0.5" y="0.5" width="429" height="289" rx="10" fill="#FFFFFF" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="40" font-size="18" fill="#22201C" text-anchor="start" font-weight="600" font-style="normal">A toy web, ranked</text>
+<text x="24" y="62" font-size="14" fill="#6B6558" text-anchor="start" font-weight="400" font-style="normal">share of a random reader's time on each page</text>
+<path d="M135.0 120.0 Q197.5 136.0 256.0 120.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M260.0 120.0 Q197.5 136.0 139.0 120.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M263.7 131.8 Q190.8 153.0 134.9 202.4" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M300.0 148.0 Q284.0 167.5 300.0 185.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M95.0 187.0 Q79.0 167.5 95.0 150.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M135.0 215.0 Q197.5 231.0 256.0 215.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<path d="M300.0 187.0 Q284.0 167.5 300.0 150.0" fill="none" stroke="#E8DCC4" stroke-width="1.5"/>
+<rect x="43" y="94" width="104" height="52" rx="8" fill="#FBFAF7" stroke="#B8752A" stroke-width="1.5"/>
+<text x="95" y="118" font-size="16" fill="#22201C" text-anchor="middle" font-weight="600" font-style="normal">Amy</text>
+<text x="95" y="137" font-size="15" fill="#B8752A" text-anchor="middle" font-weight="600" font-style="normal">0.2187</text>
+<rect x="248" y="94" width="104" height="52" rx="8" fill="#FBFAF7" stroke="#B8752A" stroke-width="1.5"/>
+<text x="300" y="118" font-size="16" fill="#22201C" text-anchor="middle" font-weight="600" font-style="normal">Ben</text>
+<text x="300" y="137" font-size="15" fill="#B8752A" text-anchor="middle" font-weight="600" font-style="normal">0.4092</text>
+<rect x="43" y="189" width="104" height="52" rx="8" fill="#FBFAF7" stroke="#B8752A" stroke-width="1.5"/>
+<text x="95" y="213" font-size="16" fill="#22201C" text-anchor="middle" font-weight="600" font-style="normal">Chris</text>
+<text x="95" y="232" font-size="15" fill="#B8752A" text-anchor="middle" font-weight="600" font-style="normal">0.1534</text>
+<rect x="248" y="189" width="104" height="52" rx="8" fill="#FBFAF7" stroke="#B8752A" stroke-width="1.5"/>
+<text x="300" y="213" font-size="16" fill="#22201C" text-anchor="middle" font-weight="600" font-style="normal">Dan</text>
+<text x="300" y="232" font-size="15" fill="#B8752A" text-anchor="middle" font-weight="600" font-style="normal">0.2187</text>
+<text x="24" y="272" font-size="14" fill="#6B6558" text-anchor="start" font-weight="400" font-style="normal">Ben wins on links from pages that are themselves linked to.</text>
+</svg>
