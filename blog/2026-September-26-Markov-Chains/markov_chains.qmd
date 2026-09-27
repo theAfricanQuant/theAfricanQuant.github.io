@@ -233,8 +233,6 @@ Here is that count, redone on a public-domain text of the poem. The code reads t
 
 ```{python}
 #| label: onegin-count
-#| echo: false
-#| output: false
 """Markov's count, redone: the letters of Eugene Onegin."""
 text = open("onegin_markov_scope.txt", encoding="utf-8").read()
 
@@ -261,8 +259,6 @@ That convention is doing real work here, so it is worth stopping on. Markov's pa
 
 ```{python}
 #| label: onegin-conventions
-#| echo: false
-#| output: false
 """Which letters did he call vowels? Only one convention reproduces his three figures."""
 print(f"{'variant':<44}{'vowels':>9}{'vowel-vowel':>13}{'p(v|v)':>9}")
 for label, drop, extra in [
@@ -295,8 +291,6 @@ Then he generated letters from those two numbers alone. The poem was never consu
 
 ```{python}
 #| label: onegin-chain
-#| echo: false
-#| output: false
 """The same letters as a two-state chain, generating text from two numbers."""
 import numpy as np
 
