@@ -284,21 +284,21 @@ Reproducing a dead man's arithmetic within three thousandths, on a Soviet editio
 
 ![The two-state chain, built from Markov's own counts: a vowel follows a vowel 12.85% of the time, a consonant follows a consonant 33.71%.](fig-letter-chain.svg){#fig-letter-chain}
 
-```{=html}
-<figure class="quarto-float quarto-figure quarto-figure-center" id="fig-letter-chain-live">
-<div>
-<video src="fig-letter-chain-animated.mp4" autoplay loop muted playsinline width="100%"></video>
-</div>
-<figcaption class="quarto-float-caption">Read letter by letter. Every number here is recomputed as the poem is read: at thirty letters the vowel-after-vowel estimate swings anywhere between 0.08 and 0.92, and by twenty thousand it has settled on 0.13, with a vowel coming after a consonant 0.66 of the time. The two outcomes from each state are complements, so each pair reads 1.0000 in every frame &mdash; only the amount of evidence changes.</figcaption>
-</figure>
-```
-
 
 ## The chain, not the average
 
 The move that survived was a change in what got counted. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.
 
 Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.
+
+```{=html}
+<figure class="quarto-float quarto-figure quarto-figure-center" id="fig-letter-chain-live">
+<div>
+<video src="fig-letter-chain-animated.mp4" autoplay loop muted playsinline width="100%"></video>
+</div>
+<figcaption class="quarto-float-caption">Letters generated from the chain alone, and the chain re-estimated from the letters it produced. Sixteen letters in, the vowel-after-vowel estimate is still swinging between 0.00 and 0.92; by twenty thousand it has settled back on 0.13 and 0.67 &mdash; the numbers that generated them &mdash; and the shares have settled at 43% vowels. The two outcomes from each state are complements, so each pair reads 1.00 in every frame.</figcaption>
+</figure>
+```
 
 ```{python}
 #| label: onegin-chain
