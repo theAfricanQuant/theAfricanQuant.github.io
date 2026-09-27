@@ -168,7 +168,7 @@ The same counting is still running. Germany recorded 387,423 marriages in 2012 a
 
 ```{python}
 #| label: regularity-check
-"""The same regularity, counted in Belgium in the 1840s and in two countries today."""
+# The same regularity, counted in Belgium in the 1840s and in two countries today.
 import csv
 import statistics as st
 
