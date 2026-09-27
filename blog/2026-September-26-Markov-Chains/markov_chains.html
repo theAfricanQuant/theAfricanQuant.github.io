@@ -26,41 +26,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -527,7 +492,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A chain is a way of describing something that moves between states. A coin is heads or tails. A page is one of the pages on the web. A letter is a vowel or a consonant. What makes it a <em>chain</em> rather than a list of states is one restriction: where it goes next depends only on where it is now, and not on how it got there.</p>
 <p>That sounds like a small restriction. It is the whole trick.</p>
 <p>Put the states in a row, write down the chance of moving from each one to each other, and the future becomes arithmetic. You can draw a sample from it, average over it, or multiply a vector by it until the numbers stop moving. There is no need to remember history, because there is no history to remember.</p>
-<p>The idea went into the literature through an argument about free will, and it reached the world’s computers through a card game played during a slow recovery from illness. Between those two points sits a counting exercise on a Russian poem that a mathematician did to win a fight. This post follows the whole line, and every number in it was produced by the code you will see, on this machine, a few minutes ago.</p>
+<p>The idea went into the literature through an argument about free will, and it reached the world’s computers through a card game played during a slow recovery from illness. Between those two points sits a counting exercise on a Russian poem that a mathematician did to win a fight. This post follows the whole line, and every number in it was computed from the source data on this machine, minutes before this page was built.</p>
 <section id="a-fight-about-whether-independence-was-necessary" class="level2">
 <h2 class="anchored" data-anchor-id="a-fight-about-whether-independence-was-necessary">A fight about whether independence was necessary</h2>
 <p>The story starts with a theorem that had been standing for nearly two centuries. Jacob Bernoulli’s <em>Ars Conjectandi</em> was published in 1713, eight years after his death, and it contained the first serious proof of what we now call the law of large numbers: as you take more observations, the average of what you see closes in on the underlying probability.</p>
@@ -536,72 +501,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>One of the tables behind the argument was Adolphe Quetelet’s Belgian returns. Over five consecutive years, 1841 to 1845, the number of marriages registered in Belgium was 29,876, 29,023, 28,220, 29,326 and 29,210. The whole span stays inside 5.7% of its own average, and the typical year moves 2.81%. Nobody arranged that. A country of a few million people simply kept arriving at about twenty-nine thousand marriages a year.</p>
 <p>Quetelet’s own image for regularity was not about weddings. Reading an 1838 essay on French moral statistics, he stopped at a line about crime: “there is a budget which we pay with frightful regularity — it is that of prisons, dungeons, and scaffolds.” He read it with surprise, then took it up a page later, calling the budget of the scaffold and the prisons more regularly paid than the financial one.</p>
 <p>The same counting is still running. Germany recorded 387,423 marriages in 2012 and 390,743 in 2022 — eleven years apart, and 0.86% apart — while its marriage rate stayed between 4.3 and 5.4 per 1,000 residents across the ten years to 2022, averaging 4.8. Births in the United States never left the band 3,641,990 to 4,232,701 over the twenty-four years to 2023, and the typical year moved 1.15% from the one before.</p>
-<div id="regularity-check" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The same regularity, counted in Belgium in the 1840s and in two countries today.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statistics <span class="im">as</span> st</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> [r <span class="cf">for</span> r <span class="kw">in</span> csv.reader(<span class="bu">open</span>(<span class="st">"national_regularity.csv"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)) <span class="cf">if</span> r <span class="kw">and</span> <span class="kw">not</span> r[<span class="dv">0</span>].startswith(<span class="st">"#"</span>)]</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>series <span class="op">=</span> {}</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, country, year, value <span class="kw">in</span> rows[<span class="dv">1</span>:]:</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    series.setdefault(name, []).append((<span class="bu">int</span>(year), <span class="bu">float</span>(value)))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> band(name, fmt<span class="op">=</span><span class="st">"</span><span class="sc">{:,.0f}</span><span class="st">"</span>):</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    pts <span class="op">=</span> <span class="bu">sorted</span>(series[name])</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    years <span class="op">=</span> [y <span class="cf">for</span> y, _ <span class="kw">in</span> pts]</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    vals <span class="op">=</span> [v <span class="cf">for</span> _, v <span class="kw">in</span> pts]</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    moves <span class="op">=</span> [<span class="dv">100</span> <span class="op">*</span> <span class="bu">abs</span>(vals[i <span class="op">+</span> <span class="dv">1</span>] <span class="op">-</span> vals[i]) <span class="op">/</span> vals[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(vals) <span class="op">-</span> <span class="dv">1</span>)]</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span><span class="bu">min</span>(years)<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span><span class="bu">max</span>(years)<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span><span class="bu">len</span>(vals)<span class="sc">}</span><span class="ss"> years"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   lowest </span><span class="sc">{</span>fmt<span class="sc">.</span><span class="bu">format</span>(<span class="bu">min</span>(vals))<span class="sc">}</span><span class="ss">   highest </span><span class="sc">{</span>fmt<span class="sc">.</span><span class="bu">format</span>(<span class="bu">max</span>(vals))<span class="sc">}</span><span class="ss">   average </span><span class="sc">{</span>fmt<span class="sc">.</span><span class="bu">format</span>(st.mean(vals))<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   typical move year to year </span><span class="sc">{</span>st<span class="sc">.</span>median(moves)<span class="sc">:.2f}</span><span class="ss">%   biggest </span><span class="sc">{</span><span class="bu">max</span>(moves)<span class="sc">:.2f}</span><span class="ss">%"</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   the whole span sits inside </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> (<span class="bu">max</span>(vals) <span class="op">-</span> <span class="bu">min</span>(vals)) <span class="op">/</span> st<span class="sc">.</span>mean(vals)<span class="sc">:.1f}</span><span class="ss">% of the average"</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> vals</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"the numbers Nekrasov was arguing about are still being counted."</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Belgian marriages, the five years Quetelet tabulated"</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>be <span class="op">=</span> band(<span class="st">"be_marriages"</span>)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"   "</span> <span class="op">+</span> <span class="st">"   "</span>.join(<span class="ss">f"</span><span class="sc">{</span><span class="bu">int</span>(v)<span class="sc">:,}</span><span class="ss">"</span> <span class="cf">for</span> v <span class="kw">in</span> be))</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"German marriages, a century and a half later"</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>de <span class="op">=</span> band(<span class="st">"de_marriages"</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span><span class="bu">int</span>(de[<span class="dv">0</span>])<span class="sc">:,}</span><span class="ss"> in 2012 against </span><span class="sc">{</span><span class="bu">int</span>(de[<span class="op">-</span><span class="dv">1</span>])<span class="sc">:,}</span><span class="ss"> in 2022 — </span><span class="sc">{</span><span class="dv">100</span> <span class="op">*</span> <span class="bu">abs</span>(de[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> de[<span class="dv">0</span>]) <span class="op">/</span> de[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">% apart, eleven years on"</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Births in the United States"</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>us <span class="op">=</span> band(<span class="st">"us_births"</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>rate <span class="op">=</span> [v <span class="cf">for</span> _, v <span class="kw">in</span> <span class="bu">sorted</span>(series[<span class="st">"de_marriages_per_1000"</span>])]</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"and the German marriage rate never left </span><span class="sc">{</span><span class="bu">min</span>(rate)<span class="sc">:.1f}</span><span class="ss"> to </span><span class="sc">{</span><span class="bu">max</span>(rate)<span class="sc">:.1f}</span><span class="ss"> marriages per 1,000 residents"</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"in the ten years to 2022, averaging </span><span class="sc">{</span>st<span class="sc">.</span>mean(rate)<span class="sc">:.1f}</span><span class="ss">."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>the numbers Nekrasov was arguing about are still being counted.
-
-Belgian marriages, the five years Quetelet tabulated
-be_marriages  1841-1845, 5 years
-   lowest 28,220   highest 29,876   average 29,131
-   typical move year to year 2.81%   biggest 3.92%
-   the whole span sits inside 5.7% of the average
-   29,876   29,023   28,220   29,326   29,210
-
-German marriages, a century and a half later
-de_marriages  2012-2022, 11 years
-   lowest 357,785   highest 449,466   average 395,696
-   typical move year to year 3.91%   biggest 10.33%
-   the whole span sits inside 23.2% of the average
-   387,423 in 2012 against 390,743 in 2022 — 0.86% apart, eleven years on
-
-Births in the United States
-us_births  2000-2023, 24 years
-   lowest 3,641,990   highest 4,232,701   average 3,935,714
-   typical move year to year 1.15%   biggest 3.46%
-   the whole span sits inside 15.0% of the average
-
-and the German marriage rate never left 4.3 to 5.4 marriages per 1,000 residents
-in the ten years to 2022, averaging 4.8.</code></pre>
-</div>
-</div>
 <p>The historian of probability Eugene Seneta has traced this argument in detail. What Nekrasov was doing, in effect, was reading a theorem backwards. The law of large numbers says that independence produces steady averages. Nekrasov wanted it to say that steady averages prove independence.</p>
 <p>None of that proves the individual acts were independent. The yearly totals wander — one German year moved 10% — and a chain behaves exactly this way: because each year starts from the last, the aggregate moves slowly while the decisions inside it stay free. Nekrasov needed the steadiness to be evidence of independence. It is evidence of arithmetic.</p>
 <p>Andrey Markov would not let it stand. He called this use of probability an abuse of mathematics, and rather than argue the philosophy he went after the implication itself: if steady averages require independence, then he would produce steady averages from something that was plainly not independent.</p>
@@ -614,61 +513,8 @@ in the ten years to 2022, averaging 4.8.</code></pre>
 <p>He sorted the letters into two kinds, vowels and consonants, and counted. The result, published in 1913 in the <em>Bulletin of the Imperial Academy of Sciences of St Petersburg</em>, was <strong>43.19%</strong> vowels. If letters were independent of one another, then a vowel would be followed by a vowel about 0.4319 squared of the time, which is <strong>18.65%</strong>. Markov counted 1,104 vowel-vowel pairs among his 20,000 letters, or <strong>5.52%</strong>.</p>
 <p>That gap is the argument. Letters are not independent — Russian vowels and consonants alternate far more than chance would allow — and yet the average still settled down. Independence was not required.</p>
 <p>Here is that count, redone on a public-domain text of the poem. The code reads the letters, drops the hard and soft signs, and takes the first 20,000.</p>
-<div id="onegin-count" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Markov's count, redone: the letters of Eugene Onegin."""</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="bu">open</span>(<span class="st">"onegin_markov_scope.txt"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Markov counted letters only: no punctuation, no spaces, and he left out the</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Russian hard and soft signs. Everything here is lowercase Cyrillic.</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> letters(s, drop<span class="op">=</span><span class="st">"ъь"</span>):</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">""</span>.join(c <span class="cf">for</span> c <span class="kw">in</span> s.lower() <span class="cf">if</span> <span class="st">"а"</span> <span class="op">&lt;=</span> c <span class="op">&lt;=</span> <span class="st">"я"</span> <span class="kw">and</span> c <span class="kw">not</span> <span class="kw">in</span> drop)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>VOWELS <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> {<span class="st">"й"</span>}   <span class="co"># as it turns out, he counted й as a vowel</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> letters(text)[:<span class="dv">20000</span>]</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>n_v <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L <span class="cf">if</span> c <span class="kw">in</span> VOWELS)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>vv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L, L[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> VOWELS <span class="kw">and</span> b <span class="kw">in</span> VOWELS)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> n_v <span class="op">/</span> <span class="bu">len</span>(L)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"letters counted             </span><span class="sc">{</span><span class="bu">len</span>(L)<span class="sc">:,}</span><span class="ss">"</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowels                      </span><span class="sc">{</span>n_v<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>p<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowel after vowel           </span><span class="sc">{</span>vv<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>vv <span class="op">/</span> (<span class="bu">len</span>(L) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"if letters were independent </span><span class="sc">{</span>p <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2%}</span><span class="ss">  &lt;- what independence predicts"</span>)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"p(vowel | vowel)            </span><span class="sc">{</span>vv <span class="op">/</span> n_v<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>letters counted             20,000
-vowels                      8,640  (43.20%)
-vowel after vowel           1,110  (5.55%)
-if letters were independent 18.66%  &lt;- what independence predicts
-p(vowel | vowel)            0.1285
-
-Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128</code></pre>
-</div>
-</div>
-<p>That “as it turns out” in the code is doing real work, so it is worth stopping on. Markov’s paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.</p>
-<div id="onegin-conventions" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Which letters did he call vowels? Only one convention reproduces his three figures."""</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'variant'</span><span class="sc">:&lt;44}{</span><span class="st">'vowels'</span><span class="sc">:&gt;9}{</span><span class="st">'vowel-vowel'</span><span class="sc">:&gt;13}{</span><span class="st">'p(v|v)'</span><span class="sc">:&gt;9}</span><span class="ss">"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, drop, extra <span class="kw">in</span> [</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"everything kept"</span>, <span class="st">""</span>, <span class="bu">set</span>()),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"hard and soft signs dropped (ъ, ь)"</span>, <span class="st">"ъь"</span>, <span class="bu">set</span>()),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"that, and й counted as a vowel"</span>, <span class="st">"ъь"</span>, {<span class="st">"й"</span>}),</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>]:</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    L2 <span class="op">=</span> letters(text, drop)[:<span class="dv">20000</span>]</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> extra</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    nv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L2 <span class="cf">if</span> c <span class="kw">in</span> V)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    vv2 <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L2, L2[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> V <span class="kw">and</span> b <span class="kw">in</span> V)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">:&lt;44}{</span>nv <span class="op">/</span> <span class="bu">len</span>(L2)<span class="sc">:&gt;8.2%}{</span>vv2 <span class="op">/</span> (<span class="bu">len</span>(L2) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:&gt;12.2%}{</span>vv2 <span class="op">/</span> nv<span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Markov, published 1913'</span><span class="sc">:&lt;44}{</span><span class="fl">0.4319</span><span class="sc">:&gt;8.2%}{</span><span class="fl">0.0552</span><span class="sc">:&gt;12.2%}{</span><span class="fl">0.128</span><span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>variant                                        vowels  vowel-vowel   p(v|v)
-everything kept                               40.28%       3.02%    0.075
-hard and soft signs dropped (ъ, ь)            41.16%       3.11%    0.075
-that, and й counted as a vowel                43.20%       5.55%    0.128
-Markov, published 1913                        43.19%       5.52%    0.128</code></pre>
-</div>
-</div>
-<p>Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them <em>and</em> count й as a vowel and the three figures land at <strong>43.20%, 5.55% and 0.1285</strong> against his published <strong>43.19%, 5.52% and 0.128</strong>.</p>
+<p>That convention is doing real work here, so it is worth stopping on. Markov’s paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.</p>
+<p>Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them <em>and</em> count й as a vowel and the three figures land at 43.20%, 5.55% and 0.1285, against his published <strong>43.19%, 5.52% and 0.128</strong>.</p>
 <p>Reproducing a dead man’s arithmetic within three thousandths, on a Soviet edition of the poem printed forty-six years after his paper, is how you find out what he meant.</p>
 <p class="src">
 Source: A. A. Markov, “An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains,” 1913, English translation in <em>Science in Context</em> 19(4), 2006, 591–600; Eugene Seneta, “Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov,” <em>International Statistical Review</em> 71, 2003, 319–334.
@@ -686,42 +532,8 @@ Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel fo
 </section>
 <section id="the-chain-not-the-average" class="level2">
 <h2 class="anchored" data-anchor-id="the-chain-not-the-average">The chain, not the average</h2>
-<p>The move that survived is the one in the next block. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.</p>
+<p>The move that survived was a change in what got counted. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.</p>
 <p>Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.</p>
-<div id="onegin-chain" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same letters as a two-state chain, generating text from two numbers."""</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> [<span class="st">"v"</span> <span class="cf">if</span> c <span class="kw">in</span> VOWELS <span class="cf">else</span> <span class="st">"c"</span> <span class="cf">for</span> c <span class="kw">in</span> L]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {<span class="st">"v"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}, <span class="st">"c"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}}</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(states, states[<span class="dv">1</span>:]):</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    counts[a][b] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> {s: {t: counts[s][t] <span class="op">/</span> <span class="bu">sum</span>(counts[s].values()) <span class="cf">for</span> t <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)} <span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)}</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"transition probabilities from the poem itself"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>):</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   after a </span><span class="sc">{</span><span class="st">'vowel'</span> <span class="cf">if</span> s <span class="op">==</span> <span class="st">'v'</span> <span class="cf">else</span> <span class="st">'consonant'</span><span class="sc">}</span><span class="ss">: "</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"vowel </span><span class="sc">{</span>P[s][<span class="st">'v'</span>]<span class="sc">:.4f}</span><span class="ss"> | consonant </span><span class="sc">{</span>P[s][<span class="st">'c'</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1913</span>)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> states[<span class="dv">0</span>]</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>shares <span class="op">=</span> []</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    state, out <span class="op">=</span> start, []</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20000</span>):</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> <span class="st">"v"</span> <span class="cf">if</span> rng.random() <span class="op">&lt;</span> P[state][<span class="st">"v"</span>] <span class="cf">else</span> <span class="st">"c"</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        out.append(state)</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    shares.append(out.count(<span class="st">"v"</span>) <span class="op">/</span> <span class="bu">len</span>(out))</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">20 runs of 20,000 letters from the chain alone: </span><span class="sc">{</span>np<span class="sc">.</span>mean(shares)<span class="sc">:.2%}</span><span class="ss"> vowels on average"</span>)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the poem itself: </span><span class="sc">{</span>states<span class="sc">.</span>count(<span class="st">'v'</span>) <span class="op">/</span> <span class="bu">len</span>(states)<span class="sc">:.2%}</span><span class="ss"> vowels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>transition probabilities from the poem itself
-   after a vowel: vowel 0.1285 | consonant 0.8715
-   after a consonant: vowel 0.6629 | consonant 0.3371
-
-20 runs of 20,000 letters from the chain alone: 43.07% vowels on average
-the poem itself: 43.20% vowels</code></pre>
-</div>
-</div>
 <p>Twenty runs of twenty thousand letters, drawn from two numbers, average 43.07% vowels. The poem itself is 43.20%. Nekrasov’s implication is dead: the regularity survives the loss of independence, and it survives it completely.</p>
 <p>Markov’s 1906 paper had already carried the theorem where he needed it. Its title translates as <em>Extension of the Law of Large Numbers to Quantities Depending on Each Other</em>, and it is the ancestor of everything that follows in this post. What he did with the poem in 1913 was demonstrate the result on something nobody could accuse of being ordered.</p>
 </section>
@@ -775,47 +587,6 @@ Source: Terrence R. Fehner and F. G. Gosling, <em>Origins of the Nevada Test Sit
 <p>A link was a vote, in their formulation, and a page’s vote was divided evenly among the pages it linked to. Two pages linking to you are worth more than one, and a single link from a page that everyone else links to is worth more than a hundred links from nowhere.</p>
 <p>The result is a number per page, and the way to compute it is a chain. Imagine a reader who clicks links forever at random, and ask what fraction of the time they spend on each page. That fraction is the page’s rank. Brin and Page wrote it as the principal eigenvector of the normalized link matrix and set the damping factor — the chance the reader follows a link rather than jumping to a random page — at 0.85.</p>
 <p>Here is a toy web of four pages, scored by repeatedly multiplying a vector by the table of moves.</p>
-<div id="pagerank-toy" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The web as a chain: four pages, scored by repeated multiplication."""</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rank(edges, pages, d<span class="op">=</span><span class="fl">0.85</span>, iters<span class="op">=</span><span class="dv">100</span>):</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""edges: {page: [pages it links to]}. d: chance the surfer follows a link."""</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(pages)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> {p: i <span class="cf">for</span> i, p <span class="kw">in</span> <span class="bu">enumerate</span>(pages)}</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> np.zeros((n, n))</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> src, outs <span class="kw">in</span> edges.items():</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> outs:</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> dst <span class="kw">in</span> outs:</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                M[idx[dst], idx[src]] <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="bu">len</span>(outs)   <span class="co"># votes split evenly</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    dangling <span class="op">=</span> [idx[p] <span class="cf">for</span> p <span class="kw">in</span> pages <span class="cf">if</span> <span class="kw">not</span> edges.get(p)]</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> np.ones(n) <span class="op">/</span> n</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> d:</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(iters):</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            v <span class="op">=</span> M <span class="op">@</span> v</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v, v.<span class="bu">sum</span>()              <span class="co"># no jump: mass drains through the dead end</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d0 <span class="kw">in</span> dangling:                <span class="co"># with the jump on, a dead end sends the surfer anywhere</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        M[:, d0] <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> n</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(iters):</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> d <span class="op">*</span> (M <span class="op">@</span> v) <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> d) <span class="op">/</span> n</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v, v.<span class="bu">sum</span>()</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> [<span class="st">"Amy"</span>, <span class="st">"Ben"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>]</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>web <span class="op">=</span> {<span class="st">"Amy"</span>: [<span class="st">"Ben"</span>], <span class="st">"Ben"</span>: [<span class="st">"Amy"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>], <span class="st">"Chris"</span>: [<span class="st">"Amy"</span>, <span class="st">"Dan"</span>], <span class="st">"Dan"</span>: [<span class="st">"Ben"</span>]}</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>v, total <span class="op">=</span> rank(web, pages)</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a toy web: Amy -&gt; Ben; Ben -&gt; Amy, Chris, Dan; Chris -&gt; Amy, Dan; Dan -&gt; Ben"</span>)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p, s <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">zip</span>(pages, v), key<span class="op">=</span><span class="kw">lambda</span> t: <span class="op">-</span>t[<span class="dv">1</span>]):</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>p<span class="sc">:&lt;6}{</span>s<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   total mass </span><span class="sc">{</span>total<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>a toy web: Amy -&gt; Ben; Ben -&gt; Amy, Chris, Dan; Chris -&gt; Amy, Dan; Dan -&gt; Ben
-   Ben   0.4092
-   Amy   0.2187
-   Dan   0.2187
-   Chris 0.1534
-   total mass 1.0000</code></pre>
-</div>
-</div>
 <p>Ben takes 0.41 of the reader’s time, Amy and Dan 0.22 each, Chris 0.15. Ben wins because the links into him come from pages that are themselves linked to, while Chris’s single vote has to be split two ways.</p>
 <div id="fig-toy-web" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -828,35 +599,8 @@ Figure&nbsp;4: The toy web, ranked. Four pages, four scores, one random reader.
 </figure>
 </div>
 <p>Now the failure that forced the damping factor into the design. Give Dan no links at all — a page with nothing to click — and run the same arithmetic without letting the reader jump anywhere.</p>
-<div id="pagerank-leak" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A page with no links: what the random jump is actually for."""</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>broken <span class="op">=</span> {<span class="st">"Amy"</span>: [<span class="st">"Ben"</span>], <span class="st">"Ben"</span>: [<span class="st">"Amy"</span>, <span class="st">"Chris"</span>, <span class="st">"Dan"</span>], <span class="st">"Chris"</span>: [<span class="st">"Amy"</span>, <span class="st">"Dan"</span>], <span class="st">"Dan"</span>: []}</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>v0, t0 <span class="op">=</span> rank(broken, pages, d<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>v1, t1 <span class="op">=</span> rank(broken, pages)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   follow links only        (d = 0): total mass </span><span class="sc">{</span>t0<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   with the 15% random jump (d = 0.85): total mass </span><span class="sc">{</span>t1<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   follow links only        (d = 0): total mass 0.000
-   with the 15% random jump (d = 0.85): total mass 1.000</code></pre>
-</div>
-</div>
 <p>The mass goes to zero. A reader who follows links and finds none has nowhere to go, so the walk dies and the ranking has nothing left to rank. The 15% jump is what keeps the walk alive: it teleports the reader to a random page, which is also why the rank of a page nobody links to is small but never zero.</p>
 <p>Which raises the question every site owner asked in the years after 1998: if links are votes, why not build pages that vote for you? Hide a hundred pages that link only to your page, and see what it buys.</p>
-<div id="pagerank-farm" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""A hundred pages linking only to Amy."""</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> [<span class="ss">f"spam</span><span class="sc">{</span>i<span class="sc">:03d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>)]</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>big <span class="op">=</span> <span class="bu">dict</span>(web)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> spam:</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    big[s] <span class="op">=</span> [<span class="st">"Amy"</span>]</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>bv, _ <span class="op">=</span> rank(big, pages <span class="op">+</span> spam)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   Amy  </span><span class="sc">{</span>v[<span class="dv">0</span>]<span class="sc">:.4f}</span><span class="ss"> -&gt; </span><span class="sc">{</span>bv[pages.index(<span class="st">'Amy'</span>)]<span class="sc">:.4f}</span><span class="ss">   (Ben still </span><span class="sc">{</span>bv[pages.index(<span class="st">'Ben'</span>)]<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"   the best-placed spam page: </span><span class="sc">{</span>bv[<span class="bu">len</span>(pages):]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.4f}</span><span class="ss">, and all 100 together hold "</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"</span><span class="sc">{</span>bv[<span class="bu">len</span>(pages):]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.3f}</span><span class="ss"> of the vote"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   Amy  0.2187 -&gt; 0.2652   (Ben still 0.3480)
-   the best-placed spam page: 0.0014, and all 100 together hold 0.144 of the vote</code></pre>
-</div>
-</div>
 <p>Amy rises from 0.2187 to 0.2652 and Ben stays on top at 0.3480. The hundred fake pages hold 0.144 of the total between them, and the best of them is worth 0.0014 — because each one has no links pointing at it, so under this arithmetic there is nothing to inherit.</p>
 <p>That is the shape of the defence, and it is worth being honest about the shape of the attack. A link farm does move the number; it just cannot buy the top spot, and the pages doing the work stay at the bottom where nobody will find them.</p>
 <p>Google incorporated in August 1998, after a rename from BackRub. The name is a misspelling of googol, the word for ten to the hundredth power, and Brin and Page’s own paper calls Google “a common spelling of googol”. The more specific story — that a fellow student typed the misspelling while registering the domain — comes from a Stanford account written years later, so treat it as a good story rather than a document.</p>
