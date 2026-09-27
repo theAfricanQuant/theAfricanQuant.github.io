@@ -218,6 +218,8 @@ He chose the letters of a poem.
 
 ## Twenty thousand letters of Eugene Onegin
 
+Alexander Pushkin, born in Moscow in 1799, is the founding figure of Russian letters — Britannica calls him "the founder of modern Russian literature," and the modern literary standard is dated to his lifetime. He was also the great-grandson of Abram Gannibal, an African child — born around 1696, in what is now Cameroon or Ethiopia, a question the record has never settled — who was taken to the court of Peter the Great, trained as a military engineer, and rose to general.
+
 Markov took the first chapter of Pushkin's *Eugene Onegin*, sixteen stanzas of the second chapter, and stripped it to bare letters — no punctuation, no spaces, and none of the Russian hard and soft signs. That left him 20,000 characters to work with.
 
 He sorted the letters into two kinds, vowels and consonants, and counted. The result, published in 1913 in the *Bulletin of the Imperial Academy of Sciences of St Petersburg*, was **43.19%** vowels. If letters were independent of one another, then a vowel would be followed by a vowel about 0.4319 squared of the time, which is **18.65%**. Markov counted 1,104 vowel-vowel pairs among his 20,000 letters, or **5.52%**.
@@ -490,9 +492,11 @@ The poem and the feud:
 - Jacob Bernoulli, *Ars Conjectandi*, 1713
 - Adolphe Quetelet, *A Treatise on Man and the Development of his Faculties* (Edinburgh, 1842), the passage on the budget of prisons, dungeons and scaffolds, pp. 82–83 — [scan](https://archive.org/details/treatiseonmandev00quet){target="_blank"}; French original, *Sur l'homme et le développement de ses facultés* (Paris, 1835) — [scan](https://archive.org/details/surlhommeetled00quet){target="_blank"}
 
-The poem itself:
+The poem and its author:
 
 - A. A. Pushkin, *Eugene Onegin*, Russian text of the 1959 collected works — [Wikisource](<https://ru.wikisource.org/wiki/%D0%95%D0%B2%D0%B3%D0%B5%D0%BD%D0%B8%D0%B9_%D0%9E%D0%BD%D0%B5%D0%B3%D0%B8%D0%BD_(%D0%9F%D1%83%D1%88%D0%BA%D0%B8%D0%BD)/%D0%A1%D0%A1_1959_(%D0%A1%D0%9E)>){target="_blank"}
+- Encyclopædia Britannica, *Aleksandr Pushkin* — [entry](https://www.britannica.com/biography/Aleksandr-Sergeyevich-Pushkin){target="_blank"}; the phrase "the founder of modern Russian literature" is Britannica's own.
+- *Abram Petrovich Gannibal* — [Wikipedia](https://en.wikipedia.org/wiki/Abram_Petrovich_Gannibal){target="_blank"}, on the great-grandfather's African origin and the unresolved dispute over his birthplace; the main account of Gannibal's early life is Pushkin's unfinished *The Moor of Peter the Great*.
 
 Monte Carlo and the bomb:
 
