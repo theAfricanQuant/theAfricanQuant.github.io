@@ -617,17 +617,17 @@ Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel fo
 </figcaption>
 </figure>
 </div>
-<figure class="quarto-float quarto-figure quarto-figure-center anchored figure" id="fig-letter-chain-live">
-<div>
-<video src="fig-letter-chain-animated.mp4" autoplay="" loop="" muted="" playsinline="" width="100%"></video>
-</div>
-<figcaption class="quarto-float-caption">Read letter by letter. Every number here is recomputed as the poem is read: at thirty letters the vowel-after-vowel estimate swings anywhere between 0.08 and 0.92, and by twenty thousand it has settled on 0.13, with a vowel coming after a consonant 0.66 of the time. The two outcomes from each state are complements, so each pair reads 1.0000 in every frame — only the amount of evidence changes.</figcaption>
-</figure>
 </section>
 <section id="the-chain-not-the-average" class="level2">
 <h2 class="anchored" data-anchor-id="the-chain-not-the-average">The chain, not the average</h2>
 <p>The move that survived was a change in what got counted. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.</p>
 <p>Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.</p>
+<figure class="quarto-float quarto-figure quarto-figure-center anchored figure" id="fig-letter-chain-live">
+<div>
+<video src="fig-letter-chain-animated.mp4" autoplay="" loop="" muted="" playsinline="" width="100%"></video>
+</div>
+<figcaption class="quarto-float-caption">Letters generated from the chain alone, and the chain re-estimated from the letters it produced. Sixteen letters in, the vowel-after-vowel estimate is still swinging between 0.00 and 0.92; by twenty thousand it has settled back on 0.13 and 0.67 — the numbers that generated them — and the shares have settled at 43% vowels. The two outcomes from each state are complements, so each pair reads 1.00 in every frame.</figcaption>
+</figure>
 <div id="onegin-chain" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same letters as a two-state chain, generating text from two numbers."""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
