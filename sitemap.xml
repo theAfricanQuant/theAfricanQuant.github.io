@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.sisengai.com/blog/2024-May-25-Lambda-Functions/lambda_functions.html</loc>
-    <lastmod>2026-09-27T11:47:25.589Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.934Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-June-19-Walrus-Operator/theWalrusOperator.html</loc>
-    <lastmod>2026-09-27T11:47:25.578Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.924Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-February-24-Introduction-to-Matplotlib/Introduction_to_matplotlib.html</loc>
-    <lastmod>2026-09-27T11:47:25.038Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.185Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2023-December-27-Data-Wrangling/Data_Wrangling.html</loc>
-    <lastmod>2026-09-27T11:47:25.015Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.164Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/resume/index.html</loc>
-    <lastmod>2026-09-27T11:47:25.607Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.951Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/freebies.html</loc>
-    <lastmod>2026-09-27T11:47:25.601Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.945Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/contact.html</loc>
-    <lastmod>2026-09-27T11:47:25.601Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.945Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-26-Markov-Chains/markov_chains.html</loc>
-    <lastmod>2026-09-27T11:47:25.599Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.944Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-23-The-Shortlist/the_shortlist.html</loc>
-    <lastmod>2026-09-27T11:47:25.596Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.941Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-18-PyTorch-vs-TensorFlow/pytorch_vs_tensorflow.html</loc>
-    <lastmod>2026-09-27T11:47:25.595Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.940Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2025-April-07-NamedTuples/tuples_namedtuples_dataclasses.html</loc>
-    <lastmod>2026-09-27T11:47:25.594Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.939Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/about.html</loc>
-    <lastmod>2026-09-27T11:47:25.014Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.163Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-September-14-Unpacking-Operator/unpacking_operator_in_python.html</loc>
-    <lastmod>2026-09-27T11:47:25.593Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.939Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-17-Torch-To-PyTorch/torch_to_pytorch.html</loc>
-    <lastmod>2026-09-27T11:47:25.595Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.939Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-21-Tabular-Embeddings/tabular_embeddings.html</loc>
-    <lastmod>2026-09-27T11:47:25.596Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.941Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2026-September-25-Lambdas-And-pd-col/lambdas_and_pd_col.html</loc>
-    <lastmod>2026-09-27T11:47:25.597Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.942Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/index.html</loc>
-    <lastmod>2026-09-27T11:47:25.599Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.944Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/free-website-brief.html</loc>
-    <lastmod>2026-09-27T11:47:25.601Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.945Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/index.html</loc>
-    <lastmod>2026-09-27T11:47:25.606Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.950Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/services.html</loc>
-    <lastmod>2026-09-27T11:47:25.607Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.951Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-April-03-User-Defined-Functions-In-DuckDB/GenerateDummyDatawithUserDefinedFunctions_(UDFs).html</loc>
-    <lastmod>2026-09-27T11:47:25.019Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.168Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-January-04-Karachi-Property-Prices/KarachiPropertyPrices.html</loc>
-    <lastmod>2026-09-27T11:47:25.085Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.229Z</lastmod>
   </url>
   <url>
     <loc>https://www.sisengai.com/blog/2024-May-15-Working-with-Dictionaries-and-DataFrames/WorkingWithDictionariesAndDataFrames.html</loc>
-    <lastmod>2026-09-27T11:47:25.587Z</lastmod>
+    <lastmod>2026-09-27T11:54:50.932Z</lastmod>
   </url>
 </urlset>

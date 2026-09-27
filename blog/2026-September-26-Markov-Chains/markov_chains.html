@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -513,7 +548,60 @@ ul.task-list li input[type="checkbox"] {
 <p>He sorted the letters into two kinds, vowels and consonants, and counted. The result, published in 1913 in the <em>Bulletin of the Imperial Academy of Sciences of St Petersburg</em>, was <strong>43.19%</strong> vowels. If letters were independent of one another, then a vowel would be followed by a vowel about 0.4319 squared of the time, which is <strong>18.65%</strong>. Markov counted 1,104 vowel-vowel pairs among his 20,000 letters, or <strong>5.52%</strong>.</p>
 <p>That gap is the argument. Letters are not independent — Russian vowels and consonants alternate far more than chance would allow — and yet the average still settled down. Independence was not required.</p>
 <p>Here is that count, redone on a public-domain text of the poem. The code reads the letters, drops the hard and soft signs, and takes the first 20,000.</p>
+<div id="onegin-count" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Markov's count, redone: the letters of Eugene Onegin."""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="bu">open</span>(<span class="st">"onegin_markov_scope.txt"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>).read()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Markov counted letters only: no punctuation, no spaces, and he left out the</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Russian hard and soft signs. Everything here is lowercase Cyrillic.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> letters(s, drop<span class="op">=</span><span class="st">"ъь"</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">""</span>.join(c <span class="cf">for</span> c <span class="kw">in</span> s.lower() <span class="cf">if</span> <span class="st">"а"</span> <span class="op">&lt;=</span> c <span class="op">&lt;=</span> <span class="st">"я"</span> <span class="kw">and</span> c <span class="kw">not</span> <span class="kw">in</span> drop)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>VOWELS <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> {<span class="st">"й"</span>}   <span class="co"># as it turns out, he counted й as a vowel</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> letters(text)[:<span class="dv">20000</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>n_v <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L <span class="cf">if</span> c <span class="kw">in</span> VOWELS)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>vv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L, L[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> VOWELS <span class="kw">and</span> b <span class="kw">in</span> VOWELS)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> n_v <span class="op">/</span> <span class="bu">len</span>(L)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"letters counted             </span><span class="sc">{</span><span class="bu">len</span>(L)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowels                      </span><span class="sc">{</span>n_v<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>p<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"vowel after vowel           </span><span class="sc">{</span>vv<span class="sc">:,}</span><span class="ss">  (</span><span class="sc">{</span>vv <span class="op">/</span> (<span class="bu">len</span>(L) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"if letters were independent </span><span class="sc">{</span>p <span class="op">**</span> <span class="dv">2</span><span class="sc">:.2%}</span><span class="ss">  &lt;- what independence predicts"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"p(vowel | vowel)            </span><span class="sc">{</span>vv <span class="op">/</span> n_v<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>letters counted             20,000
+vowels                      8,640  (43.20%)
+vowel after vowel           1,110  (5.55%)
+if letters were independent 18.66%  &lt;- what independence predicts
+p(vowel | vowel)            0.1285
+
+Markov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128</code></pre>
+</div>
+</div>
 <p>That convention is doing real work here, so it is worth stopping on. Markov’s paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.</p>
+<div id="onegin-conventions" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Which letters did he call vowels? Only one convention reproduces his three figures."""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'variant'</span><span class="sc">:&lt;44}{</span><span class="st">'vowels'</span><span class="sc">:&gt;9}{</span><span class="st">'vowel-vowel'</span><span class="sc">:&gt;13}{</span><span class="st">'p(v|v)'</span><span class="sc">:&gt;9}</span><span class="ss">"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, drop, extra <span class="kw">in</span> [</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"everything kept"</span>, <span class="st">""</span>, <span class="bu">set</span>()),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"hard and soft signs dropped (ъ, ь)"</span>, <span class="st">"ъь"</span>, <span class="bu">set</span>()),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"that, and й counted as a vowel"</span>, <span class="st">"ъь"</span>, {<span class="st">"й"</span>}),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    L2 <span class="op">=</span> letters(text, drop)[:<span class="dv">20000</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> <span class="bu">set</span>(<span class="st">"аеёиоуыэюя"</span>) <span class="op">|</span> extra</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    nv <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> c <span class="kw">in</span> L2 <span class="cf">if</span> c <span class="kw">in</span> V)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    vv2 <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(L2, L2[<span class="dv">1</span>:]) <span class="cf">if</span> a <span class="kw">in</span> V <span class="kw">and</span> b <span class="kw">in</span> V)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>label<span class="sc">:&lt;44}{</span>nv <span class="op">/</span> <span class="bu">len</span>(L2)<span class="sc">:&gt;8.2%}{</span>vv2 <span class="op">/</span> (<span class="bu">len</span>(L2) <span class="op">-</span> <span class="dv">1</span>)<span class="sc">:&gt;12.2%}{</span>vv2 <span class="op">/</span> nv<span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Markov, published 1913'</span><span class="sc">:&lt;44}{</span><span class="fl">0.4319</span><span class="sc">:&gt;8.2%}{</span><span class="fl">0.0552</span><span class="sc">:&gt;12.2%}{</span><span class="fl">0.128</span><span class="sc">:&gt;9.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variant                                        vowels  vowel-vowel   p(v|v)
+everything kept                               40.28%       3.02%    0.075
+hard and soft signs dropped (ъ, ь)            41.16%       3.11%    0.075
+that, and й counted as a vowel                43.20%       5.55%    0.128
+Markov, published 1913                        43.19%       5.52%    0.128</code></pre>
+</div>
+</div>
 <p>Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them <em>and</em> count й as a vowel and the three figures land at 43.20%, 5.55% and 0.1285, against his published <strong>43.19%, 5.52% and 0.128</strong>.</p>
 <p>Reproducing a dead man’s arithmetic within three thousandths, on a Soviet edition of the poem printed forty-six years after his paper, is how you find out what he meant.</p>
 <p class="src">
@@ -534,6 +622,40 @@ Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel fo
 <h2 class="anchored" data-anchor-id="the-chain-not-the-average">The chain, not the average</h2>
 <p>The move that survived was a change in what got counted. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.</p>
 <p>Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.</p>
+<div id="onegin-chain" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""The same letters as a two-state chain, generating text from two numbers."""</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> [<span class="st">"v"</span> <span class="cf">if</span> c <span class="kw">in</span> VOWELS <span class="cf">else</span> <span class="st">"c"</span> <span class="cf">for</span> c <span class="kw">in</span> L]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {<span class="st">"v"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}, <span class="st">"c"</span>: {<span class="st">"v"</span>: <span class="dv">0</span>, <span class="st">"c"</span>: <span class="dv">0</span>}}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(states, states[<span class="dv">1</span>:]):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    counts[a][b] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> {s: {t: counts[s][t] <span class="op">/</span> <span class="bu">sum</span>(counts[s].values()) <span class="cf">for</span> t <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)} <span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>)}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"transition probabilities from the poem itself"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> (<span class="st">"v"</span>, <span class="st">"c"</span>):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   after a </span><span class="sc">{</span><span class="st">'vowel'</span> <span class="cf">if</span> s <span class="op">==</span> <span class="st">'v'</span> <span class="cf">else</span> <span class="st">'consonant'</span><span class="sc">}</span><span class="ss">: "</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"vowel </span><span class="sc">{</span>P[s][<span class="st">'v'</span>]<span class="sc">:.4f}</span><span class="ss"> | consonant </span><span class="sc">{</span>P[s][<span class="st">'c'</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1913</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> states[<span class="dv">0</span>]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>shares <span class="op">=</span> []</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> run <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    state, out <span class="op">=</span> start, []</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20000</span>):</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> <span class="st">"v"</span> <span class="cf">if</span> rng.random() <span class="op">&lt;</span> P[state][<span class="st">"v"</span>] <span class="cf">else</span> <span class="st">"c"</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        out.append(state)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    shares.append(out.count(<span class="st">"v"</span>) <span class="op">/</span> <span class="bu">len</span>(out))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">20 runs of 20,000 letters from the chain alone: </span><span class="sc">{</span>np<span class="sc">.</span>mean(shares)<span class="sc">:.2%}</span><span class="ss"> vowels on average"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the poem itself: </span><span class="sc">{</span>states<span class="sc">.</span>count(<span class="st">'v'</span>) <span class="op">/</span> <span class="bu">len</span>(states)<span class="sc">:.2%}</span><span class="ss"> vowels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>transition probabilities from the poem itself
+   after a vowel: vowel 0.1285 | consonant 0.8715
+   after a consonant: vowel 0.6629 | consonant 0.3371
+
+20 runs of 20,000 letters from the chain alone: 43.07% vowels on average
+the poem itself: 43.20% vowels</code></pre>
+</div>
+</div>
 <p>Twenty runs of twenty thousand letters, drawn from two numbers, average 43.07% vowels. The poem itself is 43.20%. Nekrasov’s implication is dead: the regularity survives the loss of independence, and it survives it completely.</p>
 <p>Markov’s 1906 paper had already carried the theorem where he needed it. Its title translates as <em>Extension of the Law of Large Numbers to Quantities Depending on Each Other</em>, and it is the ancestor of everything that follows in this post. What he did with the poem in 1913 was demonstrate the result on something nobody could accuse of being ordered.</p>
 </section>
