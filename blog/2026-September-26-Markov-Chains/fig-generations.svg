@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 264" width="430" height="264" font-family="Inter, Helvetica, Arial, sans-serif">
+<rect x="0.5" y="0.5" width="429" height="263" rx="10" fill="#FFFFFF" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="24" y="36" font-size="18" fill="#22201C" text-anchor="start" font-weight="600">Four hundred neutrons, three cores</text>
+<text x="24" y="57" font-size="14" fill="#6B6558" text-anchor="start" font-weight="400">population by generation, log scale</text>
+<line x1="58" y1="212.0" x2="372" y2="212.0" stroke="#EFEAE0" stroke-width="1"/>
+<text x="50" y="216.0" font-size="12" fill="#6B6558" text-anchor="end" font-weight="400">1</text>
+<line x1="58" y1="166.0" x2="372" y2="166.0" stroke="#EFEAE0" stroke-width="1"/>
+<text x="50" y="170.0" font-size="12" fill="#6B6558" text-anchor="end" font-weight="400">100</text>
+<line x1="58" y1="120.0" x2="372" y2="120.0" stroke="#EFEAE0" stroke-width="1"/>
+<text x="50" y="124.0" font-size="12" fill="#6B6558" text-anchor="end" font-weight="400">10k</text>
+<line x1="58" y1="74.0" x2="372" y2="74.0" stroke="#EFEAE0" stroke-width="1"/>
+<text x="50" y="78.0" font-size="12" fill="#6B6558" text-anchor="end" font-weight="400">1M</text>
+<text x="58.0" y="232" font-size="12" fill="#6B6558" text-anchor="middle" font-weight="400">0</text>
+<text x="136.5" y="232" font-size="12" fill="#6B6558" text-anchor="middle" font-weight="400">2</text>
+<text x="215.0" y="232" font-size="12" fill="#6B6558" text-anchor="middle" font-weight="400">4</text>
+<text x="293.5" y="232" font-size="12" fill="#6B6558" text-anchor="middle" font-weight="400">6</text>
+<text x="372.0" y="232" font-size="12" fill="#6B6558" text-anchor="middle" font-weight="400">8</text>
+<line x1="58" y1="212" x2="372" y2="212" stroke="#E8DCC4" stroke-width="1.5"/>
+<text x="215" y="250" font-size="13" fill="#6B6558" text-anchor="middle" font-weight="400">generation</text>
+<path d="M 58.0 152.2 L 97.2 142.9 L 136.5 133.9 L 175.8 124.5 L 215.0 115.3 L 254.2 106.1 L 293.5 96.9 L 332.8 87.6 L 372.0 78.4" fill="none" stroke="#4E7A4E" stroke-width="2.1"/>
+<path d="M 58.0 152.2 L 97.2 151.7 L 136.5 152.3 L 175.8 153.3 L 215.0 153.3 L 254.2 154.8 L 293.5 156.2 L 332.8 155.7 L 372.0 156.5" fill="none" stroke="#3E6E8E" stroke-width="2.1"/>
+<path d="M 58.0 152.2 L 97.2 164.3 L 136.5 174.9 L 175.8 192.6 L 215.0 195.9" fill="none" stroke="#A2452F" stroke-width="2.1"/>
+<text x="376.0" y="82.3596280382603" font-size="13" fill="#4E7A4E" text-anchor="start" font-weight="600">646,325</text>
+<text x="376.0" y="160.5327467628457" font-size="13" fill="#3E6E8E" text-anchor="start" font-weight="600">258</text>
+<text x="219.0" y="199.92368990027157" font-size="13" fill="#A2452F" text-anchor="start" font-weight="600">dies out</text>
+<text x="24" y="250" font-size="14" fill="#6B6558" text-anchor="start" font-weight="400">Below k = 1 the population dies; above it, growth compounds.</text>
+</svg>
