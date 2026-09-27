@@ -150,7 +150,7 @@ That sounds like a small restriction. It is the whole trick.
 
 Put the states in a row, write down the chance of moving from each one to each other, and the future becomes arithmetic. You can draw a sample from it, average over it, or multiply a vector by it until the numbers stop moving. There is no need to remember history, because there is no history to remember.
 
-The idea went into the literature through an argument about free will, and it reached the world's computers through a card game played during a slow recovery from illness. Between those two points sits a counting exercise on a Russian poem that a mathematician did to win a fight. This post follows the whole line, and every number in it was produced by the code you will see, on this machine, a few minutes ago.
+The idea went into the literature through an argument about free will, and it reached the world's computers through a card game played during a slow recovery from illness. Between those two points sits a counting exercise on a Russian poem that a mathematician did to win a fight. This post follows the whole line, and every number in it was computed from the source data on this machine, minutes before this page was built.
 
 ## A fight about whether independence was necessary
 
@@ -160,14 +160,10 @@ Bernoulli's proof assumed the observations were independent of each other. That 
 
 In the Russia of the early 1900s, one mathematician decided to make the assumption do political work. Pavel Nekrasov argued from statistical regularities in social data to a conclusion about human freedom: if births, marriages and crimes settle into steady averages, he reasoned, then individual human acts must be independent of one another, and that independence pointed to something beyond material cause.
 
-One of the tables behind the argument was Adolphe Quetelet's Belgian returns. Over five consecutive years, 1841 to 1845, the number of marriages registered in Belgium was 29,876, 29,023, 28,220, 29,326 and 29,210. The whole span stays inside 5.7% of its own average, and the typical year moves 2.81%. Nobody arranged that. A country of a few million people simply kept arriving at about twenty-nine thousand marriages a year.
-
-Quetelet's own image for regularity was not about weddings. Reading an 1838 essay on French moral statistics, he stopped at a line about crime: "there is a budget which we pay with frightful regularity — it is that of prisons, dungeons, and scaffolds." He read it with surprise, then took it up a page later, calling the budget of the scaffold and the prisons more regularly paid than the financial one.
-
-The same counting is still running. Germany recorded 387,423 marriages in 2012 and 390,743 in 2022 — eleven years apart, and 0.86% apart — while its marriage rate stayed between 4.3 and 5.4 per 1,000 residents across the ten years to 2022, averaging 4.8. Births in the United States never left the band 3,641,990 to 4,232,701 over the twenty-four years to 2023, and the typical year moved 1.15% from the one before.
-
 ```{python}
 #| label: regularity-check
+#| echo: false
+#| output: false
 # The same regularity, counted in Belgium in the 1840s and in two countries today.
 import csv
 import statistics as st
@@ -208,9 +204,16 @@ print(f"and the German marriage rate never left {min(rate):.1f} to {max(rate):.1
 print(f"in the ten years to 2022, averaging {st.mean(rate):.1f}.")
 ```
 
+One of the tables behind the argument was Adolphe Quetelet's Belgian returns. Over five consecutive years, 1841 to 1845, the number of marriages registered in Belgium was `{python} ", ".join(f"{int(v):,}" for v in be[:-1])` and `{python} f"{int(be[-1]):,}"`. The whole span stays inside `{python} f"{100 * (max(be) - min(be)) / st.mean(be):.1f}%"` of its own average, and the typical year moves `{python} f"{st.median([100 * abs(be[i+1] - be[i]) / be[i] for i in range(len(be) - 1)]):.2f}%"`. Nobody arranged that. A country of a few million people simply kept arriving at about twenty-nine thousand marriages a year.
+
+Quetelet's own image for regularity was not about weddings. Reading an 1838 essay on French moral statistics, he stopped at a line about crime: "there is a budget which we pay with frightful regularity — it is that of prisons, dungeons, and scaffolds." He read it with surprise, then took it up a page later, calling the budget of the scaffold and the prisons more regularly paid than the financial one.
+
+The same counting is still running. Germany recorded `{python} f"{de[0]:,.0f}"` marriages in 2012 and `{python} f"{de[-1]:,.0f}"` in 2022 — eleven years apart, and `{python} f"{100 * abs(de[-1] - de[0]) / de[0]:.2f}%"` apart — while its marriage rate stayed between `{python} f"{min(rate):.1f}"` and `{python} f"{max(rate):.1f}"` per 1,000 residents across the ten years to 2022, averaging `{python} f"{st.mean(rate):.1f}"`. Births in the United States never left the band `{python} f"{min(us):,.0f}"` to `{python} f"{max(us):,.0f}"` over the twenty-four years to 2023, and the typical year moved `{python} f"{st.median([100 * abs(us[i+1] - us[i]) / us[i] for i in range(len(us) - 1)]):.2f}%"` from the one before.
+
+
 The historian of probability Eugene Seneta has traced this argument in detail. What Nekrasov was doing, in effect, was reading a theorem backwards. The law of large numbers says that independence produces steady averages. Nekrasov wanted it to say that steady averages prove independence.
 
-None of that proves the individual acts were independent. The yearly totals wander — one German year moved 10% — and a chain behaves exactly this way: because each year starts from the last, the aggregate moves slowly while the decisions inside it stay free. Nekrasov needed the steadiness to be evidence of independence. It is evidence of arithmetic.
+None of that proves the individual acts were independent. The yearly totals wander — one German year moved `{python} f"{max([100 * abs(de[i+1] - de[i]) / de[i] for i in range(len(de) - 1)]):.0f}%"` — and a chain behaves exactly this way: because each year starts from the last, the aggregate moves slowly while the decisions inside it stay free. Nekrasov needed the steadiness to be evidence of independence. It is evidence of arithmetic.
 
 Andrey Markov would not let it stand. He called this use of probability an abuse of mathematics, and rather than argue the philosophy he went after the implication itself: if steady averages require independence, then he would produce steady averages from something that was plainly not independent.
 
@@ -230,6 +233,8 @@ Here is that count, redone on a public-domain text of the poem. The code reads t
 
 ```{python}
 #| label: onegin-count
+#| echo: false
+#| output: false
 """Markov's count, redone: the letters of Eugene Onegin."""
 text = open("onegin_markov_scope.txt", encoding="utf-8").read()
 
@@ -252,10 +257,12 @@ print(f"p(vowel | vowel)            {vv / n_v:.4f}")
 print("\nMarkov published 1913: 43.19% vowels | 5.52% vowel-vowel | p = 0.128")
 ```
 
-That "as it turns out" in the code is doing real work, so it is worth stopping on. Markov's paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.
+That convention is doing real work here, so it is worth stopping on. Markov's paper does not spell out which letters he counted as vowels, and a different edition of the poem is not the same text he held in his hands. What the paper does give is three numbers — 43.19%, 5.52%, and the conditional probability of 0.128 — and those three are enough to work out how he was classifying letters, because only one classification reproduces all three.
 
 ```{python}
 #| label: onegin-conventions
+#| echo: false
+#| output: false
 """Which letters did he call vowels? Only one convention reproduces his three figures."""
 print(f"{'variant':<44}{'vowels':>9}{'vowel-vowel':>13}{'p(v|v)':>9}")
 for label, drop, extra in [
@@ -271,7 +278,7 @@ for label, drop, extra in [
 print(f"{'Markov, published 1913':<44}{0.4319:>8.2%}{0.0552:>12.2%}{0.128:>9.3f}")
 ```
 
-Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them *and* count й as a vowel and the three figures land at **43.20%, 5.55% and 0.1285** against his published **43.19%, 5.52% and 0.128**.
+Keep every letter and you get 40.28% vowels and vowel-vowel pairs at 3.02% — too low on both. Drop the hard and soft signs as he did and it rises to 41.16% and 3.11%, still short. Drop them *and* count й as a vowel and the three figures land at `{python} f"{p:.2%}"`, `{python} f"{vv / (len(L) - 1):.2%}"` and `{python} f"{vv / n_v:.4f}"`, against his published **43.19%, 5.52% and 0.128**.
 
 Reproducing a dead man's arithmetic within three thousandths, on a Soviet edition of the poem printed forty-six years after his paper, is how you find out what he meant.
 
@@ -282,12 +289,14 @@ Reproducing a dead man's arithmetic within three thousandths, on a Soviet editio
 
 ## The chain, not the average
 
-The move that survived is the one in the next block. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.
+The move that survived was a change in what got counted. Instead of counting the letters, Markov wrote down the chance of each letter following each state: after a vowel, a vowel came 12.85% of the time; after a consonant, a vowel came 66.29% of the time.
 
 Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.
 
 ```{python}
 #| label: onegin-chain
+#| echo: false
+#| output: false
 """The same letters as a two-state chain, generating text from two numbers."""
 import numpy as np
 
@@ -368,6 +377,8 @@ Here is a toy web of four pages, scored by repeatedly multiplying a vector by th
 
 ```{python}
 #| label: pagerank-toy
+#| echo: false
+#| output: false
 """The web as a chain: four pages, scored by repeated multiplication."""
 import numpy as np
 
@@ -409,6 +420,8 @@ Now the failure that forced the damping factor into the design. Give Dan no link
 
 ```{python}
 #| label: pagerank-leak
+#| echo: false
+#| output: false
 """A page with no links: what the random jump is actually for."""
 broken = {"Amy": ["Ben"], "Ben": ["Amy", "Chris", "Dan"], "Chris": ["Amy", "Dan"], "Dan": []}
 v0, t0 = rank(broken, pages, d=0)
@@ -423,6 +436,8 @@ Which raises the question every site owner asked in the years after 1998: if lin
 
 ```{python}
 #| label: pagerank-farm
+#| echo: false
+#| output: false
 """A hundred pages linking only to Amy."""
 spam = [f"spam{i:03d}" for i in range(100)]
 big = dict(web)
