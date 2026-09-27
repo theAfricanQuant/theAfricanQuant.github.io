@@ -160,7 +160,57 @@ Bernoulli's proof assumed the observations were independent of each other. That 
 
 In the Russia of the early 1900s, one mathematician decided to make the assumption do political work. Pavel Nekrasov argued from statistical regularities in social data to a conclusion about human freedom: if births, marriages and crimes settle into steady averages, he reasoned, then individual human acts must be independent of one another, and that independence pointed to something beyond material cause.
 
+One of the tables behind the argument was Adolphe Quetelet's Belgian returns. Over five consecutive years, 1841 to 1845, the number of marriages registered in Belgium was 29,876, 29,023, 28,220, 29,326 and 29,210. The whole span stays inside 5.7% of its own average, and the typical year moves 2.81%. Nobody arranged that. A country of a few million people simply kept arriving at about twenty-nine thousand marriages a year.
+
+Quetelet's own image for regularity was not about weddings. Reading an 1838 essay on French moral statistics, he stopped at a line about crime: "there is a budget which we pay with frightful regularity — it is that of prisons, dungeons, and scaffolds." He read it with surprise, then took it up a page later, calling the budget of the scaffold and the prisons more regularly paid than the financial one.
+
+The same counting is still running. Germany recorded 387,423 marriages in 2012 and 390,743 in 2022 — eleven years apart, and 0.86% apart — while its marriage rate stayed between 4.3 and 5.4 per 1,000 residents across the ten years to 2022, averaging 4.8. Births in the United States never left the band 3,641,990 to 4,232,701 over the twenty-four years to 2023, and the typical year moved 1.15% from the one before.
+
+```{python}
+#| label: regularity-check
+"""The same regularity, counted in Belgium in the 1840s and in two countries today."""
+import csv
+import statistics as st
+
+rows = [r for r in csv.reader(open("national_regularity.csv", encoding="utf-8")) if r and not r[0].startswith("#")]
+series = {}
+for name, country, year, value in rows[1:]:
+    series.setdefault(name, []).append((int(year), float(value)))
+
+
+def band(name, fmt="{:,.0f}"):
+    pts = sorted(series[name])
+    years = [y for y, _ in pts]
+    vals = [v for _, v in pts]
+    moves = [100 * abs(vals[i + 1] - vals[i]) / vals[i] for i in range(len(vals) - 1)]
+    print(f"{name}  {min(years)}-{max(years)}, {len(vals)} years")
+    print(f"   lowest {fmt.format(min(vals))}   highest {fmt.format(max(vals))}   average {fmt.format(st.mean(vals))}")
+    print(f"   typical move year to year {st.median(moves):.2f}%   biggest {max(moves):.2f}%")
+    print(f"   the whole span sits inside {100 * (max(vals) - min(vals)) / st.mean(vals):.1f}% of the average")
+    return vals
+
+
+print("the numbers Nekrasov was arguing about are still being counted.")
+print()
+print("Belgian marriages, the five years Quetelet tabulated")
+be = band("be_marriages")
+print("   " + "   ".join(f"{int(v):,}" for v in be))
+print()
+print("German marriages, a century and a half later")
+de = band("de_marriages")
+print(f"   {int(de[0]):,} in 2012 against {int(de[-1]):,} in 2022 — {100 * abs(de[-1] - de[0]) / de[0]:.2f}% apart, eleven years on")
+print()
+print("Births in the United States")
+us = band("us_births")
+print()
+rate = [v for _, v in sorted(series["de_marriages_per_1000"])]
+print(f"and the German marriage rate never left {min(rate):.1f} to {max(rate):.1f} marriages per 1,000 residents")
+print(f"in the ten years to 2022, averaging {st.mean(rate):.1f}.")
+```
+
 The historian of probability Eugene Seneta has traced this argument in detail. What Nekrasov was doing, in effect, was reading a theorem backwards. The law of large numbers says that independence produces steady averages. Nekrasov wanted it to say that steady averages prove independence.
+
+None of that proves the individual acts were independent. The yearly totals wander — one German year moved 10% — and a chain behaves exactly this way: because each year starts from the last, the aggregate moves slowly while the decisions inside it stay free. Nekrasov needed the steadiness to be evidence of independence. It is evidence of arithmetic.
 
 Andrey Markov would not let it stand. He called this use of probability an abuse of mathematics, and rather than argue the philosophy he went after the implication itself: if steady averages require independence, then he would produce steady averages from something that was plainly not independent.
 
@@ -675,6 +725,7 @@ The poem and the feud:
 - Eugene Seneta, *Markov and the Birth of Chain Dependence Theory*, International Statistical Review 64, 1996, 255–263 — [record](https://www.landsburg.org/markov2.pdf){target="_blank"}
 - Eugene Seneta, *Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov*, International Statistical Review 71, 2003, 319–334
 - Jacob Bernoulli, *Ars Conjectandi*, 1713
+- Adolphe Quetelet, *A Treatise on Man and the Development of his Faculties* (Edinburgh, 1842), the passage on the budget of prisons, dungeons and scaffolds, pp. 82–83 — [scan](https://archive.org/details/treatiseonmandev00quet){target="_blank"}; French original, *Sur l'homme et le développement de ses facultés* (Paris, 1835) — [scan](https://archive.org/details/surlhommeetled00quet){target="_blank"}
 
 The poem itself:
 
@@ -699,6 +750,13 @@ Shuffling:
 
 - Dave Bayer and Persi Diaconis, *Trailing the Dovetail Shuffle to its Lair*, The Annals of Applied Probability 2(2), 1992, 294–313 — [PDF](https://www.stat.berkeley.edu/~aldous/157/Papers/bayer_diaconis.pdf){target="_blank"}
 - Robin Pemantle, *Randomization Time for the Overhand Shuffle*, 2007
+
+The regularity, counted today:
+
+- Eurostat, *Crude marriage rate* (table tps00206), Germany, 2013–2022 — [table](https://ec.europa.eu/eurostat/databrowser/view/tps00206/default/table){target="_blank"}
+- Eurostat, *Population change — demographic balance and crude rates* (table demo_nind), marriages in Germany, 2012–2022 — [table](https://ec.europa.eu/eurostat/databrowser/view/demo_nind/default/table){target="_blank"}
+- United Nations, *World Population Prospects*, 2024 revision, births by country, read through [Our World in Data](https://ourworldindata.org/grapher/number-of-births){target="_blank"}
+- The Belgian marriage counts for 1841–1845 are Quetelet's returns as reproduced in Seneta (2003), Table 1, page 323
 
 The data:
 
