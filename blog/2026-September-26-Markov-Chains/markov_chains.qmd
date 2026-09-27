@@ -5,8 +5,6 @@ date: "26 September 2026"
 image: "markov_chains.png"
 description: "One 1906 idea, run four ways on this machine: the letters of Eugene Onegin, the neutrons at Los Alamos, the whole web, and a model writing its own text back to itself."
 categories: [Probability, Markov Chains, Monte Carlo, PageRank, Python]
-resources:
-  - fig-letter-chain-animated.mp4
 format:
     html:
         fig-cap-location: bottom
@@ -17,6 +15,14 @@ execute:
 ---
 
 <style>
+
+/* Boss's own figure: drawn 512 px wide, so show it at its own size on wide screens
+   instead of stretching it to the text column. Phones still get full width. */
+#fig-letter-chain-model img {
+  display: block;
+  margin: 0 auto;
+  max-width: 512px;
+}
 
 /* Mobile readability for this post (phone widths only) */
 
@@ -291,14 +297,7 @@ The move that survived was a change in what got counted. Instead of counting the
 
 Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.
 
-```{=html}
-<figure class="quarto-float quarto-figure quarto-figure-center" id="fig-letter-chain-live">
-<div>
-<video src="fig-letter-chain-animated.mp4" autoplay loop muted playsinline width="100%"></video>
-</div>
-<figcaption class="quarto-float-caption">Letters generated from the chain alone, and the chain re-estimated from the letters it produced. Sixteen letters in, the vowel-after-vowel estimate is still swinging between 0.00 and 0.92; by twenty thousand it has settled back on 0.13 and 0.67 &mdash; the numbers that generated them &mdash; and the shares have settled at 43% vowels. The two outcomes from each state are complements, so each pair reads 1.00 in every frame.</figcaption>
-</figure>
-```
+![The chain as a model, and the letters it generates: after a vowel, a vowel 0.13 of the time; after a consonant, a vowel 0.67 of the time. The sequence at the foot comes from those numbers alone, and the bars are where the shares settle.](fig-letter-chain-model.jpg){#fig-letter-chain-model}
 
 ```{python}
 #| label: onegin-chain
