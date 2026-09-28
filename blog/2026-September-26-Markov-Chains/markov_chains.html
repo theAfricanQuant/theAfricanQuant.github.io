@@ -615,16 +615,12 @@ Markov, published 1913                        43.19%       5.52%    0.128</code>
 <p class="src">
 Source: A. A. Markov, “An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains,” 1913, English translation in <em>Science in Context</em> 19(4), 2006, 591–600; Eugene Seneta, “Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov,” <em>International Statistical Review</em> 71, 2003, 319–334.
 </p>
-<div id="fig-letter-chain" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-letter-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="fig-letter-chain.svg" class="img-fluid figure-img">
+<figure class="quarto-float quarto-figure quarto-figure-center anchored figure" id="fig-letter-chain">
+<div style="max-width:860px;margin:0 auto;">
+<video src="fig-letter-chain-animated.mp4" autoplay="" loop="" muted="" playsinline="" width="100%"></video>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-letter-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel follows a vowel 12.85% of the time, a consonant follows a consonant 33.71%.
-</figcaption>
+<figcaption class="quarto-float-caption">The chain, read letter by letter: after a vowel, a vowel 13% of the time; after a consonant, a vowel 67% of the time. The letters are generated from those two numbers alone, and both numbers are recomputed as they arrive — swinging wildly over the first dozen letters, settled by twenty thousand.</figcaption>
 </figure>
-</div>
 </section>
 <section id="the-chain-not-the-average" class="level2">
 <h2 class="anchored" data-anchor-id="the-chain-not-the-average">The chain, not the average</h2>
@@ -636,7 +632,7 @@ Figure&nbsp;1: The two-state chain, built from Markov’s own counts: a vowel fo
 <img src="fig-letter-chain-model.jpg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-letter-chain-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: The chain as a model, and the letters it generates: after a vowel, a vowel 0.13 of the time; after a consonant, a vowel 0.67 of the time. The sequence at the foot comes from those numbers alone, and the bars are where the shares settle.
+Figure&nbsp;1: The chain as a model, and the letters it generates: after a vowel, a vowel 0.13 of the time; after a consonant, a vowel 0.67 of the time. The sequence at the foot comes from those numbers alone, and the bars are where the shares settle.
 </figcaption>
 </figure>
 </div>
@@ -699,7 +695,7 @@ the poem itself: 43.20% vowels</code></pre>
 <img src="fig-k-curve.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-k-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Reactivity against the one knob. The curve crosses k = 1 between a fission chance of 0.10 and 0.15.
+Figure&nbsp;2: Reactivity against the one knob. The curve crosses k = 1 between a fission chance of 0.10 and 0.15.
 </figcaption>
 </figure>
 </div>
@@ -710,7 +706,7 @@ Figure&nbsp;3: Reactivity against the one knob. The curve crosses k = 1 between 
 <img src="fig-generations.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-generations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Four hundred neutrons under three values of k, by generation. Below k = 1 the population dies; above it, growth compounds.
+Figure&nbsp;3: Four hundred neutrons under three values of k, by generation. Below k = 1 the population dies; above it, growth compounds.
 </figcaption>
 </figure>
 </div>
@@ -734,7 +730,7 @@ Source: Terrence R. Fehner and F. G. Gosling, <em>Origins of the Nevada Test Sit
 <img src="fig-toy-web.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy-web-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: The toy web, ranked. Four pages, four scores, one random reader.
+Figure&nbsp;4: The toy web, ranked. Four pages, four scores, one random reader.
 </figcaption>
 </figure>
 </div>
@@ -764,7 +760,7 @@ Source: Sergey Brin and Lawrence Page, “The Anatomy of a Large-Scale Hypertext
 <img src="fig-collapse.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-collapse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Five generations of a model trained on its own output: the vocabulary and the number of distinct two-word states both fall away.
+Figure&nbsp;5: Five generations of a model trained on its own output: the vocabulary and the number of distinct two-word states both fall away.
 </figcaption>
 </figure>
 </div>
