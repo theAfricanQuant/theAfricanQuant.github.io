@@ -18,12 +18,10 @@ execute:
 
 <style>
 
-/* Boss's own figure: drawn 512 px wide, so show it at its own size on wide screens
-   instead of stretching it to the text column. Phones still get full width. */
-#fig-letter-chain-model img {
+/* The chain figure is a video: keep it centred so the lettering stays crisp on wide screens. */
+#fig-letter-chain video {
   display: block;
   margin: 0 auto;
-  max-width: 512px;
 }
 
 /* Mobile readability for this post (phone widths only) */
@@ -290,14 +288,13 @@ Reproducing a dead man's arithmetic within three thousandths, on a Soviet editio
 
 <p class="src">Source: A. A. Markov, "An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains," 1913, English translation in <em>Science in Context</em> 19(4), 2006, 591–600; Eugene Seneta, "Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov," <em>International Statistical Review</em> 71, 2003, 319–334.</p>
 
-```{=html}
-<figure class="quarto-float quarto-figure quarto-figure-center" id="fig-letter-chain">
+::: {#fig-letter-chain}
 <div style="max-width:860px;margin:0 auto;">
 <video src="fig-letter-chain-animated.mp4" autoplay loop muted playsinline width="100%"></video>
 </div>
-<figcaption class="quarto-float-caption">The chain, read letter by letter: after a vowel, a vowel 13% of the time; after a consonant, a vowel 67% of the time. The letters are generated from those two numbers alone, and both numbers are recomputed as they arrive &mdash; swinging wildly over the first dozen letters, settled by twenty thousand.</figcaption>
-</figure>
-```
+
+The chain, read letter by letter: after a vowel, a vowel comes 13% of the time; after a consonant, a vowel comes 67% of the time. The letters are generated from those two numbers alone, and both are recomputed as they arrive — swinging wildly over the first dozen letters, settled by twenty thousand.
+:::
 
 
 ## The chain, not the average
@@ -306,7 +303,6 @@ The move that survived was a change in what got counted. Instead of counting the
 
 Then he generated letters from those two numbers alone. The poem was never consulted again, and the averages still settled down.
 
-![The chain as a model, and the letters it generates: after a vowel, a vowel 0.13 of the time; after a consonant, a vowel 0.67 of the time. The sequence at the foot comes from those numbers alone, and the bars are where the shares settle.](fig-letter-chain-model.jpg){#fig-letter-chain-model}
 
 ```{python}
 #| label: onegin-chain
