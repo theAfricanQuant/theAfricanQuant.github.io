@@ -5,6 +5,8 @@ date: "26 September 2026"
 image: "markov_chains.png"
 description: "One 1906 idea, run four ways on this machine: the letters of Eugene Onegin, the neutrons at Los Alamos, the whole web, and a model writing its own text back to itself."
 categories: [Probability, Markov Chains, Monte Carlo, PageRank, Python]
+resources:
+  - fig-letter-chain-animated.mp4
 format:
     html:
         fig-cap-location: bottom
@@ -288,7 +290,14 @@ Reproducing a dead man's arithmetic within three thousandths, on a Soviet editio
 
 <p class="src">Source: A. A. Markov, "An Example of Statistical Investigation of the Text Eugene Onegin Concerning the Connection of Samples in Chains," 1913, English translation in <em>Science in Context</em> 19(4), 2006, 591–600; Eugene Seneta, "Statistical Regularity and Free Will: L. A. J. Quetelet and P. A. Nekrasov," <em>International Statistical Review</em> 71, 2003, 319–334.</p>
 
-![The two-state chain, built from Markov's own counts: a vowel follows a vowel 12.85% of the time, a consonant follows a consonant 33.71%.](fig-letter-chain.svg){#fig-letter-chain}
+```{=html}
+<figure class="quarto-float quarto-figure quarto-figure-center" id="fig-letter-chain">
+<div style="max-width:860px;margin:0 auto;">
+<video src="fig-letter-chain-animated.mp4" autoplay loop muted playsinline width="100%"></video>
+</div>
+<figcaption class="quarto-float-caption">The chain, read letter by letter: after a vowel, a vowel 13% of the time; after a consonant, a vowel 67% of the time. The letters are generated from those two numbers alone, and both numbers are recomputed as they arrive &mdash; swinging wildly over the first dozen letters, settled by twenty thousand.</figcaption>
+</figure>
+```
 
 
 ## The chain, not the average
