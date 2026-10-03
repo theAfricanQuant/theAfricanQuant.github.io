@@ -44,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-f2e6e587acc15a86a82da3a38b1f103e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c2f87cba4e4cf4f71295e95f914aade.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-f4331dfb0b1ca6f9636075c56c695ec2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1c2f87cba4e4cf4f71295e95f914aade.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-bd9bcee1bcda0b88f8f253d4ca886c26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-11cc59a9380a1e97c21380d853fe4de4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-bd9bcee1bcda0b88f8f253d4ca886c26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -354,6 +354,9 @@ Drop in a public website address. The chatbot reads your site’s public pages, 
 <p class="form-hint">
 Try a homepage or service page you own or are permitted to review.
 </p>
+<div id="website-brief-wait" class="brief-wait" hidden="">
+<p><span class="brief-hourglass" aria-hidden="true"> <svg viewbox="0 0 24 32" role="presentation" focusable="false"> <path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"></path> <polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"></polygon> <polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"></polygon> <rect class="hg-stream" x="11.5" y="15" width="1" height="2"></rect> </svg> </span> <span class="brief-wait-copy"> <strong id="website-brief-stage">Looking up the address…</strong> <span id="website-brief-elapsed" class="brief-wait-note">usually 30–60 seconds</span> </span> <span class="brief-wait-bar" aria-hidden="true"></span></p>
+</div>
 <p id="website-brief-status" class="brief-status" role="status" aria-live="polite">
 </p>
 </form>
@@ -409,7 +412,48 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
     return trimmed.indexOf("://") > 0 ? trimmed : "https://" + trimmed.replace(/^\/+/, "");
   };
   const messages = document.querySelector("#brief-messages");
+  // Same hourglass as the form panel, sized down for the pending chat bubble.
+  const GLASS = '<svg viewBox="0 0 24 32" role="presentation" focusable="false">'
+    + '<path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"/>'
+    + '<polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"/>'
+    + '<polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"/>'
+    + '<rect class="hg-stream" x="11.5" y="15" width="1" height="2"/>'
+    + "</svg>";
+  const waitPanel = document.querySelector("#website-brief-wait");
+  const stageText = document.querySelector("#website-brief-stage");
+  const elapsedNote = document.querySelector("#website-brief-elapsed");
   let sessionId = null;
+
+  // What is actually happening, in the order it happens. No invented page
+  // counts — the crawler's progress is not streamed, so the copy stays honest.
+  const STAGES = [
+    [0, "Looking up the address…"],
+    [3000, "Finding every public page it can reach…"],
+    [11000, "Reading those pages…"],
+    [28000, "Working out what the site offers…"],
+    [58000, "Still reading — bigger sites take a little longer…"],
+  ];
+  let waitTimer = null;
+  const startWait = () => {
+    if (!waitPanel) return;
+    waitPanel.hidden = false;
+    const started = Date.now();
+    stageText.textContent = STAGES[0][1];
+    elapsedNote.textContent = "usually 30–60 seconds";
+    clearInterval(waitTimer);
+    waitTimer = setInterval(() => {
+      const elapsed = Date.now() - started;
+      for (let i = STAGES.length - 1; i >= 0; i--) {
+        if (elapsed >= STAGES[i][0]) { if (stageText.textContent !== STAGES[i][1]) stageText.textContent = STAGES[i][1]; break; }
+      }
+      if (elapsed >= 20000) elapsedNote.textContent = Math.round(elapsed / 1000) + "s elapsed · still reading your pages";
+    }, 500);
+  };
+  const stopWait = () => {
+    clearInterval(waitTimer);
+    waitTimer = null;
+    if (waitPanel) waitPanel.hidden = true;
+  };
 
   const setStatus = (message, kind) => {
     status.textContent = message;
@@ -443,6 +487,7 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
     }
     messages.append(item);
     messages.scrollTop = messages.scrollHeight;
+    return item;
   };
   const confetti = () => {
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -485,7 +530,12 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
     if (url) { urlInput.value = url; }        // show the visitor the address actually used
     button.disabled = true;
     form.setAttribute("aria-busy", "true");
-    setStatus("Reading your site — every public page I can reach. This can take up to a minute.");
+    setStatus("");
+    startWait();
+    if (stageText) {
+      const host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+      stageText.textContent = "Looking up " + host + "…";
+    }
     try {
       const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(force ? {url: url, force: true} : {url: url})});
       if (!response.ok) throw new Error(await readError(response));
@@ -498,6 +548,7 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
         : (error.message || "The assistant could not complete that request.");
       setStatus(message, "error");
     } finally {
+      stopWait();
       button.disabled = false;
       form.removeAttribute("aria-busy");
     }
@@ -526,7 +577,11 @@ Bring the idea to a short Google Meet call and we can decide what deserves to be
     addMessage("visitor", message);
     input.value = "";
     button.disabled = true;
-    addMessage("assistant pending", "Researching the page…");
+    const pending = addMessage("assistant pending", "Researching the page…");
+    if (pending) {
+      pending.innerHTML = '<span class="brief-hourglass is-small" aria-hidden="true">' + GLASS + "</span><span>Researching the page…</span>";
+      messages.scrollTop = messages.scrollHeight;
+    }
     try {
       const response = await fetch(API + "/chat", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({session_id: sessionId, message: message})});
       if (!response.ok) throw new Error(await readError(response));
