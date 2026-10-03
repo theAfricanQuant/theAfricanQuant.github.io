@@ -21,6 +21,21 @@ toc: false
 <button type="submit" class="btn btn-primary">Connect to website <span aria-hidden="true">→</span></button>
 </div>
 <p class="form-hint">Try a homepage or service page you own or are permitted to review.</p>
+<div id="website-brief-wait" class="brief-wait" hidden>
+  <span class="brief-hourglass" aria-hidden="true">
+    <svg viewBox="0 0 24 32" role="presentation" focusable="false">
+      <path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"/>
+      <polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"/>
+      <polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"/>
+      <rect class="hg-stream" x="11.5" y="15" width="1" height="2"/>
+    </svg>
+  </span>
+  <span class="brief-wait-copy">
+    <strong id="website-brief-stage">Looking up the address…</strong>
+    <span id="website-brief-elapsed" class="brief-wait-note">usually 30–60 seconds</span>
+  </span>
+  <span class="brief-wait-bar" aria-hidden="true"></span>
+</div>
 <p id="website-brief-status" class="brief-status" role="status" aria-live="polite"></p>
 </form>
 
@@ -57,7 +72,48 @@ toc: false
     return trimmed.indexOf("://") > 0 ? trimmed : "https://" + trimmed.replace(/^\/+/, "");
   };
   const messages = document.querySelector("#brief-messages");
+  // Same hourglass as the form panel, sized down for the pending chat bubble.
+  const GLASS = '<svg viewBox="0 0 24 32" role="presentation" focusable="false">'
+    + '<path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"/>'
+    + '<polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"/>'
+    + '<polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"/>'
+    + '<rect class="hg-stream" x="11.5" y="15" width="1" height="2"/>'
+    + "</svg>";
+  const waitPanel = document.querySelector("#website-brief-wait");
+  const stageText = document.querySelector("#website-brief-stage");
+  const elapsedNote = document.querySelector("#website-brief-elapsed");
   let sessionId = null;
+
+  // What is actually happening, in the order it happens. No invented page
+  // counts — the crawler's progress is not streamed, so the copy stays honest.
+  const STAGES = [
+    [0, "Looking up the address…"],
+    [3000, "Finding every public page it can reach…"],
+    [11000, "Reading those pages…"],
+    [28000, "Working out what the site offers…"],
+    [58000, "Still reading — bigger sites take a little longer…"],
+  ];
+  let waitTimer = null;
+  const startWait = () => {
+    if (!waitPanel) return;
+    waitPanel.hidden = false;
+    const started = Date.now();
+    stageText.textContent = STAGES[0][1];
+    elapsedNote.textContent = "usually 30–60 seconds";
+    clearInterval(waitTimer);
+    waitTimer = setInterval(() => {
+      const elapsed = Date.now() - started;
+      for (let i = STAGES.length - 1; i >= 0; i--) {
+        if (elapsed >= STAGES[i][0]) { if (stageText.textContent !== STAGES[i][1]) stageText.textContent = STAGES[i][1]; break; }
+      }
+      if (elapsed >= 20000) elapsedNote.textContent = Math.round(elapsed / 1000) + "s elapsed · still reading your pages";
+    }, 500);
+  };
+  const stopWait = () => {
+    clearInterval(waitTimer);
+    waitTimer = null;
+    if (waitPanel) waitPanel.hidden = true;
+  };
 
   const setStatus = (message, kind) => {
     status.textContent = message;
@@ -91,6 +147,7 @@ toc: false
     }
     messages.append(item);
     messages.scrollTop = messages.scrollHeight;
+    return item;
   };
   const confetti = () => {
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -133,7 +190,12 @@ toc: false
     if (url) { urlInput.value = url; }        // show the visitor the address actually used
     button.disabled = true;
     form.setAttribute("aria-busy", "true");
-    setStatus("Reading your site — every public page I can reach. This can take up to a minute.");
+    setStatus("");
+    startWait();
+    if (stageText) {
+      const host = url.replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+      stageText.textContent = "Looking up " + host + "…";
+    }
     try {
       const response = await fetch(API + "/analyse", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(force ? {url: url, force: true} : {url: url})});
       if (!response.ok) throw new Error(await readError(response));
@@ -146,6 +208,7 @@ toc: false
         : (error.message || "The assistant could not complete that request.");
       setStatus(message, "error");
     } finally {
+      stopWait();
       button.disabled = false;
       form.removeAttribute("aria-busy");
     }
@@ -174,7 +237,11 @@ toc: false
     addMessage("visitor", message);
     input.value = "";
     button.disabled = true;
-    addMessage("assistant pending", "Researching the page…");
+    const pending = addMessage("assistant pending", "Researching the page…");
+    if (pending) {
+      pending.innerHTML = '<span class="brief-hourglass is-small" aria-hidden="true">' + GLASS + "</span><span>Researching the page…</span>";
+      messages.scrollTop = messages.scrollHeight;
+    }
     try {
       const response = await fetch(API + "/chat", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({session_id: sessionId, message: message})});
       if (!response.ok) throw new Error(await readError(response));

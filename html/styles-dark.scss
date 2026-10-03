@@ -613,3 +613,65 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
     background: rgba($zinc-800, 0.6);
   }
 }
+
+/* --- Free-website-brief wait state (hourglass + honest stage copy) ---
+   Appended identically in styles.scss and styles-dark.scss: the block is
+   theme-neutral (currentColor + $primary) so the two must stay in sync. */
+.brief-wait {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0.9rem 0 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.7rem;
+  background: rgba($primary, 0.14);
+  border: 1px solid rgba($primary, 0.35);
+  color: inherit;
+}
+.brief-wait[hidden] { display: none; }   // display:flex would otherwise defeat [hidden]
+.brief-wait-copy { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.brief-wait-copy strong { font-size: 0.92rem; font-weight: 700; }
+.brief-wait-note { font-size: 0.76rem; opacity: 0.75; }
+.brief-wait-bar {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 2.5rem;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba($primary, 0.2);
+  overflow: hidden;
+}
+.brief-wait-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 38%;
+  border-radius: 99px;
+  background: $primary;
+  animation: hgBar 1.5s ease-in-out infinite;
+}
+.brief-hourglass {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 30px;
+  height: 40px;
+  animation: hgRoll 3.2s ease-in-out infinite;
+}
+.brief-hourglass svg { width: 100%; height: 100%; overflow: visible; }
+.brief-hourglass.is-small { width: 15px; height: 20px; margin-right: 0.45rem; vertical-align: -3px; }
+.hg-frame { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; opacity: 0.85; }
+.hg-sand { fill: $primary; transform-box: view-box; }
+.hg-sand-top { transform-origin: 50% 47%; animation: hgDrainTop 3.2s linear infinite; }
+.hg-sand-bot { transform-origin: 50% 72%; animation: hgFill 3.2s linear infinite; }
+.hg-stream { fill: $primary; opacity: 0.35; animation: hgStream 3.2s linear infinite; }
+@keyframes hgDrainTop { 0% { transform: scaleY(1); } 78%, 100% { transform: scaleY(0); } }
+@keyframes hgFill { 0% { transform: scaleY(0); } 78%, 100% { transform: scaleY(1); } }
+@keyframes hgStream { 0% { opacity: 0.3; } 60% { opacity: 0.85; } 78%, 100% { opacity: 0; } }
+/* The glass is symmetric, so the snap back to 0deg at the loop boundary is invisible. */
+@keyframes hgRoll { 0%, 80% { transform: rotate(0deg); } 92%, 100% { transform: rotate(180deg); } }
+@keyframes hgBar { 0% { transform: translateX(-100%); } 100% { transform: translateX(280%); } }
+@media (prefers-reduced-motion: reduce) {
+  .brief-hourglass, .hg-sand-top, .hg-sand-bot, .hg-stream, .brief-wait-bar::after { animation: none; }
+  .hg-stream { opacity: 0.6; }
+  .brief-wait-bar::after { width: 100%; }
+}
