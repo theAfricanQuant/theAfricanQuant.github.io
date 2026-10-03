@@ -707,3 +707,10 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
   .hg-stream { opacity: 0.6; }
   .brief-wait-bar::after { width: 100%; }
 }
+
+/* Narrow screens: the copy needs the width, so the bar drops to its own line. */
+@media (max-width: 560px) {
+  .brief-wait { flex-wrap: wrap; row-gap: 0.6rem; }
+  .brief-wait-copy { flex: 1 1 12rem; }
+  .brief-wait-bar { flex: 1 1 100%; }
+}
