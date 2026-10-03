@@ -41,11 +41,31 @@ toc: false
 
 <p>Paste a website address and get a source-grounded view of its offer, audience, clarity, and one practical AI opportunity. Then ask follow-up questions about the page.</p>
 </div>
-<form class="free-tool-form" action="free-website-brief.html" method="get">
+<form class="free-tool-form" action="free-website-brief.html" method="get" novalidate>
   <label for="homepage-website-url">Website address</label>
-  <div><input id="homepage-website-url" name="url" type="url" inputmode="url" placeholder="https://example.com" required><button type="submit" class="btn btn-primary">Create a free brief <span aria-hidden="true">→</span></button></div>
+  <div><input id="homepage-website-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="yourwebsite.com or https://yourwebsite.com" required><button type="submit" class="btn btn-primary">Create a free brief <span aria-hidden="true">→</span></button></div>
   <small>Public pages only · free and separate from the SisengAI site chatbot</small>
 </form>
+<script>
+// Accept "sisengai.com" as readily as "https://www.sisengai.com": the browser's
+// type="url" check rejects every address without a scheme, so the field is text
+// and the https:// prefix is added here before the form is sent on.
+(() => {
+  const form = document.querySelector(".free-tool-form");
+  if (!form) return;
+  const field = form.querySelector("#homepage-website-url");
+  const normalise = (value) => {
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    return trimmed.indexOf("://") > 0 ? trimmed : "https://" + trimmed.replace(/^\/+/, "");
+  };
+  form.addEventListener("submit", (event) => {
+    const url = normalise(field.value);
+    if (!url) { event.preventDefault(); field.focus(); return; }
+    field.value = url;
+  });
+})();
+</script>
 :::
 
 ::: {.content-section}
