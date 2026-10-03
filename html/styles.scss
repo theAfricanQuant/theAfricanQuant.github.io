@@ -714,3 +714,12 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
   .brief-wait-copy { flex: 1 1 12rem; }
   .brief-wait-bar { flex: 1 1 100%; }
 }
+
+
+/* Free Job Application Studio launch panel */
+.job-studio-launch { display: grid; gap: 0.9rem; }
+.job-studio-launch h2 { margin: 0; }
+.job-studio-launch p { margin: 0; line-height: 1.6; }
+.job-studio-launch ul { margin: 0; padding-left: 1.15rem; display: grid; gap: 0.55rem; }
+.job-studio-launch li { line-height: 1.55; }
+.job-studio-actions { margin: 0.4rem 0 0; }

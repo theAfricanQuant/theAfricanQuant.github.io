@@ -21,6 +21,14 @@ toc: false
 :::
 
 ::: {.service-card}
+<p class="service-kicker">Live now</p>
+<h3>Job Seeker Studio</h3>
+<p class="service-outcome">Upload your CV, pick a remote role from the live list, and download a designed CV, a plain CV for application portals and an editable cover letter.</p>
+<ul><li>Private workspace, no sign-up</li><li>Live roles from Jobicy and FreeHire</li><li>PDF plus editable Word output</li></ul>
+<a href="free-job-studio.qmd" class="service-link">Open the studio <span>→</span></a>
+:::
+
+::: {.service-card}
 <p class="service-kicker">Coming soon</p>
 <h3>More free tools on the way</h3>
 <p class="service-outcome">A free resource library is in the works — templates, checklists, and small automations you can use without hiring anyone.</p>

@@ -1,0 +1,73 @@
+---
+title: "Free Job Application Studio"
+toc: false
+---
+
+::: {.website-brief-hero}
+<span class="eyebrow-line">Free tool · no sign-up</span>
+
+# Turn your CV into an application package.
+
+<p class="hero-subtitle">Upload your CV once, check every fact the studio reads from it, pick a role from the live remote-job list, then download a designed CV, a plain CV for application portals, and an editable cover letter.</p>
+
+<div class="brief-boundary"><span>Private browser workspace</span><span>•</span><span>You approve every fact used</span><span>•</span><span>Nothing is submitted for you</span></div>
+:::
+
+::: {.website-brief-shell}
+<div class="job-studio-launch">
+<span class="section-label">Job Seeker Studio</span>
+
+<h2>Open the studio</h2>
+
+<p>The studio runs in a private workspace tied to your browser. There is no account and no email step. Your CV and the files you generate stay inside that workspace, and they stop being available after 30 days without activity.</p>
+
+<ul>
+<li><strong>Reads:</strong> PDF, Word (.docx), plain text and Markdown CVs, up to 8 MB.</li>
+<li><strong>Finds:</strong> current remote roles from Jobicy and FreeHire, each shown with its source and a link to the original vacancy.</li>
+<li><strong>Produces:</strong> a designed CV in one of 13 layouts, an ATS Plain CV for application portals (ATS = Applicant Tracking System, the software portals use to screen CVs), a cover-letter draft, and editable Word versions of the CV and the letter.</li>
+<li><strong>Stays honest:</strong> tailoring reorders evidence you approved. It never invents experience, qualifications or language ability.</li>
+</ul>
+
+<p class="job-studio-actions"><a href="https://bot.sisengai.com/studio/" class="btn btn-primary" target="_blank" rel="noopener">Open Job Seeker Studio <span aria-hidden="true">→</span></a></p>
+<p class="form-hint">Opens in a new tab · free while it is in public testing</p>
+</div>
+:::
+
+::: {.content-section}
+<span class="section-label">How it works</span>
+
+## Three steps, then you decide
+
+<p class="section-subtitle">The studio stops where your judgement starts. You check the documents and send the application yourself.</p>
+
+<div class="service-grid">
+
+::: {.service-card}
+<p class="service-kicker">Step 1</p>
+<h3>Upload your CV</h3>
+<p class="service-outcome">The studio reads your CV and proposes a starter profile — name, contact details, headline, skills and career evidence. You correct anything it read wrongly before it is used.</p>
+:::
+
+::: {.service-card}
+<p class="service-kicker">Step 2</p>
+<h3>Choose a role</h3>
+<p class="service-outcome">It searches live remote roles from its job providers and scores how well each one matches the profile you approved. A score is a decision aid, not a verdict on your chances.</p>
+:::
+
+::: {.service-card}
+<p class="service-kicker">Step 3</p>
+<h3>Download and apply</h3>
+<p class="service-outcome">You get the designed CV, the ATS Plain CV, a cover-letter draft and editable Word versions — then apply wherever the role asks you to.</p>
+:::
+
+</div>
+:::
+
+::: {.content-section-dark .cta-panel}
+<span class="section-label">Want help with the whole search?</span>
+
+## The studio is the free part.
+
+<p>The studio prepares the documents. If you also want help choosing the right roles, tightening your story, or preparing for interviews, that is a working session.</p>
+<p><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a Google Meet call <span aria-hidden="true">→</span></a></p>
+:::
