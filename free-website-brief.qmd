@@ -83,6 +83,7 @@ toc: false
   const stageText = document.querySelector("#website-brief-stage");
   const elapsedNote = document.querySelector("#website-brief-elapsed");
   let sessionId = null;
+  let analysing = false;
 
   // What is actually happening, in the order it happens. No invented page
   // counts — the crawler's progress is not streamed, so the copy stays honest.
@@ -185,6 +186,8 @@ toc: false
   document.querySelector("#brief-reset").addEventListener("click", resetChat);
 
   const runAnalyse = async (url, force) => {
+    if (analysing) return;                    // one read at a time: a second submit must not orphan the first
+    analysing = true;
     const button = form.querySelector("button");
     url = normaliseUrl(url || "");
     if (url) { urlInput.value = url; }        // show the visitor the address actually used
@@ -209,6 +212,7 @@ toc: false
       setStatus(message, "error");
     } finally {
       stopWait();
+      analysing = false;
       button.disabled = false;
       form.removeAttribute("aria-busy");
     }
