@@ -21,21 +21,7 @@ toc: false
 <button type="submit" class="btn btn-primary">Connect to website <span aria-hidden="true">→</span></button>
 </div>
 <p class="form-hint">Try a homepage or service page you own or are permitted to review.</p>
-<div id="website-brief-wait" class="brief-wait" hidden>
-  <span class="brief-hourglass" aria-hidden="true">
-    <svg viewBox="0 0 24 32" role="presentation" focusable="false">
-      <path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"/>
-      <polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"/>
-      <polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"/>
-      <rect class="hg-stream" x="11.5" y="15" width="1" height="2"/>
-    </svg>
-  </span>
-  <span class="brief-wait-copy">
-    <strong id="website-brief-stage">Looking up the address…</strong>
-    <span id="website-brief-elapsed" class="brief-wait-note">usually 30–60 seconds</span>
-  </span>
-  <span class="brief-wait-bar" aria-hidden="true"></span>
-</div>
+<div id="website-brief-wait" class="brief-wait" hidden><span class="brief-hourglass" aria-hidden="true"><svg viewBox="0 0 24 32" role="presentation" focusable="false"><path class="hg-frame" d="M4 3h16v3l-7 9.2v1.6L20 26v3H4v-3l7-9.2v-1.6L4 6z"/><polygon class="hg-sand hg-sand-top" points="5,6.4 19,6.4 12,15"/><polygon class="hg-sand hg-sand-bot" points="5,25.6 19,25.6 12,17"/><rect class="hg-stream" x="11.5" y="15" width="1" height="2"/></svg></span><span class="brief-wait-copy"><strong id="website-brief-stage">Looking up the address…</strong><span id="website-brief-elapsed" class="brief-wait-note">usually 30–60 seconds</span></span><span class="brief-wait-bar" aria-hidden="true"></span></div>
 <p id="website-brief-status" class="brief-status" role="status" aria-live="polite"></p>
 </form>
 
