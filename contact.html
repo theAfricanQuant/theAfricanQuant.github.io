@@ -333,24 +333,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="hero-section contact-hero">
-<p><span class="eyebrow-line">Start with one workflow</span></p>
-<p class="hero-subtitle">
-Bring the repetitive task you want to improve. We’ll decide whether it is a sensible candidate for automation and what to do next.
-</p>
-<div class="meeting-card">
-<div class="meeting-icon">
-G
-</div>
-<div>
-<strong>AI automation fit call</strong>
-<p>
-20 minutes · Google Meet · booking confirmation arrives by email
-</p>
-</div>
-<p><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Choose a time</a></p>
-</div>
-</div>
 <div class="contact-note-section">
 <div class="contact-note-intro">
 <span class="section-label">Prefer email?</span>
@@ -406,7 +388,7 @@ Send message <span aria-hidden="true">→</span>
       if (typeof payload.detail === "string") return payload.detail;
       if (payload.detail && payload.detail.errors) return Object.values(payload.detail.errors).join(" ");
     } catch (_) {}
-    return "Your message could not be sent right now. Please book a call instead.";
+    return "Your message could not be sent right now. Please email Ricky.Macharm@SisengAI.com directly.";
   };
 
   form.addEventListener("submit", async (event) => {
@@ -436,7 +418,7 @@ Send message <span aria-hidden="true">→</span>
       status.textContent = "Message sent. Ricky will reply to the email address you provided.";
     } catch (error) {
       status.className = "error";
-      status.textContent = error.message || "Your message could not be sent right now. Please book a call instead.";
+      status.textContent = error.message || "Your message could not be sent right now. Please email Ricky.Macharm@SisengAI.com directly.";
     } finally {
       submit.disabled = false;
       submit.innerHTML = initialButton;
