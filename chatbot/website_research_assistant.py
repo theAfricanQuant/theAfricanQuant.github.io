@@ -588,7 +588,7 @@ def create_app():
         return {"ok": True, "service": "website-research", "model": MODEL, "key_configured": bool(API_KEY)}
 
     @app.post("/analyse")
-    def analyse(payload: AnalyseRequest, request: Request):
+    def analyse(payload: AnalyseRequest, request: Request, brief: bool = False):
         require_origin(request)
         rate_limit(request, "analyse")
         now = int(time.time())
@@ -609,18 +609,26 @@ def create_app():
         start_url = pages[0]["url"]
         title = pages[0]["title"]
         digest = site_digest(pages)
-        brief_text, brief_pages = brief_digest(pages)
-        brief = create_brief(start_url, title, brief_text, brief_pages)
+        # The brief is not part of the visitor flow — siseng_site/AGENTS.md states
+        # "No brief step: the flow is URL -> chat", no front-end reads the field,
+        # and /chat builds its context from pages_json. Generating it here made
+        # every visitor wait on a second model call for a document nothing showed
+        # (42-125s measured on one site, against ~5s for the crawl). It is still
+        # available on request: POST /analyse?brief=1
+        brief_data = None
+        if brief:
+            brief_text, brief_pages = brief_digest(pages)
+            brief_data = create_brief(start_url, title, brief_text, brief_pages)
         session_id = hashlib.sha256((start_url + str(now) + os.urandom(16).hex()).encode()).hexdigest()[:32]
         conn.execute("DELETE FROM research_sessions WHERE expires_at < ?", (now,))
         conn.execute("INSERT INTO research_sessions(session_id,source_url,title,source_text,brief_json,pages_json,expires_at) "
                      "VALUES(?,?,?,?,?,?,?)",
-                     (session_id, start_url, title, digest, json.dumps(brief), json.dumps(pages), now + TTL))
+                     (session_id, start_url, title, digest, json.dumps(brief_data), json.dumps(pages), now + TTL))
         conn.commit()
         conn.close()
         return {"session_id": session_id, "source_url": start_url, "title": title, "pages": len(pages),
                 "page_list": [{"title": page["title"], "url": page["url"]} for page in pages],
-                "brief": brief, "expires_in_hours": 24}
+                "brief": brief_data, "expires_in_hours": 24}
 
     @app.post("/chat")
     def chat(payload: ChatRequest, request: Request):
