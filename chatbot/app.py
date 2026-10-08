@@ -228,6 +228,11 @@ def init_db():
 
 # ---- ingestion ---------------------------------------------------------
 
+# Prices are short: "£360", "£1,100", "$99". A bare length floor drops them and
+# the bot then tells a visitor the site lists no prices.
+VALUE_RE = re.compile(r"[\d£$€₦¥]")
+
+
 def clean_text(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
@@ -247,7 +252,9 @@ def scrape(url: str) -> list[dict]:
             chunks.append(cur)
         elif cur is not None:
             t = clean_text(el.get_text())
-            if len(t) > 20:
+            # Keep short values too: a bare "£360" or "£1,100" is under the old
+            # 20-character floor and is exactly what a pricing question needs.
+            if len(t) > 20 or (len(t) > 1 and VALUE_RE.search(t)):
                 cur["text"] = (cur["text"] + " " + t).strip()
     return [{"text": f"{c['heading']}. {c['text']}"} for c in chunks if len(c["text"]) > 40]
 

@@ -217,6 +217,24 @@ def fetch_public_html(value):
         return current, b"".join(chunks).decode(encoding, errors="replace")
     raise HTTPException(422, "That website redirected too many times.")
 
+# A flat 25-character floor silently discarded every price on a coaching site:
+# "£360", "£1,100", "Single Session" and "Pricing" are all shorter than that, so
+# the pricing section survived as three package descriptions with the numbers
+# stripped out and the bot told visitors the site listed no prices. Short blocks
+# are still mostly nav crumbs, so keep them only when they are headings or carry
+# a figure (price, time, phone number).
+VALUE_RE = re.compile(r"[\d£$€₦¥]")
+
+def _keep_block(tag_name, text):
+    if not text or len(text) > 900:
+        return False
+    if len(text) >= 25:
+        return True
+    if len(text) < 2:
+        return False
+    return tag_name in ("h1", "h2", "h3") or bool(VALUE_RE.search(text))
+
+
 def extract_page(html):
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript", "svg", "iframe", "nav", "footer", "header", "form"]):
@@ -225,7 +243,7 @@ def extract_page(html):
     root, blocks = soup.find("main") or soup.body or soup, []
     for element in root.find_all(["h1", "h2", "h3", "p", "li"]):
         text = " ".join(element.get_text(" ", strip=True).split())
-        if 25 <= len(text) <= 900 and text not in blocks:
+        if text not in blocks and _keep_block(element.name, text):
             blocks.append(text)
     source = "\n".join(blocks)
     if len(source) < 180:
