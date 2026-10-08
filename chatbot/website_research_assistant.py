@@ -541,13 +541,13 @@ def brief_digest(pages):
 
 
 def create_brief(source_url, title, source, page_count=1):
-    system = """Create a practical, source-grounded website brief for a business owner.
+    system = """Create a short, source-grounded website brief for a business owner.
 Use ONLY the public page text of this one site (several of its pages may be included). Return JSON only:
-{"summary":"one concise paragraph","offer":["up to 3 bullets"],"audience":["up to 3 bullets"],"clarity":["up to 3 observations"],"opportunity":{"title":"one AI or automation opportunity","detail":"two concise sentences"},"questions":["three questions"]}
-No explanations, no markdown, no format description — output the JSON object and nothing else.
+{"summary":"two sentences, under 45 words","offer":["up to 3 bullets, under 12 words each"],"audience":["up to 2 bullets, under 12 words each"],"clarity":["up to 2 observations, under 15 words each"],"opportunity":{"title":"under 8 words","detail":"one sentence, under 25 words"},"questions":["three questions, under 12 words each"]}
+Be terse. No explanations, no markdown, no format description — output the JSON object and nothing else.
 Avoid hype, private-data suggestions, guarantees, and claims about unseen pages. Cover nothing that is not in the supplied page text — no weather, sports, politics, or outside facts."""
     raw = model_call(system, "SITE TITLE: " + title + "\nSITE URL: " + source_url + "\nPAGES READ: " + str(page_count)
-                     + "\n\nPUBLIC PAGE TEXT:\n" + source, 1600)
+                     + "\n\nPUBLIC PAGE TEXT:\n" + source, 900)
     brief = _clean_brief(raw)
     if brief is None and '"summary"' in raw:
         # Model double-encoded the JSON inside a string field: extract the inner fenced block.
