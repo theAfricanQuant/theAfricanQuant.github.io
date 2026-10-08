@@ -9,6 +9,7 @@ from collections import defaultdict, deque
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import requests
+from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -58,6 +59,12 @@ DATA_DIR = Path(os.environ.get("WEBSITE_RESEARCH_DATA", Path.home() / "sisengai/
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = DATA_DIR / "research.sqlite"
 UA = "SisengAI Website Research Assistant/1.0 (+https://www.sisengai.com)"
+
+# One pooled session for the whole service. A fresh TLS handshake per page was
+# most of the crawl time on a small site.
+SESSION = requests.Session()
+SESSION.mount("https://", HTTPAdapter(pool_connections=24, pool_maxsize=24))
+SESSION.mount("http://", HTTPAdapter(pool_connections=24, pool_maxsize=24))
 MAX_BYTES, MAX_CHARS, TTL = 750000, 28000, 86400
 
 # --- site-level indexing -------------------------------------------------
@@ -187,7 +194,7 @@ def fetch_public_html(value):
         if not robots_allows(current):
             raise HTTPException(403, "This website's robots policy does not allow analysis of that page.")
         try:
-            response = requests.get(current, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"}, timeout=(5, 18), stream=True, allow_redirects=False)
+            response = SESSION.get(current, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"}, timeout=(5, 18), stream=True, allow_redirects=False)
         except requests.RequestException as exc:
             raise HTTPException(422, "That website could not be reached right now.") from exc
         if response.is_redirect or response.is_permanent_redirect:
@@ -235,6 +242,24 @@ def _keep_block(tag_name, text):
     return tag_name in ("h1", "h2", "h3") or bool(VALUE_RE.search(text))
 
 
+# A flat 25-character floor threw away every price on a site: "£360", "£1,100",
+# "Single Session" and "Pricing" are all shorter than that, so a pricing section
+# came through as three descriptions with the numbers stripped out and the bot
+# told visitors the site listed no prices. Short blocks are still mostly nav
+# crumbs, so keep them only when they are headings or carry a figure.
+VALUE_RE = re.compile(r"[\d\u00a3$\u20ac\u20a6\u00a5]")
+
+
+def _keep_block(tag_name, text):
+    if not text or len(text) > 900:
+        return False
+    if len(text) >= 25:
+        return True
+    if len(text) < 2:
+        return False
+    return tag_name in ("h1", "h2", "h3") or bool(VALUE_RE.search(text))
+
+
 def extract_page(html):
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript", "svg", "iframe", "nav", "footer", "header", "form"]):
@@ -251,18 +276,29 @@ def extract_page(html):
     return title[:180], source[:MAX_CHARS]
 
 def sitemap_pages(start_url):
-    """The site's own page list, if it publishes one (Quarto, WordPress, etc.)."""
+    """The site's own page list, if it publishes one (Quarto, WordPress, etc.).
+
+    The three candidate paths are probed together: run one after another on a
+    site that has no sitemap they cost about four seconds of the visitor's wait
+    and return nothing.
+    """
     origin = origin_of(start_url)
-    found = []
-    for path in ("/sitemap.xml", "/blog/sitemap.xml", "/sitemap_index.xml"):
+
+    def probe(path):
         try:
-            response = requests.get(origin + path, headers={"User-Agent": UA}, timeout=(5, 15))
+            response = SESSION.get(origin + path, headers={"User-Agent": UA}, timeout=(5, 15))
             if response.status_code == 200:
-                for loc in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", response.text):
-                    if loc.startswith(origin) and not loc.lower().endswith(SKIP_EXT):
-                        found.append(loc.split("#")[0])
+                return [loc.split("#")[0] for loc in re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", response.text)]
         except requests.RequestException:
-            continue
+            pass
+        return []
+
+    found = []
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        for hits in pool.map(probe, ("/sitemap.xml", "/blog/sitemap.xml", "/sitemap_index.xml")):
+            for loc in hits:
+                if loc.startswith(origin) and not loc.lower().endswith(SKIP_EXT):
+                    found.append(loc)
     return _dedupe(found)[:MAX_PAGES]
 
 
@@ -300,15 +336,25 @@ def crawl_site(start_url):
     page's own links second. Pages are fetched in parallel and every one of them
     still passes the robots and public-host checks.
     """
-    start_url, html = fetch_public_html(start_url)
+    # The sitemap probe runs alongside the homepage fetch instead of before it:
+    # on a site that publishes no sitemap it is the slowest part of the crawl.
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        home = pool.submit(fetch_public_html, start_url)
+        sitemap = pool.submit(sitemap_pages, start_url)
+        start_url, html = home.result()
+        try:
+            targets = sitemap.result()
+        except Exception:
+            targets = []
+
     title, text = extract_page(html)
     pages = [{"url": start_url, "title": title, "text": text[:MAX_PAGE_CHARS]}]
-    targets = [u for u in sitemap_pages(start_url) if u.rstrip("/") != start_url.rstrip("/")]
+    targets = [u for u in targets if u.rstrip("/") != start_url.rstrip("/")]
     if not targets:
         targets = [u for u in link_pages(start_url, html) if u.rstrip("/") != start_url.rstrip("/")]
     targets = targets[: max(0, MAX_PAGES - 1)]
     if targets:
-        with ThreadPoolExecutor(max_workers=5) as pool:
+        with ThreadPoolExecutor(max_workers=10) as pool:
             for page in pool.map(read_page, targets):
                 if page and page["text"].strip():
                     pages.append(page)
@@ -419,16 +465,79 @@ def render_markdown(text: str) -> str:
     )
 
 
+def _repair_json(text):
+    """Salvage a brief that was cut off mid-response.
+
+    A reply truncated at max_tokens is still almost a whole brief. Close the open
+    string, drop a trailing half-written member, close the arrays and objects and
+    parse again, instead of throwing the answer away.
+    """
+    start = text.find("{")
+    if start < 0:
+        return None
+    out, stack, in_str, esc = [], [], False, False
+    for ch in text[start:]:
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            out.append(ch)
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch in "{[":
+            stack.append("}" if ch == "{" else "]")
+        elif ch in "}]":
+            if stack and stack[-1] == ch:
+                stack.pop()
+            else:
+                continue
+        out.append(ch)
+    candidate = "".join(out)
+    if in_str:
+        candidate += '"'
+    candidate = candidate.rstrip().rstrip(",")
+    candidate += "".join(reversed(stack))
+    try:
+        return json.loads(candidate)
+    except json.JSONDecodeError:
+        return None
+
+
 def _clean_brief(candidate):
     """Parse the model's JSON brief, tolerating code fences and models that
-    double-encode the JSON inside a string field (e.g. summary='```json\n{...}')."""
+    double-encode the JSON inside a string field (e.g. summary='```json\\n{...}')."""
     candidate, fence = candidate.strip(), chr(96) * 3
     if candidate.startswith(fence):
         candidate = candidate.split("\n", 1)[-1].rsplit(fence, 1)[0].strip()
     try:
         return json.loads(candidate)
     except json.JSONDecodeError:
-        return None
+        return _repair_json(candidate)
+
+
+BRIEF_CONTEXT_CHARS = int(os.environ.get("WEBSITE_RESEARCH_BRIEF_CHARS", "6000"))
+
+
+def brief_digest(pages):
+    """Enough page text to summarise the site, and no more.
+
+    The brief used to be fed the whole 28,000-character site digest and the model
+    took over forty seconds to answer it; the same brief from 6,000 characters
+    comes back in about nine. Pages are added whole, so a cut never splits a
+    price from its label. Returns (text, pages_used).
+    """
+    out, used = [], 0
+    for page in pages:
+        block = f"PAGE: {page['title']} — {page['url']}\n{page['text']}"
+        if out and used + len(block) > BRIEF_CONTEXT_CHARS:
+            break
+        out.append(block)
+        used += len(block)
+    return "\n\n".join(out), len(out)
 
 
 def create_brief(source_url, title, source, page_count=1):
@@ -438,7 +547,7 @@ Use ONLY the public page text of this one site (several of its pages may be incl
 No explanations, no markdown, no format description — output the JSON object and nothing else.
 Avoid hype, private-data suggestions, guarantees, and claims about unseen pages. Cover nothing that is not in the supplied page text — no weather, sports, politics, or outside facts."""
     raw = model_call(system, "SITE TITLE: " + title + "\nSITE URL: " + source_url + "\nPAGES READ: " + str(page_count)
-                     + "\n\nPUBLIC PAGE TEXT:\n" + source, 800)
+                     + "\n\nPUBLIC PAGE TEXT:\n" + source, 1600)
     brief = _clean_brief(raw)
     if brief is None and '"summary"' in raw:
         # Model double-encoded the JSON inside a string field: extract the inner fenced block.
@@ -500,7 +609,8 @@ def create_app():
         start_url = pages[0]["url"]
         title = pages[0]["title"]
         digest = site_digest(pages)
-        brief = create_brief(start_url, title, digest, len(pages))
+        brief_text, brief_pages = brief_digest(pages)
+        brief = create_brief(start_url, title, brief_text, brief_pages)
         session_id = hashlib.sha256((start_url + str(now) + os.urandom(16).hex()).encode()).hexdigest()[:32]
         conn.execute("DELETE FROM research_sessions WHERE expires_at < ?", (now,))
         conn.execute("INSERT INTO research_sessions(session_id,source_url,title,source_text,brief_json,pages_json,expires_at) "
