@@ -30,7 +30,7 @@ toc: false
 <p class="tier-shape-note">One call, your real situation</p>
 <p class="service-outcome">You have a decision about AI — a tool, a workflow, a direction — and you want a straight answer from someone who builds these systems daily.</p>
 <ul class="tier-features"><li>Bring the situation you are actually facing</li><li>We work through it live, together</li><li>You leave with a clear recommendation and a first step</li></ul>
-<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+<a href="contact.html" class="service-link">Contact us <span>→</span></a>
 :::
 
 ::: {.service-card .service-card-featured}
@@ -41,7 +41,7 @@ toc: false
 <p class="tier-shape-note">Your work, session by session</p>
 <p class="service-outcome">We work through your own work rather than a curriculum, until using AI stops feeling like a project you never started.</p>
 <ul class="tier-features"><li>Find the first thing genuinely worth adopting</li><li>Set it up together and build the habit</li><li>Review what is actually working</li></ul>
-<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+<a href="contact.html" class="service-link">Contact us <span>→</span></a>
 :::
 
 ::: {.service-card}
@@ -51,7 +51,7 @@ toc: false
 <p class="tier-shape-note">A standing point of contact</p>
 <p class="service-outcome">Continued access while you build: review what is working, adjust as things change, and answer the questions that come up along the way.</p>
 <ul class="tier-features"><li>Regular review of what you have built</li><li>Adjustments as your work changes</li><li>A partner rather than a finished project</li></ul>
-<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+<a href="contact.html" class="service-link">Contact us <span>→</span></a>
 :::
 
 </div>

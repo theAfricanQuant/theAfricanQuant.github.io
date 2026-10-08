@@ -1,13 +1,10 @@
 ---
 title: "Contact"
-description: "Book a Google Meet call or send SisengAI a message."
 toc: false
 ---
 
 ::: {.hero-section .contact-hero}
 <span class="eyebrow-line">Start with one workflow</span>
-
-# Book a call or send a considered note.
 
 <p class="hero-subtitle">Bring the repetitive task you want to improve. We’ll decide whether it is a sensible candidate for automation and what to do next.</p>
 
