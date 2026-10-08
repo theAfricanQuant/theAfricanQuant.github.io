@@ -35,10 +35,6 @@ toc: false
   </form>
 </section>
 
-<div class="brief-next-step">
-  <div><span class="section-label">Want to act on it?</span><h2>Turn the best opportunity into a working system.</h2><p>Bring the idea to a short Google Meet call and we can decide what deserves to be built.</p></div>
-  <a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a Google Meet call</a>
-</div>
 :::
 
 <script>
