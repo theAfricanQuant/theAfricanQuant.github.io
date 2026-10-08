@@ -525,7 +525,7 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
 .service-card h3{font-size:1.55rem;margin:.4rem 0 .7rem}
 .service-card ul{padding-left:1.1rem;color:$zinc-200;font-size:.92rem}
 .service-card li+li{margin-top:.4rem}
-.service-card-featured{background:$zinc-950;border-color:$zinc-950}
+.service-card-featured{background:$zinc-900;border-color:rgba($amber-500,.45);box-shadow:0 0 0 1px rgba($amber-500,.18)}
 .service-card-featured h3,.service-card-featured .service-outcome{color:$zinc-50}
 .service-card-featured ul,.service-card-featured .service-link,.service-card-featured .service-kicker{color:$amber-400}
 .service-kicker{color:$amber-400;font-size:.72rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;margin:0}
@@ -691,3 +691,26 @@ a.external::after { content: " ↗"; font-size: 0.75em; opacity: 0.5; }
 .job-studio-launch ul { margin: 0; padding-left: 1.15rem; display: grid; gap: 0.55rem; }
 .job-studio-launch li { line-height: 1.55; }
 .job-studio-actions { margin: 0.4rem 0 0; }
+
+
+/* ── Ways to work together: coaching ladder cards (dark) ────────────── */
+.ways-to-work .service-grid{align-items:stretch}
+.ways-to-work .service-card{position:relative;min-height:25rem}
+.tier-shape{font-family:$headings-font-family;font-size:1.9rem;font-weight:700;line-height:1.12;color:$zinc-50;margin:.15rem 0 .1rem}
+.tier-shape-note{color:$zinc-400;font-size:.82rem;margin:0 0 .85rem}
+.tier-badge{position:absolute;top:1.05rem;right:1.05rem;background:rgba($amber-500,.15);border:1px solid rgba($amber-400,.4);color:$amber-400;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.26rem .58rem;border-radius:999px}
+.service-card-featured .tier-shape{color:$zinc-50}
+.service-card-featured .tier-shape-note{color:$amber-400}
+.service-card .tier-features{list-style:none;padding-left:0;margin:.35rem 0 1.15rem}
+.service-card .tier-features li{position:relative;padding-left:1.4rem;color:$zinc-200;font-size:.92rem;line-height:1.5}
+.service-card .tier-features li+li{margin-top:.5rem}
+.service-card .tier-features li::before{content:"\2713";position:absolute;left:0;top:0;color:$amber-400;font-weight:700}
+.service-card-featured .tier-features li{color:$amber-400}
+.service-card-featured .tier-features li::before{color:$amber-400}
+.tier-note{max-width:44rem;margin:1.4rem auto 0;color:$zinc-400;font-size:.86rem;text-align:center}
+
+/* Pin the CTA to the card floor. `margin-top:auto` on the link alone did not
+   absorb the free space (measured CTAs at y=1812/1731/1757 in a 593px card),
+   so give the feature list flex:1 to take up the slack and push the link down. */
+.ways-to-work .service-card .tier-features{flex:1 1 auto;margin-bottom:1.15rem}
+.ways-to-work .service-card .service-link{margin-top:0}

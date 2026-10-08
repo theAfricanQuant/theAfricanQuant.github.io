@@ -14,6 +14,51 @@ toc: false
 <div class="hero-links"><a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="btn btn-primary">Book a 20-minute Google Meet call</a></div>
 :::
 
+::: {.content-section .ways-to-work}
+<span class="section-label">Ways to work together</span>
+
+## Start where you actually are.
+
+<p class="section-subtitle">Some people arrive with a system they need built. Others arrive with a question they cannot name yet. Both are a good reason to talk.</p>
+
+<div class="service-grid">
+
+::: {.service-card}
+<p class="service-kicker">Start here</p>
+<h3>Start with one conversation</h3>
+<p class="tier-shape">One session</p>
+<p class="tier-shape-note">One call, your real situation</p>
+<p class="service-outcome">You have a decision about AI — a tool, a workflow, a direction — and you want a straight answer from someone who builds these systems daily.</p>
+<ul class="tier-features"><li>Bring the situation you are actually facing</li><li>We work through it live, together</li><li>You leave with a clear recommendation and a first step</li></ul>
+<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+:::
+
+::: {.service-card .service-card-featured}
+<span class="tier-badge">Most popular</span>
+<p class="service-kicker">Go deeper</p>
+<h3>Guided adoption</h3>
+<p class="tier-shape">A short series</p>
+<p class="tier-shape-note">Your work, session by session</p>
+<p class="service-outcome">We work through your own work rather than a curriculum, until using AI stops feeling like a project you never started.</p>
+<ul class="tier-features"><li>Find the first thing genuinely worth adopting</li><li>Set it up together and build the habit</li><li>Review what is actually working</li></ul>
+<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+:::
+
+::: {.service-card}
+<p class="service-kicker">Keep going</p>
+<h3>Ongoing guidance</h3>
+<p class="tier-shape">Open-ended</p>
+<p class="tier-shape-note">A standing point of contact</p>
+<p class="service-outcome">Continued access while you build: review what is working, adjust as things change, and answer the questions that come up along the way.</p>
+<ul class="tier-features"><li>Regular review of what you have built</li><li>Adjustments as your work changes</li><li>A partner rather than a finished project</li></ul>
+<a href="https://calendar.app.google/d7Ttfbm1Masri4vB8" class="service-link">Book the call <span>→</span></a>
+:::
+
+</div>
+
+<p class="tier-note">Every engagement is scoped on the call — you receive a fixed proposal before any work starts.</p>
+:::
+
 ::: {.content-section}
 <span class="section-label">How engagements work</span>
 
