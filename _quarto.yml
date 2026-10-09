@@ -40,7 +40,7 @@ website:
 
   page-footer:
     left: |
-      <span class="faux-block">&#169; 2023–2026 SisengAI</span>
+      <span class="faux-block">&#169; 2023–2026 SisengAI &middot; <a href="/privacy.html">Privacy</a></span>
     right: |
       <span class="faux-block">Built with <a href="https://quarto.org" target="_blank">Quarto</a></span>
 
