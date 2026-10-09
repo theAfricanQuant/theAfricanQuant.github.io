@@ -1,0 +1,14 @@
+---
+title: "Privacy Policy — Personal rclone Backup"
+toc: false
+---
+
+This is a personal backup app that runs rclone on my laptop. It syncs files from my local Documents folder to the Tuxedo/Documents folder in my Google Drive.
+
+The script uses Google Drive to compare and transfer files. Its Google permission is broad Drive access, although this backup script is configured to sync only the folder named above. Because it uses sync, it can update or remove files in that destination folder to match the local source.
+
+The files are transferred directly between my laptop and my Google Drive. The OAuth authorization token is kept in rclone's local configuration. SisengAI does not receive or store the backup files.
+
+The files in Google Drive are subject to Google's policies and settings. I can stop the backup or revoke the app's access from my Google Account.
+
+For questions about this personal app, contact ricky.macharm@gmail.com.
