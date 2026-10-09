@@ -1,7 +1,62 @@
 ---
-title: "Privacy Policy — Personal rclone Backup"
+title: "Privacy Policy"
 toc: false
 ---
+
+**Last updated: 09 October 2026**
+
+This policy covers sisengai.com and the services behind it: the free website brief, the chat that follows it, and the Job Seeker Studio. It also covers one personal app that is not a SisengAI service.
+
+## What this site does
+
+Two things, and neither needs an account.
+
+**The website brief.** You give a website address. The service fetches the public pages of that site, reads them, and reports on the offer, the audience, the clarity, and one practical AI opportunity. You can then ask follow-up questions about those pages.
+
+**The Job Seeker Studio.** You upload a CV. The studio reads it, shows you what it found, and can generate tailored application files from it.
+
+## What is stored, and for how long
+
+**The website brief and the chat that follows it**
+
+- The website address you enter, the public pages fetched from it, and the questions you ask.
+- A research session is kept for **24 hours**, then deleted. A cached copy of a site's pages is kept for **5 minutes**.
+- **Your chat messages are not stored.** Nothing you type in the conversation is written to the database.
+- If you type an email address into the chat, the service saves your name, email and message so it can follow up with you.
+
+**The Job Seeker Studio**
+
+- Your CV and the files you generate are held in a private workspace tied to your browser. There is no account and no email step.
+- A workspace is deleted after **30 days without activity**.
+- To read the parts of a CV that are hard to parse, the CV text is sent to an AI service, TypeSafe, which returns labels for it. We keep no copy of it beyond your own workspace and do not use it to train models.
+
+**The contact form**
+
+- Your name, email, subject and message are sent to us and delivered to us by email.
+- The form also carries a hidden field that a real visitor never sees or fills in. It exists only to catch spam bots.
+- Submissions are rate-limited by IP address. That counter is held in memory only and is never written to disk.
+
+## What this site does not do
+
+- **No third-party analytics, advertising or tracking cookies.** There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page.
+- **No account, no login, no newsletter.**
+- **We do not sell your data.**
+
+## Where AI fits in
+
+Reading a website or a CV, and answering your questions, uses AI models. The text involved — the pages fetched for your brief, your questions, or your CV — is sent to a model service to produce the result. It is sent to do that job and nothing else.
+
+## Your choices
+
+- To have anything you have sent deleted, email Ricky.Macharm@SisengAI.com.
+- Research sessions and workspaces delete themselves on the schedule above. You do not have to ask.
+- Because there is no account, there is nothing to log out of.
+
+## Personal apps
+
+The following is a separate, personal app. It is not a SisengAI service, and SisengAI does not run it or hold its data.
+
+**Personal rclone Backup**
 
 This is a personal backup app that runs rclone on my laptop. It syncs files from my local Documents folder to the Tuxedo/Documents folder in my Google Drive.
 
@@ -12,3 +67,7 @@ The files are transferred directly between my laptop and my Google Drive. The OA
 The files in Google Drive are subject to Google's policies and settings. I can stop the backup or revoke the app's access from my Google Account.
 
 For questions about this personal app, contact ricky.macharm@gmail.com.
+
+## Contact
+
+For anything in this policy, email Ricky.Macharm@SisengAI.com.
