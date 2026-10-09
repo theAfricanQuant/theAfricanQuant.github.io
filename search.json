@@ -877,9 +877,58 @@
   {
     "objectID": "privacy.html",
     "href": "privacy.html",
-    "title": "Privacy Policy — Personal rclone Backup",
+    "title": "Privacy Policy",
     "section": "",
-    "text": "This is a personal backup app that runs rclone on my laptop. It syncs files from my local Documents folder to the Tuxedo/Documents folder in my Google Drive.\nThe script uses Google Drive to compare and transfer files. Its Google permission is broad Drive access, although this backup script is configured to sync only the folder named above. Because it uses sync, it can update or remove files in that destination folder to match the local source.\nThe files are transferred directly between my laptop and my Google Drive. The OAuth authorization token is kept in rclone’s local configuration. SisengAI does not receive or store the backup files.\nThe files in Google Drive are subject to Google’s policies and settings. I can stop the backup or revoke the app’s access from my Google Account.\nFor questions about this personal app, contact ricky.macharm@gmail.com.\n\n\n\n Back to top"
+    "text": "Last updated: 09 October 2026\nThis policy covers sisengai.com and the services behind it: the free website brief, the chat that follows it, and the Job Seeker Studio. It also covers one personal app that is not a SisengAI service."
+  },
+  {
+    "objectID": "privacy.html#what-this-site-does",
+    "href": "privacy.html#what-this-site-does",
+    "title": "Privacy Policy",
+    "section": "What this site does",
+    "text": "What this site does\nTwo things, and neither needs an account.\nThe website brief. You give a website address. The service fetches the public pages of that site, reads them, and reports on the offer, the audience, the clarity, and one practical AI opportunity. You can then ask follow-up questions about those pages.\nThe Job Seeker Studio. You upload a CV. The studio reads it, shows you what it found, and can generate tailored application files from it."
+  },
+  {
+    "objectID": "privacy.html#what-is-stored-and-for-how-long",
+    "href": "privacy.html#what-is-stored-and-for-how-long",
+    "title": "Privacy Policy",
+    "section": "What is stored, and for how long",
+    "text": "What is stored, and for how long\nThe website brief and the chat that follows it\n\nThe website address you enter, the public pages fetched from it, and the questions you ask.\nA research session is kept for 24 hours, then deleted. A cached copy of a site’s pages is kept for 5 minutes.\nYour chat messages are not stored. Nothing you type in the conversation is written to the database.\nIf you type an email address into the chat, the service saves your name, email and message so it can follow up with you.\n\nThe Job Seeker Studio\n\nYour CV and the files you generate are held in a private workspace tied to your browser. There is no account and no email step.\nA workspace is deleted after 30 days without activity.\nTo read the parts of a CV that are hard to parse, the CV text is sent to an AI service, TypeSafe, which returns labels for it. We keep no copy of it beyond your own workspace and do not use it to train models.\n\nThe contact form\n\nYour name, email, subject and message are sent to us and delivered to us by email.\nThe form also carries a hidden field that a real visitor never sees or fills in. It exists only to catch spam bots.\nSubmissions are rate-limited by IP address. That counter is held in memory only and is never written to disk."
+  },
+  {
+    "objectID": "privacy.html#what-this-site-does-not-do",
+    "href": "privacy.html#what-this-site-does-not-do",
+    "title": "Privacy Policy",
+    "section": "What this site does not do",
+    "text": "What this site does not do\n\nNo third-party analytics, advertising or tracking cookies. There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page.\nNo account, no login, no newsletter.\nWe do not sell your data."
+  },
+  {
+    "objectID": "privacy.html#where-ai-fits-in",
+    "href": "privacy.html#where-ai-fits-in",
+    "title": "Privacy Policy",
+    "section": "Where AI fits in",
+    "text": "Where AI fits in\nReading a website or a CV, and answering your questions, uses AI models. The text involved — the pages fetched for your brief, your questions, or your CV — is sent to a model service to produce the result. It is sent to do that job and nothing else."
+  },
+  {
+    "objectID": "privacy.html#your-choices",
+    "href": "privacy.html#your-choices",
+    "title": "Privacy Policy",
+    "section": "Your choices",
+    "text": "Your choices\n\nTo have anything you have sent deleted, email Ricky.Macharm@SisengAI.com.\nResearch sessions and workspaces delete themselves on the schedule above. You do not have to ask.\nBecause there is no account, there is nothing to log out of."
+  },
+  {
+    "objectID": "privacy.html#personal-apps",
+    "href": "privacy.html#personal-apps",
+    "title": "Privacy Policy",
+    "section": "Personal apps",
+    "text": "Personal apps\nThe following is a separate, personal app. It is not a SisengAI service, and SisengAI does not run it or hold its data.\nPersonal rclone Backup\nThis is a personal backup app that runs rclone on my laptop. It syncs files from my local Documents folder to the Tuxedo/Documents folder in my Google Drive.\nThe script uses Google Drive to compare and transfer files. Its Google permission is broad Drive access, although this backup script is configured to sync only the folder named above. Because it uses sync, it can update or remove files in that destination folder to match the local source.\nThe files are transferred directly between my laptop and my Google Drive. The OAuth authorization token is kept in rclone’s local configuration. SisengAI does not receive or store the backup files.\nThe files in Google Drive are subject to Google’s policies and settings. I can stop the backup or revoke the app’s access from my Google Account.\nFor questions about this personal app, contact ricky.macharm@gmail.com."
+  },
+  {
+    "objectID": "privacy.html#contact",
+    "href": "privacy.html#contact",
+    "title": "Privacy Policy",
+    "section": "Contact",
+    "text": "Contact\nFor anything in this policy, email Ricky.Macharm@SisengAI.com."
   },
   {
     "objectID": "services.html",
