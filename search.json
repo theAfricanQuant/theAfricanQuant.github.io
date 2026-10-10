@@ -879,7 +879,7 @@
     "href": "privacy.html",
     "title": "Privacy Policy",
     "section": "",
-    "text": "Last updated: 09 October 2026\nThis policy covers sisengai.com and the services behind it: the free website brief, the chat that follows it, and the Job Seeker Studio. It also covers one personal app that is not a SisengAI service."
+    "text": "Last updated: 10 October 2026\nThis policy covers sisengai.com and the services behind it: the free website brief, the chat that follows it, and the Job Seeker Studio. It also covers one personal app that is not a SisengAI service."
   },
   {
     "objectID": "privacy.html#what-this-site-does",
@@ -896,11 +896,18 @@
     "text": "What is stored, and for how long\nThe website brief and the chat that follows it\n\nThe website address you enter, the public pages fetched from it, and the questions you ask.\nA research session is kept for 24 hours, then deleted. A cached copy of a site’s pages is kept for 5 minutes.\nYour chat messages are not stored. Nothing you type in the conversation is written to the database.\nIf you type an email address into the chat, the service saves your name, email and message so it can follow up with you.\n\nThe Job Seeker Studio\n\nYour CV and the files you generate are held in a private workspace tied to your browser. There is no account and no email step.\nA workspace is deleted after 30 days without activity.\nTo read the parts of a CV that are hard to parse, the CV text is sent to an AI service, TypeSafe, which returns labels for it. We keep no copy of it beyond your own workspace and do not use it to train models.\n\nThe contact form\n\nYour name, email, subject and message are sent to us and delivered to us by email.\nThe form also carries a hidden field that a real visitor never sees or fills in. It exists only to catch spam bots.\nSubmissions are rate-limited by IP address. That counter is held in memory only and is never written to disk."
   },
   {
+    "objectID": "privacy.html#analytics",
+    "href": "privacy.html#analytics",
+    "title": "Privacy Policy",
+    "section": "Analytics",
+    "text": "Analytics\nThe website uses self-hosted GoatCounter to count page views and show aggregate site-usage statistics. It runs on SisengAI’s own server; page-view data is stored there, not sent to a third-party analytics provider. GoatCounter does not use cookies, browser storage or persistent tracking identifiers. The server briefly processes an IP address and browser information to calculate aggregate statistics, but does not store the IP address or full browser header in the analytics database."
+  },
+  {
     "objectID": "privacy.html#what-this-site-does-not-do",
     "href": "privacy.html#what-this-site-does-not-do",
     "title": "Privacy Policy",
     "section": "What this site does not do",
-    "text": "What this site does not do\n\nNo third-party analytics, advertising or tracking cookies. There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page.\nNo account, no login, no newsletter.\nWe do not sell your data."
+    "text": "What this site does not do\n\nNo third-party analytics, advertising or tracking cookies. There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page. The first-party, self-hosted page counter is described above.\nNo account, no login, no newsletter.\nWe do not sell your data."
   },
   {
     "objectID": "privacy.html#where-ai-fits-in",
