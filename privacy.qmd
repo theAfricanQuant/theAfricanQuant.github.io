@@ -3,7 +3,7 @@ title: "Privacy Policy"
 toc: false
 ---
 
-**Last updated: 09 October 2026**
+**Last updated: 10 October 2026**
 
 This policy covers sisengai.com and the services behind it: the free website brief, the chat that follows it, and the Job Seeker Studio. It also covers one personal app that is not a SisengAI service.
 
@@ -36,9 +36,13 @@ Two things, and neither needs an account.
 - The form also carries a hidden field that a real visitor never sees or fills in. It exists only to catch spam bots.
 - Submissions are rate-limited by IP address. That counter is held in memory only and is never written to disk.
 
+## Analytics
+
+The website uses **self-hosted GoatCounter** to count page views and show aggregate site-usage statistics. It runs on SisengAI’s own server; page-view data is stored there, not sent to a third-party analytics provider. GoatCounter does not use cookies, browser storage or persistent tracking identifiers. The server briefly processes an IP address and browser information to calculate aggregate statistics, but does not store the IP address or full browser header in the analytics database.
+
 ## What this site does not do
 
-- **No third-party analytics, advertising or tracking cookies.** There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page.
+- **No third-party analytics, advertising or tracking cookies.** There is no Google Analytics, no tag manager, no advertising pixel and no session recorder on any page. The first-party, self-hosted page counter is described above.
 - **No account, no login, no newsletter.**
 - **We do not sell your data.**
 
