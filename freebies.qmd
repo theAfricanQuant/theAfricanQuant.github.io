@@ -29,6 +29,22 @@ toc: false
 :::
 
 ::: {.service-card}
+<p class="service-kicker">Live now</p>
+<h3>Quant Terminal</h3>
+<p class="service-outcome">Explore market charts, technical indicators, screeners and strategy backtests in a free browser-based demo.</p>
+<ul><li>No account or API key</li><li>Public market-data feeds may be delayed or rate-limited</li><li>Research tool only — no live trading or financial advice</li></ul>
+<a href="https://terminal.sisengai.com/quant/" class="service-link" target="_blank" rel="noopener">Open Quant Terminal <span>→</span></a>
+:::
+
+::: {.service-card}
+<p class="service-kicker">Live now</p>
+<h3>Amber Terminal</h3>
+<p class="service-outcome">Use ticker-and-function commands to explore market news, company data, rates, currencies, commodities and more.</p>
+<ul><li>Four screens at a time</li><li>No account or API key</li><li>Public data may be delayed or rate-limited; not financial advice</li></ul>
+<a href="https://terminal.sisengai.com/amber/" class="service-link" target="_blank" rel="noopener">Open Amber Terminal <span>→</span></a>
+:::
+
+::: {.service-card}
 <p class="service-kicker">Coming soon</p>
 <h3>More free tools on the way</h3>
 <p class="service-outcome">A free resource library is in the works — templates, checklists, and small automations you can use without hiring anyone.</p>
