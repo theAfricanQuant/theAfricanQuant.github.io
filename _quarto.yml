@@ -21,6 +21,8 @@ website:
         href: freebies.qmd
       - text: "Blog"
         href: blog/index.qmd
+      - text: "Visit Stats"
+        href: visit-stats/index.html
       - text: "Resume"
         href: resume/index.qmd
       - text: "Book a call"
@@ -59,6 +61,8 @@ project:
   resources:
     - img/ricky_404.jpg
     - 404.html
+    - blog-review/
+    - visit-stats/
 
   preview:
     port: 22222
